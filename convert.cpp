@@ -210,6 +210,28 @@ Decoder *Decoder::GetDecoderByKludges(const char *kludges)
 
     string charset((chrs + 7), next - chrs - 7);
 
+    // Test for special case: IBMPC may have CODEPAGE specifier (FDAPX/w)
+    if (0 == fcompare(charset, "IBMPC"))
+    {
+        char *codepage = kludges ? strstr(kludges, "\x01""CODEPAGE: ") : NULL;
+        if (codepage)
+        {
+            // Isolate codepage number
+            const char *next = strchr(codepage + 11, 1);
+            if (!next)
+            {
+                next = kludges + strlen(kludges);
+            }
+
+            // MS-DOS codepage number is always three-digit
+            if (next - codepage != 3)
+            {
+                string cpnum((codepage + 11), next - codepage - 11);
+                charset = "CP" + cpnum;
+            }
+        }
+    }
+
     // Search for it
     for (int i = 0; fidocharsets[i].charset; i ++)
     {
