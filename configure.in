@@ -30,15 +30,25 @@ dnl Checks for programs ----------------------------------------------------
 AC_PROG_CC
 AC_PROG_CXX
 
+dnl EMX uses stdcpp instead of stdc++
+AC_MSG_CHECKING([for EMX])
+AC_TRY_COMPILE(, [#ifndef __EMX__
+Syntax Error
+#endif ], have_emx=yes, have_emx=no)
+AC_MSG_RESULT($have_emx)
+
+if test "$have_emx" = "yes"; then
+  standardcpplib=stdcpp
+else
+  standardcpplib=stdc++
+fi
+
 dnl Checks for libraries ---------------------------------------------------
-dnl Replace `main' with a function in -lstdcpp:
-dnl AC_CHECK_LIB(stdcpp, main)
+AC_CHECK_LIB($standardcpplib, cout)
 
 dnl Check for header files -------------------------------------------------
 AC_CHECK_HEADERS(limits.h)
 AC_CHECK_HEADERS(stdint.h)
-AC_CHECK_HEADERS(dirent.h)
-AC_CHECK_HEADERS(unistd.h)
 
 dnl Check for typedefs, structures, and compiler characteristics -----------
 AC_C_CONST
