@@ -102,10 +102,14 @@ public:
 
 protected:
     /** Protected constructor for internal use only. */
-    Encoder(const struct reversemap *map) : outmap(map) {};
+    Encoder(const struct reversemap *map, unsigned short len)
+        : outmap(map), maplength(len) {};
 
     /** Conversion table. */
     const struct reversemap *outmap;
+
+    /** Length of conversion table. */
+    unsigned short maplength;
 };
 
 struct tablemap;

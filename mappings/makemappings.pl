@@ -249,24 +249,19 @@ foreach $file (sort keys %arrayname)
 
 	# Write mapping table for Unicode to charset.
 	my $outname = $arrayname{$file} . "_rev";
-	print HEADER '/** Outgoing conversion table for ', $name{$file}, " */\n";
-	print HEADER 'extern const struct reversemap ', $outname, "[128];\n\n";
-	print MAPPINGS 'const struct reversemap ', $outname, "[128] =\n{\n";
-	my $count = 0;
 	my @mapped = sort { $a <=> $b } grep { $_ >= 128 } keys %outmap;
-	my $prev = 127;
 
-	foreach (0 .. 126 - $#mapped)
-	{
-		print MAPPINGS "    {     0,   0 }, // Filler\n";
-		$count ++;
-	}
+	print HEADER '/** Outgoing conversion table for ', $name{$file}, " */\n";
+	print HEADER 'extern const struct reversemap ', $outname, '[', $#mapped + 1, "];\n";
+	print HEADER 'const unsigned short ', $outname, '_len = ', $#mapped + 1, ";\n\n";
+	print MAPPINGS 'const struct reversemap ', $outname, '[', $#mapped + 1, "] =\n{\n";
+	my $count = 0;
 
 	foreach $codepoint (@mapped)
 	{
 		printf MAPPINGS "    { %5d, %3d }",
 		       $codepoint, $outmap{$codepoint};
-		print MAPPINGS ",\n" if ++ $count < 128;
+		print MAPPINGS ",\n" if ++ $count < $#mapped + 1;
 	}
 	print MAPPINGS "\n};\n\n";
 }
