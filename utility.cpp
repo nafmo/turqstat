@@ -103,7 +103,7 @@ time_t stampToTimeT(struct stamp_s *st)
     struct tm tms;
     if (0 == st->date.da || 0 == st->date.mo)
     {
-        return 0;
+        return time_t(-1);
     }
     tms.tm_sec = st->time.ss << 1;
     tms.tm_min = st->time.mm;
@@ -139,11 +139,11 @@ time_t asciiToTimeT(const char *datetime)
         tms.tm_sec = 0;
     }
     else
-        return 0;
+        return time_t(-1);
 
     // Check month
     char *c_p = strstr(months, month);
-    if (!c_p) return 0;
+    if (!c_p) return time_t(-1);
     tms.tm_mon = int(c_p - months) / 3;
 
     // Check year
@@ -185,7 +185,7 @@ time_t rfcToTimeT(string datetime)
 
     // Check month
     char *c_p = strstr(months, month);
-    if (!c_p) return 0;
+    if (!c_p) return time_t(-1);
     tms.tm_mon = ((int) (c_p - months)) / 3;
 
     tt = my_mktime(&tms);

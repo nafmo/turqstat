@@ -2,6 +2,13 @@
   statengine.cpp
     Support news reader version strings of the kind Sylpheed use.
 
+  nntpread.cpp
+    Do not send XPAT command if no date range is set.
+
+  utility.cpp
+    Make sure functions that convert to time_t always return -1 on invalid
+    date formats.
+
 2001-11-15 - peter karlsson <peter@softwolves.pp.se>
   configure.in
   Makefile.in
