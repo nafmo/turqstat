@@ -128,6 +128,14 @@ bool JamRead::Transfer(time_t starttime, StatEngine &destination)
             stay = false;
             break;
         }
+
+        if ((uint32_t) -1 == jdxinfo.recipientcrc &&
+            (uint32_t) -1 == jdxinfo.jhroffset)
+        {
+            // Not a message
+            continue;
+        }
+
         found ++;
 
         fseek(jhr, jdxinfo.jhroffset, SEEK_SET);

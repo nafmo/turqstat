@@ -1,3 +1,7 @@
+2000-11-11 - peter karlsson <peter@softwolves.pp.se>
+  jamread.cpp
+    Correctly handle messages marked as non-existing in the JDX file.
+
 2000-11-04 - peter karlsson <peter@softwolves.pp.se>
   jamread.cpp
     Check JAM header for each message to make sure we don't read invalid
