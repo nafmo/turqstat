@@ -1,6 +1,14 @@
 #ifndef __DATATYPES_H
 #define __DATATYPES_H
 
+#if defined(__CYGWIN__) && defined(__BIT_TYPES_DEFINED__)
+
+ typedef u_int8_t  uint8_t;
+ typedef u_int16_t uint16_t;
+ typedef u_int32_t uint32_t;
+
+#else
+
 # include <limits.h>
 
   // Define datatypes according to limits.h
@@ -50,4 +58,5 @@
 #   endif
 #  endif
 # endif
+#endif
 #endif
