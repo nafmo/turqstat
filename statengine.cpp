@@ -1051,6 +1051,7 @@ wstring StatEngine::DeQP(const string &qp, Decoder *maindecoder_p) const
             {
                 // Ignore bogus QP
                 current = pos;
+                break;
             }
 
             string tmpstr;
