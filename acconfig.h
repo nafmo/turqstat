@@ -28,6 +28,15 @@
 /* Define if C library includes _snprintf instead of snprint */
 #undef HAVE_USNPRINTF
 
+/* Define if C library includes strcasestr */
+#undef HAVE_STRCASESTR
+
+/* Define if C library includes stristr */
+#undef HAVE_STRISTR
+
+/* Define if C library includes strlwr */
+#undef HAVE_STRLWR
+
 /* Define to size of time_t, in bytes */
 #undef SIZEOF_TIME_T
 
