@@ -1,6 +1,10 @@
 2001-05-17 - peter karlsson <peter@softwolves.pp.se>
+  converter.cpp
+  converter.h
+    Added support for UTF-8 input.
+
   statengine.cpp
-    QP decoder fixes.
+    QP decoder fixes; added support for Base64 encoded headers.
     Correct de-quoting of sender's name.
     Fix subject handling.
 
