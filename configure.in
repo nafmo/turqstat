@@ -162,6 +162,27 @@ AC_TRY_COMPILE([ #include <unistd.h> ],
 AC_CHECK_FUNC(snprintf, AC_DEFINE(HAVE_SNPRINTF),
   AC_CHECK_FUNC(_snprintf, AC_DEFINE(HAVE_USNPRINTF)))
 
+AC_CACHE_CHECK([for DosQueryCtryInfo in os2.h], ac_cv_dosqueryctryinfo,
+  AC_TRY_COMPILE([ #define INCL_DOSNLS
+#include <os2.h> ],
+[ COUNTRYINFO countryinfo;
+  COUNTRYCODE country = { 0, 0 };
+  ULONG datalength;
+  DosQueryCtryInfo(sizeof countryinfo, &country, &countryinfo, &datalength);
+], ac_cv_dosqueryctryinfo=yes, ac_cv_dosqueryctryinfo=no))
+if test "$ac_cv_dosqueryctryinfo" = "yes"; then
+  AC_DEFINE(HAVE_OS2_COUNTRYINFO)
+fi
+
+AC_CACHE_CHECK([for GetDateFormat in windows.h], ac_cv_getdateformat,
+  AC_TRY_COMPILE([#include <windows.h>],
+[ SYSTEMTIME wintime; char *out; size_t len;
+  GetDateFormat(LOCALE_USER_DEFAULT, DATE_SHORTDATE, &wintime, NULL, out, len);
+], ac_cv_getdateformat=yes, ac_cv_getdateformat=no))
+if test "$ac_cv_getdateformat" = "yes"; then
+  AC_DEFINE(HAVE_WIN32_LOCALEINFO)
+fi
+
 dnl Check for variables ----------------------------------------------------
 
 AC_MSG_CHECKING(for timezone in time.h)

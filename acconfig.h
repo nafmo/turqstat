@@ -33,3 +33,9 @@
 
 /* Define if limits.h includes CHAR_BIT */
 #undef HAVE_CHAR_BIT
+
+/* Define if you have OS/2 DosQueryCtryInfo API */
+#undef HAVE_OS2_COUNTRYINFO
+
+/* Define if you have Win32 GetDateFormat API */
+#undef HAVE_WIN32_LOCALEINFO
