@@ -1,3 +1,12 @@
+2001-05-16 - peter karlsson <peter@softwolves.pp.se>
+  acconfig.h
+  configure.in
+    Test for strcasestr/stristr/strlwr.
+
+  convert.cpp
+    Removed unnecessary strcasestr usage.
+    Fixed the other strcasestr occurance for Win32.
+
 2001-05-15 - peter karlsson <peter@softwolves.pp.se>
   statengine.cpp
     Corrected problems with conversion of names and subjects in gated news
