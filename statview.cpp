@@ -375,25 +375,27 @@ bool StatView::CreateReport(StatEngine *engine, string filename)
         report << "-------------------------------------------"
                   "----------------------------------" << endl;
 
-        report << "Toplist of original content per message" << endl;
+        report << "Toplist of original content per message (of people "
+                  "who have written at least three messages)" << endl;
         report << endl;
 
         unsigned place = 1;
         bool restart = true;
+        bool showheader = true;
         StatEngine::persstat_s data;
         unsigned oldoriginalpermsg = 0;
         while (place <= maxnumber &&
                engine->GetTopOriginalPerMsg(restart, data))
         {
-            if (0 == data.messageswritten)
+            restart = false;
+            if (data.messageswritten < 3)
             {
-                restart = false;
                 continue;
             }
 
-            if (restart)
+            if (showheader)
             {
-                restart = false;
+                showheader = false;
                 report << "Place Name                        "
                           "                Orig. / Msgs = PrMsg Quoted"
                        << endl;

@@ -1,3 +1,8 @@
+2001-11-19 - peter karlsson <peter@softwolves.pp.se>
+  statview.cpp
+    Limit original content toplist to those that have written at least three
+    messages.
+
 2001-11-16 - peter karlsson <peter@softwolves.pp.se>
   statengine.cpp
     Support news reader version strings of the kind Sylpheed use.
