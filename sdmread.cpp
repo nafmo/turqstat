@@ -113,7 +113,10 @@ bool SdmRead::Transfer(time_t starttime, StatEngine &destination)
         // Unix readdir gives us all files, and DOS findfirst is buggy
         string thisfile = dirname + FILENAME;
         if (fcompare(thisfile.substr(thisfile.length() - 3, 3), "msg"))
+        {
+            msg = NULL;
             goto out;
+        }
 
         msg = fopen(thisfile.c_str(), "rb");
         if (!msg)

@@ -113,7 +113,10 @@ bool NewsSpoolRead::Transfer(time_t starttime, StatEngine &destination)
         string thisfile = dirname + filename;
         for (unsigned int i = 0; i < filename.length(); i ++)
             if (!isdigit(filename[i]))
+            {
+                msg = NULL;
                 goto out2;
+            }
 
         msg = fopen(thisfile.c_str(), "rt");
         if (!msg)
@@ -157,7 +160,7 @@ bool NewsSpoolRead::Transfer(time_t starttime, StatEngine &destination)
         // Zero terminate
         p[0] = 0;
 
-        msglen = length;
+        msglen = FILESIZE - ftell(msg) + 1;
 
         msgbuf = new char[msglen];
         if (!msgbuf)
