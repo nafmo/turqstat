@@ -29,14 +29,14 @@
 class StatView
 {
 public:
-	bool CreateReport(StatEngine *engine, String filename,
-	                  unsigned maxnumber,
-	                  bool quoters, bool topwritten, bool topread,
-					  bool topsubjects, bool topprograms,
-					  bool weekstats, bool daystats);
+    bool CreateReport(StatEngine *engine, String filename,
+                      unsigned maxnumber,
+                      bool quoters, bool topwritten, bool topreceived,
+                      bool topsubjects, bool topprograms,
+                      bool weekstats, bool daystats);
 
 protected:
-	String Mangle(String, unsigned);
+    String Mangle(String, unsigned);
 };
 
 #endif
