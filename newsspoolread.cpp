@@ -124,6 +124,9 @@ bool NewsSpoolRead::Transfer(time_t starttime, StatEngine &destination)
 
         stat(thisfile.c_str(), &msgstat);
 
+        arrived = msgstat.st_mtime;
+        if (arrived < starttime) goto out2;
+
         // Read the message header
         length = FILESIZE;
         ctrlbuf = new char[length + 1];
@@ -166,15 +169,11 @@ bool NewsSpoolRead::Transfer(time_t starttime, StatEngine &destination)
 
         fread(msgbuf, msglen, 1, msg);
 
-        arrived = msgstat.st_mtime;
 
         // Add to statistics
-        if (arrived >= starttime)
-        {
-            destination.AddData(string(""), string(""), string(""),
-                                string(ctrlbuf), string(msgbuf),
-                                0, arrived);
-        }
+        destination.AddData(string(""), string(""), string(""),
+                            string(ctrlbuf), string(msgbuf),
+                            0, arrived);
 
         // Clean up our mess
         delete msgbuf;
