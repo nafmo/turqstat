@@ -259,17 +259,20 @@ void StatEngine::AddData(string fromname, string toname, string subject,
         string thisline = msgbody.substr((int) currindex, nextcr - currindex);
 
         // Break when we find a tear or Origin line
-        if (!newsarea && "--- " == thisline.substr(0, 4) ||
-            thisline.length() == 3 && "---" == thisline)
+        if (!newsarea)
         {
-            foundtear = true;
+            if (("--- " == thisline.substr(0, 4) ||
+                thisline.length() == 3 && "---" == thisline))
+            {
+                foundtear = true;
+            }
+            else if (" * Origin: " == thisline.substr(0, 11))
+            {
+                break;
+            }
+            else
+                foundtear = false;
         }
-        else if (" * Origin: " == thisline.substr(0, 11))
-        {
-            break;
-        }
-        else
-            foundtear = false;
 
         // Is this a quote?
         int gt = thisline.find('>'), lt = thisline.find('<');
