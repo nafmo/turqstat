@@ -2,6 +2,7 @@ turqstat (1.4) unstable; urgency=low
 
   * New version.
   * Uses autoconf.
+  * Now actually includes the program ChangeLog.
 
  -- peter karlsson <peter@softwolves.pp.se>  Sun, 02 Apr 2000 21:22:23 +0200
 
