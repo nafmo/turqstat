@@ -1,3 +1,18 @@
+2001-01-09 - peter karlsson <peter@softwolves.pp.se>
+  Released 2.0.1, branching from 2.0 release:
+
+  2001-01-09 - peter karlsson <peter@softwolves.pp.se>
+    newsspoolread.cpp
+      Does not crash on news messages consisting solely of header
+      (reported by Jesús Carrete Montaña)
+
+    statview.cpp
+    version.h
+    turqstat.doc
+    turqstat.dok
+    debian/
+      Updates for 2.0.1.
+
 2000-12-04 - peter karlsson <peter@softwolves.pp.se>
   statview.cpp
     Always return something from CreateReport.

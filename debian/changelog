@@ -4,6 +4,13 @@ turqstat (2.1) unstable; urgency=low
 
  -- peter karlsson <peterk@debian.org>  UNRELEASED
 
+turqstat (2.0.1) unstable; urgency=low
+
+  * Does not crash on news messages consisting solely of header
+    (Closes: Bug#81499).
+
+ -- peter karlsson <peterk@debian.org>  Tue, 09 Jan 2001 20:00:00 +0100
+
 turqstat (2.0) unstable; urgency=low
 
   * Now officially maintained in Debian by the original author.
