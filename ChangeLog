@@ -1,3 +1,9 @@
+2001-10-31 - peter karlsson <peter@softwolves.pp.se>
+  turqstat.dok
+  turqstat.doc
+  debian/copyright
+    Copyright and license updates.
+
 2001-10-27 - peter karlsson <peter@softwolves.pp.se>
   configure.in
   config.h.in

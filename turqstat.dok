@@ -12,8 +12,8 @@ version 2 (GNU GPL), vilken finns i den bifogade filen COPYING, med följande
 tillägg:
 
 Detta program kan länkas mot källkod eller binära bibliotek för att komma åt
-Fidonetmeddelandebaser vilka inte är förenliga med GNU GPL, så länge som
-inkluderingen av denna inte förhindrar den fria distributionen av
+Fidonet- eller andra meddelandebaser vilka inte är förenliga med GNU GPL, så
+länge som inkluderingen av denna inte förhindrar den fria distributionen av
 huvudkällkoden. Det måste också vara möjligt att kompilera huvudkällkoden utan
 att använda denna kod eller binära bibliotek (t.ex med villkorliga
 preprocessordirektiv) och fortfarande få en användbar binär.
@@ -26,12 +26,12 @@ sådana binärer spridas.
 Även med dessa undantag förespråkas licensiering av ny meddelandebaskod under
 GNU GPL.
 
-Detta program får även länkas mot alla GUI-bibliotek som möter kriteriet för
-Open Source, inklusive, men inte begränsat till, Troll Techs Q Public License.
-Dessutom bygger filen mytime.cpp på EMX-biblioteket, vars licens är som följer
-(översatt, se den engelska dokumentationen för originalordalydelsen): Du har
-rätt att ändra och kopiera emx-biblioteket om du behåller upphovsrättstexten
-intakt.
+Detta program får även länkas mot alla GUI-bibliotek som möter kriterierna för
+Debians riktlinjer för fri programvara (DFSG), inklusive, men inte begränsat
+till, Troll Techs Q Public License. Dessutom bygger filen mytime.cpp på
+EMX-biblioteket, vars licens är som följer (översatt, se den engelska
+dokumentationen för originalordalydelsen): Du har rätt att ändra och kopiera
+emx-biblioteket om du behåller upphovsrättstexten intakt.
 
 
 ÖVRIGA UPPHOVSRÄTTER
@@ -39,9 +39,9 @@ intakt.
 JAM(mbp) - Copyright 1993 Joaquim Homrighausen, Andrew Milner, Mats Birch,
 Mats Wallin. ALL RIGHTS RESERVED.
 
-Squish, SquishMail and Maximus are trademarks of Scott J. Dudley.
+Squish and SquishMail are trademarks of Scott J. Dudley.
 
-mktime.c (emx+gcc) -- Copyright (c) 1990-1996 by Eberhard Mattes
+mktime.c (emx+gcc) -- Copyright (c) 1990-1996 by Eberhard Mattes.
 
 
 ANVÄNDNING (KOMMANDORADSVERSIONEN)

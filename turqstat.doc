@@ -11,12 +11,12 @@ This software is distributed under the GNU General Public License version 2
 (GNU GPL), as can be found in the accompanying file COPYING, with the
 following addition:
 
-This program may be linked against any Fidonet message base access sources or
-binary libraries that does not comply with the GNU GPL, as long as their
-inclusion does not compromise the free distribution of the main source code.
-It must also be possible to compile the main source without using these access
-sources or binary libraries (e.g with conditional pre-processor directives)
-and still get a working binary.
+This program may be linked against any Fidonet or other message base access
+sources or binary libraries that does not comply with the GNU GPL, as long
+as their inclusion does not compromise the free distribution of the main
+source code. It must also be possible to compile the main source without
+using these access sources or binary libraries (e.g with conditional
+pre-processor directives) and still get a working binary.
 
 Binaries created by linking against such message base access code must be
 freely distributable and usable by anyone (i.e it is not enough to warrant
@@ -26,11 +26,12 @@ binaries must be distributed.
 Even with this exception, licensing new message base access sources under GNU
 GPL is encouraged.
 
-This program may also be linked against any GUI library that meets the Open
-Source criteria, including, but not limited to, Troll Tech's Q Public License.
-Furthermore, the file mytime.cpp derives from the EMX library, which has this
-license: You are allowed to change and copy the emx library sources if you
-keep the copyright message intact.
+This program may also be linked against any GUI library that meets the
+criteria for Debian free software guidelines (DFSG), including, but not
+limited to, Troll Tech's Q Public License. Furthermore, the file mytime.cpp
+derives from the EMX library, which has this license: You are allowed to
+change and copy the emx library sources if you keep the copyright message
+intact.
 
 
 OTHER COPYRIGHTS
@@ -38,9 +39,9 @@ OTHER COPYRIGHTS
 JAM(mbp) - Copyright 1993 Joaquim Homrighausen, Andrew Milner, Mats Birch,
 Mats Wallin. ALL RIGHTS RESERVED.
 
-Squish, SquishMail and Maximus are trademarks of Scott J. Dudley.
+Squish and SquishMail are trademarks of Scott J. Dudley.
 
-mktime.c (emx+gcc) -- Copyright (c) 1990-1996 by Eberhard Mattes
+mktime.c (emx+gcc) -- Copyright (c) 1990-1996 by Eberhard Mattes.
 
 
 USAGE (COMMAND LINE VERSION)
