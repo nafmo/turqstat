@@ -1,595 +1,600 @@
 # This is a Qt message file in .po format.  Each msgid starts with
-# a scope.  This scope should *NOT* be translated - eg. "Foo::Bar"
-# would be translated to "Pub", not "Foo::Pub".
+# a scope.  This scope should *NOT* be translated - eg. translating
+# from French to English, "Foo::Bar" would be translated to "Pub",
+# not "Foo::Pub".
 msgid ""
 msgstr ""
 "Project-Id-Version: XTurqstat 2.1\n"
-"POT-Creation-Date: 2001-03-17 08.55.58 CET\n"
+"POT-Creation-Date: 2001-05-15 22.18.19 CEST\n"
 "PO-Revision-Date: YYYY-MM-DD\n"
 "Last-Translator: FULLNAME <EMAIL@ADDRESS>\n"
 "Content-Type: text/plain; charset=iso-8859-1\n"
 
-#: qtbars.cpp:77
+#: qtbars.cpp:79
 msgid "BarWindow::Daily breakdown"
 msgstr ""
 
-#: qtbars.cpp:113
+#: qtbars.cpp:115
 msgid "BarWindow::Dismiss"
 msgstr ""
 
-#: qtbars.cpp:61
+#: qtbars.cpp:63
 msgid "BarWindow::Friday"
 msgstr ""
 
-#: qtbars.cpp:94
+#: qtbars.cpp:96
 msgid "BarWindow::Hourly breakdown"
 msgstr ""
 
-#: qtbars.cpp:57
+#: qtbars.cpp:59
 msgid "BarWindow::Monday"
 msgstr ""
 
-#: qtbars.cpp:62
+#: qtbars.cpp:64
 msgid "BarWindow::Saturday"
 msgstr ""
 
-#: qtbars.cpp:63
+#: qtbars.cpp:65
 msgid "BarWindow::Sunday"
 msgstr ""
 
-#: qtbars.cpp:60
+#: qtbars.cpp:62
 msgid "BarWindow::Thursday"
 msgstr ""
 
-#: qtbars.cpp:58
+#: qtbars.cpp:60
 msgid "BarWindow::Tuesday"
 msgstr ""
 
-#: qtbars.cpp:59
+#: qtbars.cpp:61
 msgid "BarWindow::Wednesday"
 msgstr ""
 
-#: qtgui.cpp:115
+#: qtgui.cpp:117
 msgid "InfoWindow::&Areas loaded"
 msgstr ""
 
-#: qtgui.cpp:127
+#: qtgui.cpp:129
 msgid "InfoWindow::&Bytes written"
 msgstr ""
 
-#: qtgui.cpp:75
+#: qtgui.cpp:77
 msgid "InfoWindow::&Clear data"
 msgstr ""
 
-#: qtgui.cpp:181
+#: qtgui.cpp:183
 msgid "InfoWindow::&Earliest text written"
 msgstr ""
 
-#: qtgui.cpp:84
+#: qtgui.cpp:86
 msgid "InfoWindow::&Edit"
 msgstr ""
 
-#: qtgui.cpp:78
+#: qtgui.cpp:80
 msgid "InfoWindow::&Exit"
 msgstr ""
 
-#: qtgui.cpp:93
+#: qtgui.cpp:95
 msgid "InfoWindow::&Fidonet net toplist"
 msgstr ""
 
-#: qtgui.cpp:79
+#: qtgui.cpp:81
 msgid "InfoWindow::&File"
 msgstr ""
 
-#: qtgui.cpp:95
+#: qtgui.cpp:97
 msgid "InfoWindow::&Internet topdomain toplist"
 msgstr ""
 
-#: qtgui.cpp:133
+#: qtgui.cpp:135
 msgid "InfoWindow::&Lines examined"
 msgstr ""
 
-#: qtgui.cpp:73
+#: qtgui.cpp:75
 msgid "InfoWindow::&Open message base"
 msgstr ""
 
-#: qtgui.cpp:91
+#: qtgui.cpp:93
 msgid "InfoWindow::&Original content toplist"
 msgstr ""
 
-#: qtgui.cpp:151
+#: qtgui.cpp:153
 msgid "InfoWindow::&People identified"
 msgstr ""
 
-#: qtgui.cpp:87
+#: qtgui.cpp:89
 msgid "InfoWindow::&Quoter blacklist"
 msgstr ""
 
-#: qtgui.cpp:97
+#: qtgui.cpp:99
 msgid "InfoWindow::&Receiver toplist"
 msgstr ""
 
-#: qtgui.cpp:76
+#: qtgui.cpp:78
 msgid "InfoWindow::&Save report"
 msgstr ""
 
-#: qtgui.cpp:89
+#: qtgui.cpp:91
 msgid "InfoWindow::&Sender toplist"
 msgstr ""
 
-#: qtgui.cpp:82
+#: qtgui.cpp:84
 msgid "InfoWindow::&Set start date"
 msgstr ""
 
-#: qtgui.cpp:108
+#: qtgui.cpp:110
 msgid "InfoWindow::&Show"
 msgstr ""
 
-#: qtgui.cpp:121
+#: qtgui.cpp:123
 msgid "InfoWindow::&Texts examined"
 msgstr ""
 
-#: qtgui.cpp:139
+#: qtgui.cpp:141
 msgid "InfoWindow::Bytes &quoted"
 msgstr ""
 
-#: qtgui.cpp:580
+#: qtgui.cpp:582
 msgid "InfoWindow::"
 "Enter number of days back to take "
                                     "statistics for (0 = no restriction):"
 msgstr ""
 
-#: qtgui.cpp:239
+#: qtgui.cpp:241
 msgid "InfoWindow::FDAPX/w (msgstat.apx)"
 msgstr ""
 
-#: qtgui.cpp:233
+#: qtgui.cpp:235
 msgid "InfoWindow::FTSC SDM (*.msg)"
 msgstr ""
 
-#: qtgui.cpp:169
+#: qtgui.cpp:171
 msgid "InfoWindow::Fidonet &nets represented"
 msgstr ""
 
-#: qtgui.cpp:279
+#: qtgui.cpp:281
 msgid "InfoWindow::I don't understand your selection"
 msgstr ""
 
-#: qtgui.cpp:241
+#: qtgui.cpp:243
 msgid "InfoWindow::JAM (*.jdt)"
 msgstr ""
 
-#: qtgui.cpp:145
+#: qtgui.cpp:147
 msgid "InfoWindow::L&ines quoted"
 msgstr ""
 
-#: qtgui.cpp:187
+#: qtgui.cpp:189
 msgid "InfoWindow::Latest text &written"
 msgstr ""
 
-#: qtgui.cpp:243
+#: qtgui.cpp:245
 msgid "InfoWindow::MyPoint (mypoint.*)"
 msgstr ""
 
-#: qtgui.cpp:405
+#: qtgui.cpp:407
 msgid "InfoWindow::N/A"
 msgstr ""
 
-#: qtgui.cpp:247
+#: qtgui.cpp:249
 msgid "InfoWindow::News (.overview)"
 msgstr ""
 
-#: qtgui.cpp:569
+#: qtgui.cpp:571
 msgid "InfoWindow::None loaded"
 msgstr ""
 
-#: qtgui.cpp:257
+#: qtgui.cpp:259
 msgid "InfoWindow::Open message base"
 msgstr ""
 
-#: qtgui.cpp:235
+#: qtgui.cpp:237
 msgid "InfoWindow::Opus SDM (*.msg)"
 msgstr ""
 
-#: qtgui.cpp:376
+#: qtgui.cpp:378
 msgid "InfoWindow::Out of memory allocating area object"
 msgstr ""
 
-#: qtgui.cpp:163
+#: qtgui.cpp:165
 msgid "InfoWindow::P&rograms used"
 msgstr ""
 
-#: qtgui.cpp:106
+#: qtgui.cpp:108
 msgid "InfoWindow::Postings per &day"
 msgstr ""
 
-#: qtgui.cpp:104
+#: qtgui.cpp:106
 msgid "InfoWindow::Postings per &hour"
 msgstr ""
 
-#: qtgui.cpp:361
+#: qtgui.cpp:363
 msgid "InfoWindow::Reading message base"
 msgstr ""
 
-#: qtgui.cpp:99
+#: qtgui.cpp:101
 msgid "InfoWindow::S&ubject toplist"
 msgstr ""
 
-#: qtgui.cpp:157
+#: qtgui.cpp:159
 msgid "InfoWindow::S&ubjects found"
 msgstr ""
 
-#: qtgui.cpp:311
+#: qtgui.cpp:313
 msgid "InfoWindow::Select area number"
 msgstr ""
 
-#: qtgui.cpp:101
+#: qtgui.cpp:103
 msgid "InfoWindow::Soft&ware toplist"
 msgstr ""
 
-#: qtgui.cpp:237
+#: qtgui.cpp:239
 msgid "InfoWindow::Squish (*.sqd)"
 msgstr ""
 
-#: qtgui.cpp:579
+#: qtgui.cpp:581
 msgid "InfoWindow::Start date"
 msgstr ""
 
-#: qtgui.cpp:245
+#: qtgui.cpp:247
 msgid "InfoWindow::Tanstaafl (msgstat.tfl)"
 msgstr ""
 
-#: qtgui.cpp:175
+#: qtgui.cpp:177
 msgid "InfoWindow::Top &domains represented"
 msgstr ""
 
-#: qtgui.cpp:386
+#: qtgui.cpp:388
 msgid "InfoWindow::You cannot mix Fidonet and Usenet areas"
 msgstr ""
 
-#: qtreport.cpp:110
+#: qtreport.cpp:116
 msgid "ReportSelectWindow:: entries"
 msgstr ""
 
-#: qtreport.cpp:69
+#: qtreport.cpp:119
+msgid "ReportSelectWindow::&Character set for report"
+msgstr ""
+
+#: qtreport.cpp:75
 msgid "ReportSelectWindow::&Enable posting by weekday statistics"
 msgstr ""
 
-#: qtreport.cpp:116
+#: qtreport.cpp:140
 msgid "ReportSelectWindow::&Save"
 msgstr ""
 
-#: qtreport.cpp:74
+#: qtreport.cpp:80
 msgid "ReportSelectWindow::&Use locale date format"
 msgstr ""
 
-#: qtreport.cpp:120
+#: qtreport.cpp:144
 msgid "ReportSelectWindow::Cancel"
 msgstr ""
 
-#: qtreport.cpp:53
+#: qtreport.cpp:59
 msgid "ReportSelectWindow::Enable &blacklist of quoters"
 msgstr ""
 
-#: qtreport.cpp:71
+#: qtreport.cpp:77
 msgid "ReportSelectWindow::Enable posting by &hour statiscs"
 msgstr ""
 
-#: qtreport.cpp:57
+#: qtreport.cpp:63
 msgid "ReportSelectWindow::Enable toplist of &original content"
 msgstr ""
 
-#: qtreport.cpp:67
+#: qtreport.cpp:73
 msgid "ReportSelectWindow::Enable toplist of &programs"
 msgstr ""
 
-#: qtreport.cpp:63
+#: qtreport.cpp:69
 msgid "ReportSelectWindow::Enable toplist of &receivers"
 msgstr ""
 
-#: qtreport.cpp:65
+#: qtreport.cpp:71
 msgid "ReportSelectWindow::Enable toplist of &subjects"
 msgstr ""
 
-#: qtreport.cpp:55
+#: qtreport.cpp:61
 msgid "ReportSelectWindow::Enable toplist of &writers"
 msgstr ""
 
-#: qtreport.cpp:59
+#: qtreport.cpp:65
 msgid "ReportSelectWindow::Enable toplist of Fidonet &nets"
 msgstr ""
 
-#: qtreport.cpp:61
+#: qtreport.cpp:67
 msgid "ReportSelectWindow::Enable toplist of Internet &domains"
 msgstr ""
 
-#: qtreport.cpp:134
+#: qtreport.cpp:158
 msgid "ReportSelectWindow::Report files (*.txt)"
 msgstr ""
 
-#: qtreport.cpp:135
+#: qtreport.cpp:159
 msgid "ReportSelectWindow::Save report"
 msgstr ""
 
-#: qtreport.cpp:133
+#: qtreport.cpp:157
 msgid "ReportSelectWindow::report.txt"
 msgstr ""
 
-#: outputqt.cpp:143
+#: outputqt.cpp:145
 msgid "TDisplay::Area path was not allocated properly."
 msgstr ""
 
-#: outputqt.cpp:274
+#: outputqt.cpp:276
 msgid "TDisplay::Broken MSG file %1"
 msgstr ""
 
-#: outputqt.cpp:226
+#: outputqt.cpp:228
 msgid "TDisplay::Cannot open %1"
 msgstr ""
 
-#: outputqt.cpp:170
+#: outputqt.cpp:172
 msgid "TDisplay::Cannot read from %1"
 msgstr ""
 
-#: outputqt.cpp:254
+#: outputqt.cpp:256
 msgid "TDisplay::Illegal FDAPX/w message base version"
 msgstr ""
 
-#: outputqt.cpp:230
+#: outputqt.cpp:232
 msgid "TDisplay::Illegal JAM header"
 msgstr ""
 
-#: outputqt.cpp:259
+#: outputqt.cpp:261
 msgid "TDisplay::Illegal MyPoint message base version: %1"
 msgstr ""
 
-#: outputqt.cpp:190
+#: outputqt.cpp:192
 msgid "TDisplay::Illegal Squish header ID"
 msgstr ""
 
-#: outputqt.cpp:249
+#: outputqt.cpp:251
 msgid "TDisplay::Illegal tanstaafl message base version"
 msgstr ""
 
-#: outputqt.cpp:108
+#: outputqt.cpp:110
 msgid "TDisplay::Internal error"
 msgstr ""
 
-#: outputqt.cpp:244
+#: outputqt.cpp:246
 msgid "TDisplay::Invalid area number chosen "
 msgstr ""
 
-#: outputqt.cpp:238
+#: outputqt.cpp:240
 msgid "TDisplay::"
 "Invalid area number chosen (must be "
                                 "between 1-%1"
 msgstr ""
 
-#: outputqt.cpp:283
+#: outputqt.cpp:285
 msgid "TDisplay::"
 "Message area garbled (footer does not "
                                 "match header)!"
 msgstr ""
 
-#: outputqt.cpp:278
+#: outputqt.cpp:280
 msgid "TDisplay::Message area garbled (illegal delimeter)!"
 msgstr ""
 
-#: outputqt.cpp:148
+#: outputqt.cpp:150
 msgid "TDisplay::Message base format mismatch."
 msgstr ""
 
-#: outputqt.cpp:178
+#: outputqt.cpp:180
 msgid "TDisplay::Message base is empty"
 msgstr ""
 
-#: outputqt.cpp:194
+#: outputqt.cpp:196
 msgid "TDisplay::Not normal Squish frame #%1"
 msgstr ""
 
-#: outputqt.cpp:152
+#: outputqt.cpp:154
 msgid "TDisplay::Out of memory allocating area object."
 msgstr ""
 
-#: outputqt.cpp:139
+#: outputqt.cpp:141
 msgid "TDisplay::Out of memory."
 msgstr ""
 
-#: outputqt.cpp:186
+#: outputqt.cpp:188
 msgid "TDisplay::Premature end of Squish data"
 msgstr ""
 
-#: outputqt.cpp:157
+#: outputqt.cpp:159
 msgid "TDisplay::Program halted!"
 msgstr ""
 
-#: outputqt.cpp:174
+#: outputqt.cpp:176
 msgid "TDisplay::Strange Squish header length"
 msgstr ""
 
-#: outputqt.cpp:182
+#: outputqt.cpp:184
 msgid "TDisplay::Strange Squish header offset"
 msgstr ""
 
-#: outputqt.cpp:264
+#: outputqt.cpp:266
 msgid "TDisplay::"
 "Tanstaafl message base version is 0, "
                                 "assuming 1"
 msgstr ""
 
-#: outputqt.cpp:198
+#: outputqt.cpp:200
 msgid "TDisplay::"
 "Unable to allocate memory for control "
                                 "data #%1"
 msgstr ""
 
-#: outputqt.cpp:204
+#: outputqt.cpp:206
 msgid "TDisplay::"
 "Unable to allocate memory for control "
                                 "data for %1"
 msgstr ""
 
-#: outputqt.cpp:210
+#: outputqt.cpp:212
 msgid "TDisplay::"
 "Unable to allocate memory for message "
                                 "body #%1"
 msgstr ""
 
-#: outputqt.cpp:216
+#: outputqt.cpp:218
 msgid "TDisplay::"
 "Unable to allocate memory for message "
                                 "body for %1"
 msgstr ""
 
-#: outputqt.cpp:161
+#: outputqt.cpp:163
 msgid "TDisplay::Unable to allocate memory for output object!"
 msgstr ""
 
-#: outputqt.cpp:270
+#: outputqt.cpp:272
 msgid "TDisplay::Unable to open *.MSG directory"
 msgstr ""
 
-#: outputqt.cpp:222
+#: outputqt.cpp:224
 msgid "TDisplay::Unable to open spool directory"
 msgstr ""
 
-#: outputqt.cpp:234
+#: outputqt.cpp:236
 msgid "TDisplay::Unable to read header #%1"
 msgstr ""
 
-#: qtlist.cpp:48
+#: qtlist.cpp:50
 msgid "TopListWindow::&Save"
 msgstr ""
 
-#: qtlist.cpp:394
+#: qtlist.cpp:381
 msgid "TopListWindow::(none)"
 msgstr ""
 
-#: qtlist.cpp:143
+#: qtlist.cpp:145
 msgid "TopListWindow::Bytes"
 msgstr ""
 
-#: qtlist.cpp:466
+#: qtlist.cpp:435
 msgid "TopListWindow::Comma-separated file (*.csv)"
 msgstr ""
 
-#: qtlist.cpp:44
+#: qtlist.cpp:46
 msgid "TopListWindow::Dismiss"
 msgstr ""
 
-#: qtlist.cpp:122
+#: qtlist.cpp:124
 msgid "TopListWindow::Domain"
 msgstr ""
 
-#: qtlist.cpp:81
+#: qtlist.cpp:83
 msgid "TopListWindow::Fidonet nets"
 msgstr ""
 
-#: qtlist.cpp:86
+#: qtlist.cpp:88
 msgid "TopListWindow::Internet topdomains"
 msgstr ""
 
-#: qtlist.cpp:146
+#: qtlist.cpp:148
 msgid "TopListWindow::Lines"
 msgstr ""
 
-#: qtlist.cpp:133
+#: qtlist.cpp:135
 msgid "TopListWindow::Messages"
 msgstr ""
 
-#: qtlist.cpp:342
+#: qtlist.cpp:332
 msgid "TopListWindow::N/A"
 msgstr ""
 
-#: qtlist.cpp:113
+#: qtlist.cpp:115
 msgid "TopListWindow::Name"
 msgstr ""
 
-#: qtlist.cpp:76
+#: qtlist.cpp:78
 msgid "TopListWindow::Original content per message"
 msgstr ""
 
-#: qtlist.cpp:116
+#: qtlist.cpp:118
 msgid "TopListWindow::Original content"
 msgstr ""
 
-#: qtlist.cpp:155
+#: qtlist.cpp:157
 msgid "TopListWindow::Per Message"
 msgstr ""
 
-#: qtlist.cpp:109
+#: qtlist.cpp:111
 msgid "TopListWindow::Place"
 msgstr ""
 
-#: qtlist.cpp:464
+#: qtlist.cpp:433
 msgid "TopListWindow::Plain text (*.txt)"
 msgstr ""
 
-#: qtlist.cpp:128
+#: qtlist.cpp:130
 msgid "TopListWindow::Program"
 msgstr ""
 
-#: qtlist.cpp:149
+#: qtlist.cpp:151
 msgid "TopListWindow::Quote ratio"
 msgstr ""
 
-#: qtlist.cpp:66
+#: qtlist.cpp:68
 msgid "TopListWindow::Quoters"
 msgstr ""
 
-#: qtlist.cpp:152
+#: qtlist.cpp:154
 msgid "TopListWindow::Ratio"
 msgstr ""
 
-#: qtlist.cpp:137
+#: qtlist.cpp:139
 msgid "TopListWindow::Received"
 msgstr ""
 
-#: qtlist.cpp:91
+#: qtlist.cpp:93
 msgid "TopListWindow::Receivers"
 msgstr ""
 
-#: qtlist.cpp:478
+#: qtlist.cpp:447
 msgid "TopListWindow::Save toplist"
 msgstr ""
 
-#: qtlist.cpp:468
+#: qtlist.cpp:437
 msgid "TopListWindow::Semi-colon separated file (*.csv)"
 msgstr ""
 
-#: qtlist.cpp:71
+#: qtlist.cpp:73
 msgid "TopListWindow::Senders"
 msgstr ""
 
-#: qtlist.cpp:138
+#: qtlist.cpp:140
 msgid "TopListWindow::Sent"
 msgstr ""
 
-#: qtlist.cpp:101
+#: qtlist.cpp:103
 msgid "TopListWindow::Software"
 msgstr ""
 
-#: qtlist.cpp:125
+#: qtlist.cpp:127
 msgid "TopListWindow::Subject"
 msgstr ""
 
-#: qtlist.cpp:96
+#: qtlist.cpp:98
 msgid "TopListWindow::Subjects"
 msgstr ""
 
-#: qtlist.cpp:470
+#: qtlist.cpp:439
 msgid "TopListWindow::Tab separated file (*.tsv)"
 msgstr ""
 
-#: qtlist.cpp:456
+#: qtlist.cpp:425
 msgid "TopListWindow::This list is empty"
 msgstr ""
 
-#: qtlist.cpp:500
+#: qtlist.cpp:469
 msgid "TopListWindow::Unable to create the selected file"
 msgstr ""
 
-#: qtlist.cpp:119
+#: qtlist.cpp:121
 msgid "TopListWindow::Zone:Net"
 msgstr ""
 

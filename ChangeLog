@@ -8,6 +8,8 @@
   turqstat.cpp
   qtreport.cpp
   qtreport.h
+  po/sv.po
+  po/xturqstat.po
     Make it possible to select wanted output character set.
 
   qtbars.cpp
