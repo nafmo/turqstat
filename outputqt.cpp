@@ -78,7 +78,7 @@ void TDisplay::UpdateProgress(int messages)
 void TDisplay::ErrorMessage(errormessages_e errormessage, string data)
 {
     QString msg = GetMessage(errormessage);
-    if (msg.find('%') != -1)
+    if (msg.contains('%'))
     {
         msg = msg.arg(data.c_str());
     }
@@ -115,7 +115,7 @@ void TDisplay::InternalErrorQuit(errormessages_e errormessage,
 void TDisplay::WarningMessage(errormessages_e errormessage, string data)
 {
     QString msg = GetMessage(errormessage);
-    if (msg.find('%') != -1)
+    if (msg.contains('%'))
     {
         msg = msg.arg(data.c_str());
     }
