@@ -20,6 +20,9 @@
   turqstat-sv.1
     Documentation updates.
 
+  turqstat.cpp
+    Re-designed help screen to fit on one screenfull.
+
   utility.cpp
     Extra security measure to avoid NULL pointer references.
     Removed fprintf reference.

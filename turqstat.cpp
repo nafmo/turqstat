@@ -1,7 +1,7 @@
 // Turquoise SuperStat
 //
 // A statistic collection program for Fidonet and Usenet systems
-// Version 1.4
+// Version 1.5
 //
 // Copyright (c) 1998-2000 Peter Karlsson
 //
@@ -60,6 +60,8 @@ public:
              unsigned days);
     ~StatRetr();
 };
+
+void helpscreen(void);
 
 int main(int argc, char *argv[])
 {
@@ -131,52 +133,7 @@ int main(int argc, char *argv[])
 
             case '?':
             default:
-                cout << "Usage: turqstat [options] outputfile areadef(s)" << endl;
-                cout << endl;
-                cout << "Available options:" << endl;
-                cout << "  -d days        Days back to count messages from"
-                     << endl;
-                cout << "  -n num         Maximum entries in toplists" << endl;
-                cout << "  -a path        Base path (for FDAPX/w and MyPoint)" << endl;
-                cout << endl;
-                cout << "  -s             Squish style message area (default)"
-                     << endl;
-                cout << "  -m             FTSC *.MSG style message area"
-                     << endl;
-                cout << "  -o             Opus *.MSG style message area"
-                     << endl;
-                cout << "  -j             JAM style message base" << endl;
-                cout << "  -f             FDAPX/w style message base (needs -a)"
-                     << endl;
-                cout << "  -t             Tanstaafl style message base (needs -a)"
-                     << endl;
-                cout << "  -p             MyPoint style message base (needs -a)"
-                     << endl;
-                cout << "  -u             Usenet News spool"
-                     << endl;
-                cout << endl;
-                cout << "  -Q -W -R -S -P Turn quoters/written/received/"
-                                         "subjects/programs toplist off"
-                     << endl;
-                cout << "  -O -N          Turn original per msg/Fidonet nets "
-                                         "toplist off"
-                     << endl;
-                cout << "  -T             Topdomains toplist off (Usenet)/"
-                                         "on (Fidonet)"
-                     << endl;
-                cout << "  -H -D          Turn hour/day statistics off"
-                     << endl;
-                cout << "  -V             Don't provide version info for "
-                                         "programs toplist"
-                     << endl;
-                cout << "  -A             Show all numbers in toplists, even "
-                                         "for same score"
-                     << endl;
-#ifdef HAVE_LOCALE_H
-                cout << "  -L             Use locale's date format in output "
-                                         "instead of ISO format"
-                     << endl;
-#endif
+                helpscreen();
                 return 1;
         }
     }
@@ -308,4 +265,33 @@ StatRetr::StatRetr(StatEngine &engine, StatView &view,
 StatRetr::~StatRetr()
 {
     cout << "Turquoise finished." << endl;
+}
+
+void helpscreen(void)
+{
+    cout << "Usage: turqstat [options] outputfile areadef(s)" << endl;
+    cout << endl;
+    cout << "Data selection options:" << endl;
+    cout << "  -d days  Days back to count   -a path  Base path (see below)"
+         << endl;
+    cout << "  -n num   Maximum entries" << endl;
+    cout << endl;
+    cout << "Input selection options:" << endl;
+    cout << "  -s  Squish       -j  JAM          -p  MyPoint*" << endl;
+    cout << "  -m  FTSC *.MSG   -f  FDAPX/w*" << endl;
+    cout << "  -o  Opus *.MSG   -t  Tanstaafl*   -u  Usenet news spool" << endl;
+    cout << "    * = requires -a parameter" << endl;
+    cout << endl;
+    cout << "Toplist selection options (turns off respective list):" << endl;
+    cout << "  -Q  Quoters     -S  Subjects   -N  Fidonet nets   -H Hour stats"
+         << endl;
+    cout << "  -W  Writers     -P  Programs   -T  Topdomains*  "
+            "  -D Weekday stats" << endl;
+    cout << "  -R  Receivers   -O  Original" << endl;
+    cout << "  -V  No program version info   -A  Show all numbers in toplists"
+         << endl;
+#ifdef HAVE_LOCALE_H
+    cout << "  -L  Use locale's date format" << endl;
+#endif
+    cout << "    * = turn off for Usenet, turn on for Fidonet" << endl;
 }
