@@ -13,6 +13,9 @@
   makedist.sh
     Added rules for Swedish manual page.
 
+  configure.in
+    Some additional checks to ensure portability.
+
 2000-04-30 - peter karlsson <peter@softwolves.pp.se>
   jamread.cpp
   squishread.cpp

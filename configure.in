@@ -24,10 +24,6 @@ AC_CONFIG_HEADER(config.h)
 
 findfirst=no
 
-dnl We do not (yet) support big-endian machines ----------------------------
-dnl AC_C_BIGENDIAN(Error)
-dnl   AC_MSG_ERROR(This program only supports little-endian architectures)
-
 dnl Checks for programs ----------------------------------------------------
 dnl Since PROG_CC and PROG_CXX seems to think we are cross-compiling under
 dnl OS/2, because we haven't detected EXEEXT yet, hack around it.
@@ -46,13 +42,13 @@ dnl Figure out whether or not we need .exe suffix (EMX, CygWin (AC_EXEEXT
 dnl normally only catches CygWin)), -lstdcpp instead of -lstdc++ (EMX), and
 dnl turqstat.def to set the application title (EMX)
 
-AC_MSG_CHECKING([for EMX environment])
-AC_TRY_COMPILE(, [#ifndef __EMX__
+AC_CACHE_CHECK([for EMX environment], ac_cv_emx,
+  AC_TRY_COMPILE(, [#ifndef __EMX__
 Syntax Error
 #endif ], have_emx=yes, have_emx=no)
-AC_MSG_RESULT($have_emx)
+  ac_cv_emx="$have_emx")
 
-if test "$have_emx" = "yes"; then
+if test "$ac_cv_emx" = "yes"; then
   standardcpplib=stdcpp
   EXEEXT=.exe
   ac_exeext=.exe
@@ -75,6 +71,12 @@ fi
 AC_SUBST(DEF)
 
 AC_EXEEXT
+
+dnl We do not (yet) support big-endian machines ----------------------------
+AC_C_BIGENDIAN
+if test "$ac_cv_c_bigendian" = "yes"; then
+  AC_MSG_ERROR(This program only supports little-endian architectures)
+fi
 
 dnl Checks for libraries ---------------------------------------------------
 AC_LANG_CPLUSPLUS
@@ -106,6 +108,12 @@ AC_TRY_COMPILE([ #include <time.h> ], [  struct tm t; t.tm_gmtoff = 0; ],
   AC_MSG_RESULT(no))
 
 dnl Check for library functions --------------------------------------------
+AC_FUNC_STRFTIME
+if test "$ac_cv_func_strftime" = "no"; then
+  AC_MSG_ERROR(strftime is needed by this program)
+fi
+AC_CHECK_FUNC(memcmp, , AC_MSG_ERROR(memcmp is needed by this program))
+
 AC_MSG_CHECKING(for getopt in unistd.h)
 AC_TRY_COMPILE([ #include <unistd.h> ],
   [ int argc; char **argv; int c = getopt(argc, argv, "x"); int d = optarg; ],
