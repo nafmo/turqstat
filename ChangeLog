@@ -1,3 +1,21 @@
+2001-05-04 - peter karlsson <peter@softwolves.pp.se>
+  mappings/makemappings.pl
+    Move generated files.
+
+  convert.cpp
+  convert.h
+    Added new conversion classes.
+
+  utility.cpp
+  utility.h
+  mappings/charsets.cpp
+  mappings/charsets.h
+    Removed first attempt at character set conversion.
+
+  Makefile.in
+  mappings/Makefile.in
+    Changes in file locations.
+
 2001-04-06 - peter karlsson <peter@softwolves.pp.se>
   utility.cpp
   mappings/makemappings.pl
