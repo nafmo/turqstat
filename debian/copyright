@@ -1,9 +1,7 @@
-This package was debianized by the author, and can be found at
-http://www.softwolves.pp.se/wolves/
-
-Author(s): peter karlsson <peter@softwolves.pp.se>
-
-Copyright:
+Packages: turqstat, xturqstat
+Author: peter karlsson <peter@softwolves.pp.se>
+Packaged for Debian by the author.
+Available at: http://www.softwolves.pp.se/sw/
 
 This software is copyright 1998-2001 peter karlsson.
 
