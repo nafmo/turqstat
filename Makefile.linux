@@ -47,17 +47,18 @@ clean:
 DESTDIR =
 
 debian-install: turqstat
-	install -d $(DESTDIR)/usr/bin $(DESTDIR)/usr/share/doc/turqstat/
+	install -d $(DESTDIR)/usr/bin $(DESTDIR)/usr/share/doc/turqstat/ $(DESTDIR)/usr/share/man/man1
 	install -s turqstat $(DESTDIR)/usr/bin/
 	install -m 644 turqstat.doc $(DESTDIR)/usr/share/doc/turqstat/
 	install -m 644 turqstat.dok $(DESTDIR)/usr/share/doc/turqstat/
+	install -m 644 turqstat.1   $(DESTDIR)/usr/share/man/man1/
 
 # Used to make a Debian distro from my local CVS tree files
 # do not use for distributed archives
 VER ?= x.x
 dist:
 	-mkdir -p turqstat-$(VER)/debian
-	cp -p *.def *.cpp *.h Makefile* ChangeLog COPYING turqstat-$(VER)/
+	cp -p *.1 *.def *.cpp *.h Makefile* ChangeLog COPYING turqstat-$(VER)/
 	iso2dos -i turqstat.doc turqstat-$(VER)/turqstat.doc
 	iso2dos -i turqstat.dok turqstat-$(VER)/turqstat.dok
 	-cp -p debian/* turqstat-$(VER)/debian
