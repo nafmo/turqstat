@@ -23,6 +23,10 @@
 #include <time.h>
 #include <limits.h>
 
+#if !defined(HAVE_IMPLICIT_NAMESPACE)
+using namespace std;
+#endif
+
 #if defined(__GNUC__) || defined(__EMX__)
 # pragma pack(1)
 #endif

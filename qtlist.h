@@ -21,9 +21,15 @@
 #include <qdialog.h>
 #include <string>
 
+#if !defined(HAVE_IMPLICIT_NAMESPACE)
+using namespace std;
+#endif
+
 class QListView;
 class StatEngine;
+#if !defined(HAVE_WORKING_WSTRING)
 class wstring;
+#endif
 
 /**
  * Class describing a window showing a toplist. This class is used in the Qt

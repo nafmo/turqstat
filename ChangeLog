@@ -1,3 +1,57 @@
+2001-10-11 - peter karlsson <peter@softwolves.pp.se>
+  Merged in changes from 2.1.2 -- 2.1.4:
+  2001-10-10 - peter karlsson <peter@softwolves.pp.se>
+    configure.in
+    acconfig.h
+      Added tests for changes introduced in GCC 3.0.
+
+    convert.h
+    output.h
+    qtlist.h
+    statengine.h
+    statview.h
+    utility.h
+    version.h
+      Use configure based tests for GCC 3.0 compatibility.
+
+    convert.cpp
+    qtlist.h
+    statview.cpp
+      Fixed to work with GCC 3.0.
+
+    turqstat.doc
+    turqstat.dok
+    version.h
+    debian/
+      Updates for version 2.1.4.
+
+  2001-10-04 - peter karlsson <peter@softwolves.pp.se>
+    configure.in
+    convert.h
+    output.h
+    qtlist.h
+    statengine.h
+    statview.h
+    utility.h
+    version.h
+      Preliminary fixes for compilation with GCC 3.0.
+
+    version.h
+      Version 2.1.3.
+
+2001-09-29 - peter karlsson <peter@softwolves.pp.se>
+  fdapxread.cpp
+  jamread.cpp
+  mypointread.cpp
+  newsspoolread.cpp
+  sdmread.cpp
+  squishread.cpp
+  tanstaaflread.cpp
+    Fix memory allocation/deallocation conflicts.
+
+  arearead.h
+    Add virtual destructor to AreaRead superclass.
+
 2001-09-19 - peter karlsson <peter@softwolves.pp.se>
   mytime.cpp
     Fixed my_mktime so that it can handle time_t that is not an int, and

@@ -26,6 +26,10 @@
 #endif
 #include <string>
 
+#if !defined(HAVE_IMPLICIT_NAMESPACE)
+using namespace std;
+#endif
+
 /**
  * Class used to decode character data from a legacy character set. It converts
  * it into Unicode for internal use.

@@ -60,3 +60,9 @@
 
 /* Define if ctype.h defines towupper */
 #undef HAVE_TOWUPPER_IN_CTYPE_H
+
+/* Define if std namespace always is available */
+#undef HAVE_IMPLICIT_NAMESPACE
+
+/* Define if the fstream class has the GNU extension fstream::form */
+#undef HAVE_FSTREAM_FORM_METHOD

@@ -1,4 +1,4 @@
-Turquoise SuperStat 2.1.2 - Ett mötesstatistikprogram för Fidonet och Usenet
+Turquoise SuperStat 2.1.4 - Ett mötesstatistikprogram för Fidonet och Usenet
 (c) Copyright 1998-2001 Peter Karlsson.
 A Softwolves Software Release in 2001
 
@@ -301,6 +301,10 @@ HISTORIK
 2001-09-15 - v2.1.2 -
   Rättade problem med att kompilera mot QT3.
   Kosmetisk ändring för genererade rapporter.
+2001-10-04 - v2.1.3 -
+  Delvis fungerande hack för GCC 3.0.
+2001-10-10 - v2.1.4 -
+  Komplett stöd för GCC 3.0.
 
 
 BIFOGADE FILER
@@ -391,6 +395,12 @@ Unixdistributionen består av en .tar.gz-fil med all källkod listad ovan, plus
 dokumentationsfilerna. Inga exekverbara filer medföljer. Den innehåller även
 en underkatalog debian, vilken innehåller kontrollfiler för att skapa ett
 binärpaket för Debian.
+
+
+CREDITS
+
+Tack till Dan Gohman <gohmandj@mrs.umn.edu> för hjälp med anpassning till
+GNU C++ 3.0.
 
 
 KRAV FÖR KOMPILERING
