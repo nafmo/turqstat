@@ -77,9 +77,6 @@
 class le_uint16_t
 {
 public:
-    le_uint16_t() {};
-    le_uint16_t(const uint16_t x) { operator=(x); };
-    le_uint16_t(const le_int16_t &x) { memcpy(data, x.data, 2); };
     le_uint16_t &operator=(uint16_t);
     operator uint16_t();
 private:
@@ -89,9 +86,6 @@ private:
 class le_int16_t
 {
 public:
-    le_int16_t() {};
-    le_int16_t(const int16_t x) { operator=(x); };
-    le_int16_t(const le_int16_t &x) { memcpy(data, x.data, 2); };
     le_int16_t &operator=(int16_t);
     operator int16_t();
 private:
@@ -101,9 +95,6 @@ private:
 class le_uint32_t
 {
 public:
-    le_uint32_t() {};
-    le_uint32_t(const uint32_t x) { operator=(x); };
-    le_uint32_t(const le_int32_t &x) { memcpy(data, x.data, 4); };
     le_uint32_t &operator=(uint32_t);
     operator uint32_t();
 private:
@@ -113,9 +104,6 @@ private:
 class le_int32_t
 {
 public:
-    le_int32_t() {};
-    le_int32_t(const int32_t x) { operator=(x); };
-    le_int32_t(const le_int16_t &x) { memcpy(data, x.data, 4); };
     le_int32_t &operator=(int32_t);
     operator int32_t();
 private:

@@ -78,7 +78,7 @@ protected:
         le_uint32_t cost;
     };
 
-    static const le_uint32_t Jam_deleted = 0x80000000L;
+    static const uint32_t Jam_deleted = 0x80000000L;
 
     struct jamhdr_subhdr_s
     {
