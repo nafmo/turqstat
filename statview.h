@@ -28,7 +28,8 @@ public:
                       unsigned maxnumber,
                       bool quoters, bool topwritten, bool topreceived,
                       bool topsubjects, bool topprograms,
-                      bool weekstats, bool daystats);
+                      bool weekstats, bool daystats, bool showversions,
+                      bool showallnums);
 
 protected:
     string Mangle(string, unsigned);

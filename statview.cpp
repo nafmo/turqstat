@@ -30,7 +30,8 @@ static const char *days[] =
 bool StatView::CreateReport(StatEngine *engine, string filename,
     unsigned maxnumber,
     bool quoters, bool topwritten, bool topreceived, bool topsubjects,
-    bool topprograms, bool weekstats, bool daystats)
+    bool topprograms, bool weekstats, bool daystats, bool showversions,
+    bool showallnums)
 {
     // Create a report file
     fstream report(filename.c_str(), ios::out);
@@ -117,7 +118,7 @@ bool StatView::CreateReport(StatEngine *engine, string filename,
                       ((100000 * (unsigned long long) data.bytesquoted) /
                        (unsigned long long) data.byteswritten)
                       : 0;
-                if (percentquotes == oldpercent)
+                if (!showallnums && percentquotes == oldpercent)
                 {
                     report << "      ";
                 }
@@ -199,7 +200,7 @@ bool StatView::CreateReport(StatEngine *engine, string filename,
                           "Msgs Address           Bytes Quoted" << endl;
             }
 
-            if (data.messageswritten == oldwritten)
+            if (!showallnums && data.messageswritten == oldwritten)
             {
                 report << "      ";
             }
@@ -225,6 +226,9 @@ bool StatView::CreateReport(StatEngine *engine, string filename,
             else
                 tmp = "(none)";
 
+            if (data.address.length() > 15)
+                data.address = data.address.substr(0, 15);
+
             report.form("%-35s%5u %-15s%8u",
                          tmp.c_str(), data.messageswritten,
                          data.address.c_str(), data.byteswritten);
@@ -232,6 +236,10 @@ bool StatView::CreateReport(StatEngine *engine, string filename,
             {
                 report.form(" %3u.%1u%%",
                              integ, fract);
+            }
+            else if (showallnums)
+            {
+                report << "    N/A";
             }
             report << endl;
 
@@ -265,7 +273,7 @@ bool StatView::CreateReport(StatEngine *engine, string filename,
                           "Rcvd  Sent   Ratio" << endl;
             }
 
-            if (data.messagesreceived == oldrecvd)
+            if (!showallnums && data.messagesreceived == oldrecvd)
             {
                 report << "      ";
             }
@@ -288,6 +296,10 @@ bool StatView::CreateReport(StatEngine *engine, string filename,
             {
                 report.form(" %6u%%", (100 * data.messagesreceived) /
                                      data.messageswritten);
+            }
+            else if (showallnums)
+            {
+                report << "     N/A";
             }
 
             report << endl;
@@ -328,7 +340,7 @@ bool StatView::CreateReport(StatEngine *engine, string filename,
                           "                Msgs   Bytes" << endl;
             }
 
-            if (data.count == oldcount)
+            if (!showallnums && data.count == oldcount)
             {
                 report << "      ";
             }
@@ -383,7 +395,7 @@ bool StatView::CreateReport(StatEngine *engine, string filename,
                        << endl;
             }
 
-            if (data.count == oldcount)
+            if (!showallnums && data.count == oldcount)
             {
                 report << "      ";
             }
@@ -395,18 +407,21 @@ bool StatView::CreateReport(StatEngine *engine, string filename,
             report.form("%-35s%6u", data.program.c_str(), data.count);
             report << endl;
 
-            bool restartv = true;
-            StatEngine::verstat_s vdata;
-            while (engine->GetProgramVersions(restartv, vdata))
+            if (showversions)
             {
-                if (restartv)
+                bool restartv = true;
+                StatEngine::verstat_s vdata;
+                while (engine->GetProgramVersions(restartv, vdata))
                 {
-                    restartv = false;
-                    report << "      ";
+                    if (restartv)
+                    {
+                        restartv = false;
+                        report << "      ";
+                    }
+                    report << ' ' << vdata.version << ':' << vdata.count;
                 }
-                report << ' ' << vdata.version << ':' << vdata.count;
+                if (!restartv) report << endl;
             }
-            if (!restartv) report << endl;
 
             place ++;
             oldcount = data.count;
@@ -427,7 +442,7 @@ bool StatView::CreateReport(StatEngine *engine, string filename,
         report << "Postings per weekday" << endl;
         report << endl;
 
-        unsigned day[7], max = 0;
+        unsigned day[7], max = 1;
         for (int i = 0; i < 7; i ++)
         {
             day[i] = engine->GetDayMsgs(i);
@@ -439,7 +454,7 @@ bool StatView::CreateReport(StatEngine *engine, string filename,
         for (int i = 0; i < 7; i ++)
         {
             int d = (i + 1) % 7;
-            if (day[d])
+            if (day[d] || showallnums)
             {
                 report << days[i];
                 report.form("%6u ", day[d]);
@@ -460,7 +475,7 @@ bool StatView::CreateReport(StatEngine *engine, string filename,
         report << "Postings per hour" << endl;
         report << endl;
 
-        unsigned hour[24], max =0;
+        unsigned hour[24], max = 1;
         for (int i = 0; i < 24; i ++)
         {
             hour[i] = engine->GetHourMsgs(i);
@@ -471,7 +486,7 @@ bool StatView::CreateReport(StatEngine *engine, string filename,
 
         for (int i = 0; i < 24; i ++)
         {
-            if (hour[i])
+            if (hour[i] || showallnums)
             {
                 report.form("%02d00-%02d59%6u ", i, i, hour[i]);
                 int len = (60 * hour[i]) / max;

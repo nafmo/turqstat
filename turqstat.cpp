@@ -46,7 +46,8 @@ public:
              basetype_e basetype, unsigned maxnumber,
              bool quoters, bool topwritten, bool topreceived,
              bool topsubjects, bool topprograms,
-             bool weekstats, bool daystats);
+             bool weekstats, bool daystats, bool showversions,
+             bool showallnums);
     ~StatRetr();
 };
 
@@ -62,7 +63,7 @@ int main(int argc, char *argv[])
 #endif
     bool quoters = true, topwritten = true, topreceived = true,
          topsubjects = true, topprograms = true, weekstats = true,
-         daystats = true;
+         daystats = true, versions = true, allnums = false;
 
     // We don't want timezones here
 #ifdef __EMX__
@@ -72,7 +73,7 @@ int main(int argc, char *argv[])
 
     // Handle arguments
     int c;
-    while (EOF != (c = getopt(argc, argv, "d:n:a:smfjpQWRSPHD?")))
+    while (EOF != (c = getopt(argc, argv, "d:n:a:smfjpQWRSPHDVN?")))
     {
         switch (c)
         {
@@ -100,6 +101,9 @@ int main(int argc, char *argv[])
             case 'P':   topprograms = false;                        break;
             case 'H':   daystats = false;                           break;
             case 'D':   weekstats = false;                          break;
+
+            case 'V':   versions = false;                           break;
+            case 'N':   allnums = true;                             break;
 
             case '?':
             default:
@@ -129,6 +133,12 @@ int main(int argc, char *argv[])
                      << endl;
                 cout << "  -H -D          Turn hour/day statistics off"
                      << endl;
+                cout << "  -V             Don't provide version info for "
+                                         "programs toplist"
+                     << endl;
+                cout << "  -N             Show all numbers in toplists, even "
+                                         "for same score"
+                     << endl;
                 return 1;
         }
     }
@@ -149,7 +159,7 @@ int main(int argc, char *argv[])
 
     StatRetr s(argv[optind], argv[optind + 1], areanum, days,
                basetype, maxnum, quoters, topwritten, topreceived, topsubjects,
-               topprograms, weekstats, daystats);
+               topprograms, weekstats, daystats, versions, allnums);
 
     return 0;
 }
@@ -159,7 +169,8 @@ StatRetr::StatRetr(char *areapath, char *outputfilepath, unsigned areanum,
                    basetype_e basetype, unsigned maxnumber,
                    bool quoters, bool topwritten, bool topreceived,
                    bool topsubjects, bool topprograms,
-                   bool weekstats, bool daystats)
+                   bool weekstats, bool daystats, bool showversions,
+                   bool showallnums)
 {
     cout << "Turqoise SuperStat 1.0 (c) Copyright 1998-1999 Peter Karlsson."
          << endl;
@@ -211,7 +222,8 @@ StatRetr::StatRetr(char *areapath, char *outputfilepath, unsigned areanum,
     StatView view;
     view.CreateReport(&engine, outputfilepath, maxnumber,
                       quoters, topwritten, topreceived, topsubjects,
-                      topprograms, weekstats, daystats);
+                      topprograms, weekstats, daystats, showversions,
+                      showallnums);
 }
 
 StatRetr::~StatRetr()
