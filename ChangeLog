@@ -1,3 +1,7 @@
+2000-10-07 - peter karlsson <peter@softwolves.pp.se>
+  qtgui.cpp
+    Disable also the top Fidonet net menu entry for news.
+
 2000-09-25 - peter karlsson <peter@softwolves.pp.se>
   output.cpp
   outputqt.cpp

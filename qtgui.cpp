@@ -58,6 +58,8 @@
 //#include "version.h"
 #include "utility.h"
 
+#define MENU_FIDOTOPLIST 1000
+
 InfoWindow::InfoWindow()
     : hasnews(false), hasany(false)
 {
@@ -79,7 +81,7 @@ InfoWindow::InfoWindow()
     showmenu->insertItem(tr("&Original content toplist"), this,
                          SLOT(contentlist()), CTRL+Key_3);
     showmenu->insertItem(tr("&Fidonet net toplist"), this, SLOT(fidonetlist()),
-                         CTRL+Key_4);
+                         CTRL+Key_4, MENU_FIDOTOPLIST);
     showmenu->insertItem(tr("&Internet topdomain toplist"), this,
                          SLOT(domainlist()), CTRL+Key_5);
     showmenu->insertItem(tr("&Receiver toplist"), this, SLOT(receiverlist()),
@@ -385,9 +387,12 @@ void InfoWindow::update()
     {
         numnets->setEnabled(false);
         numnets->setText(tr("N/A"));
+        menu->setItemEnabled(MENU_FIDOTOPLIST, false);
     }
     else
+    {
         numnets->setText(QString::number(engine->GetTotalNets()));
+    }
     numdomains->setText(QString::number(engine->GetTotalDomains()));
 
     char timebuf[64];
@@ -521,6 +526,9 @@ void InfoWindow::zeroFill()
     numdomains->setText("0");
     earliestwritten->setText(tr("None loaded"));
     latestwritten->setText(tr("None loaded"));
+
+    numnets->setEnabled(true);
+    menu->setItemEnabled(MENU_FIDOTOPLIST, true);
 }
 
 // Program entry
