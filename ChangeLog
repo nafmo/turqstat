@@ -5,7 +5,9 @@
     buffering on these platforms.
 
   configure.in
-    Fixed a typo.
+  config.h.in
+    Fixed typos.
+    Check location for errno.h.
 
 2001-11-04 - peter karlsson <peter@softwolves.pp.se>
   config.h.in

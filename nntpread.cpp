@@ -32,7 +32,13 @@
 # include <netinet/in.h>
 #endif
 #if !defined(HAVE_WORKING_SOCKET_FDOPEN)
-# include <sys/errno.h>
+# if defined(HAVE_ERRNO_H)
+#  include <errno.h>
+# elif defined(HAVE_SYS_ERRNO_H)
+#  include <sys/errno.h>
+# else
+#  error "Missing <errno.h>"
+# endif
 #endif
 
 #include "nntpread.h"

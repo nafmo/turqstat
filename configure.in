@@ -115,21 +115,10 @@ AC_CHECK_HEADERS(limits.h)
 if test "$ac_cv_header_limits_h" = "no"; then
   AC_MSG_ERROR(limits.h is needed to compile)
 fi
-AC_CHECK_HEADERS(stdint.h)
+
+AC_CHECK_HEADERS(stdint.h errno.h sys/errno.h)
 if test "$locale" = "yes"; then
   AC_CHECK_HEADERS(locale.h)
-fi
-
-if test "$findfirst" = "no"; then
-  AC_HEADER_DIRENT
-fi
-
-AC_CACHE_CHECK([for CHAR_BIT in limits.h], ac_cv_have_char_bit,
-  AC_TRY_COMPILE([ #include <limits.h> ], [  int i = CHAR_BIT; ],
-    ac_cv_have_char_bit=yes,
-    ac_cv_have_char_bit=no))
-if test "$ac_cv_have_char_bit" = "yes"; then
-  AC_DEFINE(HAVE_CHAR_BIT)
 fi
 
 AC_CHECK_HEADERS(wchar.h wctype.h)
@@ -159,6 +148,20 @@ if test "$ac_cv_header_sys_socket_h" = "no"; then
   if test "$ac_cv_header_winsock_h" = "yes"; then
     LIBS="-lwsock32 $LIBS"
   fi
+fi
+
+dnl Specialized headers and tests
+
+if test "$findfirst" = "no"; then
+  AC_HEADER_DIRENT
+fi
+
+AC_CACHE_CHECK([for CHAR_BIT in limits.h], ac_cv_have_char_bit,
+  AC_TRY_COMPILE([ #include <limits.h> ], [  int i = CHAR_BIT; ],
+    ac_cv_have_char_bit=yes,
+    ac_cv_have_char_bit=no))
+if test "$ac_cv_have_char_bit" = "yes"; then
+  AC_DEFINE(HAVE_CHAR_BIT)
 fi
 
 dnl Check for typedefs, structures, and compiler characteristics -----------
