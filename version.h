@@ -20,6 +20,8 @@
 
 #include <string>
 
+using namespace std;
+
 /** String describing the current version number. */
 const string version = "2.1.2";
 

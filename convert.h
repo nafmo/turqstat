@@ -26,6 +26,8 @@
 #endif
 #include <string>
 
+using namespace std;
+
 /**
  * Class used to decode character data from a legacy character set. It converts
  * it into Unicode for internal use.

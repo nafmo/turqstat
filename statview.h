@@ -20,6 +20,8 @@
 
 #include <string>
 
+using namespace std;
+
 class StatEngine;
 
 /**

@@ -1,4 +1,4 @@
-// Copyright (c) 2000 Peter Karlsson
+// Copyright (c) 2000-2001 Peter Karlsson
 //
 // $Id$
 //
@@ -19,6 +19,8 @@
 #define __OUTPUT_H
 
 #include <string>
+
+using namespace std;
 
 class ostream;
 

@@ -23,6 +23,8 @@
 #include <time.h>
 #include <limits.h>
 
+using namespace std;
+
 #if defined(__GNUC__) || defined(__EMX__)
 # pragma pack(1)
 #endif

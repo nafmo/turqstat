@@ -95,13 +95,16 @@ dnl We read binary data, so we need to know the endian ---------------------
 AC_C_BIGENDIAN
 
 dnl Checks for libraries ---------------------------------------------------
-AC_LANG_CPLUSPLUS
-AC_CHECK_LIB($standardcpplib, cout)
-if test "$ac_cv_mingw32" = "yes"; then
-  AC_CHECK_LIB(crtdll, _findfirst)
-  findfirst=yes
-fi
-AC_LANG_C
+LIBS="-l$standardcpplib $LIBS"
+
+dnl Does not work with gcc 3:
+dnl AC_LANG_CPLUSPLUS
+dnl AC_CHECK_LIB($standardcpplib, std::cout)
+dnl if test "$ac_cv_mingw32" = "yes"; then
+dnl   AC_CHECK_LIB(crtdll, _findfirst)
+dnl   findfirst=yes
+dnl fi
+dnl AC_LANG_C
 
 dnl Check for header files -------------------------------------------------
 AC_CHECK_HEADERS(limits.h)
@@ -218,8 +221,9 @@ fi
 AC_LANG_CPLUSPLUS
 AC_CACHE_CHECK([for working wstring], ac_cv_wstring,
   AC_TRY_COMPILE([#include <wchar.h>
-  #include <string>],
-  [ wstring s; wchar_t *p = s.c_str(); ],
+  #include <string>
+  using namespace std;],
+  [ wstring s; const wchar_t *p = s.c_str(); ],
   ac_cv_wstring=yes, ac_cv_wstring=no))
 if test "$ac_cv_wstring" = "yes"; then
   AC_DEFINE(HAVE_WORKING_WSTRING)

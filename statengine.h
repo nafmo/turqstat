@@ -24,6 +24,8 @@
 #include "utility.h"
 #include "convert.h"
 
+using namespace std;
+
 /**
  * The class doing the real work. This is the class that collects (or,
  * rather, is fed) the messages from the message base(s) and collects

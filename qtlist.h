@@ -21,6 +21,8 @@
 #include <qdialog.h>
 #include <string>
 
+using namespace std;
+
 class QListView;
 class StatEngine;
 class wstring;
