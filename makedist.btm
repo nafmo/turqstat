@@ -27,7 +27,7 @@ if not isdir src   md src
 rem autoconf
 rem autoheader
 
-bash configure
+bash configure --without-qt
 
 make
 emxbind -s turqstat.exe
