@@ -3,7 +3,7 @@ turqstat (2.0.3) unstable; urgency=low
   * Made it work on big-endian architectures.
    (Closes: Bug#87076)
 
- -- peter karlsson <peterk@debian.org>  Wed, 04 Jul 2001 21:00:00 +0200
+ -- peter karlsson <peterk@debian.org>  Wed, 04 Jul 2001 22:00:00 +0200
 
 turqstat (2.0.2) unstable; urgency=low
 
