@@ -45,6 +45,13 @@ bool StatView::CreateReport(StatEngine *engine, string filename,
     report << "This is a BETA version" << endl;
     report << endl;
 
+    if (0 == engine->GetTotalNumber())
+    {
+        report << "Message area is empty." << endl;
+        report.close();
+    }
+
+
     report.form("This report covers %u messages that were received at this "
                 "system between ", engine->GetTotalNumber());
 
