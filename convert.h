@@ -64,10 +64,10 @@ public:
      * @param input Legacy encoded data to decode.
      * @return Unicode version of data.
      */
-    wstring Decode(const string &input);
+    virtual wstring Decode(const string &input);
 
-private:
-    /** Private constructor for internal use only. */
+protected:
+    /** Protected constructor for internal use only. */
     Decoder(const unsigned short *map) : inmap(map) {};
 
     /** Conversion table. */
@@ -100,8 +100,8 @@ public:
      */
     string Encode(const wstring &input);
 
-private:
-    /** Private constructor for internal use only. */
+protected:
+    /** Protected constructor for internal use only. */
     Encoder(const struct reversemap *map) : outmap(map) {};
 
     /** Conversion table. */

@@ -134,6 +134,27 @@ const struct tablemap usenetcharsets[] =
     { NULL, NULL, NULL }
 };
 
+/**
+ * Class used to decode UTF-8 data. It converts it into wchar_t Unicode for
+ * internal use.
+ */
+class UTF8Decoder : public Decoder
+{
+    friend class Decoder;
+
+public:
+    /**
+     * Decode character data.
+     * @param input Legacy encoded data to decode.
+     * @return Unicode version of data.
+     */
+    virtual wstring Decode(const string &input);
+
+protected:
+    /** Protected constructor for internal use only. */
+    UTF8Decoder() : Decoder(NULL) {};
+};
+
 // Get Decoder object for a character set
 Decoder *Decoder::GetDecoderByName(const char *charset)
 {
@@ -153,6 +174,12 @@ Decoder *Decoder::GetDecoderByName(const char *charset)
         {
             return new Decoder(usenetcharsets[i].inmap);
         }
+    }
+
+    // Check for UTF-8
+    if (0 == fcompare(charset, "UTF-8"))
+    {
+        return new UTF8Decoder();
     }
 
     // Return first in MIME table as default
@@ -190,6 +217,12 @@ Decoder *Decoder::GetDecoderByKludges(const char *kludges)
         {
             return new Decoder(fidocharsets[i].inmap);
         }
+    }
+
+    // Check for UTF-8
+    if (0 == fcompare(charset, "UTF-8"))
+    {
+        return new UTF8Decoder();
     }
 
     // Return first in Fido table
@@ -264,6 +297,12 @@ Decoder *Decoder::GetDecoderByMIMEHeaders(const char *headers)
         }
     }
 
+    // Check for UTF-8
+    if (0 == fcompare(charset, "UTF-8"))
+    {
+        return new UTF8Decoder();
+    }
+
     // Return first in MIME table
     return new Decoder(usenetcharsets[0].inmap);
 }
@@ -287,6 +326,73 @@ wstring Decoder::Decode(const string &input)
         {
             s.append(ucs);
         }
+
+        i ++;
+    }
+
+    return s;
+}
+
+// Decode UTF-8 character string
+wstring UTF8Decoder::Decode(const string &input)
+{
+#ifdef HAVE_WORKING_WSTRING
+    wstring s;
+#else
+    wstring s(input.length() + 1);
+#endif
+
+    const unsigned char *i = (const unsigned char *) input.c_str();
+    while (*i)
+    {
+        wchar_t ucs = 0;
+        if (0 == (*i & 0x80))
+        {
+            // ASCII
+            ucs = wchar_t(*i);
+        }
+        else if (0xC0 == (*i & 0xE0))
+        {
+            // U+0080 - U+07FF
+            ucs  = (*(i ++) & 0x1F) <<  6;
+            ucs |=  *i      & 0x3F;
+        }
+        else if (0xE0 == (*i & 0xF0))
+        {
+            // U+0800 - U+FFFF
+            ucs  = (*(i ++) & 0x0F) << 12;
+            ucs |= (*(i ++) & 0x3F) <<  6;
+            ucs |=  *i      & 0x3F;
+        }
+        else if (0xF0 == (*i & 0xF8))
+        {
+            // U+10000 - U+1FFFFF
+            ucs  = (*(i ++) & 0x07) << 18;
+            ucs |= (*(i ++) & 0x3F) << 12;
+            ucs |= (*(i ++) & 0x3F) <<  6;
+            ucs |=  *i      & 0x3F;
+        }
+        else if (0xF8 == (*i & 0xFC))
+        {
+            // U+200000 - U+3FFFFFF
+            ucs  = (*(i ++) & 0x03) << 24;
+            ucs |= (*(i ++) & 0x3F) << 18;
+            ucs |= (*(i ++) & 0x3F) << 12;
+            ucs |= (*(i ++) & 0x3F) <<  6;
+            ucs |=  *i      & 0x3F;
+        }
+        else if (0xFC == (*i & 0xFE))
+        {
+            // U+4000000 - U+7FFFFFFF
+            ucs  = (*(i ++) & 0x01) << 30;
+            ucs |= (*(i ++) & 0x3F) << 24;
+            ucs |= (*(i ++) & 0x3F) << 18;
+            ucs |= (*(i ++) & 0x3F) << 12;
+            ucs |= (*(i ++) & 0x3F) <<  6;
+            ucs |=  *i      & 0x3F;
+        }
+
+        if (ucs) s.append(ucs);
 
         i ++;
     }
