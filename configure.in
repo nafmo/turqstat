@@ -1,6 +1,6 @@
 dnl Process this file with autoconf to produce a configure script.
 dnl
-dnl Copyright (c) 2000-2001 Peter Karlsson
+dnl Copyright (c) 2000-2003 Peter Karlsson
 dnl
 dnl $Id$
 dnl
@@ -253,8 +253,8 @@ AC_TRY_COMPILE([ #include <unistd.h> ],
       AC_MSG_RESULT(no)
       AC_DEFINE(USE_OWN_GETOPT))))
 
-AC_CHECK_FUNC(snprintf, AC_DEFINE(HAVE_SNPRINTF),
-  AC_CHECK_FUNC(_snprintf, AC_DEFINE(HAVE_USNPRINTF)))
+AC_CHECK_FUNC(snprintf, [AC_DEFINE(HAVE_SNPRINTF)],
+  [AC_CHECK_FUNC(_snprintf, AC_DEFINE(HAVE_USNPRINTF))])
 
 AC_CACHE_CHECK([for sleep in unistd.h], ac_cv_sleep,
   AC_TRY_COMPILE([#include <unistd.h>
@@ -385,22 +385,24 @@ if test "$qt" = "yes"; then
 dnl Locate Qt headers
   AC_MSG_CHECKING(for Qt include files)
   if test "$QTDIR" != ""; then
-    if test -f $QTDIR'/include/qapp.h'; then
+    if test -f $QTDIR'/include/qapplication.h'; then
       QTINCLUDE=$QTDIR'/include'
     fi
   fi
   if test "$QTINCLUDE" = ""; then
-    if test -f '/usr/lib/qt2/include/qapp.h'; then
-      QTINCLUDE='/usr/lib/qt2/include'
-      QTDIR='/usr/lib/qt2'
-    elif test -f '/usr/include/qt/qapp.h'; then
+    if test -f '/usr/lib/qt3/include/qapplication.h'; then
+      QTINCLUDE='/usr/lib/qt3/include'
+      QTDIR='/usr/lib/qt3'
+    elif test -f '/usr/include/qt3/qapplication.h'; then
+      QTINCLUDE='/usr/include/qt3'
+    elif test -f '/usr/include/qt/qapplication.h'; then
       QTINCLUDE='/usr/include/qt'
-    elif test -f '/usr/local/include/qt/qapp.h'; then
+    elif test -f '/usr/local/include/qt/qapplication.h'; then
       QTINCLUDE='/usr/local/include/qt'
-    elif test -f '/usr/local/qt2/include/qapp.h'; then
-      QTINCLUDE='/usr/local/qt2/include'
-      QTDIR='/usr/local/qt2'
-    elif test -f '/usr/local/qt/include/qapp.h'; then
+    elif test -f '/usr/local/qt3/include/qapplication.h'; then
+      QTINCLUDE='/usr/local/qt3/include'
+      QTDIR='/usr/local/qt3'
+    elif test -f '/usr/local/qt/include/qapplication.h'; then
       QTINCLUDE='/usr/local/qt/include'
       QTDIR='/usr/local/qt'
     fi
