@@ -108,6 +108,8 @@ if test "$ac_cv_mingw32" = "yes"; then
 fi
 
 AC_CHECK_LIB(w, wcscpy)
+AC_CHECK_LIB(socket, socket)
+AC_CHECK_LIB(nsl, gethostbyname)
 
 dnl Check for header files -------------------------------------------------
 AC_CHECK_HEADERS(limits.h)
@@ -180,12 +182,17 @@ AC_TRY_COMPILE([ #include <unistd.h> ],
   [ int argc; char **argv; int c = getopt(argc, argv, "x"); int d = optarg; ],
   AC_DEFINE(HAVE_GETOPT_IN_UNISTD) AC_MSG_RESULT(yes),
   AC_MSG_RESULT(no)
-  AC_MSG_CHECKING(for getopt in getopt.h)
-  AC_TRY_COMPILE([ #include <getopt.h> ],
+  AC_MSG_CHECKING(for getopt in stdio.h)
+  AC_TRY_COMPILE([ #include <stdio.h> ],
     [ int argc; char **argv; int c = getopt(argc, argv, "x"); int d = optarg; ],
-    AC_DEFINE(HAVE_GETOPT_IN_GETOPT) AC_MSG_RESULT(yes),
+    AC_DEFINE(HAVE_GETOPT_IN_STDIO) AC_MSG_RESULT(yes),
     AC_MSG_RESULT(no)
-    AC_DEFINE(USE_OWN_GETOPT)))
+    AC_MSG_CHECKING(for getopt in getopt.h)
+    AC_TRY_COMPILE([ #include <getopt.h> ],
+      [ int argc; char **argv; int c = getopt(argc, argv, "x"); int d = optarg; ],
+      AC_DEFINE(HAVE_GETOPT_IN_GETOPT) AC_MSG_RESULT(yes),
+      AC_MSG_RESULT(no)
+      AC_DEFINE(USE_OWN_GETOPT))))
 
 AC_CHECK_FUNC(snprintf, AC_DEFINE(HAVE_SNPRINTF),
   AC_CHECK_FUNC(_snprintf, AC_DEFINE(HAVE_USNPRINTF)))

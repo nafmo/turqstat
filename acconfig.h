@@ -4,6 +4,9 @@
 /* Define if getopt is found in unistd.h */
 #undef HAVE_GETOPT_IN_UNISTD
 
+/* Define if getopt is found in stdio.h */
+#undef HAVE_GETOPT_IN_STDIO
+
 /* Define if getopt is found in getopt.h */
 #undef HAVE_GETOPT_IN_GETOPT
 

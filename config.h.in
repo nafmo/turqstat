@@ -16,6 +16,9 @@
 /* Define if getopt is found in unistd.h */
 #undef HAVE_GETOPT_IN_UNISTD
 
+/* Define if getopt is found in stdio.h */
+#undef HAVE_GETOPT_IN_STDIO
+
 /* Define if getopt is found in getopt.h */
 #undef HAVE_GETOPT_IN_GETOPT
 
@@ -108,6 +111,12 @@
 
 /* Define if you have the crtdll library (-lcrtdll).  */
 #undef HAVE_LIBCRTDLL
+
+/* Define if you have the nsl library (-lnsl).  */
+#undef HAVE_LIBNSL
+
+/* Define if you have the socket library (-lsocket).  */
+#undef HAVE_LIBSOCKET
 
 /* Define if you have the w library (-lw).  */
 #undef HAVE_LIBW
