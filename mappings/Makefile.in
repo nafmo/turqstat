@@ -1,0 +1,26 @@
+# Makefile.in for the mapping tables
+#
+# $Id$
+
+# Variables
+CXXFLAGS=@CXXFLAGS@ -I.. -Wall
+OBJS=mappings.o charsets.o
+srcdir=@srcdir@
+VPATH=@srcdir@
+
+# Magic targets
+all: $(OBJS)
+
+# Object files
+mappings.o: mappings.cpp mappings.h
+	@CXX@ $(CXXFLAGS) -c $(srcdir)/mappings.cpp
+
+charsets.o: charsets.cpp charsets.h mappings.h
+	@CXX@ $(CXXFLAGS) -c $(srcdir)/charsets.cpp
+
+# Source files
+mappings.cpp mappings.h: makemappings.pl 8859-*.txt cp*.txt koi*.txt roman.txt
+	./makemappings.pl
+
+# List phony targets
+.PHONY: all
