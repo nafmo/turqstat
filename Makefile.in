@@ -72,7 +72,7 @@ turqstat@EXEEXT@: $(OBJS) $(DEF)
 @QT@	@CXX@ $(CXXFLAGS) $(QTFLAGS) $(LDFLAGS) -o xturqstat@EXEEXT@ $(QTOBJS) $(DEF) $(LIBS) $(QTLIBS)
 
 # Object files
-turqstat.o: turqstat.cpp statengine.h statview.h arearead.h squishread.h fdapxread.h jamread.h mypointread.h version.h tanstaaflread.h config.h mytime.h output.h
+turqstat.o: turqstat.cpp statengine.h statview.h arearead.h squishread.h fdapxread.h jamread.h mypointread.h version.h tanstaaflread.h config.h mytime.h output.h utility.h
 	@CXX@ $(CXXFLAGS) -c $(srcdir)/turqstat.cpp
 
 statengine.o: statengine.cpp statengine.h config.h output.h utility.h
