@@ -1,3 +1,20 @@
+1999-10-18 - peter karlsson <pk@mds.mdh.se>
+  tanstaaflread.cpp
+  tanstaaflread.h
+  turqstat.cpp
+    Implemented support for tanstaafl message bases.
+
+1999-10-05 - peter karlsson <pk@mds.mdh.se>
+  jamread.cpp
+  jamread.h
+    Implemented a workaround for GNU C++ 2.95 incompatiblity.
+
+  statview.cpp
+    Removed some unnecessary code.
+
+  sdmread.cpp
+    Fixed precompiler command errors.
+
 1999-09-13 - peter karlsson <pk@mds.mdh.se>
   turqstat.cpp
     Reversed meaning of -a and areapath for MyPoint and FDAPX/w areas, to
@@ -47,7 +64,6 @@
 
   Makefile
     New Makefile for OS/2
-
 
 1999-07-15 / 1999-07-16 - peter karlsson <pk@mds.mdh.se>
   ChangeLog
