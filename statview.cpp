@@ -18,7 +18,9 @@
 #include <config.h>
 #include <fstream.h>
 #include <limits.h>
+
 #include "statview.h"
+#include "statengine.h"
 #include "version.h"
 
 static const char *days[] =

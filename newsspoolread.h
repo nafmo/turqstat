@@ -18,11 +18,9 @@
 #ifndef __NEWSSPOOLREAD_H
 #define __NEWSSPOOLREAD_H
 
-#include <string>
-
 #include "arearead.h"
-#include "statengine.h"
-#include "utility.h"
+
+class StatEngine;
 
 class NewsSpoolRead : public AreaRead
 {

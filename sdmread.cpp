@@ -48,6 +48,7 @@
 
 #include "sdmread.h"
 #include "utility.h"
+#include "statengine.h"
 
 SdmRead::SdmRead(const char *path, bool hasarrivetime) : isopus(hasarrivetime)
 {

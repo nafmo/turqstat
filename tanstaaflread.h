@@ -1,4 +1,4 @@
-// Copyright (c) 1999 Peter Karlsson
+// Copyright (c) 1999-2000 Peter Karlsson
 //
 // $Id$
 //
@@ -18,15 +18,14 @@
 #ifndef __TANSTAAFLREAD_H
 #define __TANSTAAFLREAD_H
 
-#include <string>
-
 #include "arearead.h"
-#include "statengine.h"
 #include "datatypes.h"
 
 #if defined(__GNUC__) || defined(__EMX__)
 # pragma pack(1)
 #endif
+
+class StatEngine;
 
 class TanstaaflRead : public AreaRead
 {

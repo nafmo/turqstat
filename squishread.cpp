@@ -23,6 +23,7 @@
 
 #include "squishread.h"
 #include "utility.h"
+#include "statengine.h"
 
 SquishRead::SquishRead(const char *path)
 {

@@ -1,4 +1,4 @@
-// Copyright (c) 1999 Peter Karlsson
+// Copyright (c) 1999-2000 Peter Karlsson
 //
 // $Id$
 //
@@ -18,9 +18,7 @@
 #ifndef __AREAREAD_H
 #define __AREAREAD_H
 
-#include <string>
-
-#include "statengine.h"
+class StatEngine;
 
 class AreaRead
 {

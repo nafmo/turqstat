@@ -50,6 +50,7 @@
 
 #include "newsspoolread.h"
 #include "utility.h"
+#include "statengine.h"
 
 NewsSpoolRead::NewsSpoolRead(const char *path)
 {

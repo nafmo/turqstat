@@ -1,4 +1,4 @@
-// Copyright (c) 1999 Peter Karlsson
+// Copyright (c) 1999-2000 Peter Karlsson
 //
 // $Id$
 //
@@ -18,12 +18,11 @@
 #ifndef __SDMREAD_H
 #define __SDMREAD_H
 
-#include <string>
-
 #include "arearead.h"
-#include "statengine.h"
 #include "datatypes.h"
 #include "utility.h"
+
+class StatEngine;
 
 class SdmRead : public AreaRead
 {

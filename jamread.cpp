@@ -27,6 +27,7 @@
 
 #include "jamread.h"
 #include "utility.h"
+#include "statengine.h"
 
 const UINT8 JamRead::Jam_signature[4] = "JAM";
 

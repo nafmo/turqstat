@@ -23,6 +23,7 @@
 
 #include "mypointread.h"
 #include "utility.h"
+#include "statengine.h"
 
 #if defined(UNIX)
 # define DIRSEP '/'
