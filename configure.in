@@ -70,7 +70,7 @@ if test "$ac_cv_emx" = "yes"; then
     [ struct _find s; int r = __findfirst("*.*", 0x2f, &s);
     r = __findnext(&s) ],
     findfirst=yes
-    AC_DEFINE(HAS_EMX_FINDFIRST) AC_MSG_RESULT(yes),
+    AC_DEFINE(HAVE_EMX_FINDFIRST) AC_MSG_RESULT(yes),
     AC_MSG_RESULT(no))
 
 else
@@ -109,12 +109,20 @@ if test "$findfirst" = "no"; then
   AC_HEADER_DIRENT
 fi
 
+AC_CACHE_CHECK([for CHAR_BIT in limits.h], ac_cv_have_char_bit,
+  AC_TRY_COMPILE([ #include <limits.h> ], [  int i = CHAR_BIT; ],
+    ac_cv_have_char_bit=yes,
+    ac_cv_have_char_bit=no))
+if test "$ac_cv_have_char_bit" = "yes"; then
+  AC_DEFINE(HAVE_CHAR_BIT)
+fi
+
 dnl Check for typedefs, structures, and compiler characteristics -----------
 AC_C_CONST
 
 AC_MSG_CHECKING(for tm_gmtoff in struct tm)
 AC_TRY_COMPILE([ #include <time.h> ], [  struct tm t; t.tm_gmtoff = 0; ],
-  AC_DEFINE(HAS_TM_GMTOFF) AC_MSG_RESULT(yes),
+  AC_DEFINE(HAVE_TM_GMTOFF) AC_MSG_RESULT(yes),
   AC_MSG_RESULT(no))
 
 dnl This is mostly copied from the standard AC_CHECK_SIZEOF macro
@@ -142,17 +150,17 @@ AC_CHECK_FUNC(memcmp, , AC_MSG_ERROR(memcmp is needed by this program))
 AC_MSG_CHECKING(for getopt in unistd.h)
 AC_TRY_COMPILE([ #include <unistd.h> ],
   [ int argc; char **argv; int c = getopt(argc, argv, "x"); int d = optarg; ],
-  AC_DEFINE(HAS_GETOPT_IN_UNISTD) AC_MSG_RESULT(yes),
+  AC_DEFINE(HAVE_GETOPT_IN_UNISTD) AC_MSG_RESULT(yes),
   AC_MSG_RESULT(no)
   AC_MSG_CHECKING(for getopt in getopt.h)
   AC_TRY_COMPILE([ #include <getopt.h> ],
     [ int argc; char **argv; int c = getopt(argc, argv, "x"); int d = optarg; ],
-    AC_DEFINE(HAS_GETOPT_IN_GETOPT) AC_MSG_RESULT(yes),
+    AC_DEFINE(HAVE_GETOPT_IN_GETOPT) AC_MSG_RESULT(yes),
     AC_MSG_RESULT(no)
     AC_DEFINE(USE_OWN_GETOPT)))
 
-AC_CHECK_FUNC(snprintf, AC_DEFINE(HAS_SNPRINTF),
-  AC_CHECK_FUNC(_snprintf, AC_DEFINE(HAS_USNPRINTF)))
+AC_CHECK_FUNC(snprintf, AC_DEFINE(HAVE_SNPRINTF),
+  AC_CHECK_FUNC(_snprintf, AC_DEFINE(HAVE_USNPRINTF)))
 
 dnl Check for variables ----------------------------------------------------
 
