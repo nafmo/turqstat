@@ -56,7 +56,7 @@ bool SquishRead::Transfer(time_t starttime, StatEngine &destination)
         cerr << "Error: Couldn't read from " << filepath << endl;
         return false;
     }
-    
+
     SINT32 offset = baseheader.len - sizeof (sqbase_s);
     if (offset > 0)
     {
@@ -73,7 +73,13 @@ bool SquishRead::Transfer(time_t starttime, StatEngine &destination)
 
     // Read messages
     UINT32 current = baseheader.begin_frame;
-    if (current < sizeof (sqbase_s))
+    if (0 == current)
+    {
+        cerr << "Message base is empty" << endl;
+        fclose(sqd);
+        return true;
+    }
+    else if (current < sizeof (sqbase_s))
     {
         cerr << "Strange Squish header offset" << endl;
         fclose(sqd);
@@ -140,7 +146,7 @@ bool SquishRead::Transfer(time_t starttime, StatEngine &destination)
                  << msgn << ')' << endl;
             goto out2;
         }
-        
+
         fread(msgbuf, msglen, 1, sqd);
         msgbuf[msglen] = 0;
         // Remove SEEN-BY and PATH that are in Squish part of the body
@@ -158,7 +164,7 @@ bool SquishRead::Transfer(time_t starttime, StatEngine &destination)
         }
 
         // Clean up our mess
-out:;        
+out:;
         delete ctrlbuf;
 out2:;
         delete msgbuf;
