@@ -254,7 +254,11 @@ Decoder *Decoder::GetDecoderByMIMEHeaders(const char *headers)
 // Decode legacy character string
 wstring Decoder::Decode(const string &input)
 {
+#ifdef HAVE_WORKING_WSTRING
     wstring s;
+#else
+    wstring s(strlen(input.c_str()) + 1);
+#endif
 
     const unsigned char *i = (const unsigned char *) input.c_str();
     while (*i)

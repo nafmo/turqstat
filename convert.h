@@ -18,8 +18,12 @@
 #ifndef __CONVERT_H
 #define __CONVERT_H
 
-#define __ENABLE_WSTRING
-#include <wchar.h>
+#ifdef HAVE_WORKING_WSTRING
+# define __ENABLE_WSTRING
+# include <wchar.h>
+#else
+# include "utility.h"
+#endif
 #include <string>
 
 /**
@@ -58,13 +62,13 @@ public:
     /**
      * Decode character data.
      * @param input Legacy encoded data to decode.
-     * ®return Unicode version of data.
+     * @return Unicode version of data.
      */
     wstring Decode(const string &input);
 
 private:
     /** Private constructor for internal use only. */
-    Decoder(const unsigned short *map);
+    Decoder(const unsigned short *map) : inmap(map) {};
 
     /** Conversion table. */
     const unsigned short *inmap;
@@ -92,13 +96,13 @@ public:
     /**
      * Encode character data.
      * @param input Unicode data to encode.
-     * ®return Legacy version of data.
+     * @return Legacy version of data.
      */
     string Encode(const wstring &input);
 
 private:
     /** Private constructor for internal use only. */
-    Encoder(const struct reversemap *map);
+    Encoder(const struct reversemap *map) : outmap(map) {};
 
     /** Conversion table. */
     const struct reversemap *outmap;
