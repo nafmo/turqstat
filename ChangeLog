@@ -1,3 +1,29 @@
+2000-03-19 - peter karlsson <peter@softwolves.pp.se>
+  configure.in
+  Makefile.in
+  acconfig.h
+    New files for autoconf support
+
+  datatypes.h
+    Uses stdint.h if autoconf detects it.
+
+  newsspoolread.cpp
+  sdmread.cpp
+  squishread.cpp
+  statview.cpp
+  tanstaaflread.cpp
+  turqstat.cpp
+  utility.cpp
+  fdapxread.cpp
+  jamread.cpp
+  mypointread.cpp
+    Changed #define:s for autoconf.
+
+  Makefile
+  Makefile.CygWin
+  Makefile.linux
+    Removed since they are auto-created by configure.
+
 2000-03-15 - peter karlsson <peter@softwolves.pp.se>
   statview.cpp
     Uses the same template for Fidonet and Usenet
