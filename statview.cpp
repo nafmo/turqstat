@@ -44,6 +44,8 @@ bool StatView::CreateReport(StatEngine *engine, string filename,
     if (!(report.is_open())) return false;
 
     // Include data as given from the statistics engine
+    bool news = engine->IsNewsArea();
+
     report << "Turquoise SuperStat " << version << " * Message area statistics" << endl;
     report << "=================================================" << endl;
     report << endl;
@@ -59,9 +61,13 @@ bool StatView::CreateReport(StatEngine *engine, string filename,
     report << "This report covers " << engine->GetTotalNumber()
            <<" messages ";
 
-    if (engine->GetTotalAreas() > 0)
+    if (engine->GetTotalAreas() > 1)
     {
-        report << "in " << engine->GetTotalAreas() << " areas, ";
+        report << "in " << engine->GetTotalAreas();
+        if (news)
+            report << " groups, ";
+        else
+            report << " areas, ";
     }
 
     if (engine->HasArrivalTime())
@@ -109,8 +115,6 @@ bool StatView::CreateReport(StatEngine *engine, string filename,
     report << endl;
 
     string tmp;
-
-    bool news = engine->IsNewsArea();
 
     if (quoters)
     {
