@@ -2909,22 +2909,22 @@ if test "$qt" = "yes"; then
   echo $ac_n "checking for Qt include files""... $ac_c" 1>&6
 echo "configure:2911: checking for Qt include files" >&5
   if test "$QTDIR" != ""; then
-    if test -e $QTDIR'/include/qapp.h'; then
+    if test -f $QTDIR'/include/qapp.h'; then
       QTINCLUDE=$QTDIR'/include'
     fi
   fi
   if test "$QTINCLUDE" = ""; then
-    if test -e '/usr/lib/qt2/include/qapp.h'; then
+    if test -f '/usr/lib/qt2/include/qapp.h'; then
       QTINCLUDE='/usr/lib/qt2/include'
       QTDIR='/usr/lib/qt2'
-    elif test -e '/usr/include/qt/qapp.h'; then
+    elif test -f '/usr/include/qt/qapp.h'; then
       QTINCLUDE='/usr/include/qt'
-    elif test -e '/usr/local/include/qt/qapp.h'; then
+    elif test -f '/usr/local/include/qt/qapp.h'; then
       QTINCLUDE='/usr/local/include/qt'
-    elif test -e '/usr/local/qt2/include/qapp.h'; then
+    elif test -f '/usr/local/qt2/include/qapp.h'; then
       QTINCLUDE='/usr/local/qt2/include'
       QTDIR='/usr/local/qt2'
-    elif test -e '/usr/local/qt/include/qapp.h'; then
+    elif test -f '/usr/local/qt/include/qapp.h'; then
       QTINCLUDE='/usr/local/qt/include'
       QTDIR='/usr/local/qt'
     fi
@@ -2996,13 +2996,13 @@ cross_compiling=$ac_cv_prog_cc_cross
   if test "$QTLIB" = ""; then
     echo $ac_n "checking for Qt library path""... $ac_c" 1>&6
 echo "configure:2999: checking for Qt library path" >&5
-    if test -e $QTDIR'/lib/libqt.a'; then
+    if test -f $QTDIR'/lib/libqt.a'; then
       QTLIB='-L'$QTDIR'/lib -lqt'
     fi
     if test "$QTLIB" = ""; then
-      if test -e '/usr/local/lib/libqt.a'; then
+      if test -f '/usr/local/lib/libqt.a'; then
         QTLIB='-L/usr/local/lib -lqt'
-      elif test -e '/usr/local/qt/lib/libqt.a'; then
+      elif test -f '/usr/local/qt/lib/libqt.a'; then
         QTLIB='-L/usr/local/qt/lib -lqt'
       fi
     fi
