@@ -1,6 +1,45 @@
+2001-02-10 - peter karlsson <peter@softwolves.pp.se>
+  turqstat.cpp
+    Implemented paramter for selecting range of dates.
+
+  utility.cpp
+  utility.h
+    Added conversion function for range specifications.
+    Removed some unnecessary initializations.
+    Added integrity check to RFC date converter.
+    Added macro for highest possible time_t date.
+
+  arearead.h
+  fdapxread.cpp
+  fdapxread.h
+  jamread.cpp
+  jamread.h
+  mypointread.cpp
+  mypointread.h
+  newsspoolread.cpp
+  newsspoolread.h
+  sdmread.cpp
+  sdmread.h
+  squishread.cpp
+  squishread.h
+  tanstaaflread.cpp
+  tanstaaflread.h
+    Implemented date ranges.
+
+  Makefile.in
+    Corrected dependencies.
+
+  configure.in
+  acconfig.h
+    Added code to detect size of time_t.
+
+  qtgui.cpp
+  qtgui.h
+    Began implementing date ranges.
+
 2001-02-09 - peter karlsson <peter@softwolves.pp.se>
   debian/control
-    Changed Debian priority to extra
+    Changed Debian priority to extra.
 
 2001-02-08 - peter karlsson <peter@softwolves.pp.se>
   Released 2.0.2, branching from 2.0 release:
