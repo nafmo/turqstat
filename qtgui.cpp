@@ -380,7 +380,7 @@ void InfoWindow::opennews()
     // Select news server
     bool ok;
     QString server = QInputDialog::getText("Turquoise SuperStat",
-                                           tr("Please enter the news (NNTP) server from which you want to use:"),
+                                           tr("Please enter the news (NNTP) server you want to use:"),
                                            QLineEdit::Normal, defaultserver,
                                            &ok, this, "serverselect");
     if (!ok)
