@@ -1,3 +1,7 @@
+turqstat (1.3-0) unstable; urgency=low
+
+  * New version (see ChangeLog).
+
 turqstat (1.2-1) unstable; urgency=low
 
   * Initial Release.
@@ -5,7 +9,3 @@ turqstat (1.2-1) unstable; urgency=low
     GNU C++ 2.95.
 
  -- peter karlsson <peter@softwolves.pp.se>  Thu, 14 Oct 1999 20:43:27 +0200
-
-Local variables:
-mode: debian-changelog
-End:
