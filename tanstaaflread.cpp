@@ -39,14 +39,14 @@ TanstaaflRead::~TanstaaflRead()
 
 bool TanstaaflRead::Transfer(time_t starttime, StatEngine &destination)
 {
+    // Get the output object
+    TDisplay *display = TDisplay::GetOutputObject();
+
     // Check that we got the path correctly in initialization
     if (!areapath)
     {
-        internalerrorquit(area_not_allocated, 1);
+        display->InternalErrorQuit(TDisplay::area_not_allocated, 1);
     }
-
-    // Get the output object
-    ProgressDisplay *display = ProgressDisplay::GetOutputObject();
 
     // Tanstaafl format lacks arrival times
     destination.NoArrivalTime();

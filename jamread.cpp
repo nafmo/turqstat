@@ -44,14 +44,14 @@ JamRead::~JamRead()
 
 bool JamRead::Transfer(time_t starttime, StatEngine &destination)
 {
+    // Get the output object
+    TDisplay *display = TDisplay::GetOutputObject();
+
     // Check that we got the path correctly in initialization
     if (!areapath)
     {
-        internalerrorquit(area_not_allocated, 1);
+        display->InternalErrorQuit(TDisplay::area_not_allocated, 1);
     }
-
-    // Get the output object
-    ProgressDisplay *display = ProgressDisplay::GetOutputObject();
 
     // Open the message area files
     // <name>.jdx - contains one record per message
