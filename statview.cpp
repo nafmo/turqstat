@@ -73,7 +73,7 @@ bool StatView::CreateReport(StatEngine *engine, string filename)
     bool news = engine->IsNewsArea();
 
     report << "Turquoise SuperStat " << version << " * Message area statistics" << endl;
-    report << "=================================================" << endl;
+    report << "===================================================" << endl;
     report << endl;
     report << copyright << endl;
     report << endl;

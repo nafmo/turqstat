@@ -44,6 +44,7 @@
 # include <stdlib.h>
 # define sleep(x) _sleep(x)
 #endif
+#include <ctype.h>
 
 #include "nntpread.h"
 #include "statengine.h"
