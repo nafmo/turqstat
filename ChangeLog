@@ -1,6 +1,10 @@
 2000-04-16 - peter karlsson <peter@softwolves.pp.se>
   configure.in
   acconfig.h
+    Tries to figure out more ways to remove timezones.
+    Includes more hacks to determine when we need to add .exe to the
+    binaries (without it, it thought my OS/2 compiler was cross-compiling).
+
   turqstat.cpp
     Tries to figure out more ways to remove timezones.
     This, however, has the unfortunate side-effect that file dates (news

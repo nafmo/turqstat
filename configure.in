@@ -29,8 +29,20 @@ dnl AC_C_BIGENDIAN(Error)
 dnl   AC_MSG_ERROR(This program only supports little-endian architectures)
 
 dnl Checks for programs ----------------------------------------------------
+dnl Since PROG_CC and PROG_CXX seems to think we are cross-compiling under
+dnl OS/2, because we haven't detected EXEEXT yet, hack around it.
+dnl This probably only works with bash, though :-(
+if test "$OSTYPE" = "os2"; then
+  ac_exeext=.exe
+  ac_cv_exeext=.exe
+  EXEEXT=.exe
+fi
+
 AC_PROG_CC
 AC_PROG_CXX
+
+ac_exeext=
+EXEEXT=
 
 dnl Figure out whether or not we need .exe suffix (EMX, CygWin (AC_EXEEXT
 dnl normally only catches CygWin)), -lstdcpp instead of -lstdc++ (EMX), and
@@ -47,6 +59,8 @@ AC_MSG_RESULT($have_emx)
 if test "$have_emx" = "yes"; then
   standardcpplib=stdcpp
   EXEEXT=.exe
+  ac_exeext=.exe
+  ac_cv_exeext=.exe
   DEF=turqstat.def
 
   AC_MSG_CHECKING(for __findfirst and __findnext)
