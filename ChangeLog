@@ -1,3 +1,18 @@
+2001-02-11 - peter karlsson <peter@softwolves.pp.se>
+  acconfig.h
+  configure.in
+    Changed name of some definitions.
+    Added test for CHAR_BIT.
+
+  newsspoolread.cpp
+  output.cpp
+  sdmread.cpp
+  turqstat.cpp
+    Changed name of some definitions.
+
+  utility.h
+    Use CHAR_BIT, if it exists, as size of char.
+
 2001-02-10 - peter karlsson <peter@softwolves.pp.se>
   turqstat.cpp
     Implemented paramter for selecting range of dates.
