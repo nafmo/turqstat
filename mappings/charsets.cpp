@@ -77,6 +77,7 @@ const struct tablemap usenetcharsets[] =
 {
     // Default charset goes first
     { "iso-8859-1", iso_8859_1, iso_8859_1_rev },
+    { "us-ascii", iso_8859_1, iso_8859_1_rev }, // Well...
     { "iso-8859-2", iso_8859_2, iso_8859_2_rev },
     { "iso-8859-3", iso_8859_3, iso_8859_3_rev },
     { "iso-8859-4", iso_8859_4, iso_8859_4_rev },
