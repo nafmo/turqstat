@@ -1,7 +1,7 @@
 // Turquoise SuperStat
 //
 // A statistic collection program for Fidonet systems
-// Version 1.1
+// Version 1.2
 //
 // Copyright (c) 1998-1999 Peter Karlsson
 //
@@ -35,11 +35,13 @@
 #include "fdapxread.h"
 #include "jamread.h"
 #include "mypointread.h"
+#include "sdmread.h"
+#include "version.h"
 
 class StatRetr
 {
 public:
-    enum basetype_e { unspecified, squish, sdm, fdapx, jam, mypoint };
+    enum basetype_e { squish, sdm, opus, fdapx, jam, mypoint };
 
     StatRetr(char *areapath, char *outputfilepath, unsigned areanum,
              unsigned days,
@@ -56,11 +58,7 @@ int main(int argc, char *argv[])
     unsigned days = 0;
     unsigned maxnum = 15;
     unsigned areanum = 0;
-#ifdef HAS_SMAPI
     StatRetr::basetype_e basetype = StatRetr::squish;
-#else
-    StatRetr::basetype_e basetype = StatRetr::unspecified;
-#endif
     bool quoters = true, topwritten = true, topreceived = true,
          topsubjects = true, topprograms = true, weekstats = true,
          daystats = true, versions = true, allnums = false;
@@ -73,7 +71,7 @@ int main(int argc, char *argv[])
 
     // Handle arguments
     int c;
-    while (EOF != (c = getopt(argc, argv, "d:n:a:smfjpQWRSPHDVN?")))
+    while (EOF != (c = getopt(argc, argv, "d:n:a:smofjpQWRSPHDVN?")))
     {
         switch (c)
         {
@@ -81,15 +79,9 @@ int main(int argc, char *argv[])
             case 'n':   maxnum = strtoul(optarg, NULL, 10);         break;
             case 'a':   areanum = strtoul(optarg, NULL, 10);        break;
 
-#ifdef HAS_SMAPI
             case 's':   basetype = StatRetr::squish;                break;
             case 'm':   basetype = StatRetr::sdm;                   break;
-#else
-            case 's':
-            case 'm':   cerr << "Message base format not supported "
-                                "in this version" << endl;
-                        return 1;
-#endif
+            case 'o':   basetype = StatRetr::opus;                  break;
             case 'f':   basetype = StatRetr::fdapx;                 break;
             case 'j':   basetype = StatRetr::jam;                   break;
             case 'p':   basetype = StatRetr::mypoint;               break;
@@ -107,7 +99,8 @@ int main(int argc, char *argv[])
 
             case '?':
             default:
-                cout << "Turquoise 1.1 - Statistics tool for Fidonet message bases"
+                cout << "Turquoise " << version
+                     << " - Statistics tool for Fidonet message bases"
                      << endl;
                 cout << "(c) Copyright 1998-1999 Peter Karlsson. "
                         "GNU GPL 2 licensed." << endl;
@@ -121,11 +114,12 @@ int main(int argc, char *argv[])
                 cout << "  -n num         Maximum entries in toplists" << endl;
                 cout << "  -a num         Area number (for FDAPX/w and MyPoint)" << endl;
                 cout << endl;
-#ifdef HAS_SMAPI
                 cout << "  -s             Squish style message area (default)"
                      << endl;
-                cout << "  -m             *.MSG style message area" << endl;
-#endif
+                cout << "  -m             FTSC *.MSG style message area"
+                     << endl;
+                cout << "  -o             Opus *.MSG style message area"
+                     << endl;
                 cout << "  -j             JAM style message base" << endl;
                 cout << "  -f             FDAPX/w style message base (needs -a)"
                      << endl;
@@ -153,14 +147,6 @@ int main(int argc, char *argv[])
         return 1;
     }
 
-#ifndef HAS_SMAPI
-    if (StatRetr::unspecified == basetype)
-    {
-        cerr << "No message base format was specified." << endl;
-        return 1;
-    }
-#endif
-
     StatRetr s(argv[optind], argv[optind + 1], areanum, days,
                basetype, maxnum, quoters, topwritten, topreceived, topsubjects,
                topprograms, weekstats, daystats, versions, allnums);
@@ -176,7 +162,8 @@ StatRetr::StatRetr(char *areapath, char *outputfilepath, unsigned areanum,
                    bool weekstats, bool daystats, bool showversions,
                    bool showallnums)
 {
-    cout << "Turquoise SuperStat 1.1 (c) Copyright 1998-1999 Peter Karlsson."
+    cout << "Turquoise SuperStat " << version
+         << " (c) Copyright 1998-1999 Peter Karlsson."
          << endl;
 
     // Compute starting time
@@ -195,12 +182,14 @@ StatRetr::StatRetr(char *areapath, char *outputfilepath, unsigned areanum,
     AreaRead *area = NULL;
     switch (basetype)
     {
-#ifdef HAS_SMAPI
         case squish:
-        case sdm:
-            area = new SquishRead(areapath, sdm == basetype);
+            area = new SquishRead(areapath);
             break;
-#endif
+
+        case sdm:
+        case opus:
+            area = new SdmRead(areapath, basetype == opus);
+            break;
 
         case fdapx:
             area = new FdApxRead(areapath, areanum);
