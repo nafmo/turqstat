@@ -1,3 +1,17 @@
+2001-05-17 - peter karlsson <peter@softwolves.pp.se>
+  statengine.cpp
+    QP decoder fixes.
+    Correct de-quoting of sender's name.
+    Fix subject handling.
+
+  utility.cpp
+    Bugfixed wstring::skip.
+
+  teal.cpp
+    Simplified command line usage.
+    Display selected parameters on standard error.
+    Some error checks.
+
 2001-05-16 - peter karlsson <peter@softwolves.pp.se>
   acconfig.h
   configure.in
