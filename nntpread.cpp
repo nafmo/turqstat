@@ -31,6 +31,9 @@
 #if defined(HAVE_NETINET_IN_H)
 # include <netinet/in.h>
 #endif
+#if !defined(HAVE_WORKING_SOCKET_FDOPEN)
+# include <sys/errno.h>
+#endif
 
 #include "nntpread.h"
 #include "statengine.h"
@@ -68,7 +71,9 @@ NntpRead::~NntpRead()
     {
         SendCommand("QUIT\r\n");
 
+#if defined(HAVE_WORKING_SOCKET_FDOPEN)
         fclose(sock);
+#endif
         shutdown(sockfd, 2);
         close(sockfd);
     }
@@ -427,7 +432,6 @@ int NntpRead::GetResponse()
 {
     // Retrieve response code
     char *p;
-    fflush(sock);
     GetLine(buffer, sizeof buffer);
     long int rc = strtol(buffer, &p, 10);
     if (p == buffer) rc = -1;
@@ -439,7 +443,7 @@ int NntpRead::GetResponse()
 // fdopen on a socket does not work reliably on Win32 and EMX, so I do
 // my own buffering on these platforms.
 
-bool SendLine(const char *line)
+bool NntpRead::SendLine(const char *line)
 {
     size_t linelength = strlen(line);
     unsigned tries = 0;
@@ -476,17 +480,17 @@ bool SendLine(const char *line)
                 return false;
             }
 
-            // Pause a 100 microseconds before trying again
-            usleep(100);
+            // Pause a second before trying again
+            sleep(1);
         }
     }
     return true;
 }
 
-bool GetLine(char *buffer, size_t maxlen)
+bool NntpRead::GetLine(char *outbuffer, size_t maxlen)
 {
     // Always leave space for null termination
-    count --;
+    maxlen --;
 
     bool foundlf = false;
     bool copiedanything = false;
@@ -507,13 +511,13 @@ bool GetLine(char *buffer, size_t maxlen)
             }
 
             // If there is any output buffer space left, copy data
-            if (count)
+            if (maxlen)
             {
                 copiedanything = true;
-                size_t copylen = endidx <? count;
-                memcpy(buffer, socketbuffer, copylen);
-                buf += copylen;
-                count -= copylen;
+                size_t copylen = endidx <? maxlen;
+                memcpy(outbuffer, socketbuffer, copylen);
+                outbuffer += copylen;
+                maxlen -= copylen;
             }
 
             // Move the rest of the buffer down
@@ -541,7 +545,7 @@ bool GetLine(char *buffer, size_t maxlen)
                 // This indicates end-of-file
                 if (copiedanything)
                 {
-                    *buffer = 0;
+                    *outbuffer = 0;
                     return true;
                 }
                 else
@@ -557,7 +561,7 @@ bool GetLine(char *buffer, size_t maxlen)
     }
 
     // Terminate buffer
-    *buffer = 0;
+    *outbuffer = 0;
     return true;
 }
 #endif

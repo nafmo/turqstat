@@ -52,7 +52,7 @@ public:
     virtual ~NntpRead();
 
     /**
-     * Transfer function. 
+     * Transfer function.
      * This function transfers all messages in the message bases, received
      * after the specified starting date, to the specified statistics engine.
      *
@@ -134,7 +134,7 @@ protected:
     char    buffer[512];
     /** Active articles in group. */
     bool    *articles;
-#if defined(HAVE_WORKING_SOCKET_FDOPEN)
+#if !defined(HAVE_WORKING_SOCKET_FDOPEN)
     /** Data buffer for socket communications. */
     char    socketbuffer[BUFSIZ];
     /** Data bytes in socketbuffer. */
