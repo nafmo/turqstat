@@ -1,6 +1,9 @@
 This is the Win32 version of Turquoise SuperStat. It is not supported by
-Softwolves Software.
+Softwolves Software, and there might be things that do not work properly.
+If you have any ideas on how to improve this version, please contact the
+author.
 
-The full documentation and sources are included in the main archive, which
-should be available from the same place as this archive, or from
-http://www.softwolves.pp.se/wolves/
+This executable requires the file cygwin1.dll to run. This file can be
+obtained from Cygnus, http://www.cygnus.com/ or from Softwolves Software,
+http://www.softwolves.pp.se/wolves/. cygwin1.dll is distributed under the
+GNU General Public License.

@@ -20,7 +20,7 @@
 
 #include <string>
 
-const string version = "1.3";
+const string version = "1.4";
 const string copyright = "(c) Copyright 1998-2000 Peter Karlsson";
 const string releaseyear = "2000";
 

@@ -1,4 +1,4 @@
-Turquoise SuperStat 1.3 - Ett m”tesstatistikprogram f”r Fidonet
+Turquoise SuperStat 1.4 - Ett m”tesstatistikprogram f”r Fidonet
 (c) Copyright 1998-2000 Peter Karlsson.
 A Softwolves Software Release in 2000
 
@@ -169,18 +169,24 @@ HISTORIK
   Lade till st”d f”r Usenet news-"spool".
   Linuxversion distribueras som .deb-fil.
   Diverse felr„ttelser.
+2000-  -   - v1.4 -
+  Anv„nder autoconf f”r l„ttare anpassning.
 
 
 BIFOGADE FILER
 
-turqstat.exe - K”rbar fil (OS2 eller Win32)
 turqstat.doc - Dokumentation p† engelska
 turqstat.dok - Denna dokumentation
-copying      - GNU General Public License, version 2
-source.rar   - Arkiv inneh†llandes k„llkoden:
-  Makefile        - Makefil f”r EMX (nmake)
-  Makefile.CygWin - Makefil f”r CygWin32 (GNU make) (ej st”dd)
-  Makefile.linux  - Makefil f”r GNU C++ under Linux (GNU make)
+turqstat.1   - Unixmanualsida
+COPYING      - GNU General Public License, version 2
+
+src/-katalogen:
+  ChangeLog       - Logg ”ver „ndringar i k„llkoden
+  configure       - Konfigureringsskript (kr„ver sh-kompatibelt skal)
+  Makefile.in     - Indatafil f”r Makefile (anv„nds av configure)
+  configure.in    - Indatafil f”r configure (anv„nds av autoconf)
+  config.h.in     - Indatafil f”r config.h (used by configure)
+  acconfig.h      - Indatafil f”r config.h.in (anv„nds av autoconf)
   turqstat.cpp    - Huvudk„llkod f”r Turquoise
   arearead.h      - Headerfil som beskriver den abstrakta ”verklassen f”r
                     meddelandebasl„sarna
@@ -206,11 +212,21 @@ source.rar   - Arkiv inneh†llandes k„llkoden:
   utility.h       - Headerfil f”r ovanst†ende
   datatypes.h     - Kompilatoroberoende datatypdeklarationer
   version.h       - Aktuellt versionnummer
+  turqstat.def    - Applikationstitelfil f”r OS/2
 
-Unixdistributionen best†r av en .tar.gz-fil med all k„llkod listad under
-"source.rar" ovan, plus dokumentationsfilerna. Inga exekverbara filer
-medf”ljer. Den inneh†ller „ven en underkatalog debian, vilken inneh†ller
-kontrollfiler f”r att skapa ett bin„rpaket f”r Debian.
+os2/-katalogen:
+  config.h        - config.h att anv„nda om du inte kan k”ra configure (EMX)
+  Makefile        - Makefile att anv„nda om du inte kan k”ra configure (EMX)
+  turqstat.exe    - K”rbar fil (OS/2, EMX)
+
+win32/-katalogen:
+  turqstat.exe    - K”rbar fil (Win32 i386, CygWin)
+  README.Win32    - Information om Win32-versionen
+
+Unixdistributionen best†r av en .tar.gz-fil med all k„llkod listad ovan, plus
+dokumentationsfilerna. Inga exekverbara filer medf”ljer. Den inneh†ller „ven
+en underkatalog debian, vilken inneh†ller kontrollfiler f”r att skapa ett
+bin„rpaket f”r Debian.
 
 
 KRAV F™R KOMPILERING

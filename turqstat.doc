@@ -1,4 +1,4 @@
-Turquoise SuperStat 1.3 - An area statistics program for Fidonet
+Turquoise SuperStat 1.4 - An area statistics program for Fidonet
 (c) Copyright 1998-2000 Peter Karlsson.
 A Softwolves Software Release in 2000
 
@@ -171,18 +171,26 @@ HISTORY
   Added support for Usenet news spools.
   Linux distribution as .deb file.
   Various bugfixes.
+2000-  -   - v1.4 -
+  Uses autoconf for easier portability.
 
 
 INCLUDED FILES
 
-turqstat.exe - Main executable file (OS2 or Win32)
+OS/2 and Win32 distribution:
+
 turqstat.doc - This documentation
 turqstat.dok - Documentation in Swedish
-copying      - The GNU General Public License, version 2
-source.rar   - Archive containing the source code:
-  Makefile        - Makefile for EMX (nmake)
-  Makefile.CygWin - Makefile for CygWin32 (GNU make) (unsupported)
-  Makefile.linux  - Makefile for GNU C++ on Linux (GNU make)
+turqstat.1   - Unix manual page
+COPYING      - The GNU General Public License, version 2
+
+src/ directory:
+  ChangeLog       - Log of source code changes
+  configure       - Configuration script (requires sh compatible shell)
+  Makefile.in     - Input file for Makefile (used by configure)
+  configure.in    - Input file for configure (used by autoconf)
+  config.h.in     - Input file for config.h (used by configure)
+  acconfig.h      - Input file for config.h.in (used by autoconf)
   turqstat.cpp    - Main Turquoise source
   arearead.h      - Header defining the abstract superclass for the message
                     base readers
@@ -208,11 +216,21 @@ source.rar   - Archive containing the source code:
   utility.h       - Header file for the above
   datatypes.h     - Compiler-independent datatype declarations
   version.h       - Current version number
+  turqstat.def    - Application title file for OS/2
 
-The Unix distribution consists of a .tar.gz containing all the sources from
-the "source.rar" listed above, plus the documentation files. No binaries are
-included. It also contains a debian subdirectory which has control files for
-creating a Debian binary package.
+os2/ directory:
+  config.h        - config.h to use if you cannot run configure (EMX)
+  Makefile        - Makefile to use if you cannot run configure (EMX)
+  turqstat.exe    - Main executable file (OS/2, EMX)
+
+win32/ directory:
+  turqstat.exe    - Main executable file (Win32 i386, CygWin)
+  README.Win32    - Win32 release notes
+
+The Unix distribution consists of a .tar.gz containing all the sources listed
+above, plus the documentation files. No binaries are included. It also
+contains a debian subdirectory which has control files for creating a Debian
+binary package.
 
 
 REQUIREMENTS FOR COMPILATION
