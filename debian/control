@@ -4,12 +4,11 @@ Priority: extra
 Maintainer: peter karlsson <peterk@debian.org>
 Standards-Version: 3.2.1
 Build-Depends: debhelper, libqt-dev (>= 2:2.1.0) | libqt3-dev
-Build-Conflicts: libstdc++3-dev
 
 Package: turqstat
 Architecture: any
 Depends: ${shlibs:Depends}
-Suggests: crashmail | news-transport-system
+Suggests: crashmail | news-transport-system | slrnpull
 Description: Fidonet and Usenet message base statistics program
  Turquoise SuperStat is a simple but powerful Fidonet and Usenet
  message base statistics program that can read messages that are
@@ -21,7 +20,7 @@ Description: Fidonet and Usenet message base statistics program
 Package: xturqstat
 Architecture: any
 Depends: ${shlibs:Depends}
-Suggests: crashmail | news-transport-system, turqstat
+Suggests: crashmail | news-transport-system | slrnpull, turqstat
 Description: Fidonet and Usenet message base statistics program for X
  Turquoise SuperStat is a simple but powerful Fidonet and Usenet
  message base statistics program that can read messages that are
