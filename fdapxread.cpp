@@ -46,14 +46,18 @@ bool FdApxRead::Transfer(time_t starttime, StatEngine &destination)
     // Check that the folder number is valid
     if (areanumber < 1 || areanumber > 1999)
     {
-        cerr << "Error: Invalid area number choosen (must be between 1-1999"
+        cerr << "Error: Invalid area number choosen (must be between 1-1999)"
              << endl;
         return false;
     }
 
     // Open the message area files
     // msgstat.apx - contains a record of area info
-    string filepath = string(areapath) + "\\msgstat.apx";
+    string basepath = string(areapath);
+    if ('\\' != basepath[basepath.length() - 1])
+        basepath += '\\';
+
+    string filepath = basepath + "msgstat.apx";
     FILE *msgstat = fopen(filepath.c_str(), "rb");
     if (!msgstat)
     {
@@ -69,15 +73,13 @@ bool FdApxRead::Transfer(time_t starttime, StatEngine &destination)
     }
     fclose(msgstat);
 
-#if 0
     if (Fdapx_msgbaseversion != msgstatapx.msgbaseversion)
     {
         cerr << "Error: Illegal FDAPX/w message base version" << endl;
         return false;
     }
-#endif
 
-    filepath = string(areapath) + "\\msghdr.apx";
+    filepath = basepath + "msghdr.apx";
     FILE *msghdr = fopen(filepath.c_str(), "rb");
     if (!msghdr)
     {
@@ -86,7 +88,7 @@ bool FdApxRead::Transfer(time_t starttime, StatEngine &destination)
     }
 
 
-    filepath = string(areapath) + "\\msgtxt.apx";
+    filepath = basepath + "msgtxt.apx";
     FILE *msgtxt = fopen(filepath.c_str(), "rb");
     if (!msgstat)
     {
@@ -115,6 +117,7 @@ bool FdApxRead::Transfer(time_t starttime, StatEngine &destination)
             // This is message is in the correct folder
             msgnum ++;
             cout << 100 * msgnum / high << "% done\r";
+            if (high == msgnum) stay = false;
 
             // Check if message is too old
             if (msghdrapx.statusflags & Fdapx_local)
@@ -194,6 +197,7 @@ bool FdApxRead::Transfer(time_t starttime, StatEngine &destination)
                                     : msghdrapx.timesentrcvd);
 
             delete buf;
+            delete ctrlbuf;
         out:;
         }
     }
