@@ -11,6 +11,14 @@
   teal.cpp
     Added Teal - a trivial character set re-encoder.
 
+  turqstat.doc
+  turqstat.dok
+  turqstat.1
+  turqstat-sv.1
+  xturqstat.1
+  xturqstat-sv.1
+    Documentation updates.
+
 2001-05-15 - peter karlsson <peter@softwolves.pp.se>
   statengine.cpp
     Corrected problems with conversion of names and subjects in gated news
