@@ -2,18 +2,19 @@ Source: turqstat
 Section: mail
 Priority: extra
 Maintainer: peter karlsson <peterk@debian.org>
-Standards-Version: 3.2.1
+Standards-Version: 3.5.6
 Build-Depends: debhelper, libqt-dev (>= 2:2.1.0) | libqt3-dev
 
 Package: turqstat
 Architecture: any
 Depends: ${shlibs:Depends}
 Suggests: crashmail | news-transport-system | slrnpull
-Description: Fidonet and Usenet message base statistics program
+Description: Fidonet and Usenet statistics program
  Turquoise SuperStat is a simple but powerful Fidonet and Usenet
  message base statistics program that can read messages that are
  stored in SDM (*.MSG), SquishMail, JAM, FDAPX/w and MyPoint
- message bases as well as Usenet news spools.
+ message bases as well as local or remote (NNTP) Usenet news
+ spools.
  .
  This is the command line based version.
 
@@ -21,10 +22,11 @@ Package: xturqstat
 Architecture: any
 Depends: ${shlibs:Depends}
 Suggests: crashmail | news-transport-system | slrnpull, turqstat
-Description: Fidonet and Usenet message base statistics program for X
+Description: Fidonet and Usenet statistics program for X
  Turquoise SuperStat is a simple but powerful Fidonet and Usenet
  message base statistics program that can read messages that are
  stored in SDM (*.MSG), SquishMail, JAM, FDAPX/w and MyPoint
- message bases as well as Usenet news spools.
+ message bases as well as local or remote (NNTP) Usenet news
+ spools.
  .
  This is the GUI version.
