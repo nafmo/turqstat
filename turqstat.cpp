@@ -109,6 +109,9 @@ int main(int argc, char *argv[])
             default:
                 cout << "Turquoise 1.1 - Statistics tool for Fidonet message bases"
                      << endl;
+                cout << "(c) Copyright 1998-1999 Peter Karlsson. "
+                        "GNU GPL 2 licensed." << endl;
+                cout << "A Softwolves Software Release in 1999." << endl;
                 cout << endl;
                 cout << "Usage: turqstat [options] areapath outputfile" << endl;
                 cout << endl;
@@ -126,7 +129,8 @@ int main(int argc, char *argv[])
                 cout << "  -j             JAM style message base" << endl;
                 cout << "  -f             FDAPX/w style message base (needs -a)"
                      << endl;
-                cout << "  -p             MyPoint style message base" << endl;
+                cout << "  -p             MyPoint style message base (needs -a)"
+                     << endl;
                 cout << endl;
                 cout << "  -Q -W -R -S -P Turn quoters/written/received/"
                                          "subjects/programs toplist off"
