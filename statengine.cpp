@@ -66,13 +66,15 @@ void StatEngine::AddData(string fromname, string toname, string subject,
                          time_t timewritten, time_t timereceived)
 {
     enum { None, Left, Right } direction;
-    string internetaddress;
+    string internetaddress = "";
 
     // In news areas, we search the control information for From and
     // subject lines.
-    if (newsarea)
+    if (newsarea || controldata.find("\x1""RFC-From") != (size_t) -1 ||
+        controldata.find("\x1""REPLYADDR") != (size_t) -1)
     {
         string fromstring;
+        bool foundfrom = false;
 
         int pos = controldata.find((char) 1);
         while (pos != -1)
@@ -99,6 +101,31 @@ void StatEngine::AddData(string fromname, string toname, string subject,
                     fromstring = controldata.substr(pos);
                 else
                     fromstring = controldata.substr(pos, nextpos - pos);
+
+                // Indicate found
+                foundfrom = true;
+
+                // Prepare for next iteration
+                pos = nextpos;
+            }
+            // Fidonet gated RFC messages (FSC-35)
+            else if (fcompare(controldata.substr(pos, 10), "REPLYADDR ") == 0)
+            {
+                // Find where from name starts
+                pos += 9;
+                while (isspace(controldata[pos])) pos ++;
+
+                // And where it ends
+                int nextpos = controldata.find((char) 1, pos);
+
+                // And copy it
+                if (nextpos == -1)
+                    fromstring = controldata.substr(pos);
+                else
+                    fromstring = controldata.substr(pos, nextpos - pos);
+
+                // Indicate found
+                foundfrom = true;
 
                 // Prepare for next iteration
                 pos = nextpos;
@@ -137,45 +164,49 @@ void StatEngine::AddData(string fromname, string toname, string subject,
             }
         }
 
-        // Parse From: string into name and address
-        // "email@domain.com"
-        // "email@domain.com (name)"
-        // "name <email@domain.com>"
-        int at    = fromstring.find('@');
-        int left  = fromstring.find('(');
-        int right = fromstring.find(')');
-        if (-1 == left || -1 == right || at > left)
+        if (foundfrom)
         {
-            left  = fromstring.find('<');
-            right = fromstring.find('>');
-            if (-1 == left || -1 == right)
+            // Parse From: string into name and address
+            // "email@domain.com"
+            // "email@domain.com (name)"
+            // "name <email@domain.com>"
+            int at    = fromstring.find('@');
+            int left  = fromstring.find('(');
+            int right = fromstring.find(')');
+            if (-1 == left || -1 == right || at > left)
             {
-                // "email@domain.com"
-                fromname        = fromstring;
-                internetaddress = fromstring;
+                left  = fromstring.find('<');
+                right = fromstring.find('>');
+                if (-1 == left || -1 == right)
+                {
+                    // "email@domain.com"
+                    if (fromname.empty()) fromname = fromstring;
+                    internetaddress = fromstring;
+                }
+                else
+                {
+                    // "name <email@domain.com>"
+                    fromname        = fromstring.substr(0, left - 1);
+                    internetaddress = fromstring.substr(left + 1,
+                                                        right - left - 1);
+                }
             }
             else
             {
-                // "name <email@domain.com>"
-                fromname        = fromstring.substr(0, left - 1);
-                internetaddress = fromstring.substr(left + 1, right - left - 1);
+                // "email@domain.com (name)"
+                fromname        = fromstring.substr(left + 1, right - left - 1);
+                internetaddress = fromstring.substr(0, left - 1);
             }
-        }
-        else
-        {
-            // "email@domain.com (name)"
-            fromname        = fromstring.substr(left + 1, right - left - 1);
-            internetaddress = fromstring.substr(0, left - 1);
-        }
 
-        // Fixup name
-        // remove quotes
-        if ('\"' == fromname[0] && '\"' == fromname[fromname.length() - 1])
-            fromname = fromname.substr(1, fromname.length() - 2);
+            // Fixup name
+            // remove quotes
+            if ('\"' == fromname[0] && '\"' == fromname[fromname.length() - 1])
+                fromname = fromname.substr(1, fromname.length() - 2);
+        }
 
         // kill QP
-        fromname = DeQP(fromname);
-        subject = DeQP(subject);
+        if (foundfrom && newsarea) fromname = DeQP(fromname);
+        if (newsarea) subject = DeQP(subject);
 
         if (0 == timewritten)
             timewritten = timereceived;
@@ -188,7 +219,7 @@ void StatEngine::AddData(string fromname, string toname, string subject,
         people_p = new persondata_s;
         if (!people_p) errorquit(out_of_memory, 2);
         people_p->name = fromname;
-        if (newsarea)
+        if (newsarea || !internetaddress.empty())
             people_p->address = internetaddress;
         else
             people_p->address = ParseAddress(controldata, msgbody);
@@ -228,7 +259,7 @@ void StatEngine::AddData(string fromname, string toname, string subject,
             if (Right == direction) perstrav_p->right = persfound_p;
 
             persfound_p->name = fromname;
-            if (newsarea)
+            if (newsarea || !internetaddress.empty())
                 persfound_p->address = internetaddress;
             else
                 persfound_p->address = ParseAddress(controldata, msgbody);
@@ -449,7 +480,7 @@ void StatEngine::AddData(string fromname, string toname, string subject,
 
     if (subject.length() > 3)
     {
-        while (fcompare(subject.substr(0, 3), "re:") == 0)
+        while (fcompare(subject, "re:", 3) == 0)
         {
             if (' ' == subject[3])
             {
@@ -605,7 +636,7 @@ void StatEngine::AddData(string fromname, string toname, string subject,
             programname = program.substr(0, space1);
     }
 
-    if (programname != "")
+    if (!programname.empty())
     {
         programdata_s *progtrav_p = programs_p, *progfound_p = progtrav_p;
         if (NULL == programs_p)
