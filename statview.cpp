@@ -471,7 +471,7 @@ bool StatView::CreateReport(StatEngine *engine, string filename)
                 report.form("%4u. ", place);
             }
 
-            report.form("%-6s %8u %8u",
+            report.form("%-7.7s%8u %8u",
                         data.topdomain.c_str(), data.messages, data.bytes);
 
             report << endl;
