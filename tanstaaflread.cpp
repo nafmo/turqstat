@@ -81,10 +81,18 @@ bool TanstaaflRead::Transfer(time_t starttime, StatEngine &destination)
     }
     fclose(msgstat);
 
-    if (Tanstaafl_msgbaseversion != msgstattfl.msgbaseversion)
+    // Current message base version is 1, but it is incorrectly written
+    // as 0 (or rather, never initialized) in 0.0.4.
+    if (Tanstaafl_msgbaseversion < msgstattfl.msgbaseversion)
     {
         cerr << "Error: Illegal tanstaafl message base version" << endl;
         return false;
+    }
+
+    if (Tanstaafl_msgbaseversion == 0)
+    {
+        cerr << "Warning: tanstaafl message base version is 0, assuming 1"
+             << endl;
     }
 
     filepath = basepath + "msghdr.tfl";
@@ -109,6 +117,8 @@ bool TanstaaflRead::Transfer(time_t starttime, StatEngine &destination)
     msghdrtfl_s msghdrtfl;
     unsigned msgnum = 0, high = msgstattfl.totalmsgs[areanumber - 1];
     char *buf, *ctrlbuf;
+
+    if (0 == high) stay = false;
     while (stay)
     {
         if (1 != fread(&msghdrtfl, sizeof (msghdrtfl), 1, msghdr))

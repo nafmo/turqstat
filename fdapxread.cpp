@@ -106,6 +106,8 @@ bool FdApxRead::Transfer(time_t starttime, StatEngine &destination)
     msghdrapx_s msghdrapx;
     unsigned msgnum = 0, high = msgstatapx.totalmsgs[areanumber - 1];
     char *buf, *ctrlbuf;
+
+    if (0 == high) stay = false;
     while (stay)
     {
         if (1 != fread(&msghdrapx, sizeof (msghdrapx), 1, msghdr))
