@@ -38,8 +38,8 @@ bool StatView::CreateReport(StatEngine *engine, string filename,
     if (!(report.is_open())) return false;
 
     // Include data as given from the statistics engine
-    report << "Turqoise SuperStat 1.0 * Message area statistics" << endl;
-    report << "================================================" << endl;
+    report << "Turquoise SuperStat 1.0 * Message area statistics" << endl;
+    report << "=================================================" << endl;
     report << endl;
     report << "(c) Copyright 1998-1999 Peter Karlsson" << endl;
     report << endl;

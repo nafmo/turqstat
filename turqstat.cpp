@@ -1,4 +1,4 @@
-// Turqoise SuperStat
+// Turquoise SuperStat
 //
 // A statistic collection program for Fidonet systems
 // Version 1.0
@@ -107,10 +107,10 @@ int main(int argc, char *argv[])
 
             case '?':
             default:
-                cout << "Turqoise 1.0 - Statistics tool for Fidonet message bases"
+                cout << "Turquoise 1.0 - Statistics tool for Fidonet message bases"
                      << endl;
                 cout << endl;
-                cout << "Usage: turqoise [options] areapath outputfile" << endl;
+                cout << "Usage: turqstat [options] areapath outputfile" << endl;
                 cout << endl;
                 cout << "Available options:" << endl;
                 cout << "  -d days        Days back to count messages from"
@@ -172,7 +172,7 @@ StatRetr::StatRetr(char *areapath, char *outputfilepath, unsigned areanum,
                    bool weekstats, bool daystats, bool showversions,
                    bool showallnums)
 {
-    cout << "Turqoise SuperStat 1.0 (c) Copyright 1998-1999 Peter Karlsson."
+    cout << "Turquoise SuperStat 1.0 (c) Copyright 1998-1999 Peter Karlsson."
          << endl;
 
     // Compute starting time
@@ -228,5 +228,5 @@ StatRetr::StatRetr(char *areapath, char *outputfilepath, unsigned areanum,
 
 StatRetr::~StatRetr()
 {
-    cout << "Turqoise finished." << endl;
+    cout << "Turquoise finished." << endl;
 }
