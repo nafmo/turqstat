@@ -20,11 +20,12 @@
 // along with this program; if not, write to the Free Software
 // Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 
+#include <config.h>
 #include <iostream.h>
 #include <string>
 #include <unistd.h>
 #include <stdlib.h>
-#ifdef __CYGWIN__
+#ifdef HAS_GETOPT_IN_GETOPT
 # include <getopt.h>
 #endif
 
@@ -70,11 +71,11 @@ int main(int argc, char *argv[])
          toporiginal = true;
 
     // We don't want timezones here
-#if defined(__GNUC__) || defined(__EMX__)
-# if !defined(__CYGWIN__)
+#ifdef HAVE_TIMEZONE
     timezone = 0;
+#endif
+#ifdef HAVE_DAYLIGHT
     daylight = 0;
-# endif
 #endif
 
     // Display banner

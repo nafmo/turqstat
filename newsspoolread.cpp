@@ -15,17 +15,17 @@
 // along with this program; if not, write to the Free Software
 // Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 
+#include <config.h>
 #include <iostream.h>
 #include <time.h>
 #include <string.h>
 #include <stdio.h>
-#ifdef UNIX
-# include <dirent.h>
-# include <unistd.h>
-#endif
-#ifdef __EMX__
+#ifdef HAS_EMX_FINDFIRST
 # include <emx/syscalls.h>
 # include <io.h>
+#else
+# include <dirent.h>
+# include <unistd.h>
 #endif
 #include <sys/types.h>
 #include <sys/stat.h>
@@ -55,20 +55,7 @@ bool NewsSpoolRead::Transfer(time_t starttime, StatEngine &destination)
     destination.NewsArea();
 
     // Open the message directory
-#if defined(UNIX)
-    DIR *spooldir = opendir(areapath);
-    if (!spooldir)
-    {
-        cerr << "Unable to open spool directory" << endl;
-        return false;
-    }
-
-    string dirname = string(areapath);
-    if (dirname[dirname.length() - 1] != '/')
-    {
-        dirname += '/';
-    }
-#elif defined(__EMX__)
+#ifdef HAS_EMX_FINDFIRST
     string dirname = string(areapath);
     if (dirname[dirname.length() - 1] != '\\')
     {
@@ -85,6 +72,19 @@ bool NewsSpoolRead::Transfer(time_t starttime, StatEngine &destination)
         cerr << "Unable to open spool directory" << endl;
         return false;
     }
+#else // no HAS_EMX_FINDFIRST
+    DIR *spooldir = opendir(areapath);
+    if (!spooldir)
+    {
+        cerr << "Unable to open spool directory" << endl;
+        return false;
+    }
+
+    string dirname = string(areapath);
+    if (dirname[dirname.length() - 1] != '/')
+    {
+        dirname += '/';
+    }
 #endif
 
     FILE *msg = NULL;
@@ -96,16 +96,16 @@ bool NewsSpoolRead::Transfer(time_t starttime, StatEngine &destination)
     string from, subject;
     struct stat   msgstat;
 
-#if defined(UNIX)
+#ifdef HAS_EMX_FINDFIRST
+# define FILENAME spooldir.name
+# define FILESIZE (spooldir.size_lo | (spooldir.size_hi << 16))
+    while (0 == rc)
+#else // no HAS_EMX_FINDFIRST
 # define FILENAME spooldirent_p->d_name
 # define FILESIZE msgstat.st_size
     struct dirent *spooldirent_p;
 
     while (NULL != (spooldirent_p = readdir(spooldir)))
-#elif defined(__EMX__)
-# define FILENAME spooldir.name
-# define FILESIZE (spooldir.size_lo | (spooldir.size_hi << 16))
-    while (0 == rc)
 #endif
     {
         // Check that we really have a news file (all-digit name)
@@ -187,12 +187,12 @@ out2:;
         cout << ++ msgn << " done\r";
         if (msg) fclose(msg);
 
-#if defined(__EMX__)
+#ifdef HAS_EMX_FINDFIRST
         rc = __findnext(&spooldir);
 #endif
     }
 
-#if defined(UNIX)
+#ifndef HAS_EMX_FINDFIRST
     closedir(spooldir);
 #endif
 

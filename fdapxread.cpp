@@ -1,4 +1,4 @@
-// Copyright (c) 1999 Peter Karlsson
+// Copyright (c) 1999-2000 Peter Karlsson
 //
 // $Id$
 //
@@ -15,6 +15,7 @@
 // along with this program; if not, write to the Free Software
 // Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 
+#include <config.h>
 #include <string>
 #include <iostream.h>
 #include <time.h>

@@ -15,18 +15,18 @@
 // along with this program; if not, write to the Free Software
 // Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 
+#include <config.h>
 #include <iostream.h>
 #include <time.h>
 #include <string.h>
 #include <stdio.h>
-#ifdef UNIX
+#ifdef HAS_EMX_FINDFIRST
+# include <emx/syscalls.h>
+#else
 # include <sys/types.h>
 # include <dirent.h>
 # include <sys/stat.h>
 # include <unistd.h>
-#endif
-#ifdef __EMX__
-# include <emx/syscalls.h>
 #endif
 
 #include "sdmread.h"
@@ -57,20 +57,7 @@ bool SdmRead::Transfer(time_t starttime, StatEngine &destination)
     }
 
     // Open the message directory
-#if defined(UNIX)
-    DIR *sdmdir = opendir(areapath);
-    if (!sdmdir)
-    {
-        cerr << "Unable to open *.MSG directory" << endl;
-        return false;
-    }
-
-    string dirname = string(areapath);
-    if (dirname[dirname.length() - 1] != '/')
-    {
-        dirname += '/';
-    }
-#elif defined(__EMX__)
+#ifdef HAS_EMX_FINDFIRST
     string dirname = string(areapath);
     if (dirname[dirname.length() - 1] != '\\')
     {
@@ -87,7 +74,20 @@ bool SdmRead::Transfer(time_t starttime, StatEngine &destination)
         cerr << "Unable to open *.MSG directory" << endl;
         return false;
     }
-#endif
+#else // no HAS_EMX_FINDFIRST
+    DIR *sdmdir = opendir(areapath);
+    if (!sdmdir)
+    {
+        cerr << "Unable to open *.MSG directory" << endl;
+        return false;
+    }
+
+    string dirname = string(areapath);
+    if (dirname[dirname.length() - 1] != '/')
+    {
+        dirname += '/';
+    }
+#endif // else no HAS_EMX_FINDFIRST
 
     sdmhead_s sdmhead;
     FILE *msg = NULL;
@@ -96,17 +96,17 @@ bool SdmRead::Transfer(time_t starttime, StatEngine &destination)
     time_t written, arrived;
     UINT32 msgn = 0;
 
-#if defined(UNIX)
+#ifdef HAS_EMX_FINDFIRST
+# define FILENAME sdmdir.name
+# define FILESIZE (sdmdir.size_lo | (sdmdir.size_hi << 16))
+    while (0 == rc)
+#else // no HAS_EMX_FINDFIRST
 # define FILENAME sdmdirent_p->d_name
 # define FILESIZE sdmstat.st_size
     struct dirent *sdmdirent_p;
     struct stat   sdmstat;
 
     while (NULL != (sdmdirent_p = readdir(sdmdir)))
-#elif defined(__EMX__)
-# define FILENAME sdmdir.name
-# define FILESIZE (sdmdir.size_lo | (sdmdir.size_hi << 16))
-    while (0 == rc)
 #endif
     {
         // Check that we really have a *.msg file
@@ -125,7 +125,7 @@ bool SdmRead::Transfer(time_t starttime, StatEngine &destination)
             goto out;
         }
 
-#ifdef UNIX
+#ifndef HAS_EMX_FINDFIRST
         stat(thisfile.c_str(), &sdmstat);
 #endif
 
@@ -188,12 +188,12 @@ out2:;
         cout << ++ msgn << " done\r";
         if (msg) fclose(msg);
 
-#if defined(__EMX__)
+#ifdef HAS_EMX_FINDFIRST
         rc = __findnext(&sdmdir);
 #endif
     }
 
-#if defined(UNIX)
+#ifndef HAS_EMX_FINDFIRST
     closedir(sdmdir);
 #endif
 

@@ -1,4 +1,4 @@
-// Copyright (c) 1999 Peter Karlsson
+// Copyright (c) 1999-2000 Peter Karlsson
 //
 // $Id$
 //
@@ -19,6 +19,7 @@
 //                           Mats Birch, Mats Wallin.
 //                           ALL RIGHTS RESERVED.
 
+#include <config.h>
 #include <string>
 #include <iostream.h>
 #include <time.h>
