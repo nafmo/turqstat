@@ -3,49 +3,49 @@
 # would be translated to "Pub", not "Foo::Pub".
 msgid ""
 msgstr ""
-"Project-Id-Version: XTurqstat 2.0\n"
-"POT-Creation-Date: 2000-11-21 23.06.08 CET\n"
-"PO-Revision-Date: 2000-11-21\n"
+"Project-Id-Version: XTurqstat 2.1\n"
+"POT-Creation-Date: 2001-03-17 08.55.58 CET\n"
+"PO-Revision-Date: 2001-03-17\n"
 "Last-Translator: peter karlsson <peter@softwolves.pp.se>\n"
 "Content-Type: text/plain; charset=iso-8859-1\n"
 
-#: qtbars.cpp:74
+#: qtbars.cpp:77
 msgid "BarWindow::Daily breakdown"
 msgstr "Veckoöversikt"
 
-#: qtbars.cpp:110
+#: qtbars.cpp:113
 msgid "BarWindow::Dismiss"
 msgstr "Stäng"
 
-#: qtbars.cpp:58
+#: qtbars.cpp:61
 msgid "BarWindow::Friday"
 msgstr "Fredag"
 
-#: qtbars.cpp:91
+#: qtbars.cpp:94
 msgid "BarWindow::Hourly breakdown"
 msgstr "Dagsövesikt"
 
-#: qtbars.cpp:54
+#: qtbars.cpp:57
 msgid "BarWindow::Monday"
 msgstr "Måndag"
 
-#: qtbars.cpp:59
+#: qtbars.cpp:62
 msgid "BarWindow::Saturday"
 msgstr "Lördag"
 
-#: qtbars.cpp:60
+#: qtbars.cpp:63
 msgid "BarWindow::Sunday"
 msgstr "Söndag"
 
-#: qtbars.cpp:57
+#: qtbars.cpp:60
 msgid "BarWindow::Thursday"
 msgstr "Torsdag"
 
-#: qtbars.cpp:55
+#: qtbars.cpp:58
 msgid "BarWindow::Tuesday"
 msgstr "Tisdag"
 
-#: qtbars.cpp:56
+#: qtbars.cpp:59
 msgid "BarWindow::Wednesday"
 msgstr "Onsdag"
 
@@ -133,7 +133,7 @@ msgstr "&Texter undersökta"
 msgid "InfoWindow::Bytes &quoted"
 msgstr "Tecken &citerade"
 
-#: qtgui.cpp:579
+#: qtgui.cpp:580
 msgid "InfoWindow::"
 "Enter number of days back to take "
 "statistics for (0 = no restriction):"
@@ -141,11 +141,11 @@ msgstr ""
 "Ange antal dagar bakåt statistik skall "
 "räknas på (0 = ingen begränsning):"
 
-#: qtgui.cpp:238
+#: qtgui.cpp:239
 msgid "InfoWindow::FDAPX/w (msgstat.apx)"
 msgstr "FDAPX/w (msgstat.apx)"
 
-#: qtgui.cpp:232
+#: qtgui.cpp:233
 msgid "InfoWindow::FTSC SDM (*.msg)"
 msgstr "FTSC SDM (*.msg)"
 
@@ -153,11 +153,11 @@ msgstr "FTSC SDM (*.msg)"
 msgid "InfoWindow::Fidonet &nets represented"
 msgstr "Fidonet&nät representerade"
 
-#: qtgui.cpp:278
+#: qtgui.cpp:279
 msgid "InfoWindow::I don't understand your selection"
 msgstr "Jag förstår inte ditt val"
 
-#: qtgui.cpp:240
+#: qtgui.cpp:241
 msgid "InfoWindow::JAM (*.jdt)"
 msgstr "JAM (*.jdt)"
 
@@ -169,31 +169,31 @@ msgstr "Rader c&iterade"
 msgid "InfoWindow::Latest text &written"
 msgstr "Senaste text &skriven"
 
-#: qtgui.cpp:242
+#: qtgui.cpp:243
 msgid "InfoWindow::MyPoint (mypoint.*)"
 msgstr "MyPoint (mypoint.*)"
 
-#: qtgui.cpp:404
+#: qtgui.cpp:405
 msgid "InfoWindow::N/A"
 msgstr "-"
 
-#: qtgui.cpp:246
+#: qtgui.cpp:247
 msgid "InfoWindow::News (.overview)"
 msgstr "Usenet (.overview)"
 
-#: qtgui.cpp:568
+#: qtgui.cpp:569
 msgid "InfoWindow::None loaded"
 msgstr "Ingen laddad"
 
-#: qtgui.cpp:256
+#: qtgui.cpp:257
 msgid "InfoWindow::Open message base"
 msgstr "Öppna meddelandebas"
 
-#: qtgui.cpp:234
+#: qtgui.cpp:235
 msgid "InfoWindow::Opus SDM (*.msg)"
 msgstr "Opus SDM (*.msg)"
 
-#: qtgui.cpp:375
+#: qtgui.cpp:376
 msgid "InfoWindow::Out of memory allocating area object"
 msgstr "Slut på minne när mötesobjekt allokerades"
 
@@ -209,7 +209,7 @@ msgstr "Postningar per &dag"
 msgid "InfoWindow::Postings per &hour"
 msgstr "Postningar per &timme"
 
-#: qtgui.cpp:360
+#: qtgui.cpp:361
 msgid "InfoWindow::Reading message base"
 msgstr "Läser meddelandebas"
 
@@ -221,7 +221,7 @@ msgstr "&Ärendetopplista"
 msgid "InfoWindow::S&ubjects found"
 msgstr "&Ärenden funna"
 
-#: qtgui.cpp:310
+#: qtgui.cpp:311
 msgid "InfoWindow::Select area number"
 msgstr "Välj mötesnummer"
 
@@ -229,15 +229,15 @@ msgstr "Välj mötesnummer"
 msgid "InfoWindow::Soft&ware toplist"
 msgstr "&Programvarutopplista"
 
-#: qtgui.cpp:236
+#: qtgui.cpp:237
 msgid "InfoWindow::Squish (*.sqd)"
 msgstr "Squish (*.sqd)"
 
-#: qtgui.cpp:578
+#: qtgui.cpp:579
 msgid "InfoWindow::Start date"
 msgstr "Startdatum"
 
-#: qtgui.cpp:244
+#: qtgui.cpp:245
 msgid "InfoWindow::Tanstaafl (msgstat.tfl)"
 msgstr "Tanstaafl (msgstat.tfl)"
 
@@ -245,7 +245,7 @@ msgstr "Tanstaafl (msgstat.tfl)"
 msgid "InfoWindow::Top &domains represented"
 msgstr "Topp&domäner representerade"
 
-#: qtgui.cpp:385
+#: qtgui.cpp:386
 msgid "InfoWindow::You cannot mix Fidonet and Usenet areas"
 msgstr "Du kan inte blanda Fidonet- och Usenetmöten"
 
@@ -558,7 +558,7 @@ msgstr "Mottagna"
 msgid "TopListWindow::Receivers"
 msgstr "Mottagare"
 
-#: qtlist.cpp:475
+#: qtlist.cpp:478
 msgid "TopListWindow::Save toplist"
 msgstr "Spara topplisa"
 
@@ -586,11 +586,15 @@ msgstr "Ärende"
 msgid "TopListWindow::Subjects"
 msgstr "Ärenden"
 
+#: qtlist.cpp:470
+msgid "TopListWindow::Tab separated file (*.tsv)"
+msgstr "Tabbstegsavdelad fil (*.tsv)"
+
 #: qtlist.cpp:456
 msgid "TopListWindow::This list is empty"
 msgstr "Listan är tom"
 
-#: qtlist.cpp:497
+#: qtlist.cpp:500
 msgid "TopListWindow::Unable to create the selected file"
 msgstr "Kan inte skapa den valda filen"
 

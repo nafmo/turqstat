@@ -3,49 +3,49 @@
 # would be translated to "Pub", not "Foo::Pub".
 msgid ""
 msgstr ""
-"Project-Id-Version: PROJECT VERSION\n"
-"POT-Creation-Date: 2000-11-26 13.35.32 CET\n"
+"Project-Id-Version: XTurqstat 2.1\n"
+"POT-Creation-Date: 2001-03-17 08.55.58 CET\n"
 "PO-Revision-Date: YYYY-MM-DD\n"
 "Last-Translator: FULLNAME <EMAIL@ADDRESS>\n"
 "Content-Type: text/plain; charset=iso-8859-1\n"
 
-#: qtbars.cpp:74
+#: qtbars.cpp:77
 msgid "BarWindow::Daily breakdown"
 msgstr ""
 
-#: qtbars.cpp:110
+#: qtbars.cpp:113
 msgid "BarWindow::Dismiss"
 msgstr ""
 
-#: qtbars.cpp:58
+#: qtbars.cpp:61
 msgid "BarWindow::Friday"
 msgstr ""
 
-#: qtbars.cpp:91
+#: qtbars.cpp:94
 msgid "BarWindow::Hourly breakdown"
 msgstr ""
 
-#: qtbars.cpp:54
+#: qtbars.cpp:57
 msgid "BarWindow::Monday"
 msgstr ""
 
-#: qtbars.cpp:59
+#: qtbars.cpp:62
 msgid "BarWindow::Saturday"
 msgstr ""
 
-#: qtbars.cpp:60
+#: qtbars.cpp:63
 msgid "BarWindow::Sunday"
 msgstr ""
 
-#: qtbars.cpp:57
+#: qtbars.cpp:60
 msgid "BarWindow::Thursday"
 msgstr ""
 
-#: qtbars.cpp:55
+#: qtbars.cpp:58
 msgid "BarWindow::Tuesday"
 msgstr ""
 
-#: qtbars.cpp:56
+#: qtbars.cpp:59
 msgid "BarWindow::Wednesday"
 msgstr ""
 
@@ -133,17 +133,17 @@ msgstr ""
 msgid "InfoWindow::Bytes &quoted"
 msgstr ""
 
-#: qtgui.cpp:579
+#: qtgui.cpp:580
 msgid "InfoWindow::"
 "Enter number of days back to take "
                                     "statistics for (0 = no restriction):"
 msgstr ""
 
-#: qtgui.cpp:238
+#: qtgui.cpp:239
 msgid "InfoWindow::FDAPX/w (msgstat.apx)"
 msgstr ""
 
-#: qtgui.cpp:232
+#: qtgui.cpp:233
 msgid "InfoWindow::FTSC SDM (*.msg)"
 msgstr ""
 
@@ -151,11 +151,11 @@ msgstr ""
 msgid "InfoWindow::Fidonet &nets represented"
 msgstr ""
 
-#: qtgui.cpp:278
+#: qtgui.cpp:279
 msgid "InfoWindow::I don't understand your selection"
 msgstr ""
 
-#: qtgui.cpp:240
+#: qtgui.cpp:241
 msgid "InfoWindow::JAM (*.jdt)"
 msgstr ""
 
@@ -167,31 +167,31 @@ msgstr ""
 msgid "InfoWindow::Latest text &written"
 msgstr ""
 
-#: qtgui.cpp:242
+#: qtgui.cpp:243
 msgid "InfoWindow::MyPoint (mypoint.*)"
 msgstr ""
 
-#: qtgui.cpp:404
+#: qtgui.cpp:405
 msgid "InfoWindow::N/A"
 msgstr ""
 
-#: qtgui.cpp:246
+#: qtgui.cpp:247
 msgid "InfoWindow::News (.overview)"
 msgstr ""
 
-#: qtgui.cpp:568
+#: qtgui.cpp:569
 msgid "InfoWindow::None loaded"
 msgstr ""
 
-#: qtgui.cpp:256
+#: qtgui.cpp:257
 msgid "InfoWindow::Open message base"
 msgstr ""
 
-#: qtgui.cpp:234
+#: qtgui.cpp:235
 msgid "InfoWindow::Opus SDM (*.msg)"
 msgstr ""
 
-#: qtgui.cpp:375
+#: qtgui.cpp:376
 msgid "InfoWindow::Out of memory allocating area object"
 msgstr ""
 
@@ -207,7 +207,7 @@ msgstr ""
 msgid "InfoWindow::Postings per &hour"
 msgstr ""
 
-#: qtgui.cpp:360
+#: qtgui.cpp:361
 msgid "InfoWindow::Reading message base"
 msgstr ""
 
@@ -219,7 +219,7 @@ msgstr ""
 msgid "InfoWindow::S&ubjects found"
 msgstr ""
 
-#: qtgui.cpp:310
+#: qtgui.cpp:311
 msgid "InfoWindow::Select area number"
 msgstr ""
 
@@ -227,15 +227,15 @@ msgstr ""
 msgid "InfoWindow::Soft&ware toplist"
 msgstr ""
 
-#: qtgui.cpp:236
+#: qtgui.cpp:237
 msgid "InfoWindow::Squish (*.sqd)"
 msgstr ""
 
-#: qtgui.cpp:578
+#: qtgui.cpp:579
 msgid "InfoWindow::Start date"
 msgstr ""
 
-#: qtgui.cpp:244
+#: qtgui.cpp:245
 msgid "InfoWindow::Tanstaafl (msgstat.tfl)"
 msgstr ""
 
@@ -243,7 +243,7 @@ msgstr ""
 msgid "InfoWindow::Top &domains represented"
 msgstr ""
 
-#: qtgui.cpp:385
+#: qtgui.cpp:386
 msgid "InfoWindow::You cannot mix Fidonet and Usenet areas"
 msgstr ""
 
@@ -549,7 +549,7 @@ msgstr ""
 msgid "TopListWindow::Receivers"
 msgstr ""
 
-#: qtlist.cpp:475
+#: qtlist.cpp:478
 msgid "TopListWindow::Save toplist"
 msgstr ""
 
@@ -577,11 +577,15 @@ msgstr ""
 msgid "TopListWindow::Subjects"
 msgstr ""
 
+#: qtlist.cpp:470
+msgid "TopListWindow::Tab separated file (*.tsv)"
+msgstr ""
+
 #: qtlist.cpp:456
 msgid "TopListWindow::This list is empty"
 msgstr ""
 
-#: qtlist.cpp:497
+#: qtlist.cpp:500
 msgid "TopListWindow::Unable to create the selected file"
 msgstr ""
 

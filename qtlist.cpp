@@ -1,4 +1,4 @@
-// Copyright (c) 2000 Peter Karlsson
+// Copyright (c) 2000-2001 Peter Karlsson
 //
 // $Id$
 //
@@ -457,7 +457,7 @@ void TopListWindow::saveToFile()
         return;
     }
 
-#define NUMFILTERS 3
+#define NUMFILTERS 4
     const QString filter[NUMFILTERS] =
     {
 #define PLAINTEXT 0
@@ -465,11 +465,14 @@ void TopListWindow::saveToFile()
 #define COMMA 1
         tr("Comma-separated file (*.csv)"),
 #define SEMICOLON 2
-        tr("Semi-colon separated file (*.csv)")
+        tr("Semi-colon separated file (*.csv)"),
+#define TAB 3
+        tr("Tab separated file (*.tsv)")
     };
 
     QFileDialog filedialog(QString::null,
-                           filter[0] + ";;" + filter[1] + ";;" + filter[2],
+                           filter[0] + ";;" + filter[1] + ";;" + filter[2] +
+                           ";;" + filter[3],
                            this, "savefile", true);
     filedialog.setMode(QFileDialog::AnyFile);
     filedialog.setCaption(tr("Save toplist"));
@@ -553,6 +556,10 @@ void TopListWindow::saveToFile()
                 case SEMICOLON:
                     s += ';';
                     break;
+
+                case TAB:
+                    s += '\t';
+                    break;
             }
         }
         out << s;
@@ -583,6 +590,11 @@ void TopListWindow::saveToFile()
                     case SEMICOLON:
                         s.replace(QRegExp(";"), ",");
                         s += ';';
+                        break;
+
+                    case TAB:
+                        s.replace(QRegExp("\t"), " ");
+                        s += '\t';
                         break;
                 }
             }
