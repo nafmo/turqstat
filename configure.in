@@ -1,6 +1,6 @@
 dnl Process this file with autoconf to produce a configure script.
 dnl
-dnl Copyright (c) 2000 Peter Karlsson
+dnl Copyright (c) 2000-2001 Peter Karlsson
 dnl
 dnl $Id$
 dnl
@@ -82,11 +82,8 @@ AC_SUBST(DEF)
 
 AC_EXEEXT
 
-dnl We do not (yet) support big-endian machines ----------------------------
+dnl We read binary data, so we need to know the endian ---------------------
 AC_C_BIGENDIAN
-if test "$ac_cv_c_bigendian" = "yes"; then
-  AC_MSG_ERROR(This program only supports little-endian architectures)
-fi
 
 dnl Checks for libraries ---------------------------------------------------
 AC_LANG_CPLUSPLUS
