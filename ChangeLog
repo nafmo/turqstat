@@ -1,3 +1,13 @@
+2001-04-05 - peter karlsson <peter@softwolves.pp.se>
+  mappings/
+  Makefile.in
+  configure.in
+    Added in files for character set conversions.
+
+  utility.cpp
+  utility.h
+    Added character set conversion functionality.
+
 2001-03-23 - peter karlsson <peter@softwolves.pp.se>
   debian/
     Updated build dependencies.
