@@ -92,7 +92,7 @@ bool JamRead::Transfer(time_t starttime, StatEngine &destination)
         return false;
     }
 
-    if (memcmp(baseheader.signature, Jam_signature, sizeof(Jam_signature)) != 0)
+    if (memcmp(baseheader.signature, Jam_signature, sizeof Jam_signature) != 0)
     {
         display->ErrorMessage("Illegal JAM header");
         return false;
@@ -140,7 +140,11 @@ bool JamRead::Transfer(time_t starttime, StatEngine &destination)
             return false;
         }
 
-        if  (0 == (hdrinfo.attribute & Jam_deleted))
+        bool validsignature =
+            (0 == memcmp(hdrinfo.signature, Jam_signature,
+                         sizeof Jam_signature));
+
+        if  (validsignature && 0 == (hdrinfo.attribute & Jam_deleted))
         {
             // This is message is active
             active ++;
