@@ -95,10 +95,14 @@ NntpRead::~NntpRead()
 #endif
     }
     delete[] articles;
+
+#if defined(HAVE_WINSOCK_H)
+    WSACleanup();
+#endif
 }
 
 bool NntpRead::Transfer(time_t starttime, time_t endtime,
-                             StatEngine &destination)
+                        StatEngine &destination)
 {
     // Get the output object
     TDisplay *display = TDisplay::GetOutputObject();
@@ -221,48 +225,52 @@ bool NntpRead::Transfer(time_t starttime, time_t endtime,
         return false;
     }
 
-    // Use XPAT to retrieve the Date header of all active messages,
-    // and filter out those not within range (RFC 2980 extension, might
-    // not be understood)
-    snprintf5(command, 512, "XPAT date %u-%u *\r\n", first, last);
-    response = SendCommand(command);
-    if (-1 == response)
+    if (starttime != time_t(0) || endtime != time_t(INFINITY))
     {
-        display->ErrorMessage(TDisplay::nntp_communication_problem);
-        return false;
-    }
-    else if (221 == response)
-    {
-        // 221 Header follows
-        if (!havearticlelist)
+        // Use XPAT to retrieve the Date header of all active messages,
+        // and filter out those not within range (RFC 2980 extension, might
+        // not be understood)
+        snprintf5(command, 512, "XPAT date %u-%u *\r\n", first, last);
+        response = SendCommand(command);
+        if (-1 == response)
         {
-            // LISTGROUP failed, but XPAT succeeded; set up the articles
-            // array to have true for each entry.
-            havearticlelist = true;
-            articles = new bool[last - first + 1];
-            for (unsigned int i = first; i <= last; i ++)
-            {
-                articles[i - first] = true;
-            }
+            display->ErrorMessage(TDisplay::nntp_communication_problem);
+            return false;
         }
-
-        // Headers are in <num> Header format, so (ab)use GetResponse()
-        // to retrieve them. List of headers is terminated with a ".",
-        // which gives -1.
-        unsigned int article;
-        while ((unsigned int) -1 != (article = (unsigned int) GetResponse()))
+        else if (221 == response)
         {
-            if (article >= first || article <= last &&
-                articles[article - first])
+            // 221 Header follows
+            if (!havearticlelist)
             {
-                // Article is within bounds, and is flagged as active
-                char *p = strchr(buffer, ' ');
-                time_t posted = rfcToTimeT(p + 1);
-                if (posted && (posted < starttime || posted > endtime))
+                // LISTGROUP failed, but XPAT succeeded; set up the articles
+                // array to have true for each entry.
+                havearticlelist = true;
+                articles = new bool[last - first + 1];
+                for (unsigned int i = first; i <= last; i ++)
                 {
-                    // Outside wanted interval; flag article as inactive.
-                    articles[article - first] = false;
-                    numarticles --;
+                    articles[i - first] = true;
+                }
+            }
+
+            // Headers are in <num> Header format, so (ab)use GetResponse()
+            // to retrieve them. List of headers is terminated with a ".",
+            // which gives -1.
+            unsigned int article;
+            while ((unsigned int) -1 !=
+                   (article = (unsigned int) GetResponse()))
+            {
+                if (article >= first || article <= last &&
+                    articles[article - first])
+                {
+                    // Article is within bounds, and is flagged as active
+                    char *p = strchr(buffer, ' ');
+                    time_t posted = rfcToTimeT(p + 1);
+                    if (posted && (posted < starttime || posted > endtime))
+                    {
+                        // Outside wanted interval; flag article as inactive.
+                        articles[article - first] = false;
+                        numarticles --;
+                    }
                 }
             }
         }
@@ -398,10 +406,6 @@ out:;
 
         display->UpdateProgress(++ msgn);
     }
-
-#if defined(HAVE_WINSOCK_H)
-    WSACleanup();
-#endif
 
     return true;
 }
@@ -564,7 +568,7 @@ bool NntpRead::GetLine(char *outbuffer, size_t maxlen)
                 // Ignore "interrupted" and "try again" errors.
 # if defined(HAVE_WINSOCK_H)
                 int wsa_errno = WSAGetLastError();
-                if (WSAEINTR != wsa_zerrno && WSAEAGAIN != wsa_errno)
+                if (WSAEINTR != wsa_errno && WSAEAGAIN != wsa_errno)
 # else
                 if (EINTR != errno && EAGAIN != errno)
 # endif
