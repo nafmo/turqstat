@@ -2,7 +2,7 @@
 //
 // A statistic collection program for Fidonet and Usenet systems
 // Qt version.
-// Version 2.1
+// Version 2.2
 //
 // Copyright (c) 2000-2001 Peter Karlsson
 //
@@ -60,6 +60,7 @@
 #include "sdmread.h"
 #include "tanstaaflread.h"
 #include "newsspoolread.h"
+#include "nntpread.h"
 //#include "version.h"
 #include "mytime.h"
 #include "utility.h"
@@ -74,6 +75,8 @@ InfoWindow::InfoWindow()
     QPopupMenu *filemenu = new QPopupMenu(menu);
     filemenu->insertItem(tr("&Open message base"), this, SLOT(open()),
                          CTRL+Key_O);
+    filemenu->insertItem(tr("Open &news group"), this, SLOT(opennews()),
+                         CTRL+Key_U);
     filemenu->insertItem(tr("&Clear data"), this, SLOT(clear()), CTRL+Key_L);
     filemenu->insertItem(tr("&Save report"), this, SLOT(report()), CTRL+Key_S);
     filemenu->insertSeparator();
@@ -359,18 +362,8 @@ void InfoWindow::open()
     // Transfer data
     if (area)
     {
-        progress =
-            new QProgressDialog(tr("Reading message base"), 0, 100, this,
-                                "progress", true);
-        progress->setCaption("Turquoise SuperStat");
-        progress->setMinimumDuration(1000);
-        area->Transfer(start, end, *engine);
-        engine->AreaDone();
-        hasnews = isnews;
-        hasany = true;
-
-        delete progress;
-        progress = NULL;
+        transfer(area, isnews);
+        delete area;
     }
     else
     {
@@ -380,6 +373,65 @@ void InfoWindow::open()
 
     // Update information boxes
     emit newdata();
+}
+
+void InfoWindow::opennews()
+{
+    // Select news server
+    bool ok;
+    QString server = QInputDialog::getText("Turquoise SuperStat",
+                                           tr("Please enter the news (NNTP) server from which you want to use:"),
+                                           QLineEdit::Normal, defaultserver,
+                                           &ok, this, "serverselect");
+    if (!ok)
+    {
+        // User pressed cancel
+        return;
+    }
+
+    // Select group name
+    QString group = QInputDialog::getText(server,
+                                          tr("Please enter the name of the news group you want to read:"),
+                                          QLineEdit::Normal, "",
+                                          &ok, this, "groupselect");
+    if (!ok)
+    {
+        // User pressed cancel
+        return;
+    }
+
+    // Transfer data
+    defaultserver = server;
+    NntpRead *area = new NntpRead(server, group);
+    if (area)
+    {
+        transfer(area, true);
+        delete area;
+    }
+    else
+    {
+        QMessageBox::warning(this, "Turquoise SuperStat",
+                             tr("Out of memory allocating area object"));
+    }
+
+    // Update information boxes
+    emit newdata();
+}
+
+void InfoWindow::transfer(AreaRead *area, bool isnews)
+{
+    progress =
+        new QProgressDialog(isnews ? tr("Reading news group")
+                                   : tr("Reading message base"), 0, 100, this,
+                            "progress", true);
+    progress->setCaption("Turquoise SuperStat");
+    progress->setMinimumDuration(1000);
+    area->Transfer(start, end, *engine);
+    engine->AreaDone();
+    hasnews = isnews;
+    hasany = true;
+
+    delete progress;
 }
 
 void InfoWindow::incompatible()
