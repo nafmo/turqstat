@@ -1,6 +1,7 @@
 turqstat (2.1) unstable; urgency=low
 
   * Cleaned up Debianization slightly.
+  * Made it possible to select date ranges for input.
 
  -- peter karlsson <peterk@debian.org>  UNRELEASED
 

@@ -86,6 +86,13 @@ Data selection:
    Selects the maximum number of entries in the toplists. The default is 15. 0
    indicates no limit.
 
+-r <range>
+   Selects a range of dates and times for which statistics will be gathered.
+   The range is given on the form [yyyymmdd[Thhmmss]]-[yyyymmdd[Thhmmss]].
+   Examples: 20000101T000000-20001231T235959 is all of 2000, -20010101 is
+   everything before (not including) January 1st, 2001, and 20010101- is
+   everything from (and including) January 1st, 2001.
+
 Input selection:
 
 -a <path>
@@ -279,6 +286,7 @@ HISTORY
   Corrections to Debian packaging.
 2001-  -   - v2.1 -
   Use OS/2 and Win32 API functions to get locale date.
+  Implemented date ranges.
 
 
 INCLUDED FILES

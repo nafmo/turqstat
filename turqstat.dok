@@ -85,6 +85,13 @@ Dataurval:
    V„ljer maximalt antal poster i topplistorna. F”rinst„llt v„rde „r 15. 0
    anger att ingen gr„ns anv„nds.
 
+-r <intervall>
+   V„ljer ett intervall av datum och tider f”r vilka statistik insamlas.
+   Intervallet anges p† formen [††††mmdd[Thhmmss]]-[††††mmdd[Thhmmss]].
+   Exempel: 20000101T000000-20011231T235959 „r hela 2000, -20010101 „r allting
+   f”re (exklusive) 1 januari 2001, och 20010101- „r allting fr†n (och med)
+   1 januari 2001.
+
 Val av indata:
 
 -a <s”kv„g>
@@ -279,6 +286,7 @@ HISTORIK
   Korrigeringar i Debianpaketering.
 2001-  -   - v2.1 -
   Anv„nd OS/2- och Win32-API-funktioner f”r att h„mta lokalt datumformat.
+  Implementerade datumintervall.
 
 
 BIFOGADE FILER
