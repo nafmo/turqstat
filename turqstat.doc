@@ -66,8 +66,7 @@ These extra options are available:
 
 -d <days>
    Selects the number of days back to count messages from. The default is
-   0, which mean count all messages. The message arrival time is used, not
-   the message creation date stamp.
+   0, which mean count all messages.
 
 -n <num>
    Selects the maximum number of entries in the toplists. The default is 15.
@@ -81,17 +80,19 @@ These extra options are available:
    be the base name of the Squish files.
 
 -m Selects FTSC *.MSG style message base. The areapath parameter should be the
-   directory in which the messagebase resides. This message base type lacks
-   arrival dates, so the -d parameter will work on write dates.
+   directory in which the messagebase resides.
 
 -o Selects Opus *.MSG style message base. The areapath parameter should be the
-   directory in which the messagebase resides. Opus *.MSG does have arrival
-   dates.
+   directory in which the messagebase resides.
 
 -j Select JAM style message base. The areapath parameter should be the base
    name of the JAM files.
 
 -f Selects FDAPX/w style message base. Requires the use of the -a parameter
+   to select the area number (1-1999). The areapath parameter should be the
+   directory in which the message base files resides.
+
+-t Selects tanstaafl style message base. Requires the use of the -a parameter
    to select the area number (1-1999). The areapath parameter should be the
    directory in which the message base files resides.
 
@@ -133,6 +134,19 @@ will give you a quick help screen with an overview of the available
 options.
 
 
+TIME STAMPS
+
+To calculate which messages are to be covered by the statisticts or not, the
+arrival time is used, since messages can take different amounts of time to
+arrive. This ensures that if you each week take statistics over the last seven
+days, you will always get all messages that arrived during the last week, not
+missing messages which happen to have taken half a week to arrive.
+
+However, some message base formats, notably FTSC *.MSG and tanstaafl
+message bases, lack an arrival time stamp, so in these cases the date written
+stamp will be used instead.
+
+
 HISTORY
 
 1999-06-06 - v1.0 - First public release
@@ -150,16 +164,16 @@ HISTORY
   Supports combined statistics from more than one echo.
   NB! The order of the command line parameters has changed.
   Added toplist of average original content per message.
+  Added support for tanstaafl message bases.
 
 
 INCLUDED FILES
 
 turqstat.exe - Main executable file (OS2 or Win32)
-turqstat     - Main executable file (Linux)
 turqstat.doc - This documentation
 turqstat.dok - Documentation in Swedish
 copying      - The GNU General Public License, version 2
-source.rar   - Archive containing the source code (source.tar.gz for Unix):
+source.rar   - Archive containing the source code:
   Makefile        - Makefile for EMX (nmake)
   Makefile.CygWin - Makefile for CygWin32 (GNU make) (unsupported)
   Makefile.linux  - Makefile for GNU C++ on Linux (GNU make)
@@ -176,6 +190,8 @@ source.rar   - Archive containing the source code (source.tar.gz for Unix):
   squishread.h    - Header file for the above
   sdmread.cpp     - Access sources for *.MSG message bases
   sdmread.h       - Header file for the above
+  tanstaaflread.cpp Access sources for tanstaafl message bases
+  tanstaaflread.h - Header file for the above
   statengine.cpp  - The statistics gathering engine
   statengine.h    - Header file for the above
   statview.cpp    - The "view", creates the output file
@@ -185,11 +201,16 @@ source.rar   - Archive containing the source code (source.tar.gz for Unix):
   datatypes.h     - Compiler-independent datatype declarations
   version.h       - Current version number
 
+The Unix distribution consists of a .tar.gz containing all the sources from
+the "source.rar" listed above, plus the documentation files. No binaries are
+included. It also contains a debian subdirectory which has control files for
+creating a Debian binary package.
+
 
 REQUIREMENTS FOR COMPILATION
 
 The program was developed under OS/2 using EMX 0.9c/GNU C/C++ 2.7.2.1 and
-Debian pre-2.2 with gcc 2.95.1, and has also been tested under CygWin b20.
+Debian pre-2.2 with gcc 2.95.2, and has also been tested under CygWin b20.
 It should compile using any standard C++ compiler. The program must
 probably be rewritten to support "big endian" processors.
 
