@@ -10,6 +10,22 @@
   makedist.sh
     Include CVS version id.
 
+  datatypes.h
+  fdapxread.cpp
+  fdapxread.h
+  jamread.cpp
+  jamread.h
+  mypointread.cpp
+  mypointread.h
+  sdmread.cpp
+  sdmread.h
+  squishread.cpp
+  squishread.h
+  tanstaaflread.cpp
+  tanstaaflread.h
+    Rewrote to use stdint.h defined types if available, and only include
+    datatypes.h detection when it is not.
+
 2000-04-09 - peter karlsson <peter@softwolves.pp.se>
   Merged branch dealing with autoconf:
 
