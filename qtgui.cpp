@@ -26,6 +26,11 @@
 # include <locale.h>
 #endif
 
+#include <qglobal.h>
+#if QT_VERSION < 210
+# error This program is written for Qt version 2.1.0 or later
+#endif
+
 #include <qapplication.h>
 #include <qpopupmenu.h>
 #include <qmenubar.h>
@@ -212,25 +217,33 @@ InfoWindow *InfoWindow::getMainWindow()
 // Open a message base
 void InfoWindow::open()
 {
-    QString fileselect =
-        QFileDialog::getOpenFileName(QString::null, 
-                                     tr("FTSC/Opus SDM (*.msg);;"
-                                        "Squish (*.sqd);;"
-                                        "FDAPX/w (msgstat.apx);;"
-                                        "JAM (*.jdt);;"
-                                        "MyPoint (mypoint.*);;"
-                                        "Tanstaafl (msgstat.tfl);;"
-                                        "News (*)"), this);
+    QFileDialog filedialog(QString::null,
+                           "FTSC SDM (*.msg);;"
+                           "Opus SDM (*.msg);;"
+                           "Squish (*.sqd);;"
+                           "FDAPX/w (msgstat.apx);;"
+                           "JAM (*.jdt);;"
+                           "MyPoint (mypoint.*);;"
+                           "Tanstaafl (msgstat.tfl);;"
+                           "News (.overview)", this, "fileselect", true);
+    filedialog.setMode(QFileDialog::ExistingFile);
+    filedialog.setCaption(tr("Open message base"));
+    filedialog.setShowHiddenFiles(true);
+    if (filedialog.exec() != QDialog::Accepted)
+    {
+        return;
+    }
 
+    QString fileselect = filedialog.selectedFile();
     if (fileselect.isEmpty()) return;
+
+    QString filter = filedialog.selectedFilter();
 
     AreaRead *area = NULL;
     const char *path = fileselect.latin1();
     bool isnews = false;
 
-    // Determine what we got based on the file name (yes, that is ugly, but
-    // what else can we do?)
-    if (fileselect.find(QRegExp("*.msg", false, true)) != -1)
+    if (filter == "FTSC SDM (*.msg)")
     {
         // "*.msg" - Determine FTSC/Opus style
         if (hasany && hasnews)
@@ -239,11 +252,24 @@ void InfoWindow::open()
             return;
         }
 
-#warning Determine SDM style
         QMessageBox::information(this, "Turquoise SuperStat",
-                                tr("FTSC/Opus style message base"));
+                                tr("FTSC style message base"));
+#warning Implement
     }
-    else if (fileselect.find(QRegExp("*.sqd", false, true)) != -1)
+    else if (filter == "Opus SDM (*.msg)")
+    {
+        // "*.msg" - Determine FTSC/Opus style
+        if (hasany && hasnews)
+        {
+            incompatible();
+            return;
+        }
+
+        QMessageBox::information(this, "Turquoise SuperStat",
+                                tr("Opus style message base"));
+#warning Implement
+    }
+    else if (filter == "Squish (*.sqd)")
     {
         // Squish
         if (hasany && hasnews)
@@ -257,7 +283,7 @@ void InfoWindow::open()
 
         area = new SquishRead(path);
     }
-    else if (fileselect.find(QRegExp("*.apx", false, true)) != -1)
+    else if (filter == "FDAPX/w (msgstat.apx)")
     {
         // FDAPX/w
         if (hasany && hasnews)
@@ -272,7 +298,7 @@ void InfoWindow::open()
 #warning Ask for area number
 //        area = new FdApxRead(path, 1);
     }
-    else if (fileselect.find(QRegExp("*.jdt", false, true)) != -1)
+    else if (filter == "JAM (*.jdt)")
     {
         // JAM
         if (hasany && hasnews)
@@ -286,7 +312,7 @@ void InfoWindow::open()
 
         area = new JamRead(path);
     }
-    else if (fileselect.find(QRegExp("*.tfl", false, true)) != -1)
+    else if (filter == "Tanstaafl (msgstat.tfl)")
     {
         // Taanstafl
         if (hasany && hasnews)
@@ -301,7 +327,7 @@ void InfoWindow::open()
 #warning Ask for area number
 //        area = new TanstaaflRead(path, 1);
     }
-    else if (fileselect.find(QRegExp("*mypoint.*", false, true)) != -1)
+    else if (filter == "MyPoint (mypoint.*)")
     {
         // MyPoint
         if (hasany && hasnews)
@@ -316,7 +342,7 @@ void InfoWindow::open()
 #warning Ask for area number
 //        area = new MyPointRead(path, 1);
     }
-    else if (fileselect.find(QRegExp(".*/[0-9]*$", false)) != -1)
+    else if (filter == "News (.overview)")
     {
         // News spool
         if (hasany && !hasnews)
