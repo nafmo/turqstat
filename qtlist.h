@@ -31,7 +31,8 @@ class TopListWindow : public QDialog
 public:
     enum toplist_e
     {
-        Quoters
+        Quoters, Senders, OrigContent, FidoNets, Domains, Receivers,
+        Subjects, Software
     };
 
 
@@ -41,10 +42,18 @@ public:
     void fillOut(StatEngine *engine);
 
 protected:
-    void setupQuotersHeaders();
-    void addQuoters(StatEngine *engine);
+    void setupHeaders();
+    void addQuoters(StatEngine *);
+    void addSenders(StatEngine *);
+    void addOriginalContent(StatEngine *);
+    void addFidoNets(StatEngine *);
+    void addDomains(StatEngine *);
+    void addReceivers(StatEngine *);
+    void addSubjects(StatEngine *);
+    void addSoftware(StatEngine *);
 
     char *charConvertCopy(string &);
+    QString percentString(int, int);
 
     QListView   *listview;
 

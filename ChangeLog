@@ -1,3 +1,12 @@
+2000-07-14 - peter karlsson <peter@softwolves.pp.se>
+  qtgui.cpp
+  qtgui.h
+  qtlist.cpp
+  qtlist.h
+    Added display code for the remaining top lists
+    (senders, original content, Fidonet nets, Internet topdomains,
+     receivers, subjects, software)
+
 2000-06-23 - peter karlsson <peter@softwolves.pp.se>
   Makefile.in
     Renamed moc files to conform to the Qt standard and added moc files

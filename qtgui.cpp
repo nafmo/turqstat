@@ -419,6 +419,88 @@ void InfoWindow::quotelist()
     }
 }
 
+void InfoWindow::senderlist()
+{
+    TopListWindow *senderdialog =
+        new TopListWindow(this, "senderlist", TopListWindow::Senders);
+    if (senderdialog)
+    {
+        senderdialog->fillOut(engine);
+        senderdialog->show();
+    }
+}
+
+void InfoWindow::contentlist()
+{
+    TopListWindow *contentdialog =
+        new TopListWindow(this, "contentlist", TopListWindow::OrigContent);
+    if (contentdialog)
+    {
+        contentdialog->fillOut(engine);
+        contentdialog->show();
+    }
+}
+
+void InfoWindow::fidonetlist()
+{
+    TopListWindow *fidonetsdialog =
+        new TopListWindow(this, "netlist", TopListWindow::FidoNets);
+    if (fidonetsdialog)
+    {
+        fidonetsdialog->fillOut(engine);
+        fidonetsdialog->show();
+    }
+}
+
+void InfoWindow::domainlist()
+{
+    TopListWindow *domaindialog =
+        new TopListWindow(this, "domainlist", TopListWindow::Domains);
+    if (domaindialog)
+    {
+        domaindialog->fillOut(engine);
+        domaindialog->show();
+    }
+}
+
+void InfoWindow::receiverlist()
+{
+    TopListWindow *receiverdialog =
+        new TopListWindow(this, "receiverlist", TopListWindow::Receivers);
+    if (receiverdialog)
+    {
+        receiverdialog->fillOut(engine);
+        receiverdialog->show();
+    }
+}
+
+void InfoWindow::subjectlist()
+{
+    TopListWindow *subjectdialog =
+        new TopListWindow(this, "subjectlist", TopListWindow::Subjects);
+    if (subjectdialog)
+    {
+        subjectdialog->fillOut(engine);
+        subjectdialog->show();
+    }
+}
+
+void InfoWindow::softwarelist()
+{
+    TopListWindow *softwaredialog =
+        new TopListWindow(this, "softwaredialog", TopListWindow::Software);
+    if (softwaredialog)
+    {
+        softwaredialog->fillOut(engine);
+        softwaredialog->show();
+    }
+}
+
+void InfoWindow::timelist()
+{
+}
+
+
 // Program entry
 int main(int argc, char *argv[])
 {

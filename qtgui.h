@@ -74,14 +74,14 @@ public slots:
     void open();
     void save() {};
     void quotelist();
-    void senderlist() {};
-    void contentlist() {};
-    void fidonetlist() {};
-    void domainlist() {};
-    void receiverlist() {};
-    void subjectlist() {};
-    void softwarelist() {};
-    void timelist() {};
+    void senderlist();
+    void contentlist();
+    void fidonetlist();
+    void domainlist();
+    void receiverlist();
+    void subjectlist();
+    void softwarelist();
+    void timelist();
     void update();
 
 signals:
