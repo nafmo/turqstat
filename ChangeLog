@@ -1,3 +1,27 @@
+2000-06-23 - peter karlsson <peter@softwolves.pp.se>
+  Makefile.in
+    Renamed moc files to conform to the Qt standard and added moc files
+    to the clean target.
+
+  qtgui.cpp
+  qtgui.h
+    Implemented code for displaying of quoter toplist.
+
+  qtlist.cpp
+  qtlist.h
+    Added Qt toplist display dialog code to the repository.
+
+2000-06-22 - peter karlsson <peter@softwolves.pp.se>
+  outputqt.cpp
+  qtgui.cpp
+  qtgui.h
+    Added Qt GUI related files.
+
+  Makefile.in
+    Added Qt files to the Makefile. No Qt specific autoconf stuff yet.
+
+[End of qtgui branch specific changes]
+
 2000-06-22 - peter karlsson <peter@softwolves.pp.se>
   debian/
     Updated to use latest debhelper.
