@@ -1,6 +1,6 @@
 Turquoise SuperStat 2.2 - Ett mötesstatistikprogram för Fidonet och Usenet
-(c) Copyright 1998-2001 Peter Karlsson.
-A Softwolves Software Release in 2001
+(c) Copyright 1998-2002 Peter Karlsson.
+A Softwolves Software Release in 2002
 
 http://www.softwolves.pp.se/sw/
 
@@ -201,6 +201,11 @@ statistik måste du använda menyerna, enligt nedan.
 
 Läser statistik för en meddelandebas och visar statistik i huvudfönstret.
 
+ Arkiv - Öppna diskussionsgrupp
+
+Läser statistik för en diskussionsgrupp på en diskussionsgruppsserver (news)
+och visar statistik i huvudfönstret.
+
  Arkiv - Töm data
 
 Tömmer all inläst data och återställer den visade statistiken.
@@ -234,8 +239,9 @@ vecka, så kommer du alltid få samtliga meddelanden som ankommit under veckan,
 utan att missa meddelanden som har tagit en halv vecka för att komma fram.
 
 Dock saknar vissa meddelandebasformat, nämligen FTSC *.MSG och tanstaafls
-format, dessa ankomsttider. Därför kommer i dessa fall datumet när texten
-skrivits istället att användas. För Usenet news anses filskapandedatumet vara
+format, dessa ankomsttider, så gör även diskussionsgrupper som hämtas över
+NNTP. Därför kommer i dessa fall datumet när texten skrivits istället att
+användas. För lokalt lagrad Usenet news anses filskapandedatumet vara
 ankomsttiden.
 
 
@@ -375,6 +381,8 @@ src/-katalogen:
   qtgui.h         - Prototypfil för ovanstående
   qtlist.cpp      - Listfönster (Qt)
   qtlist.h        - Prototypfil för ovanstående
+  qtprogress.cpp  - Enkel förloppsindikator (Qt)
+  qtprogress.h    - Prototypfil för ovanstående
   qtreport.cpp    - Statistikspararfönster (Qt)
   qtreport.h      - Prototypfil för ovanstående
   teal.cpp        - Enkelt teckenkonverteringsprogram
@@ -417,7 +425,7 @@ KRAV FÖR KOMPILERING
 Programmet utvecklades under OS/2 med EMX 0.9d/GNU C/C++ 2.8.1, Debian 2.2
 med gcc 2.95.4 och Win32 med Mingw32 (gcc 2.95.2).
 
-Den grafiska versionen kräver att Qt version 2.1 eller senare finns
+Den grafiska versionen kräver att Qt version 2.3 eller senare finns
 installerat.
 
 Om du vill skapa ett Debianpaket måste du installera Debians utvecklingspaket,

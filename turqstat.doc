@@ -1,6 +1,6 @@
 Turquoise SuperStat 2.2 - An area statistics program for Fidonet and Usenet
-(c) Copyright 1998-2001 Peter Karlsson.
-A Softwolves Software Release in 2001
+(c) Copyright 1998-2002 Peter Karlsson.
+A Softwolves Software Release in 2002
 
 http://www.softwolves.pp.se/sw/
 
@@ -201,6 +201,11 @@ use the menus, as described below.
 Reads statistics for a message base and displays statistics in the main
 window.
 
+ File - Open news group
+
+Reads statistics for a news group on a news server and displays statistics
+in the main window.
+
  File - Clear data
 
 Clears all loaded data and resets the displayed statistics.
@@ -234,9 +239,10 @@ days, you will always get all messages that arrived during the last week, not
 missing messages which happen to have taken half a week to arrive.
 
 However, some message base formats, notably FTSC *.MSG and tanstaafl message
-bases, lack an arrival time stamp, so in these cases the date written stamp
-will be used instead. For Usenet news spools, the file create date is
-considered to be the arrival time.
+bases, as well as news group data retrieved over NNTP, lack an arrival time
+stamp, so in these cases the date written stamp will be used instead. For
+local Usenet news spools, the file create date is considered to be the arrival
+time.
 
 
 USENET IN FIDONET FORMAT
@@ -375,6 +381,8 @@ src/ directory:
   qtgui.h         - Header file for the above
   qtlist.cpp      - List window (Qt)
   qtlist.h        - Header file for the above
+  qtprogress.cpp  - Simple progress window (Qt)
+  qtprogress.h    - Header file for the above
   qtreport.cpp    - Statistic saving window (Qt)
   qtreport.h      - Header file for the above
   teal.cpp        - Simple character conversion application
@@ -417,7 +425,7 @@ REQUIREMENTS FOR COMPILATION
 The program was developed under OS/2 using EMX 0.9d/GNU C/C++ 2.8.1, Debian
 2.2 with gcc 2.95.4 and Win32 with Mingw32 (gcc 2.95.2).
 
-The GUI version requires Qt version 2.1 or later to be installed.
+The GUI version requires Qt version 2.3 or later to be installed.
 
 To create a Debian package you need to install Debian's developer packages,
 including debhelper and fakeroot (if you do not want to compile as root). At

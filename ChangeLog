@@ -11,6 +11,10 @@
   qtbars.cpp
     Call proper constructor.
 
+  turqstat.dok
+  turqstat.doc
+    Documentation updates.
+
 2002-02-23 - peter karlsson <peter@softwolves.pp.se>
   convert.cpp
   convert.h
