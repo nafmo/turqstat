@@ -18,6 +18,7 @@
 #ifndef __UTILITY_H
 #define __UTILITY_H
 
+#include <config.h>
 #include <string>
 #include <time.h>
 #include <limits.h>
@@ -48,6 +49,9 @@ struct stamp_s
 # pragma pack()
 #endif
 
+/** Highest possible time_t value */
+#define INFINITY (1L << (8 * SIZEOF_TIME_T - 1))
+
 /**
  * Compare two strings case in-sensitively.
  * @param s1  First string to compare.
@@ -77,7 +81,7 @@ time_t asciiToTimeT(const char *datetime);
  * @param datetime RFC style date-time string.
  * @return Number of seconds since epoch (ignoring timezones). -1 on error.
  */
-time_t rfcToTimeT(const string &datetime);
+time_t rfcToTimeT(string datetime);
 
 /**
  * Convert time specification as used in command line date ranges to time_t.
