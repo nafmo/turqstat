@@ -1,7 +1,7 @@
 .\" $Id$
 .TH TURQSTAT 1 2001 "Softwolves Software" ""
 .SH NAMN
-turqstat \- M”tesstatistikprogram f”r Fidonet och Usenet
+turqstat \- Mötesstatistikprogram för Fidonet och Usenet
 .SH SYNOPS
 .PD 0
 .B turqstat
@@ -9,62 +9,62 @@ turqstat \- M”tesstatistikprogram f”r Fidonet och Usenet
 .PD
 .SH BESKRIVNING
 .B Turquoise SuperStat
-l„ser inneh†llet i en Fidonetmeddelandebas i n†got av de st”dda formaten,
+läser innehållet i en Fidonetmeddelandebas i något av de stödda formaten,
 eller Usenetgrupper i det vanliga "news spool"-formatet, och skapar
-statistik inom f”ljande omr†den:
+statistik inom följande områden:
 .RS
 .PP
-.I Svartlista ”ver citatvolym.
+.I Svartlista över citatvolym.
 .PP
-.I Topplista ”ver avs„ndare.
+.I Topplista över avsändare.
 .PP
-.I Topplista ”ver originalinneh†ll per meddelande.
+.I Topplista över originalinnehåll per meddelande.
 .PP
-.I Topplista ”ver Fidonetn„t (endast Fidonet).
+.I Topplista över Fidonetnät (endast Fidonet).
 .PP
-.I Topplista ”ver Internet-toppdom„ner.
+.I Topplista över Internet-toppdomäner.
 .PP
-.I Topplista ”ver mottagare (endast Fidonet).
+.I Topplista över mottagare (endast Fidonet).
 .PP
-.I Topplista ”ver „renderader.
+.I Topplista över ärenderader.
 .PP
-.I Topplista ”ver programvara.
+.I Topplista över programvara.
 .PP
 .I Postningar per veckodag.
 .PP
-.I Postningar per tid p† dygnet.
+.I Postningar per tid på dygnet.
 .RE
 .PD
 .SH FLAGGOR
 .SS DATAURVAL
 .TP
 .I \-d dagar
-V„ljer det antal dagar tillbaka som meddelanden skall r„knas fr†n. Det
-f”rinst„llda v„rdet „r 0, vilket betyder att r„kna alla meddelanden.
+Väljer det antal dagar tillbaka som meddelanden skall räknas från. Det
+förinställda värdet är 0, vilket betyder att räkna alla meddelanden.
 .TP
 .I \-n antal
-V„ljer maximalt antal poster i topplistorna. F”rinst„llt v„rde „r 15. 0
-anger att ingen gr„ns anv„nds.
+Väljer maximalt antal poster i topplistorna. Förinställt värde är 15. 0
+anger att ingen gräns används.
 .TP
 .I \-r intervall
-V„ljer ett intervall av datum och tider f”r vilka statistik insamlas.
-Intervallet anges p† formen
-.RI [ ††††mmdd [T hhmmss ]]\-[ ††††mmdd [T hhmmss ]].
+Väljer ett intervall av datum och tider för vilka statistik insamlas.
+Intervallet anges på formen
+.RI [ ååååmmdd [T hhmmss ]]\-[ ååååmmdd [T hhmmss ]].
 Exempel:
 .B 20000101T000000\-20001231T235959
-„r hela 2000,
+är hela 2000,
 .B \-20010101
-„r allting f”re (exklusive) 1 januari 2001, och
+är allting före (exklusive) 1 januari 2001, och
 .B 20010101\-
-„r allting fr†n (och med) 1 januari 2001.
+är allting från (och med) 1 januari 2001.
 .SS "VAL AV INDATA"
 .TP
-.I \-a s”kv„g
-V„ljer meddelandebass”kv„g f”r FXAPX/w-, MyPoint- och
+.I \-a sökväg
+Väljer meddelandebassökväg för FXAPX/w-, MyPoint- och
 tanstaaflmeddelandebaser, vilka har alla meddelandebaser i samma filer.
 .TP
 .I \-s
-Squishmeddelandebaser (f”rval).
+Squishmeddelandebaser (förval).
 .TP
 .I \-m
 FTSC *.MSG-meddelandebaser.
@@ -87,64 +87,71 @@ MyPointmeddelandebaser.
 .I \-u
 Usenet news spool.
 .SS "VAL AV TOPPLISTOR"
-Dessa flaggor anv„nds f”r att st„nga av topplistor.
-Som f”rval „r alla topplistor p†slagna (f”rutom Internet-toppdom„n, se
+Dessa flaggor används för att stänga av topplistor.
+Som förval är alla topplistor påslagna (förutom Internet-toppdomän, se
 nedan).
 .TP
 .I \-Q
-St„nger av citatvolymssvartlistan.
+Stänger av citatvolymssvartlistan.
 .TP
 .I \-W
-St„nger av avs„ndartopplistan.
+Stänger av avsändartopplistan.
 .TP
 .I \-O
-St„nger av originalinneh†llstopplista.
+Stänger av originalinnehållstopplista.
 .TP
 .I \-N
-St„nger av n„ttopplistan (enbart Fidonet).
+Stänger av nättopplistan (enbart Fidonet).
 .TP
 .I \-T
-St„nger av/sl†r p† topplistan ”ver Internet-toppdom„ner. F”r Usenet „r
-f”rval p†, varp† denna flagga st„nger av det. F”r Fidonet „r f”rval av,
-varp† denna flagga sl†r p† det, men endast om RFC-gate:ade meddelanden
+Stänger av/slår på topplistan över Internet-toppdomäner. För Usenet är
+förval på, varpå denna flagga stänger av det. För Fidonet är förval av,
+varpå denna flagga slår på det, men endast om RFC-gate:ade meddelanden
 hittas.
 .TP
 .I \-R
-St„nger av mottagartopplista (enbart Fidonet).
+Stänger av mottagartopplista (enbart Fidonet).
 .TP
 .I \-S
-St„nger av „renderadstopplista.
+Stänger av ärenderadstopplista.
 .TP
 .I \-P
-St„nger av programtopplista.
+Stänger av programtopplista.
 .TP
 .I \-H
-St„nger av postningsstatistik per timme.
+Stänger av postningsstatistik per timme.
 .TP
 .I \-D
-St„nger av postningsstatistik per dag.
+Stänger av postningsstatistik per dag.
 .TP
 .I \-V
-St„nger av visning av versioner i programtopplista.
-.SS "UTSEENDE P UTDATA"
+Stänger av visning av versioner i programtopplista.
+.SS "UTSEENDE PÅ UTDATA"
 .TP
 .I \-A
-Visar alla siffror i topplistorna (f”rinst„llt v„rde „r av).
+Visar alla siffror i topplistorna (förinställt värde är av).
+.TP
+.I \-C teckenkodning
+Väljer teckenkodning att använda för rapportfilerna som skapas.
+Teckenkodningsnamnet kan anges med antingen dess Fidonet- eller dess
+MIME-namn.
+Förval för Win32- och OS/2-verisonen är IBMPC (teckentabell 437), och
+för alla andra versioner LATIN-1 (iso-8859-1).
 .TP
 .I \-L
-Anv„nd datumformat enligt "locale"-defintion (f”rinst„llt v„rde „r att
-anv„nda ISO-8601-format, vilket sammanfaller med EU- och svensk norm).
-.SH "SE VEN"
+Använd datumformat enligt "locale"-defintion (förinställt värde är att
+använda ISO-8601-format, vilket sammanfaller med EU- och svensk norm).
+.SH "SE ÄVEN"
 .BR turqstat (1),
 .I turqstat.dok
 .SH PROGRAMFEL
-Rapportera eventuella fel till f”rfattaren.
-.SH F™RFATTARE
+Rapportera eventuella fel till författaren.
+.SH FÖRFATTARE
 Turquoise SuperStat skrevs av Peter Karlsson.
-Om du har felrapporter eller fr†gor, s„nd e-post till
-peter@softwolves.pp.se eller se webbplatsen p†
-http://www.softwolves.pp.se/
+Om du har felrapporter eller frågor, sänd e-post till
+peter@softwolves.pp.se eller se webbplatsen på
+http://www.softwolves.pp.se/sw/
 .PP
-A Softwolves Software (tm) Release in 2000.
+A Softwolves Software (tm) Release in 2001.
 .PP
-Detta program „r sl„ppt enligt GNU General Public License, version 2.
+Detta program är släppt enligt GNU General Public License, version 2.

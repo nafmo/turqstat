@@ -1,40 +1,40 @@
-Turquoise SuperStat 2.1 - Ett m”tesstatistikprogram f”r Fidonet och Usenet
+Turquoise SuperStat 2.1 - Ett mötesstatistikprogram för Fidonet och Usenet
 (c) Copyright 1998-2001 Peter Karlsson.
 A Softwolves Software Release in 2001
 
-http://www.softwolves.pp.se/wolves/
+http://www.softwolves.pp.se/sw/
 
 
 LICENS
 
 Denna programvara distribueras i enlighet med GNU General Public License
-version 2 (GNU GPL), vilken finns i den bifogade filen COPYING, med f”ljande
-till„gg:
+version 2 (GNU GPL), vilken finns i den bifogade filen COPYING, med följande
+tillägg:
 
-Detta program kan l„nkas mot k„llkod eller bin„ra bibliotek f”r att komma †t
-Fidonetmeddelandebaser vilka inte „r f”renliga med GNU GPL, s† l„nge som
-inkluderingen av denna inte f”rhindrar den fria distributionen av
-huvudk„llkoden. Det m†ste ocks† vara m”jligt att kompilera huvudk„llkoden utan
-att anv„nda denna kod eller bin„ra bibliotek (t.ex med villkorliga
-preprocessordirektiv) och fortfarande f† en anv„ndbar bin„r.
+Detta program kan länkas mot källkod eller binära bibliotek för att komma åt
+Fidonetmeddelandebaser vilka inte är förenliga med GNU GPL, så länge som
+inkluderingen av denna inte förhindrar den fria distributionen av
+huvudkällkoden. Det måste också vara möjligt att kompilera huvudkällkoden utan
+att använda denna kod eller binära bibliotek (t.ex med villkorliga
+preprocessordirektiv) och fortfarande få en användbar binär.
 
-Bin„rer som skapas genom att l„nka mot dylik meddelandebaskod m†ste vara fritt
-distribuerbara och anv„ndbara av vem som helst (dvs. det „r inte nog att
-till†ta "enbart ickekommersiell anv„ndning"). Om detta inte kan g”ras f†r inga
-s†dana bin„rer spridas.
+Binärer som skapas genom att länka mot dylik meddelandebaskod måste vara fritt
+distribuerbara och användbara av vem som helst (dvs. det är inte nog att
+tillåta "enbart ickekommersiell användning"). Om detta inte kan göras får inga
+sådana binärer spridas.
 
-Žven med dessa undantag f”respr†kas licensiering av ny meddelandebaskod under
+Även med dessa undantag förespråkas licensiering av ny meddelandebaskod under
 GNU GPL.
 
-Detta program f†r „ven l„nkas mot alla GUI-bibliotek som m”ter kriteriet f”r
-Open Source, inklusive, men inte begr„nsat till, Troll Techs Q Public License.
-Dessutom bygger filen mytime.cpp p† EMX-biblioteket, vars licens „r som f”ljer
-(”versatt, se den engelska dokumentationen f”r originalordalydelsen): Du har
-r„tt att „ndra och kopiera emx-biblioteket om du beh†ller upphovsr„ttstexten
+Detta program får även länkas mot alla GUI-bibliotek som möter kriteriet för
+Open Source, inklusive, men inte begränsat till, Troll Techs Q Public License.
+Dessutom bygger filen mytime.cpp på EMX-biblioteket, vars licens är som följer
+(översatt, se den engelska dokumentationen för originalordalydelsen): Du har
+rätt att ändra och kopiera emx-biblioteket om du behåller upphovsrättstexten
 intakt.
 
 
-™VRIGA UPPHOVSRŽTTER
+ÖVRIGA UPPHOVSRÄTTER
 
 JAM(mbp) - Copyright 1993 Joaquim Homrighausen, Andrew Milner, Mats Birch,
 Mats Wallin. ALL RIGHTS RESERVED.
@@ -44,344 +44,367 @@ Squish, SquishMail and Maximus are trademarks of Scott J. Dudley.
 mktime.c (emx+gcc) -- Copyright (c) 1990-1996 by Eberhard Mattes
 
 
-ANVŽNDNING (KOMMANDORADSVERSIONEN)
+ANVÄNDNING (KOMMANDORADSVERSIONEN)
 
-Turquoise SuperStat l„ser inneh†llet i en Fidonetmeddelandebas i n†got av de
-st”dda formaten, eller Usenetgrupper i det vanliga "news spool"-formatet, och
-skapar statistik inom f”ljande omr†den:
+Turquoise SuperStat läser innehållet i en Fidonetmeddelandebas i något av de
+stödda formaten, eller Usenetgrupper i det vanliga "news spool"-formatet, och
+skapar statistik inom följande områden:
 
- * Svartlista ”ver citatvolym.
- * Topplista ”ver avs„ndare.
- * Topplista ”ver originalinneh†ll per meddelande.
- * Topplista ”ver Fidonetn„t (endast Fidonet).
- * Topplista ”ver Internet-toppdom„ner.
- * Topplista ”ver mottagare (endast Fidonet).
- * Topplista ”ver „renderader.
- * Topplista ”ver programvara.
+ * Svartlista över citatvolym.
+ * Topplista över avsändare.
+ * Topplista över originalinnehåll per meddelande.
+ * Topplista över Fidonetnät (endast Fidonet).
+ * Topplista över Internet-toppdomäner.
+ * Topplista över mottagare (endast Fidonet).
+ * Topplista över ärenderader.
+ * Topplista över programvara.
  * Postningar per veckodag.
- * Postningar per tid p† dygnet.
+ * Postningar per tid på dygnet.
 
-Alla statistikomr†den kan st„ngas av. Statistiken lagras i en textfil.
+Alla statistikområden kan stängas av. Statistiken lagras i en textfil.
 
-Turquoise SuperStat „r helt kommandoradsstyrd, och formatet „r som f”ljer:
+Turquoise SuperStat är helt kommandoradsstyrd, och formatet är som följer:
 
-  turqstat [flaggor] utdatafil areas”kv„g(ar)
+  turqstat [flaggor] utdatafil areasökväg(ar)
 
-d„r areas”kv„g(ar) „r s”kv„gen till meddelandebasfilen, eller m”tesnumret
-(beror p† valt meddelandebasformat). Flera s”kv„gar eller m”tesnummer kan
-anges f”r att f† kombinerad statistik f”r flera m”ten. Utdatafil „r s”kv„gen
+där areasökväg(ar) är sökvägen till meddelandebasfilen, eller mötesnumret
+(beror på valt meddelandebasformat). Flera sökvägar eller mötesnummer kan
+anges för att få kombinerad statistik för flera möten. Utdatafil är sökvägen
 till den textfil som statistiken skall skrivas till.
 
-Dessa extra kommandoradsflaggor „r tillg„ngliga (notera att alla flaggor m†ste
-f”reg† filnamn och s”kv„gar till meddelandebaser):
+Dessa extra kommandoradsflaggor är tillgängliga (notera att alla flaggor måste
+föregå filnamn och sökvägar till meddelandebaser):
 
 Dataurval:
 
 -d <dagar>
-   V„ljer det antal dagar tillbaka som meddelanden skall r„knas fr†n. Det
-   f”rinst„llda v„rdet „r 0, vilket betyder att r„kna alla meddelanden.
+   Väljer det antal dagar tillbaka som meddelanden skall räknas från. Det
+   förinställda värdet är 0, vilket betyder att räkna alla meddelanden.
 
 -n <antal>
-   V„ljer maximalt antal poster i topplistorna. F”rinst„llt v„rde „r 15. 0
-   anger att ingen gr„ns anv„nds.
+   Väljer maximalt antal poster i topplistorna. Förinställt värde är 15. 0
+   anger att ingen gräns används.
 
 -r <intervall>
-   V„ljer ett intervall av datum och tider f”r vilka statistik insamlas.
-   Intervallet anges p† formen [††††mmdd[Thhmmss]]-[††††mmdd[Thhmmss]].
-   Exempel: 20000101T000000-20011231T235959 „r hela 2000, -20010101 „r allting
-   f”re (exklusive) 1 januari 2001, och 20010101- „r allting fr†n (och med)
+   Väljer ett intervall av datum och tider för vilka statistik insamlas.
+   Intervallet anges på formen [ååååmmdd[Thhmmss]]-[ååååmmdd[Thhmmss]].
+   Exempel: 20000101T000000-20011231T235959 är hela 2000, -20010101 är allting
+   före (exklusive) 1 januari 2001, och 20010101- är allting från (och med)
    1 januari 2001.
 
 Val av indata:
 
--a <s”kv„g>
-   V„ljer meddelandebass”kv„g f”r FXAPX/w-, MyPoint- och
+-a <sökväg>
+   Väljer meddelandebassökväg för FXAPX/w-, MyPoint- och
    tanstaaflmeddelandebaser, vilka har alla meddelandebaser i samma filer.
 
--s V„ljer meddelandebaser av Squishtyp (f”rinst„llt v„rde). Areas”kv„gen skall
-   vara basnamnet p† Squishfilerna, eller namnet p† n†gon av datafilerna
-   (filtill„gget tas automatiskt bort).
+-s Väljer meddelandebaser av Squishtyp (förinställt värde). Areasökvägen skall
+   vara basnamnet på Squishfilerna, eller namnet på någon av datafilerna
+   (filtillägget tas automatiskt bort).
 
--m V„ljer meddelandebaser av FTSC-*.MSG-typ. Areas”kv„gen skall vara katalogen
+-m Väljer meddelandebaser av FTSC-*.MSG-typ. Areasökvägen skall vara katalogen
    i vilken meddelandebasen ligger.
 
--o V„ljer meddelandebaser av Opus-*.MSG-typ. Areas”kv„gen skall vara katalogen
+-o Väljer meddelandebaser av Opus-*.MSG-typ. Areasökvägen skall vara katalogen
    i vilken meddelandebasen ligger.
 
--j V„ljer meddelandebaser av JAM-typ. Areas”kv„gen skall vara basnamnet p†
-   JAM-filerna, eller namnet p† n†gon av datafilerna (filtill„gget tas
+-j Väljer meddelandebaser av JAM-typ. Areasökvägen skall vara basnamnet på
+   JAM-filerna, eller namnet på någon av datafilerna (filtillägget tas
    automatiskt bort).
 
--f V„ljer meddelandebaser av FDAPX/w-typ. Kr„ver att parametern -a anv„nds f”r
-   att v„lja meddelandebass”kv„gen. Areas”kv„gen skall vara m”tesnumret
+-f Väljer meddelandebaser av FDAPX/w-typ. Kräver att parametern -a används för
+   att välja meddelandebassökvägen. Areasökvägen skall vara mötesnumret
    (1-1999).
 
--t V„ljer meddelandebaser av tanstaafl-typ. Kr„ver att parametern -a anv„nds
-   f”r att v„lja meddelandebass”kv„gen. Areas”kv„gen skall vara m”tesnumret
+-t Väljer meddelandebaser av tanstaafl-typ. Kräver att parametern -a används
+   för att välja meddelandebassökvägen. Areasökvägen skall vara mötesnumret
    (1-1999).
 
--p V„ljer meddelandebaser av MyPoint-typ. Kr„ver att parametern -a anv„nds f”r
-   f”r att v„lja meddelandebass”kv„gen (underkatalogen AREAS). Areas”kv„gen
-   skall vara m”tesnumret.
+-p Väljer meddelandebaser av MyPoint-typ. Kräver att parametern -a används för
+   för att välja meddelandebassökvägen (underkatalogen AREAS). Areasökvägen
+   skall vara mötesnumret.
 
--u V„ljer en Usenet news-"spool". Areas”kv„gen skall vara katalogen i vilken
+-u Väljer en Usenet news-"spool". Areasökvägen skall vara katalogen i vilken
    Usenetartiklarna ligger.
 
-Du kan bara skapa statistik fr†n ett databasformat per anrop.
+Du kan bara skapa statistik från ett databasformat per anrop.
 
 Val av topplistor:
 
--Q St„nger av citatvolymsvartlistan (f”rinst„llt v„rde „r p†).
+-Q Stänger av citatvolymsvartlistan (förinställt värde är på).
 
--W St„nger av avs„ndartopplista (f”rinst„llt v„rde „r p†).
+-W Stänger av avsändartopplista (förinställt värde är på).
 
--O St„nger av originalinneh†llstopplista (f”rinst„llt v„rde „r p†).
+-O Stänger av originalinnehållstopplista (förinställt värde är på).
 
--N St„nger av n„ttopplistan (f”rinst„llt v„rde „r p†) (enbart Fidonet).
+-N Stänger av nättopplistan (förinställt värde är på) (enbart Fidonet).
 
--T St„nger av/sl†r p† topplistan ”ver Internet-toppdom„ner. F”r Usenet „r
-   f”rval p†, varp† denna flagga st„nger av det. F”r Fidonet „r f”rval av,
-   varp† denna flagga sl†r p† det, men endast om RFC-gate:ade meddelanden
+-T Stänger av/slår på topplistan över Internet-toppdomäner. För Usenet är
+   förval på, varpå denna flagga stänger av det. För Fidonet är förval av,
+   varpå denna flagga slår på det, men endast om RFC-gate:ade meddelanden
    hittas.
 
--R St„nger av mottagartopplista (f”rinst„llt v„rde „r p†) (enbart Fidonet).
+-R Stänger av mottagartopplista (förinställt värde är på) (enbart Fidonet).
 
--S St„nger av „renderadstopplista (f”rinst„llt v„rde „r p†).
+-S Stänger av ärenderadstopplista (förinställt värde är på).
 
--P St„nger av programtopplista (f”rinst„llt v„rde „r p†).
+-P Stänger av programtopplista (förinställt värde är på).
 
--H St„nger av postningsstatistik per timme (f”rinst„llt v„rde „r p†).
+-H Stänger av postningsstatistik per timme (förinställt värde är på).
 
--D St„nger av postningsstatistik per dag (f”rinst„llt v„rde „r p†).
+-D Stänger av postningsstatistik per dag (förinställt värde är på).
 
--V St„nger av visning av versioner i programtopplista (f”rinst„llt v„rde „r
-   p†).
+-V Stänger av visning av versioner i programtopplista (förinställt värde är
+   på).
 
-Utseende p† utdata:
+Utseende på utdata:
 
--A Visar alla siffror i topplistorna (f”rinst„llt v„rde „r av).
+-A Visar alla siffror i topplistorna (förinställt värde är av).
 
--L Anv„nd datumformatet enligt "locale"-definition (f”rinst„llt v„rde „r
-   att anv„nda ISO-8601-format, vilket sammanfaller med EU- och svensk
-   norm). Observera att st”det f”r lokala datumformat varierar beroende p†
+-L Använd datumformatet enligt "locale"-definition (förinställt värde är
+   att använda ISO-8601-format, vilket sammanfaller med EU- och svensk
+   norm). Observera att stödet för lokala datumformat varierar beroende på
    plattform och kompilatorer.
 
-Flaggorna kan kombineras p† kommandoraden, till exempel:
+-C <teckenkodning>
+   Väljer teckenkodning att använda för rapportfilerna som skapas.
+   Teckenkodningsnamnet kan anges med antingen dess Fidonet- eller dess
+   MIME-namn. Förval för Win32- och OS/2-verisonen är IBMPC (teckentabell
+   437), och för alla andra versioner LATIN-1 (iso-8859-1).
+
+Flaggorna kan kombineras på kommandoraden, till exempel:
 
   turqstat -mWRSPHDON d:\text\output.txt d:\msgbase\thisarea
 
-kommer att skapa (enbart) en citatvolymsvartlista f”r *.MSG-meddelandebasen i
-katalogen d:\msgbase\thisarea. Flaggorna „r skiftl„gesk„nsliga.
+kommer att skapa (enbart) en citatvolymsvartlista för *.MSG-meddelandebasen i
+katalogen d:\msgbase\thisarea. Flaggorna är skiftlägeskänsliga.
 
   turqstat -?
 
-visar en snabbhj„lpsk„rm med en ”versikt ”ver tillg„ngliga flaggor.
+visar en snabbhjälpskärm med en översikt över tillgängliga flaggor.
 
 
-ANVŽNDNING (GRAFISK VERSION)
+ANVÄNDNING (GRAFISK VERSION)
 
 Den grafiska versionen av Turquoise SuperStat har samma funktionalitet som
-kommandoradsversionen, men med alla funktioner tillg„ngliga genom ett
-l„ttanv„nt grafiskt gr„nssnitt. Den grafiska versionen byggs med Qt.
+kommandoradsversionen, men med alla funktioner tillgängliga genom ett
+lättanvänt grafiskt gränssnitt. Den grafiska versionen byggs med Qt.
 
-Huvudf”nstret i den grafiska versionen inneh†ller statistik om den f”r
-n„rvarande valda dataupps„ttningen, vilken ursprungligen „r tom. F”r att ladda
-statistik m†ste du anv„nda menyerna, enligt nedan.
+Huvudfönstret i den grafiska versionen innehåller statistik om den för
+närvarande valda datauppsättningen, vilken ursprungligen är tom. För att ladda
+statistik måste du använda menyerna, enligt nedan.
 
- Arkiv - ™ppna meddelandebas
+ Arkiv - Öppna meddelandebas
 
-L„ser statistik f”r en meddelandebas och visar statistik i huvudf”nstret.
+Läser statistik för en meddelandebas och visar statistik i huvudfönstret.
 
- Arkiv - T”m data
+ Arkiv - Töm data
 
-T”mmer all inl„st data och †terst„ller den visade statistiken.
+Tömmer all inläst data och återställer den visade statistiken.
 
  Arkiv - Spara rapport
 
-Sparar en rapport f”r den f”r tillf„llet inl„sta upps„ttningen statistik till
-en textfil, i samma format som kommandoradsversionen anv„nder.
+Sparar en rapport för den för tillfället inlästa uppsättningen statistik till
+en textfil, i samma format som kommandoradsversionen använder.
 
  Arkiv - Avsluta
 
-L„mnar programmet.
+Lämnar programmet.
 
- Redigera - V„lj startdatum
+ Redigera - Välj startdatum
 
-L†ter dig v„lja fr†n hur m†nga dagar bak†t statistiken skall l„sas in n„r du
-anv„nder dig av Arkiv - ™ppna meddelandebas.
+Låter dig välja från hur många dagar bakåt statistiken skall läsas in när du
+använder dig av Arkiv - Öppna meddelandebas.
 
  Visa
 
-Denna meny visar de olika topplistorna som finns att tillg†. Se stycket om
-kommandoradsversionen f”r mer detaljerade beskrivningar.
+Denna meny visar de olika topplistorna som finns att tillgå. Se stycket om
+kommandoradsversionen för mer detaljerade beskrivningar.
 
 
-TIDSSTŽMPLAR
+TIDSSTÄMPLAR
 
-F”r att best„mma vilka meddelanden som skall t„ckas av statistiken eller inte
-anv„nds ankomsttiden, eftersom olika meddelanden kan ta olika l†ng tid p† sig
-att komma fram. Detta s„kerst„ller att om du tar ut sju dagars statistik varje
-vecka, s† kommer du alltid f† samtliga meddelanden som ankommit under veckan,
-utan att missa meddelanden som har tagit en halv vecka f”r att komma fram.
+För att bestämma vilka meddelanden som skall täckas av statistiken eller inte
+används ankomsttiden, eftersom olika meddelanden kan ta olika lång tid på sig
+att komma fram. Detta säkerställer att om du tar ut sju dagars statistik varje
+vecka, så kommer du alltid få samtliga meddelanden som ankommit under veckan,
+utan att missa meddelanden som har tagit en halv vecka för att komma fram.
 
-Dock saknar vissa meddelandebasformat, n„mligen FTSC *.MSG och tanstaafls
-format, dessa ankomsttider. D„rf”r kommer i dessa fall datumet n„r texten
-skrivits ist„llet att anv„ndas. F”r Usenet news anses filskapandedatumet vara
+Dock saknar vissa meddelandebasformat, nämligen FTSC *.MSG och tanstaafls
+format, dessa ankomsttider. Därför kommer i dessa fall datumet när texten
+skrivits istället att användas. För Usenet news anses filskapandedatumet vara
 ankomsttiden.
 
 
 USENET I FIDONETFORMAT
 
-Turquoise har funktionalitet f”r att hantera Usenetmeddelanden i Fidonetformat
-om de f”ljer g„ngse (de facto-)standarder. Kontrolldata enligt FSC-0035
-(REPLYADDR) hanteras, och adressen d„ri anv„nds i st„llet f”r Fidonetadressen.
+Turquoise har funktionalitet för att hantera Usenetmeddelanden i Fidonetformat
+om de följer gängse (de facto-)standarder. Kontrolldata enligt FSC-0035
+(REPLYADDR) hanteras, och adressen däri används i stället för Fidonetadressen.
 Dessutom hanteras RFC-huvudrader som skrivs direkt som Fidonetkontrollrader,
-eller med prefixed "RFC-", vilka b†da „r vanligt f”rekommande.
+eller med prefixed "RFC-", vilka båda är vanligt förekommande.
 
 
 HISTORIK
 
-1999-06-06 - v1.0 - F”rsta sl„ppta version
+1999-06-06 - v1.0 - Första släppta version
 1999-07-03 - v1.1 -
-  Lade till st”d f”r revision 3 av MyPoints meddelandedatabaser.
-  MyPoint anv„nder areanummer, precis som FDAPX/w.
-  Listan ”ver versioner „r sorterad.
+  Lade till stöd för revision 3 av MyPoints meddelandedatabaser.
+  MyPoint använder areanummer, precis som FDAPX/w.
+  Listan över versioner är sorterad.
   Buggfixar.
 1999-07-21 - v1.2 -
-  Anv„nder inte l„ngre SMAPI, utan har egna rutiner f”r Squish/*.MSG.
-  St”der *.MSG av b†de FTSC- och Opustyp.
-  Diverse felr„ttelser.
-  Windows- och Linuxversionerna fungerar (b„ttre) nu.
+  Använder inte längre SMAPI, utan har egna rutiner för Squish/*.MSG.
+  Stöder *.MSG av både FTSC- och Opustyp.
+  Diverse felrättelser.
+  Windows- och Linuxversionerna fungerar (bättre) nu.
 2000-03-25 - v1.3 -
-  St”der kombinerad statistik fr†n flera m”ten.
-  OBS! Ordningen p† kommandoradsparametrarna har „ndrats.
-  Lade till topplista ”ver medeloriginalinneh†ll per meddelande.
-  Lade till st”d f”r tanstaafl-meddelandebaser.
-  Lade till st”d f”r Usenet news-"spool".
+  Stöder kombinerad statistik från flera möten.
+  OBS! Ordningen på kommandoradsparametrarna har ändrats.
+  Lade till topplista över medeloriginalinnehåll per meddelande.
+  Lade till stöd för tanstaafl-meddelandebaser.
+  Lade till stöd för Usenet news-"spool".
   Linuxversion distribueras som .deb-fil.
-  Diverse felr„ttelser.
+  Diverse felrättelser.
 2000-04-14 - v1.3.1 -
-  R„ttade *.MSG- och news-"spool"-st”d f”r OS/2.
+  Rättade *.MSG- och news-"spool"-stöd för OS/2.
   Justerade tidszonsfunktioner.
 2000-05-15 - v1.4 -
-  Anv„nder autoconf f”r l„ttare anpassning till nya plattformar.
-  Topplista ”ver Fidonetn„t och Internet-toppdom„ner.
-  OBS! Flaggan f”r att visa alla siffror i topplistorna har „ndrats.
-  St”d f”r "locale"-definierade datumformat.
-  Hittar Internetadresser i Fidonetm”ten.
-  Kan ange f”r JAM- och Squishdatabaser, inte bara basnamnet.
+  Använder autoconf för lättare anpassning till nya plattformar.
+  Topplista över Fidonetnät och Internet-toppdomäner.
+  OBS! Flaggan för att visa alla siffror i topplistorna har ändrats.
+  Stöd för "locale"-definierade datumformat.
+  Hittar Internetadresser i Fidonetmöten.
+  Kan ange för JAM- och Squishdatabaser, inte bara basnamnet.
   Korrigerade manualsidan, samt lade till en svensk.
-  Anv„nder Mingw32 i st„llet f”r CygWin f”r Win32-versionen.
-  F”rb„ttrat st”d f”r news.
-  Diverse felr„ttelser.
+  Använder Mingw32 i stället för CygWin för Win32-versionen.
+  Förbättrat stöd för news.
+  Diverse felrättelser.
 2000-11-26 - v2.0 -
-  Egna tidsfunktioner f”r att motverka tidszonsproblem i C-biblioteket.
-  Gjorde hj„lpsk„rmen mer l„ttl„slig.
-  F”rtydligade dokumentationen.
-  Lade till grafisk X-version (anv„nder Qt).
-  Diverse felr„ttelser.
+  Egna tidsfunktioner för att motverka tidszonsproblem i C-biblioteket.
+  Gjorde hjälpskärmen mer lättläslig.
+  Förtydligade dokumentationen.
+  Lade till grafisk X-version (använder Qt).
+  Diverse felrättelser.
 2001-01-09 - v2.0.1 -
-  Fixade fel som kraschade newsspoolst”det.
+  Fixade fel som kraschade newsspoolstödet.
 2001-02-08 - v2.0.2 -
   Korrigeringar i Debianpaketering.
 2001-  -   - v2.1 -
-  Anv„nd OS/2- och Win32-API-funktioner f”r att h„mta lokalt datumformat.
+  Använd OS/2- och Win32-API-funktioner för att hämta lokalt datumformat.
   Implementerade datumintervall.
+  Lade in stöd för teckenomkodning.
 
 
 BIFOGADE FILER
 
 OS/2- och Win32-distribution:
 
-turqstat.doc  - Dokumentation p† engelska
+turqstat.doc  - Dokumentation på engelska
 turqstat.dok  - Denna dokumentation
 turqstat.1    - Unixmanualsida
-turqstat-sv.1 - Unixmanualsida p† svenska
+turqstat-sv.1 - Unixmanualsida på svenska
 xturqstat.1   - Unixmanualsida, grafisk version
-xturqstat-sv.1- Unixmanualsida p† svenska, grafisk version
+xturqstat-sv.1- Unixmanualsida på svenska, grafisk version
 COPYING       - GNU General Public License, version 2
 
 src/-katalogen:
-  ChangeLog       - Logg ”ver „ndringar i k„llkoden
-  configure       - Konfigureringsskript (kr„ver sh-kompatibelt skal)
-  Makefile.in     - Indatafil f”r Makefile (anv„nds av configure)
-  configure.in    - Indatafil f”r configure (anv„nds av autoconf)
-  config.h.in     - Indatafil f”r config.h (anv„nds av configure)
-  acconfig.h      - Indatafil f”r config.h.in (anv„nds av autoconf)
-  turqstat.cpp    - Huvudk„llkod f”r Turquoise
-  arearead.h      - Prototypfil som beskriver den abstrakta ”verklassen f”r
-                    meddelandebasl„sarna
-  fdapxread.cpp   - K„llkod f”r l„sning av FDAPX/w-meddelandebaser
-  fdapxread.h     - Prototypfil f”r ovanst†ende
-  jamread.cpp     - K„llkod f”r l„sning av JAM-meddelandebaser
-  jamread.h       - Prototypfil f”r ovanst†ende
-  mypointread.cpp - K„llkod f”r l„sning av MyPoint-meddelandebaser
-  mypointread.h   - Prototypfil f”r ovanst†ende
-  newsspoolread.cpp K„llkod f”r l„sning av Usenet news-"spool"
-  newsspoolread.h - Prototypfil f”r ovanst†ende
-  squishread.cpp  - K„llkod f”r l„sning av Squish-meddelandebaser
-  squishread.h    - Prototypfil f”r ovanst†ende
-  sdmread.cpp     - K„llkod f”r l„sning av *.MSG-meddelandebaser
-  sdmread.h       - Prototypfil f”r ovanst†ende
-  tanstaaflread.cpp K„llkod f”r l„sning av tanstaafl-meddelandebaser
-  tanstaaflread.h - Prototypfil f”r ovanst†ende
-  mytime.cpp      - K„llkod med tidsfunktioner
-  mytime.h        - Prototypfil f”r ovanst†ende
-  output.cpp      - Funktioner f”r att visa felmeddelanden
-  output.h        - Prototypfil f”r ovanst†ende
-  statengine.cpp  - Statistiksinl„sningsmotorn
-  statengine.h    - Prototypfil f”r ovanst†ende
+  ChangeLog       - Logg över ändringar i källkoden
+  configure       - Konfigureringsskript (kräver sh-kompatibelt skal)
+  Makefile.in     - Indatafil för Makefile (används av configure)
+  configure.in    - Indatafil för configure (används av autoconf)
+  config.h.in     - Indatafil för config.h (används av configure)
+  acconfig.h      - Indatafil för config.h.in (används av autoconf)
+  turqstat.cpp    - Huvudkällkod för Turquoise
+  arearead.h      - Prototypfil som beskriver den abstrakta överklassen för
+                    meddelandebasläsarna
+  fdapxread.cpp   - Källkod för läsning av FDAPX/w-meddelandebaser
+  fdapxread.h     - Prototypfil för ovanstående
+  jamread.cpp     - Källkod för läsning av JAM-meddelandebaser
+  jamread.h       - Prototypfil för ovanstående
+  mypointread.cpp - Källkod för läsning av MyPoint-meddelandebaser
+  mypointread.h   - Prototypfil för ovanstående
+  newsspoolread.cpp Källkod för läsning av Usenet news-"spool"
+  newsspoolread.h - Prototypfil för ovanstående
+  squishread.cpp  - Källkod för läsning av Squish-meddelandebaser
+  squishread.h    - Prototypfil för ovanstående
+  sdmread.cpp     - Källkod för läsning av *.MSG-meddelandebaser
+  sdmread.h       - Prototypfil för ovanstående
+  tanstaaflread.cpp Källkod för läsning av tanstaafl-meddelandebaser
+  tanstaaflread.h - Prototypfil för ovanstående
+  convert.cpp     - Källkod för teckenkonverteringsfunktionalitet
+  convert.h       - Prototypfil för ovanstående
+  mappings.cpp    - Källkod med teckenkonverteringstabeller
+  mappings.h      - Prototypfil för ovanstående
+  mytime.cpp      - Källkod med tidsfunktioner
+  mytime.h        - Prototypfil för ovanstående
+  output.cpp      - Funktioner för att visa felmeddelanden
+  output.h        - Prototypfil för ovanstående
+  statengine.cpp  - Statistiksinläsningsmotorn
+  statengine.h    - Prototypfil för ovanstående
   statview.cpp    - "Vyn", skapar utdatafilen
-  statview.h      - Prototypfil f”r ovanst†ende
+  statview.h      - Prototypfil för ovanstående
   utility.cpp     - Diverse verktygsfunktioner
-  utility.h       - Prototypfil f”r ovanst†ende
+  utility.h       - Prototypfil för ovanstående
   datatypes.h     - Kompilatoroberoende datatypdeklarationer
   version.h       - Aktuellt versionnummer
-  turqstat.def    - Applikationstitelfil f”r OS/2
-  qtbars.cpp      - Postningsfrekvensf”nster (Qt)
-  qtbars.h        - Prototypfil f”r ovanst†ende
-  qtgui.cpp       - Huvudf”nster (Qt)
-  qtgui.h         - Prototypfil f”r ovanst†ende
-  qtlist.cpp      - Listf”nster (Qt)
-  qtlist.h        - Prototypfil f”r ovanst†ende
-  qtreport.cpp    - Statistikspararf”nster (Qt)
-  qtreport.h      - Prototypfil f”r ovanst†ende
+  turqstat.def    - Applikationstitelfil för OS/2
+  qtbars.cpp      - Postningsfrekvensfönster (Qt)
+  qtbars.h        - Prototypfil för ovanstående
+  qtgui.cpp       - Huvudfönster (Qt)
+  qtgui.h         - Prototypfil för ovanstående
+  qtlist.cpp      - Listfönster (Qt)
+  qtlist.h        - Prototypfil för ovanstående
+  qtreport.cpp    - Statistikspararfönster (Qt)
+  qtreport.h      - Prototypfil för ovanstående
+  teal.cpp        - Enkelt teckenkonverteringsprogram
+
+src/mappings/-katalogen:
+  Makefile.in     - Indatafil för Makefile (används av configure)
+  makemappings.pl - Perlprogram som skapar C-kod från tabellfiler
+  *.txt           - Officiella konverteringstabeller
+
+src/po/-katalogen:
+  Makefile.in     - Indatafil för Makefile (används av configure)
+  update-po.sh    - Skalprogram som uppdaterar PO-filerna
+  xturqstat.po    - Källfil för översättningarna (Qt)
+  *.po            - Översättningar (Qt)
 
 os2/-katalogen:
-  config.h        - config.h att anv„nda om du inte kan k”ra configure (EMX)
-  Makefile        - Makefile att anv„nda om du inte kan k”ra configure (EMX)
-  turqstat.exe    - K”rbar fil (OS/2, EMX)
+  config.h        - config.h att använda om du inte kan köra configure (EMX)
+  Makefile        - Makefile att använda om du inte kan köra configure (EMX)
+  turqstat.exe    - Körbar fil (OS/2, EMX)
   README.os2      - Information om OS/2-versionen
 
 win32/-katalogen:
-  turqstat.exe    - K”rbar fil (Win32 i386, Mingw32)
+  turqstat.exe    - Körbar fil (Win32 i386, Mingw32)
   README.Win32    - Information om Win32-versionen
 
-Unixdistributionen best†r av en .tar.gz-fil med all k„llkod listad ovan, plus
-dokumentationsfilerna. Inga exekverbara filer medf”ljer. Den inneh†ller „ven
-en underkatalog debian, vilken inneh†ller kontrollfiler f”r att skapa ett
-bin„rpaket f”r Debian.
+Unixdistributionen består av en .tar.gz-fil med all källkod listad ovan, plus
+dokumentationsfilerna. Inga exekverbara filer medföljer. Den innehåller även
+en underkatalog debian, vilken innehåller kontrollfiler för att skapa ett
+binärpaket för Debian.
 
 
-KRAV F™R KOMPILERING
+KRAV FÖR KOMPILERING
 
-Programmet utvecklades under OS/2 med EMX 0.9d/GNU C/C++ 2.8.1 och Debian 2.2
-med gcc 2.95.2, och har „ven testats under Mingw32 (gcc 2.95.2). Det b”r
-kompilera under valfri standard-C++-kompilator. Programmet m†ste troligen
-g”ras om f”r att st”da processorer av typen "big endian".
+Programmet utvecklades under OS/2 med EMX 0.9d/GNU C/C++ 2.8.1, Debian 2.2
+med gcc 2.95.2 och Win32 med Mingw32 (gcc 2.95.2). Det bör kompilera under
+valfri standard-C++-kompilator. Programmet måste troligen göras om för att
+stöda processorer av typen "big endian".
 
-Den grafiska versionen kr„ver att Qt version 2.1 eller senare finns
+Den grafiska versionen kräver att Qt version 2.1 eller senare finns
 installerat.
 
-Om du vill skapa ett Debianpaket m†ste du installera Debians utvecklingspaket,
+Om du vill skapa ett Debianpaket måste du installera Debians utvecklingspaket,
 bland andra debhelper och fakeroot (om du inte vill kompilera som root).
-D„refter skriver du "fakeroot debian/rules binary" (utan citattecknen) vid
-kommandosymbolen. Om du „ven vill tillverka Debians arkivstyrfiler anv„nder du
+Därefter skriver du "fakeroot debian/rules binary" (utan citattecknen) vid
+kommandosymbolen. Om du även vill tillverka Debians arkivstyrfiler använder du
 dpkg-buildpackage.
 
 
 KONTAKT
 
-F”rfattaren, Peter Karlsson, kan n†s via n„tpost p† 2:204/254.222, eller via
-Internet-e-post p† peter@softwolves.pp.se. Information om detta program finns
-p† webben p† http://www.softwolves.pp.se/wolves/
+Författaren, Peter Karlsson, kan nås via nätpost på 2:204/254.222, eller via
+Internet-e-post på peter@softwolves.pp.se. Information om detta program finns
+på webben på http://www.softwolves.pp.se/sw/

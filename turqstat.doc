@@ -2,7 +2,7 @@ Turquoise SuperStat 2.1 - An area statistics program for Fidonet and Usenet
 (c) Copyright 1998-2001 Peter Karlsson.
 A Softwolves Software Release in 2001
 
-http://www.softwolves.pp.se/wolves/
+http://www.softwolves.pp.se/sw/
 
 
 LICENSE
@@ -165,6 +165,12 @@ Output options:
    format, as per Swedish and EU standards). Please note that the support
    for local date formats varies with platform and compiler.
 
+-C <charset>
+   Selects character encoding to use for the created report files. The
+   character encoding name can be specified by either its Fidonet or MIME
+   name. Default for the Win32 and OS/2 versions is IBMPC (codepage 437),
+   and for all other versions LATIN-1 (iso-8859-1).
+
 The options can be aggregated on the command line, for example:
 
   turqstat -mWRSPHDON d:\text\output.txt d:\msgbase\thisarea
@@ -287,6 +293,7 @@ HISTORY
 2001-  -   - v2.1 -
   Use OS/2 and Win32 API functions to get locale date.
   Implemented date ranges.
+  Added support for character re-coding.
 
 
 INCLUDED FILES
@@ -325,6 +332,10 @@ src/ directory:
   sdmread.h       - Header file for the above
   tanstaaflread.cpp Access sources for tanstaafl message bases
   tanstaaflread.h - Header file for the above
+  convert.cpp     - Character conversion functionality sources
+  convert.h       - Header file for the above
+  mappings.cpp    - Character conversion table sources
+  mappings.h      - Header file for the above
   mytime.cpp      - Time function sources
   mytime.h        - Header file for the above
   output.cpp      - Functions to display error messages
@@ -346,6 +357,18 @@ src/ directory:
   qtlist.h        - Header file for the above
   qtreport.cpp    - Statistic saving window (Qt)
   qtreport.h      - Header file for the above
+  teal.cpp        - Simple character conversion application
+
+src/mappings/ directory:
+  Makefile.in     - Input file for Makefile (used by configure)
+  makemappings.pl - Perl script that creates C code from mapping tables
+  *.txt           - Official conversion tables
+
+src/po/ directory:
+  Makefile.in     - Input file for Makefile (used by configure)
+  update-po.sh    - Shell skript that updates the PO files
+  xturqstat.po    - Master file for the translations (Qt)
+  *.po            - Translations (Qt)
 
 os2/ directory:
   config.h        - config.h to use if you cannot run configure (EMX)
@@ -365,10 +388,10 @@ binary package.
 
 REQUIREMENTS FOR COMPILATION
 
-The program was developed under OS/2 using EMX 0.9d/GNU C/C++ 2.8.1 and Debian
-2.2 with gcc 2.95.2, and has also been tested under Mingw32 (gcc 2.95.2). It
-should compile using any standard C++ compiler. The program must probably be
-rewritten to support "big endian" processors.
+The program was developed under OS/2 using EMX 0.9d/GNU C/C++ 2.8.1, Debian
+2.2 with gcc 2.95.2 and Win32 with Mingw32 (gcc 2.95.2). It should compile
+using any standard C++ compiler. The program must probably be rewritten to
+support "big endian" processors.
 
 The GUI version requires Qt version 2.1 or later to be installed.
 
@@ -382,4 +405,4 @@ CONTACT
 
 The author, Peter Karlsson, can be contacted via netmail at 2:204/254.222, or
 via Internet e-mail at peter@softwolves.pp.se. Information about this program
-is available on the world wide web at http://www.softwolves.pp.se/wolves/
+is available on the world wide web at http://www.softwolves.pp.se/sw/
