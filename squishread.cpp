@@ -110,6 +110,7 @@ bool SquishRead::Transfer(time_t starttime, time_t endtime,
     char *ctrlbuf = NULL, *msgbuf = NULL;
     sqhdr_s sqhdr;
     xmsg_s xmsg;
+    time_t arrivaltime;
 
     for (msgn = 1L; msgn <= baseheader.high_msg; msgn ++)
     {
@@ -171,7 +172,7 @@ bool SquishRead::Transfer(time_t starttime, time_t endtime,
         fixupctrlbuffer(msgbuf, NULL);
 
         // Add to statistics
-        time_t arrivaltime = stampToTimeT(&xmsg.date_arrived);
+        arrivaltime = stampToTimeT(&xmsg.date_arrived);
         if (arrivaltime >= starttime && arrivaltime <= endtime)
         {
             destination.AddData(string((char *) xmsg.from),
