@@ -607,16 +607,24 @@ void StatEngine::AddData(string fromname, string toname, string subject,
         }
     }
 
-    // Check writing and receiption date and add to statistics
-    if (timewritten != 0) // 0 date indicates error
+    // Check writing and reception date and add to statistics
+    if (timewritten >= 0) // zero or negative date indicates error
     {
         if (!wdatevalid || timewritten  < earliestwritten)
             earliestwritten  = timewritten;
         if (!wdatevalid || timewritten  > latestwritten)
             latestwritten    = timewritten;
         wdatevalid = true;
+
+        struct tm *tm_p = localtime(&timewritten);
+        if (tm_p)
+        {
+            daycount[tm_p->tm_wday] ++;
+            hourcount[tm_p->tm_hour] ++;
+        }
     }
-    if (timereceived != 0)
+
+    if (timereceived >= 0)
     {
         if (!rdatevalid || timereceived < earliestreceived)
             earliestreceived = timereceived;
@@ -624,10 +632,6 @@ void StatEngine::AddData(string fromname, string toname, string subject,
             latestreceived   = timereceived;
         rdatevalid = true;
     }
-
-    struct tm *tm_p = localtime(&timewritten);
-    daycount[tm_p->tm_wday] ++;
-    hourcount[tm_p->tm_hour] ++;
 }
 
 void StatEngine::AreaDone(void)
