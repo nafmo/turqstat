@@ -24,6 +24,16 @@ AC_CONFIG_HEADER(config.h)
 
 findfirst=no
 
+dnl Extra parameters -------------------------------------------------------
+AC_ARG_WITH(qt,
+[  --without-qt                 do not look for Qt or build Qt version],
+[if test "$withval" = "yes"; then
+  qt=yes
+else
+  qt=no
+fi],
+[qt=yes])
+
 dnl Checks for programs ----------------------------------------------------
 dnl Since PROG_CC and PROG_CXX seems to think we are cross-compiling under
 dnl OS/2, because we haven't detected EXEEXT yet, hack around it.
@@ -156,6 +166,83 @@ else
 fi
 
 AC_SUBST(NOINST)
+
+dnl Check for Qt -----------------------------------------------------------
+if test "$qt" = "yes"; then
+  QT=''
+  NOQT='# '
+
+dnl Locate Qt headers
+  AC_MSG_CHECKING(for Qt include files)
+  if test "$QTDIR" != ""; then
+    if test -e $QTDIR'/include/qapp.h'; then
+      QTINCLUDE=$QTDIR'/include/qapp.h'
+    fi
+  fi
+  if test "$QTINCLUDE" = ""; then
+    if test -e '/usr/lib/qt2/include/qapp.h'; then
+      QTINCLUDE='/usr/lib/qt2/include'
+      QTDIR='/usr/lib/qt2'
+    elif test -e '/usr/include/qt/qapp.h'; then
+      QTINCLUDE='/usr/include/qt'
+    elif test -e '/usr/local/include/qt/qapp.h'; then
+      QTINCLUDE='/usr/local/include/qt'
+    elif test -e '/usr/local/qt2/include/qapp.h'; then
+      QTINCLUDE='/usr/local/qt2/include'
+      QTDIR='/usr/local/qt2'
+    elif test -e '/usr/local/qt/include/qapp.h'; then
+      QTINCLUDE='/usr/local/qt/include'
+      QTDIR='/usr/local/qt'
+    fi
+  fi
+  if test "$QTINCLUDE" = ""; then
+    AC_MSG_RESULT(no)
+    AC_MSG_ERROR(Cannot find Qt; either define QTDIR or use --without-qt)
+  else
+    AC_MSG_RESULT($QTINCLUDE)
+  fi
+
+dnl Locate Qt lib
+  AC_LANG_CPLUSPLUS
+  AC_CHECK_LIB(qt, qApp, QTLIB='-lqt')
+  AC_LANG_C
+  if test "$QTLIB" = ""; then
+    AC_MSG_CHECKING(for Qt library path)
+    if test -e $QTDIR'/lib/libqt.a'; then
+      QTLIB='-L'$QTDIR'/lib -lqt'
+    fi
+    if test "$QTLIB" = ""; then
+      if test -e '/usr/local/lib/libqt.a'; then
+        QTLIB='-L/usr/local/lib -lqt'
+      elif test -e '/usr/local/qt/lib/libqt.a'; then
+        QTLIB='-L/usr/local/qt/lib -lqt'
+      fi
+    fi
+    if test "$QTLIB" = ""; then
+      AC_MSG_RESULT(no)
+      AC_MSG_ERROR(Cannot find libqt.a; either define QTDIR or use --without-qt)
+    else
+      AC_MSG_RESULT($QTLIB)
+    fi
+  fi
+
+dnl Locate moc
+  AC_PATH_PROG(QTMOC, moc, moc,
+    $PATH:/bin:/usr/bin:/usr/local/bin:/usr/local/qt/bin:$QTDIR/bin)
+
+else
+  QT='# '
+  NOQT=''
+  QTINCLUDE='/usr/include/qt'
+  QTMOC='moc'
+  QTLIB='-lqt'
+fi
+
+AC_SUBST(QT)
+AC_SUBST(NOQT)
+AC_SUBST(QTINCLUDE)
+AC_SUBST(QTMOC)
+AC_SUBST(QTLIB)
 
 dnl Create output ----------------------------------------------------------
 AC_OUTPUT(Makefile)

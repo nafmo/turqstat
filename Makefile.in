@@ -4,16 +4,17 @@
 
 # Variables
 CXXFLAGS=@CXXFLAGS@ -I. -Wall
-QTFLAGS=-I/usr/include/qt
+@QT@QTFLAGS=-I@QTINCLUDE@
 LDFLAGS=@LDFLAGS@
 srcdir=@srcdir@
 VPATH=@scrdir@
 LIBS=@LIBS@
-QTLIBS=-lqt
+QTLIBS=@QTLIB@
 DESTDIR=
 OBJS=turqstat.o statengine.o statview.o squishread.o fdapxread.o jamread.o mypointread.o utility.o sdmread.o tanstaaflread.o newsspoolread.o mytime.o output.o
 QTOBJS=qtgui.o moc_qtgui.o qtlist.o moc_qtlist.o statengine.o squishread.o fdapxread.o jamread.o mypointread.o utility.o sdmread.o tanstaaflread.o newsspoolread.o mytime.o outputqt.o
-EXE=turqstat@EXEEXT@ qturqstat@EXEEXT@
+@QT@EXE=turqstat@EXEEXT@ qturqstat@EXEEXT@
+@NOQT@EXE=turqstat@EXEEXT@
 DEF=@DEF@
 prefix=@prefix@
 exec_prefix=@exec_prefix@
@@ -46,8 +47,8 @@ debianclean:
 turqstat@EXEEXT@: $(OBJS) $(DEF)
 	@CXX@ $(CXXFLAGS) $(LDFLAGS) -o turqstat@EXEEXT@ $(OBJS) $(DEF) $(LIBS)
 
-qturqstat@EXEEXT@: $(QTOBJS) $(DEF)
-	@CXX@ $(CXXFLAGS) $(QTFLAGS) $(LDFLAGS) -o qturqstat@EXEEXT@ $(QTOBJS) $(DEF) $(QTLIBS)
+@QT@qturqstat@EXEEXT@: $(QTOBJS) $(DEF)
+@QT@	@CXX@ $(CXXFLAGS) $(QTFLAGS) $(LDFLAGS) -o qturqstat@EXEEXT@ $(QTOBJS) $(DEF) $(QTLIBS)
 
 # Object files
 turqstat.o: turqstat.cpp statengine.h statview.h arearead.h squishread.h fdapxread.h jamread.h mypointread.h version.h tanstaaflread.h config.h mytime.h
@@ -83,32 +84,32 @@ sdmread.o: sdmread.cpp sdmread.h arearead.h statengine.h datatypes.h utility.h c
 newsspoolread.o: newsspoolread.cpp newsspoolread.h arearead.h utility.h config.h output.h
 	@CXX@ $(CXXFLAGS) -c $(srcdir)/newsspoolread.cpp
 
-qtgui.o: qtgui.cpp qtgui.h qtlist.h statengine.h
-	@CXX@ $(CXXFLAGS) $(QTFLAGS) -c $(srcdir)/qtgui.cpp
-
 mytime.o: mytime.cpp mytime.h
 	@CXX@ $(CXXFLAGS) -c $(srcdir)/mytime.cpp
 
 output.o: output.cpp output.h
 	@CXX@ $(CXXFLAGS) -c $(srcdir)/output.cpp
 
-moc_qtgui.o: moc_qtgui.cpp
-	@CXX@ $(CXXFLAGS) $(QTFLAGS) -c moc_qtgui.cpp
+@QT@qtgui.o: qtgui.cpp qtgui.h qtlist.h statengine.h
+@QT@	@CXX@ $(CXXFLAGS) $(QTFLAGS) -c $(srcdir)/qtgui.cpp
 
-moc_qtgui.cpp: qtgui.h
-	moc -o moc_qtgui.cpp qtgui.h
+@QT@moc_qtgui.o: moc_qtgui.cpp
+@QT@	@CXX@ $(CXXFLAGS) $(QTFLAGS) -c moc_qtgui.cpp
 
-qtlist.o: qtlist.cpp qtlist.h statengine.h
-	@CXX@ $(CXXFLAGS) $(QTFLAGS) -c $(srcdir)/qtlist.cpp
+@QT@moc_qtgui.cpp: qtgui.h
+@QT@	@QTMOC@ -o moc_qtgui.cpp qtgui.h
 
-moc_qtlist.cpp: qtlist.h
-	moc -o moc_qtlist.cpp qtlist.h
+@QT@qtlist.o: qtlist.cpp qtlist.h statengine.h
+@QT@	@CXX@ $(CXXFLAGS) $(QTFLAGS) -c $(srcdir)/qtlist.cpp
 
-moc_qtlist.o: moc_qtlist.cpp
-	@CXX@ $(CXXFLAGS) $(QTFLAGS) -c moc_qtlist.cpp
+@QT@moc_qtlist.cpp: qtlist.h
+@QT@	@QTMOC@ -o moc_qtlist.cpp qtlist.h
 
-outputqt.o: outputqt.cpp output.h
-	@CXX@ $(CXXFLAGS) $(QTFLAGS) -c $(srcdir)/outputqt.cpp
+@QT@moc_qtlist.o: moc_qtlist.cpp
+@QT@	@CXX@ $(CXXFLAGS) $(QTFLAGS) -c moc_qtlist.cpp
+
+@QT@outputqt.o: outputqt.cpp output.h
+@QT@	@CXX@ $(CXXFLAGS) $(QTFLAGS) -c $(srcdir)/outputqt.cpp
 
 # List phony targets
 .PHONY: all debian clean distclean debianclean install
