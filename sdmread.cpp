@@ -22,6 +22,8 @@
 #include <stdio.h>
 #ifdef HAS_EMX_FINDFIRST
 # include <emx/syscalls.h>
+#elif defined(HAVE_MINGW32_DIR_H)
+# include <mingw32/dir.h>
 #else
 # include <sys/types.h>
 # include <dirent.h>
@@ -57,7 +59,7 @@ bool SdmRead::Transfer(time_t starttime, StatEngine &destination)
     }
 
     // Open the message directory
-#ifdef HAS_EMX_FINDFIRST
+#if defined(HAS_EMX_FINDFIRST) || (HAVE_MINGW32_DIR_H)
     string dirname = string(areapath);
     if (dirname[dirname.length() - 1] != '\\')
     {
@@ -66,15 +68,23 @@ bool SdmRead::Transfer(time_t starttime, StatEngine &destination)
 
     string searchpath = dirname + string("*.msg");
 
+# ifdef HAS_EMX_FINDFIRST
     struct _find sdmdir;
     int rc = __findfirst(searchpath.c_str(), 0x2f, &sdmdir);
 
     if (!rc)
+# else
+    struct _finddata sdmdir;
+    int sdmhandle = _findfirst(searchpath.c_str(), 0x2f, &sdmdir);
+    int rc = sdmhandle;
+
+    if (-1 == rc)
+# endif
     {
         cerr << "Unable to open *.MSG directory" << endl;
         return false;
     }
-#else // no HAS_EMX_FINDFIRST
+#else // no HAS_EMX_FINDFIRST or HAVE_MINGW32_DIR_H
     DIR *sdmdir = opendir(areapath);
     if (!sdmdir)
     {
@@ -100,7 +110,11 @@ bool SdmRead::Transfer(time_t starttime, StatEngine &destination)
 # define FILENAME sdmdir.name
 # define FILESIZE (sdmdir.size_lo | (sdmdir.size_hi << 16))
     while (0 == rc)
-#else // no HAS_EMX_FINDFIRST
+#elif defined(HAVE_MINGW32_DIR_H)
+# define FILENAME sdmdir.name
+# define FILESIZE sdmdir.size
+    while (0 == rc)
+#else // no HAS_EMX_FINDFIRST or HAVE_MINGW32_DIR_H
 # define FILENAME sdmdirent_p->d_name
 # define FILESIZE sdmstat.st_size
     struct dirent *sdmdirent_p;
@@ -125,7 +139,7 @@ bool SdmRead::Transfer(time_t starttime, StatEngine &destination)
             goto out;
         }
 
-#ifndef HAS_EMX_FINDFIRST
+#if !defined(HAS_EMX_FINDFIRST) && !defined(HAVE_MINGW32_DIR_H)
         stat(thisfile.c_str(), &sdmstat);
 #endif
 
@@ -190,10 +204,14 @@ out2:;
 
 #ifdef HAS_EMX_FINDFIRST
         rc = __findnext(&sdmdir);
+#elif defined(HAVE_MINGW32_DIR_H)
+        rc = _findnext(sdmhandle, &sdmdir);
 #endif
     }
 
-#ifndef HAS_EMX_FINDFIRST
+#ifdef HAVE_MINGW32_DIR_H
+    _findclose(sdmhandle);
+#elif !defined(HAS_EMX_FINDFIRST)
     closedir(sdmdir);
 #endif
 
