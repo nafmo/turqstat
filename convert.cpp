@@ -1,4 +1,4 @@
-// Copyright (c) 2001 Peter Karlsson
+// Copyright (c) 2001-2002 Peter Karlsson
 //
 // $Id$
 //
@@ -136,13 +136,11 @@ const struct tablemap usenetcharsets[] =
 };
 
 /**
- * Class used to decode UTF-8 data. It converts it into wchar_t Unicode for
+ * Class used to decode SBCS data. It converts it into wchar_t Unicode for
  * internal use.
  */
-class UTF8Decoder : public Decoder
+class SBCSDecoder : public Decoder
 {
-    friend class Decoder;
-
 public:
     /**
      * Decode character data.
@@ -151,9 +149,27 @@ public:
      */
     virtual wstring Decode(const string &input);
 
+    /** Constructor used only from Decoder class methods. */
+    SBCSDecoder(const unsigned short *map) : inmap(map) {};
+
 protected:
-    /** Protected constructor for internal use only. */
-    UTF8Decoder() : Decoder(NULL) {};
+    /** Conversion table. */
+    const unsigned short *inmap;
+};
+
+/**
+ * Class used to decode UTF-8 data. It converts it into wchar_t Unicode for
+ * internal use.
+ */
+class UTF8Decoder : public Decoder
+{
+public:
+    /**
+     * Decode character data.
+     * @param input Legacy encoded data to decode.
+     * @return Unicode version of data.
+     */
+    virtual wstring Decode(const string &input);
 };
 
 // Get Decoder object for a character set
@@ -170,7 +186,7 @@ Decoder *Decoder::GetDecoderByName(const char *charset)
         if (0 == fcompare(charset, fidocharsets[i].charset))
 #endif
         {
-            return new Decoder(fidocharsets[i].inmap);
+            return new SBCSDecoder(fidocharsets[i].inmap);
         }
     }
 
@@ -185,7 +201,7 @@ Decoder *Decoder::GetDecoderByName(const char *charset)
         if (0 == fcompare(charset, usenetcharsets[i].charset))
 #endif
         {
-            return new Decoder(usenetcharsets[i].inmap);
+            return new SBCSDecoder(usenetcharsets[i].inmap);
         }
     }
 
@@ -202,7 +218,7 @@ Decoder *Decoder::GetDecoderByName(const char *charset)
     }
 
     // Return first in MIME table as default
-    return new Decoder(usenetcharsets[0].inmap);
+    return new SBCSDecoder(usenetcharsets[0].inmap);
 }
 
 // Identify Fidonet character set from kludges
@@ -213,7 +229,7 @@ Decoder *Decoder::GetDecoderByKludges(const char *kludges)
     if (!chrs)
     {
         // Return first in Fido table
-        return new Decoder(fidocharsets[0].inmap);
+        return new SBCSDecoder(fidocharsets[0].inmap);
     }
 
     // Isolate kludge
@@ -256,7 +272,7 @@ Decoder *Decoder::GetDecoderByKludges(const char *kludges)
     {
         if (0 == fcompare(charset, fidocharsets[i].charset))
         {
-            return new Decoder(fidocharsets[i].inmap);
+            return new SBCSDecoder(fidocharsets[i].inmap);
         }
     }
 
@@ -267,7 +283,7 @@ Decoder *Decoder::GetDecoderByKludges(const char *kludges)
     }
 
     // Return first in Fido table
-    return new Decoder(fidocharsets[0].inmap);
+    return new SBCSDecoder(fidocharsets[0].inmap);
 }
 
 // Identify Usenet character set from headers
@@ -301,7 +317,7 @@ Decoder *Decoder::GetDecoderByMIMEHeaders(const char *headers)
     if (!charset)
     {
         // Return first in MIME table
-        return new Decoder(usenetcharsets[0].inmap);
+        return new SBCSDecoder(usenetcharsets[0].inmap);
     }
 
     // Isolate charset parameter
@@ -343,7 +359,7 @@ Decoder *Decoder::GetDecoderByMIMEHeaders(const char *headers)
     {
         if (0 == fcompare(charsetstring, usenetcharsets[i].charset))
         {
-            return new Decoder(usenetcharsets[i].inmap);
+            return new SBCSDecoder(usenetcharsets[i].inmap);
         }
     }
 
@@ -354,11 +370,11 @@ Decoder *Decoder::GetDecoderByMIMEHeaders(const char *headers)
     }
 
     // Return first in MIME table
-    return new Decoder(usenetcharsets[0].inmap);
+    return new SBCSDecoder(usenetcharsets[0].inmap);
 }
 
 // Decode legacy character string
-wstring Decoder::Decode(const string &input)
+wstring SBCSDecoder::Decode(const string &input)
 {
 #ifdef HAVE_WORKING_WSTRING
     wstring s;
@@ -458,6 +474,32 @@ wstring UTF8Decoder::Decode(const string &input)
     return s;
 }
 
+/**
+ * Class used to encode character data into a legacy character set. It converts
+ * it from Unicode for external use.
+ */
+class SBCSEncoder : public Encoder
+{
+public:
+    /**
+     * Encode character data.
+     * @param input Unicode data to encode.
+     * @return Legacy version of data.
+     */
+    virtual string Encode(const wstring &input);
+
+    /** Constructor used only from Encoder class methods. */
+    SBCSEncoder(const struct reversemap *map, unsigned short len)
+        : outmap(map), maplength(len) {};
+
+protected:
+    /** Conversion table. */
+    const struct reversemap *outmap;
+
+    /** Length of conversion table. */
+    unsigned short maplength;
+};
+
 // Get encoder object for a character set
 Encoder *Encoder::GetEncoderByName(const string &charset)
 {
@@ -472,8 +514,8 @@ Encoder *Encoder::GetEncoderByName(const string &charset)
         if (0 == fcompare(charset, fidocharsets[i].charset))
 #endif
         {
-            return new Encoder(fidocharsets[i].outmap,
-                               fidocharsets[i].outmap_length);
+            return new SBCSEncoder(fidocharsets[i].outmap,
+                                  fidocharsets[i].outmap_length);
         }
     }
 
@@ -488,18 +530,18 @@ Encoder *Encoder::GetEncoderByName(const string &charset)
         if (0 == fcompare(charset, usenetcharsets[i].charset))
 #endif
         {
-            return new Encoder(usenetcharsets[i].outmap,
-                               usenetcharsets[i].outmap_length);
+            return new SBCSEncoder(usenetcharsets[i].outmap,
+                                   usenetcharsets[i].outmap_length);
         }
     }
 
     // Return first in MIME table as default
-    return new Encoder(usenetcharsets[0].outmap,
-                       usenetcharsets[0].outmap_length);
+    return new SBCSEncoder(usenetcharsets[0].outmap,
+                           usenetcharsets[0].outmap_length);
 }
 
 // Encode Unicode string
-string Encoder::Encode(const wstring &input)
+string SBCSEncoder::Encode(const wstring &input)
 {
     string s;
 

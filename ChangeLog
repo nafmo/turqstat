@@ -1,3 +1,8 @@
+2002-02-23 - peter karlsson <peter@softwolves.pp.se>
+  convert.cpp
+  convert.h
+    Made character decoders and encoders abstract interfaces.
+
 2001-12-27 - peter karlsson <peter@softwolves.pp.se>
   version.h
   debian/

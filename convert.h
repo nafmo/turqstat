@@ -1,4 +1,4 @@
-// Copyright (c) 2001 Peter Karlsson
+// Copyright (c) 2001-2002 Peter Karlsson
 //
 // $Id$
 //
@@ -68,14 +68,7 @@ public:
      * @param input Legacy encoded data to decode.
      * @return Unicode version of data.
      */
-    virtual wstring Decode(const string &input);
-
-protected:
-    /** Protected constructor for internal use only. */
-    Decoder(const unsigned short *map) : inmap(map) {};
-
-    /** Conversion table. */
-    const unsigned short *inmap;
+    virtual wstring Decode(const string &input) = 0;
 };
 
 struct reversemap;
@@ -102,18 +95,7 @@ public:
      * @param input Unicode data to encode.
      * @return Legacy version of data.
      */
-    string Encode(const wstring &input);
-
-protected:
-    /** Protected constructor for internal use only. */
-    Encoder(const struct reversemap *map, unsigned short len)
-        : outmap(map), maplength(len) {};
-
-    /** Conversion table. */
-    const struct reversemap *outmap;
-
-    /** Length of conversion table. */
-    unsigned short maplength;
+    virtual string Encode(const wstring &input) = 0;
 };
 
 struct tablemap;
