@@ -25,7 +25,7 @@ clean:
 	-rm turqstat@EXEEXT@
 
 distclean: clean
-	-rm config.status config.log config.h Makefile
+	-rm config.status config.log config.cache config.h Makefile
 
 debianclean:
 	fakeroot debian/rules clean

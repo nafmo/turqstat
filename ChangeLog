@@ -5,6 +5,9 @@
     Documented recent changes.
     Added release date.
 
+  Makefile.in
+    Corrected distclean target.
+
 2000-05-07 - peter karlsson <peter@softwolves.pp.se>
   statview.cpp
   statengine.h
