@@ -36,7 +36,7 @@ install: build
 	dh_installdirs
 
 	# Add here commands to install the package into debian/tmp.
-	$(MAKE) -f Makefile.linux debian-install DESTDIR=`pwd`/debian/tmp
+	$(MAKE) install DESTDIR=`pwd`/debian/tmp
 
 	touch install-stamp
 

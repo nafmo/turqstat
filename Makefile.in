@@ -10,6 +10,8 @@ VPATH=@scrdir@
 LIBS=@LIBS@
 DESTDIR=
 OBJS=turqstat.o statengine.o statview.o squishread.o fdapxread.o jamread.o mypointread.o utility.o sdmread.o tanstaaflread.o newsspoolread.o
+prefix=/usr
+exec_prefix=${prefix}
 
 # Magic targets
 all: turqstat@EXE@
