@@ -39,10 +39,12 @@ AC_MSG_RESULT($have_emx)
 
 if test "$have_emx" = "yes"; then
   standardcpplib=stdcpp
-  LDFLAGS="$LDFLAGS -Zexe"
+  EXE=.exe
 else
   standardcpplib=stdc++
+  EXE=
 fi
+AC_SUBST(EXE)
 
 dnl Checks for libraries ---------------------------------------------------
 AC_CHECK_LIB($standardcpplib, cout)
