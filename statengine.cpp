@@ -381,16 +381,22 @@ void StatEngine::AddData(string fromname, string toname, string subject,
 
             programversion_s **vertrav_pp = &(progfound_p->versions_p);
             while (*vertrav_pp != NULL &&
-                   fcompare((*vertrav_pp)->version, programvers) != 0)
+                   fcompare((*vertrav_pp)->version, programvers) < 0)
             {
                 vertrav_pp = &((*vertrav_pp)->next);
             }
 
-            if (NULL == *vertrav_pp)
+            // If we didn't find it, add it here.
+            if (NULL == *vertrav_pp ||
+                0 != fcompare((*vertrav_pp)->version, programvers))
             {
+                programversion_s *next_p = *vertrav_pp; // =NULL if at end
                 *vertrav_pp = new programversion_s;
                 (*vertrav_pp)->version = programvers;
+                (*vertrav_pp)->next    = next_p;
             }
+
+            // Increase count
             (*vertrav_pp)->count ++;
         }
     }
