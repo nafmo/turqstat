@@ -1,3 +1,7 @@
+2000-03-19 - peter karlsson <peter@softwolves.pp.se>
+  statengine.cpp
+    Handles tearlines ending with \r\n correctly.
+
 2000-03-15 - peter karlsson <peter@softwolves.pp.se>
   statview.cpp
     Uses the same template for Fidonet and Usenet
