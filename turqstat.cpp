@@ -29,9 +29,7 @@
 # include <getopt.h>
 #endif
 #include <stdlib.h>
-#if defined(HAVE_TIMEZONE) || defined(HAVE_UTIMEZONE) || defined(HAVE_DAYLIGHT) || defined(HAVE_UDAYLIGHT)
-# include <time.h>
-#endif
+#include <time.h>
 #ifdef HAVE_LOCALE_H
 # include <locale.h>
 #endif
@@ -48,6 +46,7 @@
 #include "newsspoolread.h"
 #include "version.h"
 #include "utility.h"
+#include "mytime.h"
 
 class StatRetr
 {
@@ -74,24 +73,6 @@ int main(int argc, char *argv[])
          toporiginal = true, topnets = true, topdomains = true;
 #ifdef HAVE_LOCALE_H
     bool uselocale = false;
-#endif
-
-    // We don't want timezones here
-#ifdef FOOL_TZSET
-    putenv("TZ=GMT0");
-    tzset();
-#endif
-#ifdef HAVE_TIMEZONE
-    timezone = 0;
-#endif
-#ifdef HAVE_UTIMEZONE
-    _timezone = 0;
-#endif
-#ifdef HAVE_DAYLIGHT
-    daylight = 0;
-#endif
-#ifdef HAVE_UDAYLIGHT
-    _daylight = 0;
 #endif
 
     // Setup locale
@@ -260,7 +241,7 @@ StatRetr::StatRetr(StatEngine &engine, StatView &view,
     fromtm->tm_hour = 0;
     fromtm->tm_min  = 0;
     fromtm->tm_sec  = 0;
-    from = mktime(fromtm);
+    from = my_mktime(fromtm);
 
     // Transfer from area(s) to engine
     AreaRead *area;
