@@ -16,6 +16,8 @@
 // along with this program; if not, write to the Free Software
 // Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 
+#ifdef HAS_SMAPI
+
 #ifndef __SQUISHREAD_H
 #define __SQUISHREAD_H
 
@@ -40,3 +42,5 @@ protected:
 };
 
 #endif
+
+#endif /* HAS_SMAPI */

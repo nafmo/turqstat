@@ -16,6 +16,8 @@
 // along with this program; if not, write to the Free Software
 // Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 
+#ifdef HAS_SMAPI
+
 #include <iostream.h>
 #include <time.h>
 #include <string.h>
@@ -156,3 +158,5 @@ static time_t stampToTimeT(struct _stamp *st)
     tt = mktime(&tms);
     return tt;
 }
+
+#endif /* HAS_SMAPI */
