@@ -98,6 +98,7 @@ private:
 
     // Start date
     time_t start;   ///< Earliest time to collect statistics from.
+    time_t end;     ///< Last time to collect statistics to.
     int daysback;   ///< Number of days back to collect statistics from.
 
 public slots:

@@ -2,9 +2,9 @@
 //
 // A statistic collection program for Fidonet and Usenet systems
 // Qt version.
-// Version 2.0
+// Version 2.1
 //
-// Copyright (c) 2000 Peter Karlsson
+// Copyright (c) 2000-2001 Peter Karlsson
 //
 // $Id$
 //
@@ -202,7 +202,8 @@ InfoWindow::InfoWindow()
     progress = NULL;
 
     // Reset start date
-    start = (time_t) 0;
+    start = time_t(0);
+    end = time_t(INFINITY);
     daysback = 0;
 };
 
@@ -361,7 +362,7 @@ void InfoWindow::open()
                                 "progress", true);
         progress->setCaption("Turquoise SuperStat");
         progress->setMinimumDuration(1000);
-        area->Transfer(start, *engine);
+        area->Transfer(start, end, *engine);
         engine->AreaDone();
         hasnews = isnews;
         hasany = true;
