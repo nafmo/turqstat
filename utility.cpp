@@ -176,7 +176,7 @@ const char *out_of_memory = "Out of memory.";
 // Print internal error message and quit
 void internalerrorquit(const char *message, int rc)
 {
-	if (message)
+    if (message)
        cerr << "Internal error: " << message << endl;
     else
        cerr << "Internal error." << endl;
