@@ -49,91 +49,91 @@ msgstr "Tisdag"
 msgid "BarWindow::Wednesday"
 msgstr "Onsdag"
 
-#: qtgui.cpp:117
+#: qtgui.cpp:120
 msgid "InfoWindow::&Areas loaded"
 msgstr "&Laddade möten"
 
-#: qtgui.cpp:129
+#: qtgui.cpp:132
 msgid "InfoWindow::&Bytes written"
 msgstr "T&ecken skrivna"
 
-#: qtgui.cpp:77
+#: qtgui.cpp:80
 msgid "InfoWindow::&Clear data"
 msgstr "&Töm data"
 
-#: qtgui.cpp:183
+#: qtgui.cpp:186
 msgid "InfoWindow::&Earliest text written"
 msgstr "Tidi&gaste text skriven"
 
-#: qtgui.cpp:86
+#: qtgui.cpp:89
 msgid "InfoWindow::&Edit"
 msgstr "&Redigera"
 
-#: qtgui.cpp:80
+#: qtgui.cpp:83
 msgid "InfoWindow::&Exit"
 msgstr "&Avsluta"
 
-#: qtgui.cpp:95
+#: qtgui.cpp:98
 msgid "InfoWindow::&Fidonet net toplist"
 msgstr "&Fidonetnättopplista"
 
-#: qtgui.cpp:81
+#: qtgui.cpp:84
 msgid "InfoWindow::&File"
 msgstr "&Arkiv"
 
-#: qtgui.cpp:97
+#: qtgui.cpp:100
 msgid "InfoWindow::&Internet topdomain toplist"
 msgstr "&Internettoppdomäntopplista"
 
-#: qtgui.cpp:135
+#: qtgui.cpp:138
 msgid "InfoWindow::&Lines examined"
 msgstr "Rader &undersökta"
 
-#: qtgui.cpp:75
+#: qtgui.cpp:76
 msgid "InfoWindow::&Open message base"
 msgstr "&Öppna meddelandebas"
 
-#: qtgui.cpp:93
+#: qtgui.cpp:96
 msgid "InfoWindow::&Original content toplist"
 msgstr "Topplista över &originalinnehåll"
 
-#: qtgui.cpp:153
+#: qtgui.cpp:156
 msgid "InfoWindow::&People identified"
 msgstr "Pers&oner identifierade"
 
-#: qtgui.cpp:89
+#: qtgui.cpp:92
 msgid "InfoWindow::&Quoter blacklist"
 msgstr "&Citerarsvartlista"
 
-#: qtgui.cpp:99
+#: qtgui.cpp:102
 msgid "InfoWindow::&Receiver toplist"
 msgstr "&Mottagartopplista"
 
-#: qtgui.cpp:78
+#: qtgui.cpp:81
 msgid "InfoWindow::&Save report"
 msgstr "&Spara rapport"
 
-#: qtgui.cpp:91
+#: qtgui.cpp:94
 msgid "InfoWindow::&Sender toplist"
 msgstr "&Avsändartopplista"
 
-#: qtgui.cpp:84
+#: qtgui.cpp:87
 msgid "InfoWindow::&Set start date"
 msgstr "&Välj startdatum"
 
-#: qtgui.cpp:110
+#: qtgui.cpp:113
 msgid "InfoWindow::&Show"
 msgstr "&Visa"
 
-#: qtgui.cpp:123
+#: qtgui.cpp:126
 msgid "InfoWindow::&Texts examined"
 msgstr "&Texter undersökta"
 
-#: qtgui.cpp:141
+#: qtgui.cpp:144
 msgid "InfoWindow::Bytes &quoted"
 msgstr "Tecken &citerade"
 
-#: qtgui.cpp:582
+#: qtgui.cpp:634
 msgid "InfoWindow::"
 "Enter number of days back to take "
 "statistics for (0 = no restriction):"
@@ -141,111 +141,127 @@ msgstr ""
 "Ange antal dagar bakåt statistik skall "
 "räknas på (0 = ingen begränsning):"
 
-#: qtgui.cpp:241
+#: qtgui.cpp:244
 msgid "InfoWindow::FDAPX/w (msgstat.apx)"
 msgstr "FDAPX/w (msgstat.apx)"
 
-#: qtgui.cpp:235
+#: qtgui.cpp:238
 msgid "InfoWindow::FTSC SDM (*.msg)"
 msgstr "FTSC SDM (*.msg)"
 
-#: qtgui.cpp:171
+#: qtgui.cpp:174
 msgid "InfoWindow::Fidonet &nets represented"
 msgstr "Fidonet&nät representerade"
 
-#: qtgui.cpp:281
+#: qtgui.cpp:284
 msgid "InfoWindow::I don't understand your selection"
 msgstr "Jag förstår inte ditt val"
 
-#: qtgui.cpp:243
+#: qtgui.cpp:246
 msgid "InfoWindow::JAM (*.jdt)"
 msgstr "JAM (*.jdt)"
 
-#: qtgui.cpp:147
+#: qtgui.cpp:150
 msgid "InfoWindow::L&ines quoted"
 msgstr "Rader c&iterade"
 
-#: qtgui.cpp:189
+#: qtgui.cpp:192
 msgid "InfoWindow::Latest text &written"
 msgstr "Senaste text &skriven"
 
-#: qtgui.cpp:245
+#: qtgui.cpp:248
 msgid "InfoWindow::MyPoint (mypoint.*)"
 msgstr "MyPoint (mypoint.*)"
 
-#: qtgui.cpp:407
+#: qtgui.cpp:459
 msgid "InfoWindow::N/A"
 msgstr "-"
 
-#: qtgui.cpp:249
+#: qtgui.cpp:252
 msgid "InfoWindow::News (.overview)"
 msgstr "Usenet (.overview)"
 
-#: qtgui.cpp:571
+#: qtgui.cpp:623
 msgid "InfoWindow::None loaded"
 msgstr "Ingen laddad"
 
-#: qtgui.cpp:259
+#: qtgui.cpp:78
+msgid "InfoWindow::Open &news group"
+msgstr "Öppna &diskussionsgrupp"
+
+#: qtgui.cpp:262
 msgid "InfoWindow::Open message base"
 msgstr "Öppna meddelandebas"
 
-#: qtgui.cpp:237
+#: qtgui.cpp:240
 msgid "InfoWindow::Opus SDM (*.msg)"
 msgstr "Opus SDM (*.msg)"
 
-#: qtgui.cpp:378
+#: qtgui.cpp:414
 msgid "InfoWindow::Out of memory allocating area object"
 msgstr "Slut på minne när mötesobjekt allokerades"
 
-#: qtgui.cpp:165
+#: qtgui.cpp:168
 msgid "InfoWindow::P&rograms used"
 msgstr "&Program använda"
 
-#: qtgui.cpp:108
+#: qtgui.cpp:394
+msgid "InfoWindow::Please enter the name of the news group you want to read:"
+msgstr "Ange vilken diskussionsgrupp du vill läsa:"
+
+#: qtgui.cpp:383
+msgid "InfoWindow::Please enter the news (NNTP) server you want to use:"
+msgstr "Ange vilken diskussionsgruppsserver (NNTP-server) du vill använda:"
+
+#: qtgui.cpp:111
 msgid "InfoWindow::Postings per &day"
 msgstr "Postningar per &dag"
 
-#: qtgui.cpp:106
+#: qtgui.cpp:109
 msgid "InfoWindow::Postings per &hour"
 msgstr "Postningar per &timme"
 
-#: qtgui.cpp:363
+#: qtgui.cpp:425
 msgid "InfoWindow::Reading message base"
 msgstr "Läser meddelandebas"
 
-#: qtgui.cpp:101
+#: qtgui.cpp:424
+msgid "InfoWindow::Reading news group"
+msgstr "Läser diskussionsgrupp"
+
+#: qtgui.cpp:104
 msgid "InfoWindow::S&ubject toplist"
 msgstr "&Ärendetopplista"
 
-#: qtgui.cpp:159
+#: qtgui.cpp:162
 msgid "InfoWindow::S&ubjects found"
 msgstr "&Ärenden funna"
 
-#: qtgui.cpp:313
+#: qtgui.cpp:316
 msgid "InfoWindow::Select area number"
 msgstr "Välj mötesnummer"
 
-#: qtgui.cpp:103
+#: qtgui.cpp:106
 msgid "InfoWindow::Soft&ware toplist"
 msgstr "&Programvarutopplista"
 
-#: qtgui.cpp:239
+#: qtgui.cpp:242
 msgid "InfoWindow::Squish (*.sqd)"
 msgstr "Squish (*.sqd)"
 
-#: qtgui.cpp:581
+#: qtgui.cpp:633
 msgid "InfoWindow::Start date"
 msgstr "Startdatum"
 
-#: qtgui.cpp:247
+#: qtgui.cpp:250
 msgid "InfoWindow::Tanstaafl (msgstat.tfl)"
 msgstr "Tanstaafl (msgstat.tfl)"
 
-#: qtgui.cpp:177
+#: qtgui.cpp:180
 msgid "InfoWindow::Top &domains represented"
 msgstr "Topp&domäner representerade"
 
-#: qtgui.cpp:388
+#: qtgui.cpp:440
 msgid "InfoWindow::You cannot mix Fidonet and Usenet areas"
 msgstr "Du kan inte blanda Fidonet- och Usenetmöten"
 
@@ -391,6 +407,10 @@ msgstr "Felaktigt meddelandebasformat."
 msgid "TDisplay::Message base is empty"
 msgstr "Meddelandebasen är tom"
 
+#: outputqt.cpp:296
+msgid "TDisplay::NNTP communication problem"
+msgstr ""
+
 #: outputqt.cpp:196
 msgid "TDisplay::Not normal Squish frame #%1"
 msgstr "Abnormal Squishram $%1"
@@ -470,139 +490,143 @@ msgstr "Kan inte öppna \"spool\"-katalog"
 msgid "TDisplay::Unable to read header #%1"
 msgstr "Kan inte läsa huvud #%1"
 
-#: qtlist.cpp:50
+#: outputqt.cpp:291
+msgid "TDisplay::Unexpected NNTP response code: %1"
+msgstr ""
+
+#: qtlist.cpp:51
 msgid "TopListWindow::&Save"
 msgstr "&Spara"
 
-#: qtlist.cpp:381
+#: qtlist.cpp:382
 msgid "TopListWindow::(none)"
 msgstr "(ingen)"
 
-#: qtlist.cpp:145
+#: qtlist.cpp:146
 msgid "TopListWindow::Bytes"
 msgstr "Byte"
 
-#: qtlist.cpp:435
+#: qtlist.cpp:436
 msgid "TopListWindow::Comma-separated file (*.csv)"
 msgstr "Kommaavdelad fil (*.csv)"
 
-#: qtlist.cpp:46
+#: qtlist.cpp:47
 msgid "TopListWindow::Dismiss"
 msgstr "Stäng"
 
-#: qtlist.cpp:124
+#: qtlist.cpp:125
 msgid "TopListWindow::Domain"
 msgstr "Domän"
 
-#: qtlist.cpp:83
+#: qtlist.cpp:84
 msgid "TopListWindow::Fidonet nets"
 msgstr "Fidonetnät"
 
-#: qtlist.cpp:88
+#: qtlist.cpp:89
 msgid "TopListWindow::Internet topdomains"
 msgstr "Internettoppdomäner"
 
-#: qtlist.cpp:148
+#: qtlist.cpp:149
 msgid "TopListWindow::Lines"
 msgstr "Rader"
 
-#: qtlist.cpp:135
+#: qtlist.cpp:136
 msgid "TopListWindow::Messages"
 msgstr "Meddelanden"
 
-#: qtlist.cpp:332
+#: qtlist.cpp:333
 msgid "TopListWindow::N/A"
 msgstr "-"
 
-#: qtlist.cpp:115
+#: qtlist.cpp:116
 msgid "TopListWindow::Name"
 msgstr "Namn"
 
-#: qtlist.cpp:78
+#: qtlist.cpp:79
 msgid "TopListWindow::Original content per message"
 msgstr "Originalinnehåll per meddelande"
 
-#: qtlist.cpp:118
+#: qtlist.cpp:119
 msgid "TopListWindow::Original content"
 msgstr "Originalinnehåll"
 
-#: qtlist.cpp:157
+#: qtlist.cpp:158
 msgid "TopListWindow::Per Message"
 msgstr "Per meddelande"
 
-#: qtlist.cpp:111
+#: qtlist.cpp:112
 msgid "TopListWindow::Place"
 msgstr "Plats"
 
-#: qtlist.cpp:433
+#: qtlist.cpp:434
 msgid "TopListWindow::Plain text (*.txt)"
 msgstr "Ren text (*.txt)"
 
-#: qtlist.cpp:130
+#: qtlist.cpp:131
 msgid "TopListWindow::Program"
 msgstr "Program"
 
-#: qtlist.cpp:151
+#: qtlist.cpp:152
 msgid "TopListWindow::Quote ratio"
 msgstr "Citatförhållande"
 
-#: qtlist.cpp:68
+#: qtlist.cpp:69
 msgid "TopListWindow::Quoters"
 msgstr "Citerare"
 
-#: qtlist.cpp:154
+#: qtlist.cpp:155
 msgid "TopListWindow::Ratio"
 msgstr "Förhållande"
 
-#: qtlist.cpp:139
+#: qtlist.cpp:140
 msgid "TopListWindow::Received"
 msgstr "Mottagna"
 
-#: qtlist.cpp:93
+#: qtlist.cpp:94
 msgid "TopListWindow::Receivers"
 msgstr "Mottagare"
 
-#: qtlist.cpp:447
+#: qtlist.cpp:448
 msgid "TopListWindow::Save toplist"
 msgstr "Spara topplisa"
 
-#: qtlist.cpp:437
+#: qtlist.cpp:438
 msgid "TopListWindow::Semi-colon separated file (*.csv)"
 msgstr "Semikolonavdelad fil (*.csv)"
 
-#: qtlist.cpp:73
+#: qtlist.cpp:74
 msgid "TopListWindow::Senders"
 msgstr "Avsändare"
 
-#: qtlist.cpp:140
+#: qtlist.cpp:141
 msgid "TopListWindow::Sent"
 msgstr "Sänt"
 
-#: qtlist.cpp:103
+#: qtlist.cpp:104
 msgid "TopListWindow::Software"
 msgstr "Programvara"
 
-#: qtlist.cpp:127
+#: qtlist.cpp:128
 msgid "TopListWindow::Subject"
 msgstr "Ärende"
 
-#: qtlist.cpp:98
+#: qtlist.cpp:99
 msgid "TopListWindow::Subjects"
 msgstr "Ärenden"
 
-#: qtlist.cpp:439
+#: qtlist.cpp:440
 msgid "TopListWindow::Tab separated file (*.tsv)"
 msgstr "Tabbstegsavdelad fil (*.tsv)"
 
-#: qtlist.cpp:425
+#: qtlist.cpp:426
 msgid "TopListWindow::This list is empty"
 msgstr "Listan är tom"
 
-#: qtlist.cpp:469
+#: qtlist.cpp:470
 msgid "TopListWindow::Unable to create the selected file"
 msgstr "Kan inte skapa den valda filen"
 
-#: qtlist.cpp:121
+#: qtlist.cpp:122
 msgid "TopListWindow::Zone:Net"
 msgstr "Zon:Nät"
 

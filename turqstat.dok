@@ -1,4 +1,4 @@
-Turquoise SuperStat 2.1.4 - Ett mötesstatistikprogram för Fidonet och Usenet
+Turquoise SuperStat 2.2 - Ett mötesstatistikprogram för Fidonet och Usenet
 (c) Copyright 1998-2001 Peter Karlsson.
 A Softwolves Software Release in 2001
 
@@ -305,6 +305,8 @@ HISTORIK
   Delvis fungerande hack för GCC 3.0.
 2001-10-10 - v2.1.4 -
   Komplett stöd för GCC 3.0.
+2001-  -   - v2.2 -
+  Stöd för Usenet News över NNTP.
 
 
 BIFOGADE FILER
@@ -337,6 +339,8 @@ src/-katalogen:
   mypointread.h   - Prototypfil för ovanstående
   newsspoolread.cpp Källkod för läsning av Usenet news-"spool"
   newsspoolread.h - Prototypfil för ovanstående
+  nntpread.cpp    - Källkod för läsning av Usenet news via NNTP
+  nntpread.h      - Prototypfil för ovanstående
   squishread.cpp  - Källkod för läsning av Squish-meddelandebaser
   squishread.h    - Prototypfil för ovanstående
   sdmread.cpp     - Källkod för läsning av *.MSG-meddelandebaser

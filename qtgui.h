@@ -22,6 +22,7 @@
 #include <qmainwindow.h>
 #include <time.h>
 
+class AreaRead;
 class StatEngine;
 class QMenuBar;
 class QLineEdit;
@@ -82,6 +83,7 @@ private:
     // Internal state
     bool hasnews,   ///< State variable indicating if we have seen news areas.
          hasany;    ///< State variable indicating if we have seen any areas.
+    QString defaultserver; ///< Last selected news server.
 
     // Statistics
     StatEngine *engine; ///< Engine containing all collected data.
@@ -96,6 +98,11 @@ private:
      */
     void zeroFill();
 
+    /**
+     * Transfer data from an area object to the engine. Internal.
+     */
+    void transfer(AreaRead *, bool);
+
     // Start date
     time_t start;   ///< Earliest time to collect statistics from.
     time_t end;     ///< Last time to collect statistics to.
@@ -103,6 +110,7 @@ private:
 
 public slots:
     void open();            ///< Slot handling File|Open message base.
+    void opennews();        ///< Slot handling File|Open news group.
     void clear();           ///< Slot handling File|Clear data.
     void report();          ///< Slot handling File|Save report.
     void quotelist();       ///< Slot handling Show|Quoter blacklist.

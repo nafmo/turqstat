@@ -1,4 +1,4 @@
-Turquoise SuperStat 2.1.4 - An area statistics program for Fidonet and Usenet
+Turquoise SuperStat 2.2 - An area statistics program for Fidonet and Usenet
 (c) Copyright 1998-2001 Peter Karlsson.
 A Softwolves Software Release in 2001
 
@@ -305,6 +305,8 @@ HISTORY
   Partial hack for GCC 3.0.
 2001-10-10 - v2.1.4 -
   Complete support for GCC 3.0.
+2001-  -   - v2.2 -
+  Support for Usenet news via NNTP.
 
 
 INCLUDED FILES
@@ -337,6 +339,8 @@ src/ directory:
   mypointread.h   - Header file for the above
   newsspoolread.cpp Access sources for Usenet news spools
   newsspoolread.h - Header file for the above
+  nntpread.cpp    - Access sources for Usenet news via NNTP
+  nntpread.h      - Header file for the above
   squishread.cpp  - Access sources for Squish message bases
   squishread.h    - Header file for the above
   sdmread.cpp     - Access sources for *.MSG message bases

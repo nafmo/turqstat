@@ -59,9 +59,10 @@ is everything before (not including) January 1st, 2001, and
 is everything from (and including) January 1st, 2001.
 .SS "INPUT SELECTION"
 .TP
-.I \-a path
+.I \-a path/server
 Selects the message base path for the FDAPX/w, MyPoint and taanstafl
 message bases, which have all message bases in the same files.
+Sects NNTP server for non-local Usenet news (\-U).
 .TP
 .I \-s
 Squish message bases (default).
@@ -85,7 +86,10 @@ Tanstaafl message bases.
 MyPoint message bases.
 .TP
 .I \-u
-Usenet news spool.
+Usenet news spool (local netnews).
+.TP
+.I \-U
+Usenet news (NNTP) server (remote netnews).
 .SS "TOPLIST SELECTION"
 These options are used to turn toplists off.
 By default, all toplists are enabled (except for Internet top domains, see
