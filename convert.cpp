@@ -30,7 +30,7 @@ struct tablemap
     const char * const      charset;
     const unsigned short    *inmap;
     const struct reversemap *outmap;
-    const unsigned short	outmap_length;
+    const unsigned short    outmap_length;
 };
 
 /** Lookup table for Fidonet charset identifiers. */
@@ -162,7 +162,13 @@ Decoder *Decoder::GetDecoderByName(const char *charset)
     // Try Fidonet names
     for (int i = 0; fidocharsets[i].charset; i ++)
     {
+#if defined(HAVE_STRCASECMP)
         if (0 == strcasecmp(charset, fidocharsets[i].charset))
+#elif defined(HAVE_STRICMP)
+        if (0 == stricmp(charset, fidocharsets[i].charset))
+#else
+        if (0 == fcompare(charset, fidocharsets[i].charset))
+#endif
         {
             return new Decoder(fidocharsets[i].inmap);
         }
@@ -171,14 +177,26 @@ Decoder *Decoder::GetDecoderByName(const char *charset)
     // Try MIME names
     for (int i = 0; usenetcharsets[i].charset; i ++)
     {
+#if defined(HAVE_STRCASECMP)
         if (0 == strcasecmp(charset, usenetcharsets[i].charset))
+#elif defined(HAVE_STRICMP)
+        if (0 == stricmp(charset, usenetcharsets[i].charset))
+#else
+        if (0 == fcompare(charset, usenetcharsets[i].charset))
+#endif
         {
             return new Decoder(usenetcharsets[i].inmap);
         }
     }
 
     // Check for UTF-8
+#if defined(HAVE_STRCASECMP)
+    if (0 == strcasecmp(charset, "UTF-8"))
+#elif defined(HAVE_STRICMP)
+    if (0 == stricmp(charset, "UTF-8"))
+#else
     if (0 == fcompare(charset, "UTF-8"))
+#endif
     {
         return new UTF8Decoder();
     }
@@ -310,7 +328,7 @@ Decoder *Decoder::GetDecoderByMIMEHeaders(const char *headers)
     }
 
     string charsetstring(start, next - start);
-    
+
     // Search for it
     for (int i = 0; usenetcharsets[i].charset; i ++)
     {
@@ -429,7 +447,13 @@ Encoder *Encoder::GetEncoderByName(const string &charset)
     // Try Fidonet names
     for (int i = 0; fidocharsets[i].charset; i ++)
     {
+#if defined(HAVE_STRCASECMP)
         if (0 == strcasecmp(charset.c_str(), fidocharsets[i].charset))
+#elif defined(HAVE_STRICMP)
+        if (0 == stricmp(charset.c_str(), fidocharsets[i].charset))
+#else
+        if (0 == fcompare(charset, fidocharsets[i].charset))
+#endif
         {
             return new Encoder(fidocharsets[i].outmap,
                                fidocharsets[i].outmap_length);
@@ -439,7 +463,13 @@ Encoder *Encoder::GetEncoderByName(const string &charset)
     // Try MIME names
     for (int i = 0; usenetcharsets[i].charset; i ++)
     {
-        if (0 == strcasecmp(charset.c_str(), usenetcharsets[i].charset))
+#if defined(HAVE_STRCASECMP)
+        if (0 == strcasecmp(charset,c_str(), usenetcharsets[i].charset))
+#elif defined(HAVE_STRICMP)
+        if (0 == stricmp(charset.c_str(), usenetcharsets[i].charset))
+#else
+        if (0 == fcompare(charset, usenetcharsets[i].charset))
+#endif
         {
             return new Encoder(usenetcharsets[i].outmap,
                                usenetcharsets[i].outmap_length);
