@@ -23,6 +23,7 @@
   convert.cpp
   convert.h
     Added a character set enumerator class.
+    Fixed bugs in CHRS kludge and charset= header detection.
 
   Makefile.in
     Updated dependencies.

@@ -80,7 +80,7 @@ const struct tablemap fidocharsets[] =
     // DUTCH, FRENCH, CANADIAN, GERMAN, ITALIAN, PORTU, SPANISH, SWISS, UK
     // are not supported (defined in FSC-0054)
     { "KOI8-R", koi8r, koi8r_rev },
-    { "KOI8-R", koi8u, koi8u_rev },
+    { "KOI8-U", koi8u, koi8u_rev },
     { "MAC", macroman, macroman_rev },
     // Sentinel
     { NULL, NULL, NULL }
@@ -127,8 +127,8 @@ const struct tablemap usenetcharsets[] =
     { "windows-10000", cp_10000, cp_10000_rev },
     { "iso-ir-11", iso_ir_11, iso_ir_11_rev },
     { "iso-ir-60", iso_ir_60, iso_ir_60_rev },
-    { "koi8-R", koi8r, koi8r_rev },
-    { "koi8-R", koi8u, koi8u_rev },
+    { "koi8-r", koi8r, koi8r_rev },
+    { "koi8-u", koi8u, koi8u_rev },
     { "macintosh", macroman, macroman_rev },
     // Sentinel
     { NULL, NULL, NULL }
@@ -181,7 +181,7 @@ Decoder *Decoder::GetDecoderByKludges(const char *kludges)
         next = kludges + strlen(kludges);
     }
 
-    string charset((chrs + 7), next - chrs - 7 - 1);
+    string charset((chrs + 7), next - chrs - 7);
 
     // Search for it
     for (int i = 0; fidocharsets[i].charset; i ++)
@@ -208,10 +208,8 @@ Decoder *Decoder::GetDecoderByMIMEHeaders(const char *headers)
     }
 
     // Isolate charset parameter
-    const char *last = headers + strlen(headers);
     const char *start = NULL;
-    const char *next = NULL;
-    char *lf = strchr(headers, 10) <? strchr(headers, 13);
+    const char *next = headers + strlen(headers);
     if ('"' == *(charset + 8))
     {
         start = charset + 9;
@@ -225,20 +223,23 @@ Decoder *Decoder::GetDecoderByMIMEHeaders(const char *headers)
     else
     {
         start = charset + 8;
-        while (isspace(*start))
-        {
-            start ++;
-        }
-
-        next = strchr(start, ' ') <? strchr(charset, ',');
     }
 
-    if (!next)
+    const char *p;
+    if (NULL != (p = strchr(start, ' ')))
     {
-        next = lf ? (lf <? last) : last;
+        next = next <? p;
+    }
+    if (NULL != (p = strchr(start, 1)))
+    {
+        next = next <? p;
+    }
+    if (NULL != (p = strchr(start, ',')))
+    {
+        next = next <? p;
     }
 
-    string charsetstring(start, next - start - 1);
+    string charsetstring(start, next - start);
     
     // Search for it
     for (int i = 0; usenetcharsets[i].charset; i ++)
