@@ -1,3 +1,9 @@
+2002-06-01 - peter karlsson <peter@softwolves.pp.se>
+  templates/default.tpl
+  lexer.cpp
+  lexer.h
+    Initial support for report templates.
+
 2002-05-27 - peter karlsson <peter@softwolves.pp.se>
   mappings/
   mappings.cpp
