@@ -252,4 +252,4 @@ AC_SUBST(QTMOC)
 AC_SUBST(QTLIB)
 
 dnl Create output ----------------------------------------------------------
-AC_OUTPUT(Makefile po/Makefile)
+AC_OUTPUT(Makefile po/Makefile doxygen.conf)

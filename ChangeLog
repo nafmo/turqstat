@@ -10,6 +10,9 @@
   doxygen.conf.in
     Configuration file for creating source documentation via doxygen.
 
+  configure.in
+    Create doxygen.conf containing the located paths.
+
 2000-11-26 - peter karlsson <peter@softwolves.pp.se>
   qtlist.cpp
     Comma-separated files are *.csv, not *.csf.
