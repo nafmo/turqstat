@@ -114,6 +114,53 @@ void fixupctrlbuffer(char *body_p, char *ctrl_p);
 void localetimestring(const struct tm *time, size_t len, char *out);
 #endif
 
+/**
+ * Get a conversion table for converting into Unicode for a specified
+ * character set. The name can be given using the Fidonet or MIME
+ * name of the character set. If in conflict, the Fidonet name takes
+ * precedence.
+ * @param charset Name of character set.
+ * @return Conversion table to convert into Unicode.
+ */
+const unsigned short *getconversiontable(const char *charset);
+
+/**
+ * Identify the character set used in a Fidonet text and return the
+ * appropriate conversion table to convert into Unicode.
+ * @param kludges Kludges for this message.
+ * @return Conversion table to convert into Unicode.
+ */
+const unsigned short *getfidoconversiontable(const char *kludges);
+
+/**
+ * Identify the character set used in a Usenet text and return the
+ * appropriate conversion table to convert into Unicode.
+ * @param headers Headers for this message.
+ * @return Conversion table to convert into Unicode.
+ */
+const unsigned short *getusenetconversiontable(const char *headers);
+
+/**
+ * Get a conversion table for converting from Unicode to a specified
+ * character set. The name can be given using the Fidonet or MIME
+ * name of the character set. If in conflict, the Fidonet name takes
+ * precedence.
+ * @param charset Name of character set.
+ * @return Conversion table to convert from Unicode.
+ */
+const struct reversemap *getoutputtable(const char *charset);
+
+/**
+ * Convert a string from one character set to another, using the supplied
+ * character set conversion tables.
+ * @param data String to convert.
+ * @param input Input character conversion table for the data.
+ * @param output Output character conversion table for the output.
+ * @return The converted string.
+ */
+string convertcharset(const char *data, const unsigned short *input,
+                      const struct reversemap *output);
+
 #ifdef USE_OWN_GETOPT
 /** Index to next non-option parameter. */
 extern int optind;

@@ -15,14 +15,14 @@
 // along with this program; if not, write to the Free Software
 // Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 
+#define _GNU_SOURCE
+
 #include <config.h>
 #include <string>
 #include <ctype.h>
 #include <stdio.h>
 #include <stdlib.h>
-#ifdef USE_OWN_GETOPT
-# include <string.h>
-#endif
+#include <string.h>
 #if defined(HAVE_OS2_COUNYTRYINFO)
 # define INCL_DOSNLS
 # include <os2.h>
@@ -33,6 +33,8 @@
 
 #include "utility.h"
 #include "mytime.h"
+#include "mappings/mappings.h"
+#include "mappings/charsets.h"
 
 // Compare two strings case in-sensitively
 // Why isn't this functionality available in ANSI C++? *sigh*
@@ -365,7 +367,7 @@ void localetimestring(const struct tm *time, size_t len, char *out)
         // GetDateFormat null terminates and includes the null in the
         // count
         out[-1] = ' ';
-    }
+    }   
 
     // Then print time
     GetTimeFormat(LOCALE_USER_DEFAULT, 0, &wintime, NULL, out, len);
@@ -377,6 +379,208 @@ void localetimestring(const struct tm *time, size_t len, char *out)
 }
 #endif
 
+// Get conversion table for a character set
+const unsigned short *getconversiontable(const char *charset)
+{
+    // Try Fidonet names
+    for (int i = 0; fidocharsets[i].charset; i ++)
+    {
+        if (0 == strcasecmp(charset, fidocharsets[i].charset))
+        {
+            return fidocharsets[i].inmap;
+        }
+    }
+
+    // Try MIME names
+    for (int i = 0; usenetcharsets[i].charset; i ++)
+    {
+        if (0 == strcasecmp(charset, usenetcharsets[i].charset))
+        {
+            return usenetcharsets[i].inmap;
+        }
+    }
+
+    // Return first in MIME table as default
+    return usenetcharsets[0].inmap;
+}
+
+// Identify Fidonet character set from kludges
+const unsigned short *getfidoconversiontable(const char *kludges)
+{
+    // Find CHRS kludge
+    char *chrs = kludges ? strcasestr(kludges, "\x01""CHRS: ") : NULL;
+    if (!chrs)
+    {
+        // Return first in Fido table
+        return fidocharsets[0].inmap;
+    }
+
+    // Isolate kludge
+    const char *next = strchr(chrs + 7, ' ');
+    if (!next)
+    {
+        next = strchr(chrs + 7, 1);
+    }
+    if (!next)
+    {
+        next = kludges + strlen(kludges);
+    }
+
+    string charset((chrs + 7), next - chrs - 7 - 1);
+
+    // Search for it
+    for (int i = 0; fidocharsets[i].charset; i ++)
+    {
+        if (0 == fcompare(charset, fidocharsets[i].charset))
+        {
+            return fidocharsets[i].inmap;
+        }
+    }
+
+    // Return first in Fido table
+    return fidocharsets[0].inmap;
+}
+
+// Identify Usenet character set from headers
+const unsigned short *getusenetconversiontable(const char *headers)
+{
+    // Find charset identifier
+    char *charset = headers ? strcasestr(headers, "charset=") : NULL;
+    if (!charset)
+    {
+        // Return first in MIME table
+        return usenetcharsets[0].inmap;
+    }
+
+    // Isolate charset parameter
+    const char *last = headers + strlen(headers);
+    const char *start = NULL;
+    const char *next = NULL;
+    char *lf = strchr(headers, 10) <? strchr(headers, 13);
+    if ('"' == *(charset + 8))
+    {
+        start = charset + 9;
+        next = strchr(start, '"');
+    }
+    else if ('\'' == *(charset + 8))
+    {
+        start = charset + 9;
+        next = strchr(start, '\'');
+    }
+    else
+    {
+        start = charset + 8;
+        while (isspace(*start))
+        {
+            start ++;
+        }
+
+        next = strchr(start, ' ') <? strchr(charset, ',');
+    }
+
+    if (!next)
+    {
+        next = lf ? (lf <? last) : last;
+    }
+
+    string charsetstring(start, next - start - 1);
+    
+    // Search for it
+    for (int i = 0; usenetcharsets[i].charset; i ++)
+    {
+        if (0 == fcompare(charsetstring, usenetcharsets[i].charset))
+        {
+            return usenetcharsets[i].inmap;
+        }
+    }
+
+    // Return first in MIME table
+    return usenetcharsets[0].inmap;
+}
+
+// Get conversion table from Unicode
+const struct reversemap *getoutputtable(const char *charset)
+{
+    // Try Fidonet names
+    for (int i = 0; fidocharsets[i].charset; i ++)
+    {
+        if (0 == strcasecmp(charset, fidocharsets[i].charset))
+        {
+            return fidocharsets[i].outmap;
+        }
+    }
+
+    // Try MIME names
+    for (int i = 0; usenetcharsets[i].charset; i ++)
+    {
+        if (0 == strcasecmp(charset, usenetcharsets[i].charset))
+        {
+            return usenetcharsets[i].outmap;
+        }
+    }
+
+    // Return first in MIME table as default
+    return usenetcharsets[0].outmap;
+}
+
+// Convert a string from one character set to another
+string convertcharset(const char *data, const unsigned short *input,
+                      const struct reversemap *output)
+    return s;
+{
+    const unsigned char *i = (const unsigned char *) data;
+    while (*i)
+    {
+        // Get Unicode codepoints
+        unsigned short ucs = input[*i];
+
+        if (ucs)
+        {
+            // Convert to a local codepoint by binary-searching the output
+            // map. For improved speed (latin-1 <=> latin-1), we first check
+            // if we have a 1-1 map.
+            if (ucs < 256 && output[ucs].unicode == ucs)
+            {
+                s += output[ucs].legacy;
+            }
+            else
+            {
+                // Binary search
+                char result = 0;
+                int low = 0, high = 255, mid;
+                while (!result)
+                {
+                    mid = low + (high - low) / 2;
+                    if (ucs == output[mid].unicode)
+                    {
+                        result = output[mid].legacy;
+                    }
+                    else if (ucs < output[mid].unicode)
+                    {
+                        high = mid - 1;
+                    }
+                    else if (ucs > output[mid].unicode)
+                    {
+                        low = mid + 1;
+                    }
+
+                    // Check for error condition
+                    if (low > high)
+                    {
+                        result = '?';
+                    }
+                }
+                s += result;
+            }
+        }
+        else
+        {
+            s += '?';
+        }
+
+        i ++;
+    }
+}
 
 #ifdef USE_OWN_GETOPT
 int optind = 0;
