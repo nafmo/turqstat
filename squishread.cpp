@@ -146,16 +146,6 @@ bool SquishRead::Transfer(time_t starttime, StatEngine &destination)
         // Remove SEEN-BY and PATH that are in Squish part of the body
         fixupctrlbuffer(msgbuf, NULL);
 
-cerr<<"Kludges"<<endl;
-cerr<<"========= "<<strlen(ctrlbuf)<<endl;
-for(int i=0;i<strlen(ctrlbuf);i++)if(1==ctrlbuf[i])cerr<<endl;else
-cerr<<ctrlbuf[i];cerr<<endl;
-cerr<<"========="<<endl;
-cerr<<"Body "<<strlen(msgbuf)<<endl;
-cerr<<"========="<<endl;
-for(int i=0;i<strlen(msgbuf);i++)if(13==msgbuf[i])cerr<<endl;else
-cerr<<msgbuf[i];cerr<<endl;
-cerr<<"========="<<endl;
         // Add to statistics
         if (stampToTimeT(&xmsg.date_arrived) >= starttime)
         {

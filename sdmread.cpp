@@ -128,16 +128,6 @@ bool SdmRead::Transfer(time_t starttime, StatEngine &destination)
         
         // Separate kludges from text
         fixupctrlbuffer(msgbuf, ctrlbuf);
-cerr<<"Kludges"<<endl;
-cerr<<"========= "<<strlen(ctrlbuf)<<endl;
-for(int i=0;i<strlen(ctrlbuf);i++)if(1==ctrlbuf[i])cerr<<endl;else
-cerr<<ctrlbuf[i];cerr<<endl;
-cerr<<"========="<<endl;
-cerr<<"Body "<<strlen(msgbuf)<<endl;
-cerr<<"========="<<endl;
-for(int i=0;i<strlen(msgbuf);i++)if(13==msgbuf[i])cerr<<endl;else
-cerr<<msgbuf[i];cerr<<endl;
-cerr<<"========="<<endl;
 
         written = asciiToTimeT((char *) sdmhead.datetime);
         if (isopus)
