@@ -1,4 +1,4 @@
-turqstat (1.5) unstable; urgency=low
+turqstat (2.0) unstable; urgency=low
 
   * Now officially maintained in Debian by the original author.
   * Added an X Window System version (in package xturqstat) based on Qt.
