@@ -1,3 +1,11 @@
+turqstat (2.0.2) unstable; urgency=low
+
+  * Explicitly list little-endian architectures only in debian/control,
+    so that build isn't attempted on big-endians one. This package is not
+    endianess clean (help welcome).
+
+ -- peter karlsson <peterk@debian.org>  Thu, 08 Feb 2001 19:00:00 +0100
+
 turqstat (2.0.1) unstable; urgency=low
 
   * Does not crash on news messages consisting solely of header
