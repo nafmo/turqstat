@@ -20,14 +20,15 @@
 #include <string.h>
 #include <stdio.h>
 #ifdef UNIX
-# include <sys/types.h>
 # include <dirent.h>
-# include <sys/stat.h>
 # include <unistd.h>
 #endif
 #ifdef __EMX__
 # include <emx/syscalls.h>
+# include <io.h>
 #endif
+#include <sys/types.h>
+#include <sys/stat.h>
 
 #include "newsspoolread.h"
 #include "utility.h"
