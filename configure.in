@@ -39,6 +39,7 @@ AC_MSG_RESULT($have_emx)
 
 if test "$have_emx" = "yes"; then
   standardcpplib=stdcpp
+  LDFLAGS=`echo "$LDFLAGS" | sed "s/-Zexe//g"`
 else
   standardcpplib=stdc++
 fi
