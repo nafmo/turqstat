@@ -68,6 +68,7 @@ time_t stampToTimeT(struct stamp_s *st)
     return tt;
 }
 
+/** Month names as used in FTSC and RFC date-time strings. */
 static const char months[] = "JanFebMarAprMayJunJulAugSepOctNovDec";
 
 // Convert FTSC style time-stamp to time_t (in local time)

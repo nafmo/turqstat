@@ -33,20 +33,38 @@
 
 class StatEngine;
 
+/**
+ * Class that reads JAM message bases.
+ * This class reads message bases stored in the JAM format.
+ */
 class JamRead : public AreaRead
 {
 public:
-    // Constructor and destructor
+    /** Standard constructor.
+     * Creates the JAM message base reader object.
+     * @param path Directory and base name for message base.
+     */
     JamRead(const char *path);
+    /** Standard destructor. */
     virtual ~JamRead();
 
-    // Transfer function
+    /**
+     * Transfer function. 
+     * This function transfers all messages in the message bases, received
+     * after the specified starting date, to the specified statistics engine.
+     *
+     * @param starttime   Date to start retrieve statistcs from.
+     * @param destination Engine object to transfer data to.
+     * @return True if the message base was read correctly (even if no
+     *         messages fits the condition.
+     */
     virtual bool Transfer(time_t starttime, StatEngine &destination);
 
 protected:
+    /** Path to message base. */
     char        *areapath;
 
-    // .JHR
+    /** Structure of the header in the JHR file. */
     struct jamhdr_header_s
     {
         uint8_t   signature[4];   // 'JAM\0'
@@ -58,6 +76,7 @@ protected:
         uint8_t   _reserved[1000];
     };
 
+    /** Structure of the JHR entry for individual messages. */
     struct jamhdr_msg_s
     {
         uint8_t   signature[4];   // 'JAM\0'
@@ -82,8 +101,10 @@ protected:
         uint32_t  cost;
     };
 
+    /** JAM attribute denoting a deleted message. */
     static const uint32_t Jam_deleted = 0x80000000L;
 
+    /** Common data fields for the JHR message subheaders. */
     struct jamhdr_subhdr_s
     {
         uint16_t  loid;
@@ -113,14 +134,16 @@ protected:
     static const uint16_t Jam_FLAGS       = 2003;   // Ignored
     static const uint16_t Jam_TZUTC       = 2004;   // Ignored
 
-    // *.JDX
+    /** Structure of the JDX entry JDX for individual messages. */
     struct jamjdx_s
     {
         uint32_t  recipientcrc;
         uint32_t  jhroffset;
     };
 
+    /** Version of JAM message bases supported. */
     static const uint16_t Jam_msgbaseversion = 1;
+    /** Magic number for JAM. */
     static const uint8_t  Jam_signature[4];
 };
 

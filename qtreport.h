@@ -24,16 +24,29 @@ class StatEngine;
 class QCheckBox;
 class QSpinBox;
 
+/**
+ * Class describing a window asking what to save to file. This class is used
+ * in the Qt version to ask the user which toplists to save to the compound
+ * report file (the same file that is created by the command line version).
+ */
 class ReportSelectWindow : public QDialog
 {
     Q_OBJECT
 
 public:
+    /**
+     * Standard constructor. Creates a window ready to fill in with toplist
+     * data.
+     * @param parent   Parent widget owning the window.
+     * @param name     Name given to this instance.
+     * @param engine_p Pointer to engine containing the statistics.
+     */
     ReportSelectWindow(QWidget *parent, const char *name, StatEngine *);
+    /** Standard destructor. */
     ~ReportSelectWindow();
 
 protected:
-    // Statistics engine
+    /** Statistics engine. */
     StatEngine *engine;
 
     // Checkboxes
@@ -55,25 +68,30 @@ protected:
     QSpinBox *maxnum;
 
 protected slots:
+    /**
+     * Slot for actually creating the report file. Called when the save
+     * button is pressed.
+     */
     void saveToFile();
 
 private:
     // Static members to remember values
-    static bool doquoters;
-    static bool dotopwritten;
-    static bool dotoporiginal;
-    static bool dotopnets;
-    static bool dotopdomains;
-    static bool dotopreceived;
-    static bool dotopsubjects;
-    static bool dotopprograms;
-    static bool doweekstats;
-    static bool dodaystats;
+    static bool doquoters;      ///< Remember if we want quoter toplist.
+    static bool dotopwritten;   ///< Remember if we want sender toplist.
+    static bool dotoporiginal;  ///< Remember if we want original content
+                                ///< toplist.
+    static bool dotopnets;      ///< Remember if we want Fidonet toplist.
+    static bool dotopdomains;   ///< Remember if we want topdomain toplist.
+    static bool dotopreceived;  ///< Remember if we want receiver toplist.
+    static bool dotopsubjects;  ///< Remember if we want subjects toplist.
+    static bool dotopprograms;  ///< Remember if we want programs toplist.
+    static bool doweekstats;    ///< Remember if we want weekday statistics.
+    static bool dodaystats;     ///< Remember if we want hour statistics.
 #ifdef HAVE_LOCALE_H
-    static bool douselocale;
+    static bool douselocale;    ///< Remember if we want local date formats.
 #endif
 
-    static int defaultmaxnum;
+    static int defaultmaxnum;   ///< Remember number of entries in toplists.
 };
 
 #endif

@@ -20,10 +20,24 @@
 
 class StatEngine;
 
+/**
+ * Abstract class that reads message areas.
+ * This is the superclass for the classes that implement reading of message
+ * area types.
+ */
 class AreaRead
 {
 public:
-    // Transfer function
+    /**
+     * Transfer function. 
+     * This function transfers all messages in the message bases, received
+     * after the specified starting date, to the specified statistics engine.
+     *
+     * @param starttime   Date to start retrieve statistcs from.
+     * @param destination Engine object to transfer data to.
+     * @return True if the message base was read correctly (even if no
+     *         messages fits the condition.
+     */
     virtual bool Transfer(time_t starttime, StatEngine &destination) = 0;
 };
 

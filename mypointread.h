@@ -33,22 +33,42 @@
 
 class StatEngine;
 
+/**
+ * Class that reads MyPoint message bases.
+ * This class reads message bases stored in MyPoint format, either
+ * revision 2 or revision 3.
+ */
 class MyPointRead : public AreaRead
 {
 public:
-    // Constructor and destructor
+    /** Standard constructor.
+     * Creates the MyPoint message base reader object.
+     * @param path    Directory for message base.
+     * @param areanum Number of area to read.
+     */
     MyPointRead(const char *path, unsigned areanum);
+    /** Standard destructor. */
     virtual ~MyPointRead();
 
-    // Transfer function
+    /**
+     * Transfer function. 
+     * This function transfers all messages in the message bases, received
+     * after the specified starting date, to the specified statistics engine.
+     *
+     * @param starttime   Date to start retrieve statistcs from.
+     * @param destination Engine object to transfer data to.
+     * @return True if the message base was read correctly (even if no
+     *         messages fits the condition.
+     */
     virtual bool Transfer(time_t starttime, StatEngine &destination);
 
 protected:
+    /** Path to message base. */
     char        *areapath;
+    /** Number of area to read. */
     unsigned    areanumber;
 
-    // Header of area file (.A??)
-
+    /** Header of the area file (.A??). */
     struct header_s
     {
         uint8_t       areaprf[2];
@@ -75,10 +95,10 @@ protected:
         uint8_t       fill[256-192-2];// Fill to 256 bytes
     };
 
-    // Letter structure in area file
-
+    /** Letter structure in the area file (.A??). */
     union ltrhdr_u
     {
+        /** Structure for version 2 message bases. */
         struct
         {
             uint32_t      delim;          // $feffffff
@@ -109,6 +129,7 @@ protected:
             uint8_t       split;
             uint16_t      spare;
         } version2;
+        /** Structure for version 3 message bases. */
         struct
         {
             uint32_t      delim;          // $feffffff
@@ -141,13 +162,16 @@ protected:
         } version3;
     };
 
+    /** Structure for the letter trailer in the area file. */
     union ltrtrl_u
     {
+        /** Structure for version 2 message bases. */
         struct
         {
             uint16_t      ltrsiz;
             uint16_t      ltrnum;
         } version2;
+        /** Structure for version 3 message bases. */
         struct
         {
             uint16_t      ltrsiz;
@@ -155,7 +179,7 @@ protected:
         } version3;
     };
 
-    // Flag files (.F??)
+    /** Structure for the flag files (.F??). */
     struct flags_s
     {
         uint8_t       bits;
@@ -163,7 +187,9 @@ protected:
         uint8_t       rdrpy;
     };
 
+    /** Indicator for version 2 message bases. */
     static const uint8_t  Mypoint_msgbaseversion2 = 2;
+    /** Indicator for version 3 message bases. */
     static const uint8_t  Mypoint_msgbaseversion3 = 3;
     static const uint32_t Mypoint_delimeter       = 0xfeffffff;
     static const uint8_t  Mypoint_delete          = 0x40;

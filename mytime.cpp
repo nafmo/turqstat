@@ -56,6 +56,7 @@ time_t my_mktime(struct tm *t)
 
 /* year >= 1582, 1 <= month <= 12, 1 <= day <= 31 */
 
+/** Helper function that returns the day number for a given date. */
 static int day(int year, int month, int day)
 {
     int result;

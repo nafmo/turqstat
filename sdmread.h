@@ -30,27 +30,52 @@
 
 class StatEngine;
 
+/**
+ * Class that reads "star-dot-MSG" message bases.
+ * This class reads message bases stored in standard Fidonet *.MSG format,
+ * either in standard FTSC format (for instance TerMail), or in the
+ * Opus variant (used by, for instance, SquishMail).
+ */
 class SdmRead : public AreaRead
 {
 public:
-    // Constructor and destructor
+    /** Standard constructor.
+     * Creates the Squish message base reader object.
+     * @param path Directory and base name for message base.
+     * @param hasarrivaltime True if it is an Opus style message base, which
+     *                       stores arrival times.
+     */
     SdmRead(const char *path, bool hasarrivetime);
+    /** Standard destructor. */
     virtual ~SdmRead();
 
-    // Transfer function
+    /**
+     * Transfer function. 
+     * This function transfers all messages in the message bases, received
+     * (for Opus style areas) or written (for FTSC style areas) after the
+     * specified starting date, to the specified statistics engine.
+     *
+     * @param starttime   Date to start retrieve statistcs from.
+     * @param destination Engine object to transfer data to.
+     * @return True if the message base was read correctly (even if no
+     *         messages fits the condition.
+     */
     virtual bool Transfer(time_t starttime, StatEngine &destination);
 
 protected:
+    /** Path to message base. */
     char    *areapath;
+    /** Flag telling whether this is an Opus or FTSC style message base. */
     bool    isopus;
 
+    /** Structure of the header of the MSG file. */
     struct sdmhead_s
     {
         uint8_t   fromusername[36];
         uint8_t   tousername[36];
         uint8_t   subject[72];
         uint8_t   datetime[20];       // "Dd Mmm Yy  HH:MM:SS"
-                                    // "Www Dd Mmm Yy HH:MM"
+                                      // "Www Dd Mmm Yy HH:MM"
         uint16_t  timesread;
         uint16_t  destnode;
         uint16_t  orignode;
@@ -59,14 +84,16 @@ protected:
         uint16_t  destnet;
         union
         {
-            struct // FTSC style
+            /** FTSC style MSG structure. */
+            struct
             {
                 uint16_t  destzone;
                 uint16_t  origzone;
                 uint16_t  destpoint;
                 uint16_t  origpoint;
             } ftsc;
-            struct // Opus style
+            /** Opus style MSG structure. */
+            struct
             {
                 stamp_s written;
                 stamp_s arrived;

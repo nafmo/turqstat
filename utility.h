@@ -22,11 +22,11 @@
 #include <time.h>
 #include <limits.h>
 
-// MS-DOS style time stamp
 #if defined(__GNUC__) || defined(__EMX__)
 # pragma pack(1)
 #endif
 
+/** MS-DOS style time stamp. */
 struct stamp_s
 {
     struct
@@ -48,23 +48,63 @@ struct stamp_s
 # pragma pack()
 #endif
 
-// Compare two strings case in-sensitively
+/**
+ * Compare two strings case in-sensitively.
+ * @param s1  First string to compare.
+ * @param s2  Second string to compare.
+ * @param max Maximum number of characters to compare.
+ * @return Less than zero if s1 < s2, zero if equal,
+ *         greater than zero if s2 > s1.
+ */
 int fcompare(const string &s1, const string &s2, unsigned int max = UINT_MAX);
-// Convert DOS style time-stamp to time_t
+
+/**
+ * Convert DOS style time-stamp to time_t.
+ * @param st Pointer to DOS style time-stamp.
+ * @return Number of seconds since epoch (ignoring timezones).
+ */
 time_t stampToTimeT(struct stamp_s *st);
-// Convert FTSC style time-stamp to time_t
+
+/**
+ * Convert FTSC style date-time string to time_t.
+ * @param datetime Pointer to FTSC style date-time string.
+ * @return Number of seconds since epoch (ignoring timezones).
+ */
 time_t asciiToTimeT(const char *datetime);
-// Convert RFC stype time-stamp to time_t
+
+/**
+ * Convert RFC stype date-time string to time_t.
+ * @param datetime Pointer to RFC style date-time string.
+ * @return Number of seconds since epoch (ignoring timezones).
+ */
 time_t rfcToTimeT(string datetime);
-// Separate kludges and body
+
+/**
+ * Separate kludges and body in a Fidonet mesage.
+ * @param body_p Pointer to mesasge body containing both kludges and body
+ *               text, will on exit only contain the body text.
+ * @param ctrl_p Pointer to pre-allocated buffer where kludges will be
+ *               written. Should be allocated as large as body_p. If set to
+ *               NULL, kludge data will be thrown away.
+ */
 void fixupctrlbuffer(char *body_p, char *ctrl_p);
 
 #ifdef USE_OWN_GETOPT
-// Index to next non-option parameter
+/** Index to next non-option parameter. */
 extern int optind;
-// Pointer to option argument
+
+/** Pointer to option argument. */
 extern char *optarg;
-// Retrieve command line parameters
+
+/**
+ * Retrieve command line options.
+ * @param _argc Original argc parameter passed to main.
+ * @param _argv Pointer to the argv array passed to main.
+ * @param opts  String describing valid option characters. Suffix option
+ *              character with colon (":") to indicate that the option takes
+ *              an argument (stored in optarg).
+ * @return Next option on command line, or '?' if an invalid option was found.
+ */
 int getopt(int _argc, char **_argv, const char *opts);
 #endif
 

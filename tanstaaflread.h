@@ -33,26 +33,53 @@
 
 class StatEngine;
 
+/**
+ * Class that reads Tanstaafl message bases.
+ * This class reads message bases stored in Tanstaafl (There's No Such
+ * Thing As A Free Lunch, a GPL'ed Fidonet reader for MS-DOS and Linux)
+ * format. The Tanstaafl mesasge base format is based on the one used by
+ * FDAPX/w.
+ */
 class TanstaaflRead : public AreaRead
 {
 public:
-    // Constructor and destructor
+    /** Standard constructor.
+     * Creates the Tanstaafl message base reader object.
+     * @param path    Directory for message base.
+     * @param areanum Number of area to read.
+     */
     TanstaaflRead(const char *path, unsigned areanum);
+    /** Standard destructor. */
     virtual ~TanstaaflRead();
 
-    // Transfer function
+    /**
+     * Transfer function. 
+     * This function transfers all messages in the message bases, written
+     * after the specified starting date, to the specified statistics engine.
+     * Tanstaafl does not store reception dates, so we cannot use that as a
+     * reference.
+     *
+     * @param starttime   Date to start retrieve statistcs from.
+     * @param destination Engine object to transfer data to.
+     * @return True if the message base was read correctly (even if no
+     *         messages fits the condition.
+     */
     virtual bool Transfer(time_t starttime, StatEngine &destination);
 
 protected:
+    /** Path to message base. */
     char        *areapath;
+    /** Number of area to read. */
     unsigned    areanumber;
 
+    /** Structure for a Fidonet address entry. */
     struct addr_s
     {
         uint16_t  zone, net, node, point;
     };
 
-    struct msghdrtfl_s /* msghdr.tfl */
+    /** Structure of header for each message (msghdr.tfl). */
+    struct msghdrtfl_s
     {
         uint8_t   recipientname[36];
         uint8_t   sendername[36];
@@ -79,7 +106,8 @@ protected:
     static const uint32_t Tanstaafl_sent    = 0x10;
     static const uint32_t Tanstaafl_deleted = 0x80000000;
 
-    struct msgstattfl_s /* msgstat.tfl */
+    /** Structure for the area data file (msgstat.tfl). */
+    struct msgstattfl_s
     {
         uint16_t  msgbaseversion;
         uint8_t   reserved[254];
@@ -88,6 +116,7 @@ protected:
         uint32_t  unread[2000];
     };
 
+    /** Version of Tanstaafl message bases supported. */
     static const uint32_t Tanstaafl_msgbaseversion = 1;
 };
 

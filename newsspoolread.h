@@ -22,17 +22,36 @@
 
 class StatEngine;
 
+/**
+ * Class that reads Usenet news spools.
+ * This class reads message bases stored in the standard text-based Usenet
+ * news spool format.
+ */
 class NewsSpoolRead : public AreaRead
 {
 public:
-    // Constructor and destructor
+    /** Standard constructor.
+     * Creates the Usenet spool reader object.
+     * @param path Directory for the news spool.
+     */
     NewsSpoolRead(const char *path);
+    /** Standard destructor. */
     virtual ~NewsSpoolRead();
 
-    // Transfer function
+    /**
+     * Transfer function. 
+     * This function transfers all messages in the message bases, received
+     * after the specified starting date, to the specified statistics engine.
+     *
+     * @param starttime   Date to start retrieve statistcs from.
+     * @param destination Engine object to transfer data to.
+     * @return True if the message base was read correctly (even if no
+     *         messages fits the condition.
+     */
     virtual bool Transfer(time_t starttime, StatEngine &destination);
 
 protected:
+    /** Path to spool directory. */
     char    *areapath;
 };
 

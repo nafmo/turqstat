@@ -24,42 +24,89 @@
 class QListView;
 class StatEngine;
 
+/**
+ * Class describing a window showing a toplist. This class is used in the Qt
+ * version to display the various toplists.
+ */
 class TopListWindow : public QDialog
 {
     Q_OBJECT
 
 public:
+    /**
+     * Numeric constants describing all available toplists that can be
+     * displayed by this class.
+     */
     enum toplist_e
     {
-        Quoters, Senders, OrigContent, FidoNets, Domains, Receivers,
-        Subjects, Software
+        Quoters,        ///< Blacklist of quoters.
+        Senders,        ///< Toplist of senders.
+        OrigContent,    ///< Toplist of original contents.
+        FidoNets,       ///< Toplist of Fidonet networks.
+        Domains,        ///< Toplist of Internet topdomains.
+        Receivers,      ///< Toplist of receivers.
+        Subjects,       ///< Toplist of subject lines.
+        Software        ///< Toplist of posting software.
     };
 
-
+    /**
+     * Standard constructor. Creates a window ready to fill in with toplist
+     * data.
+     * @param parent Parent widget owning the window.
+     * @param name   Name given to this instance.
+     * @param list   Type of list to display in the window.
+     */
     TopListWindow(QWidget *parent, const char *name, toplist_e list);
+    /** Standard destructor. */
     ~TopListWindow();
 
+    /**
+     * Fill the toplist with statistics from loaded message bases.
+     * @param engine Pointer to the engine containing the statistics.
+     */
     void fillOut(StatEngine *engine);
 
 protected:
+    /** Internal method used to setup the column headings. */
     void setupHeaders();
+    /** Internal method used for creating a quoter blacklist. */
     void addQuoters(StatEngine *);
+    /** Internal method used for creating a senders toplist. */
     void addSenders(StatEngine *);
+    /** Internal method used for creating a original content toplist. */
     void addOriginalContent(StatEngine *);
+    /** Internal method used for creating a Fidonet network toplist. */
     void addFidoNets(StatEngine *);
+    /** Internal method used for creating a Internet topdomain toplist. */
     void addDomains(StatEngine *);
+    /** Internal method used for creating a receiver toplist. */
     void addReceivers(StatEngine *);
+    /** Internal method used for creating a subject toplist. */
     void addSubjects(StatEngine *);
+    /** Internal method used for creating a software toplist. */
     void addSoftware(StatEngine *);
 
+    /**
+     * Convert a character string from CP437 and copy it.
+     * @param inputstring String to copy.
+     * @return An allocated char array containing the copied string. Must be
+     *         deleted after use.
+     */
     char *charConvertCopy(string &);
+    /** Create a percent string to display in a toplist. */
     QString percentString(int, int);
 
+    /** List view used to display the actual toplist. */
     QListView   *listview;
 
+    /** The kind of toplist associated with this object. */
     enum toplist_e toplist;
 
 protected slots:
+    /**
+     * Slot for saving the contents of the current window to file. Called
+     * when the save button is pressed.
+     */
     void saveToFile();
 };
 

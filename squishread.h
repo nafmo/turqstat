@@ -34,20 +34,38 @@
 
 class StatEngine;
 
+/**
+ * Class that reads Squish message bases.
+ * This class reads message bases stored in the Squish format.
+ */
 class SquishRead : public AreaRead
 {
 public:
-    // Constructor and destructor
+    /** Standard constructor.
+     * Creates the Squish message base reader object.
+     * @param path Directory and base name for message base.
+     */
     SquishRead(const char *path);
+    /** Standard destructor. */
     virtual ~SquishRead();
 
-    // Transfer function
+    /**
+     * Transfer function. 
+     * This function transfers all messages in the message bases, received
+     * after the specified starting date, to the specified statistics engine.
+     *
+     * @param starttime   Date to start retrieve statistcs from.
+     * @param destination Engine object to transfer data to.
+     * @return True if the message base was read correctly (even if no
+     *         messages fits the condition.
+     */
     virtual bool Transfer(time_t starttime, StatEngine &destination);
 
 protected:
+    /** Path to message base. */
     char    *areapath;
 
-    // .SQD
+    /** Structure of the Squish base header (SQD file). */
     struct sqbase_s
     {
         uint16_t  len;
@@ -69,6 +87,7 @@ protected:
         uint8_t   reserved2[124];
     };
 
+    /** Structure of the headers of each message (SQD file). */
     struct sqhdr_s
     {
         uint32_t  id;     //0xAFAE4453
@@ -81,10 +100,14 @@ protected:
         uint16_t  reserved;
     };
 
+    /** Magic number for Squish messages. */
     static const uint32_t Squish_id = 0xAFAE4453;
+    /** Frame type for normal Squish messages. */
     static const uint16_t Squish_type_normal = 0;
+    /** Frame type for free Squish frames. */
     static const uint16_t Squish_type_free = 1;
 
+    /** Structure of the XMSG header that precedes each message. */
     struct xmsg_s
     {
         uint32_t  attr;

@@ -27,21 +27,38 @@ class QMenuBar;
 class QLineEdit;
 class QProgressDialog;
 
-// This is our main window class
+/**
+ * Class describing our main window. This class is used in the Qt version to
+ * display the main window to the user.
+ */
 class InfoWindow : public QMainWindow
 {
     Q_OBJECT
 
 public:
+    /** Standard constructor. */
     InfoWindow();
+    /** Standard destructor. */
     ~InfoWindow();
 
+    /**
+     * Retrieve the progress dialog associated with the main window.
+     * @return Pointer to the QProgressDialog object used with the main
+     *         window.
+     */
     QProgressDialog *getProgressDialog() { return progress; };
 
+    /**
+     * Retrieve global main window object. Use this static method to
+     * retrieve the global (and only) instance of this class. The object is
+     * instanciated on the first call.
+     *
+     * @return The global InfoWindow object.
+     */
     static InfoWindow *getMainWindow();
 
 private:
-    // Main menubar
+    /** Main menubar. */
     QMenuBar *menu;
 
     // Data displayers
@@ -59,42 +76,50 @@ private:
     QLineEdit *earliestwritten;
     QLineEdit *latestwritten;
 
-    // Progress bar dialog
+    /** Progress bar dialog. */
     QProgressDialog *progress;
 
     // Internal state
-    bool hasnews, hasany;
+    bool hasnews,   ///< State variable indicating if we have seen news areas.
+         hasany;    ///< State variable indicating if we have seen any areas.
 
     // Statistics
-    StatEngine *engine;
+    StatEngine *engine; ///< Engine containing all collected data.
 
-    // Internal methods
+    /**
+     * Display a message saying that area types are incompatible. Internal.
+     */
     void incompatible();
+
+    /**
+     * Fill main window with initial values. Internal.
+     */
     void zeroFill();
 
     // Start date
-    time_t start;
-    int daysback;
+    time_t start;   ///< Earliest time to collect statistics from.
+    int daysback;   ///< Number of days back to collect statistics from.
 
 public slots:
-    void open();
-    void clear();
-    void report();
-    void quotelist();
-    void senderlist();
-    void contentlist();
-    void fidonetlist();
-    void domainlist();
-    void receiverlist();
-    void subjectlist();
-    void softwarelist();
-    void timelist();
-    void daylist();
-    void update();
-    void startdate();
+    void open();            ///< Slot handling File|Open message base.
+    void clear();           ///< Slot handling File|Clear data.
+    void report();          ///< Slot handling File|Save report.
+    void quotelist();       ///< Slot handling Show|Quoter blacklist.
+    void senderlist();      ///< Slot handling Show|Sender toplist.
+    void contentlist();     ///< Slot handling Show|Original content toplist.
+    void fidonetlist();     ///< Slot handling Show|Fidonet net toplist.
+    void domainlist();      ///< Slot handling Show|Internet topdomain toplist.
+    void receiverlist();    ///< Slot handling Show|Receiver toplist.
+    void subjectlist();     ///< Slot handling Show|Subject toplist.
+    void softwarelist();    ///< Slot handling Show|Software toplist.
+    void timelist();        ///< Slot handling Show|Postings per hour.
+    void daylist();         ///< Slot handling Show|Postings per day.
+    void startdate();       ///< Slot handling Edit|Set start date.
+
+    void update();          ///< Slot handling incoming new statistics data.
 
 signals:
-    void newdata();
+    void newdata();         ///< Signal indicating new statistics data.
 };
 
 #endif

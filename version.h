@@ -20,8 +20,13 @@
 
 #include <string>
 
+/** String describing the current version number. */
 const string version = "2.0";
+
+/** String describing the copyright information. */
 const string copyright = "(c) Copyright 1998-2000 Peter Karlsson";
+
+/** String describing the release year for this version. */
 const string releaseyear = "2000";
 
 #endif

@@ -23,14 +23,28 @@
 #include "qtbars.h"
 #include "statengine.h"
 
+/** Class used to display bars for frequency graphs. */
 class DataBar : public QProgressBar
 {
     Q_OBJECT
 
 public:
+    /**
+     * Standard constructor.
+     * @param parent Parent widget owning the bar.
+     */
     DataBar(QWidget *parent) : QProgressBar(parent) {};
 
 protected:
+    /**
+     * Set the value to display with this bar. This overrides the percentage
+     * display that is used by default by QProgressBar.
+     *
+     * @param indicator Reference to string where the caption that should be
+     *                  displayed is written into.
+     * @param progress  The number of entries associated with this bar.
+     * @return True on success (always succeeds).
+     */ 
     bool setIndicator(QString &indicator, int progress, int)
     {
         if (progress >= 0)

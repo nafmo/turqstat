@@ -49,19 +49,51 @@
 #include "mytime.h"
 #include "output.h"
 
+/**
+ * Wrapper class to retrieve data. This class is called from the main
+ * procedure to retrieve data from the specified message bases into the
+ * engine, and to connect that engine to the view to create a report file.
+ */
 class StatRetr
 {
 public:
-    enum basetype_e { squish, sdm, opus, fdapx, jam, mypoint, tanstaafl,
-                      newsspool };
+    /**
+     * Numeric constants describing the message base types that are
+     * supported by Turquoise SuperStat.
+     */
+    enum basetype_e
+    {
+        squish,     ///< SquishMail message base format.
+        sdm,        ///< Standard FTSC message base format.
+        opus,       ///< Opus SDM message base format.
+        fdapx,      ///< FDAPX/w message base format.
+        jam,        ///< JAM message base format.
+        mypoint,    ///< MyPoint message base format.
+        tanstaafl,  ///< Tanstaafl message base format.
+        newsspool   ///< Usenet news spool.
+    };
 
+    /**
+     * Constructor that does the work.
+     * @param engine         Reference to engine that stores data.
+     * @param view           Reference to view that creates report.
+     * @param areapath       Paths to areas to be examined.
+     * @param numpaths       Number of areas in array.
+     * @param outputfilepath Path to output file to create.
+     * @param basepath       Base path of message base (if required).
+     * @param basetype       Message base type for input.
+     * @param days           Number of days back to save data for.
+     */
     StatRetr(StatEngine &, StatView &,
              char **areapath, int numpaths, char *outputfilepath,
              char *basepath, basetype_e basetype,
              unsigned days);
+
+    /** Standard destructor. */
     ~StatRetr();
 };
 
+/** Display the program's help screen. */
 void helpscreen(void);
 
 int main(int argc, char *argv[])

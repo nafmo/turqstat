@@ -22,35 +22,73 @@
 
 class StatEngine;
 
+/**
+ * The class that saves the data. This is the class that saves the data
+ * retrieved with the StatEngine to a text file, containing the toplists
+ * that are specified as wanted.
+ */
 class StatView
 {
 public:
+    /** Standard constructor. */
     StatView();
 
     // Toggles for toplist selection
+    /** Tell view whether or not to enable the quoters toplist. */
     inline void EnableQuoters(bool yes)     { quoters = yes;      };
+
+    /** Tell view whether or not to enable the writers toplist. */
     inline void EnableTopWritten(bool yes)  { topwritten = yes;   };
+
+    /** Tell view whether or not to enable the original content toplist. */
     inline void EnableTopOriginal(bool yes) { toporiginal = yes;  };
+
+    /** Tell view whether or not to enable the Fidonet networks toplist. */
     inline void EnableTopNets(bool yes)     { topnets = yes;      };
+
+    /** Tell view whether or not to enable the receivers toplist. */
     inline void EnableTopReceived(bool yes) { topreceived = yes;  };
+
+    /** Tell view whether or not to enable the subjects toplist. */
     inline void EnableTopSubjects(bool yes) { topsubjects = yes;  };
+
+    /** Tell view whether or not to enable the programs toplist. */
     inline void EnableTopPrograms(bool yes) { topprograms = yes;  };
+
+    /** Tell view whether or not to enable the Internet topdomain toplist. */
     inline void EnableTopDomains(bool yes)  { topdomains = yes;   };
+
+    /** Tell view whether or not to enable the weekday statistics. */
     inline void EnableWeekStats(bool yes)   { weekstats = yes;    };
+
+    /** Tell view whether or not to enable the hour statistics. */
     inline void EnableDayStats(bool yes)    { daystats = yes;     };
 
     // Output format
 #ifdef HAVE_LOCALE_H
+    /** Tell view whether dates should be written in locale format. */
     inline void UseLocale(bool yes)         { uselocale = yes;    };
 #endif
 
     // Toplist flags
+    /** Tell view whether to print details about versions of programs. */
     inline void ShowVersions(bool yes)      { showversions = yes; };
+
+    /** Tell view whether to show all numbers in the toplist. */
     inline void ShowAllNums(bool yes)       { showallnums = yes;  };
 
+    /** Tell view the maximum number of entries to display in toplist. */
     inline void SetMaxEntries(unsigned max) { maxnumber = max;    };
 
     // This does the actual work
+    /**
+     * Create a report. This method is the one that does the actual work,
+     * it retrieves the information stored in the engine and saves it to the
+     * named file.
+     * @param engine   Pointer to engine containing data.
+     * @param filename Name of file to create.
+     * @return True if the file was created successfully.
+     */
     bool CreateReport(StatEngine *engine, string filename);
 
 protected:
