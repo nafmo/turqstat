@@ -1,4 +1,4 @@
-// Copyright (c) 2000 Peter Karlsson
+// Copyright (c) 2000-2001 Peter Karlsson
 //
 // $Id$
 //
