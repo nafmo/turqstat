@@ -163,7 +163,7 @@ Decoder *Decoder::GetDecoderByName(const char *charset)
 Decoder *Decoder::GetDecoderByKludges(const char *kludges)
 {
     // Find CHRS kludge
-    char *chrs = kludges ? strcasestr(kludges, "\x01""CHRS: ") : NULL;
+    char *chrs = kludges ? strstr(kludges, "\x01""CHRS: ") : NULL;
     if (!chrs)
     {
         // Return first in Fido table
@@ -200,7 +200,21 @@ Decoder *Decoder::GetDecoderByKludges(const char *kludges)
 Decoder *Decoder::GetDecoderByMIMEHeaders(const char *headers)
 {
     // Find charset identifier
+#if defined(HAVE_STRCASESTR)
     char *charset = headers ? strcasestr(headers, "charset=") : NULL;
+#elif defined(HAVE_STRISTR)
+    char *charset = headers ? stristr(headers, "charset=") : NULL;
+#elif defined(HAVE_STRLWR)
+    const char *charset = NULL;
+    if (headers)
+    {
+        char *lowercaseheaders = strlwr(strdup(headers));
+        char *find = strstr(lowercaseheaders, "charset=");
+        charset = headers + (find - lowercaseheaders);
+        free(lowercaseheaders);
+    }
+#endif
+
     if (!charset)
     {
         // Return first in MIME table
