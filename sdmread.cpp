@@ -74,8 +74,8 @@ bool SdmRead::Transfer(time_t starttime, StatEngine &destination)
 
     if (!rc)
 # else
-    struct _finddata sdmdir;
-    int sdmhandle = _findfirst(searchpath.c_str(), 0x2f, &sdmdir);
+    struct _finddata_t sdmdir;
+    int sdmhandle = _findfirst(searchpath.c_str(), &sdmdir);
     int rc = sdmhandle;
 
     if (-1 == rc)

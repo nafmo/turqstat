@@ -29,8 +29,10 @@
 # include <dirent.h>
 # include <unistd.h>
 #endif
-#include <sys/types.h>
-#include <sys/stat.h>
+#ifndef HAVE_MINGW32_DIR_H
+# include <sys/types.h>
+# include <sys/stat.h>
+#endif
 
 #include "newsspoolread.h"
 #include "utility.h"
@@ -72,8 +74,8 @@ bool NewsSpoolRead::Transfer(time_t starttime, StatEngine &destination)
 
     if (!rc)
 # else
-    struct _finddata spooldir;
-    int spoolhandle = _findfirst(searchpath.c_str(), 0x2f, &spooldir);
+    struct _finddata_t spooldir;
+    int spoolhandle = _findfirst(searchpath.c_str(), &spooldir);
     int rc = spoolhandle;
 
     if (-1 == rc)
