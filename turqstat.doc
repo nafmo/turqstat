@@ -206,9 +206,15 @@ HISTORY
 2000-  -   - v1.4 -
   Uses autoconf for easier portability.
   Toplist over Fidonet nets and Internet top domains.
+  NB! Changed the switch that shows all numbers in the toplists.
   Support for locale date formats.
   Finds Internet addresses in Fidonet areas.
   Can give file names for JAM and Squish bases, instead of only base name.
+  Corrected errors on manual page and added a Swedish one.
+  Use Mingw32 instead of CygWin for Win32 version.
+  Improved news support, and detects gated Usenet posts in Fidonet.
+  Allows specifying message base file names with extension.
+  Various bugfixes.
 
 
 INCLUDED FILES
