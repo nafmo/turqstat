@@ -1,3 +1,21 @@
+2000-05-06 - peter karlsson <peter@softwolves.pp.se>
+  Makefile.in
+    Corrected prefix directories.
+    Comment out install target on OS/2 and Win32 platforms.
+
+  configure.in
+    Checks for backslash path separators.
+    Comment out install target on OS/2 and Win32 platforms.
+
+  acconfig.h
+  fdapxread.cpp
+  mypointread.cpp
+  tanstaaflread.cpp
+    Better support for backslashes as separators in paths.
+
+  debian/rules
+    Corrected parameters to configure.
+
 2000-05-01 - peter karlsson <peter@softwolves.pp.se>
   turqstat.doc
   turqstat.dok
