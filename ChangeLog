@@ -1,3 +1,14 @@
+2000-04-16 - peter karlsson <peter@softwolves.pp.se>
+  configure.in
+  acconfig.h
+  turqstat.cpp
+    Tries to figure out more ways to remove timezones.
+    This, however, has the unfortunate side-effect that file dates (news
+    spools are interpreted wrongly).
+
+  turqstat.1
+    Documented timezone bug.
+
 2000-04-15 - peter karlsson <peter@softwolves.pp.se>
   statengine.cpp
   statengine.h
