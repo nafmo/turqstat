@@ -1,3 +1,11 @@
+1999-11-14 - peter karlsson <pk@mds.mdh.se>
+  Makefile.linux
+  turqstat.1
+    Added man page.
+
+  turqstat.cpp
+    Fixed a bug in the help screen.
+
 1999-10-26 - peter karlsson <pk@mds.mdh.se>
   utility.cpp
   utility.h
