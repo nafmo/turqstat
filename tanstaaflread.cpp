@@ -49,6 +49,9 @@ bool TanstaaflRead::Transfer(time_t starttime, StatEngine &destination)
         return false;
     }
 
+    // Tanstaafl format lacks arrival times
+    destination.NoArrivalTime();
+
     // Check that the folder number is valid
     if (areanumber < 1 || areanumber > 1999)
     {

@@ -41,6 +41,7 @@ StatEngine::StatEngine(void)
     rdatevalid = false;
     earliestwritten = latestwritten = earliestreceived = latestreceived = 0;
     currpersontype = None;
+    hasarrivaltime = true;
 }
 
 StatEngine::~StatEngine(void)

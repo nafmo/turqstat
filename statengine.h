@@ -109,6 +109,9 @@ public:
     inline unsigned GetTotalSubjects(void)  { return numsubjects;      };
     inline unsigned GetTotalPrograms(void)  { return numprograms;      };
 
+    inline void NoArrivalTime(void)         { hasarrivaltime = false;  };
+    inline bool HasArrivalTime(void)        { return hasarrivaltime;   };
+
 protected:
     // Data types used by statistics engine
     struct persondata_s
@@ -183,6 +186,7 @@ protected:
     unsigned            currperson, currsubject, currprogram;
     list_t              currpersontype;
     programversion_s    *currversion;
+    bool                hasarrivaltime;
 
     // Internal methods
     string ParseAddress(string, string);

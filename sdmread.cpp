@@ -50,6 +50,12 @@ bool SdmRead::Transfer(time_t starttime, StatEngine &destination)
         return false;
     }
 
+    // Non-Opus SDM doesn't have arrival times
+    if (!isopus)
+    {
+        destination.NoArrivalTime();
+    }
+
     // Open the message directory
 #if defined(UNIX)
     DIR *sdmdir = opendir(areapath);

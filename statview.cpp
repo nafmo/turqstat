@@ -56,14 +56,22 @@ bool StatView::CreateReport(StatEngine *engine, string filename,
         report.close();
     }
 
+    report.form("This report covers %u messages ",
+                engine->GetTotalNumber());
 
-    report.form("This report covers %u messages that were received at this "
-                "system between ", engine->GetTotalNumber());
+    if (engine->HasArrivalTime())
+    {
+        report << "that were received at this system ";
+    }
+    else
+    {
+        report << "written ";
+    }
 
     time_t earliest = engine->GetEarliestReceived();
     struct tm *p1 = localtime(&earliest);
 
-    report.form("%04d-%02d-%02d %02d.%02d.%02d and ",
+    report.form("between %04d-%02d-%02d %02d.%02d.%02d and ",
                 p1->tm_year + 1900, p1->tm_mon + 1, p1->tm_mday,
                 p1->tm_hour, p1->tm_min, p1->tm_sec);
 
@@ -74,22 +82,24 @@ bool StatView::CreateReport(StatEngine *engine, string filename,
                 p2->tm_year + 1900, p2->tm_mon + 1, p2->tm_mday,
                 p2->tm_hour, p2->tm_min, p2->tm_sec);
 
-    report << " (written between ";
+    if (engine->HasArrivalTime())
+    {
+        report << " (written between ";
 
-    time_t wearliest = engine->GetEarliestWritten();
-    struct tm *p3 = localtime(&wearliest);
+        time_t wearliest = engine->GetEarliestWritten();
+        struct tm *p3 = localtime(&wearliest);
 
-    report.form("%04d-%02d-%02d %02d.%02d.%02d and ",
-                p3->tm_year + 1900, p3->tm_mon + 1, p3->tm_mday,
-                p3->tm_hour, p3->tm_min, p3->tm_sec);
+        report.form("%04d-%02d-%02d %02d.%02d.%02d and ",
+                    p3->tm_year + 1900, p3->tm_mon + 1, p3->tm_mday,
+                    p3->tm_hour, p3->tm_min, p3->tm_sec);
 
-    time_t wlatest = engine->GetLastWritten();
-    struct tm *p4 = localtime(&wlatest);
+        time_t wlatest = engine->GetLastWritten();
+        struct tm *p4 = localtime(&wlatest);
 
-    report.form("%04d-%02d-%02d %02d.%02d.%02d)",
-                p4->tm_year + 1900, p4->tm_mon + 1, p4->tm_mday,
-                p4->tm_hour, p4->tm_min, p4->tm_sec) << endl;
-
+        report.form("%04d-%02d-%02d %02d.%02d.%02d)",
+                    p4->tm_year + 1900, p4->tm_mon + 1, p4->tm_mday,
+                    p4->tm_hour, p4->tm_min, p4->tm_sec) << endl;
+    }
 
     report << endl;
 
