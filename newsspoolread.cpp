@@ -1,4 +1,4 @@
-// Copyright (c) 2000 Peter Karlsson
+// Copyright (c) 2000-2001 Peter Karlsson
 //
 // $Id$
 //
@@ -202,6 +202,12 @@ bool NewsSpoolRead::Transfer(time_t starttime, StatEngine &destination)
             // Point past newline marker (which will be overwritten)
             p += thislength;
             length -= thislength;
+        }
+
+        if (!p)
+        {
+            // Message contains only a header; skip it
+            goto out;
         }
 
         // Zero terminate
