@@ -57,7 +57,7 @@ public:
      * @param charset Name of character set.
      * @return Decoder object for this character set.
      */
-    Decoder *GetDecoderByName(const char *charset);
+    static Decoder *GetDecoderByName(const char *charset);
 
     /**
      * Decode character data.
