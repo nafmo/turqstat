@@ -289,7 +289,7 @@ static QString GetMessage(TDisplay::errormessages_e errormessage)
 
         case TDisplay::nntp_unexpected_result:
             s = qApp->translate("TDisplay",
-                                "Unexpected NNTP response code: %d");
+                                "Unexpected NNTP response code: %1");
             break;
 
         case TDisplay::nntp_communication_problem:
