@@ -203,7 +203,7 @@ HISTORY
 2000-04-14 - v1.3.1 -
   Corrected *.MSG and news spool support for OS/2.
   Adjusted time zone functions.
-2000-  -   - v1.4 -
+2000-05-15 - v1.4 -
   Uses autoconf for easier portability.
   Toplist over Fidonet nets and Internet top domains.
   NB! Changed the switch that shows all numbers in the toplists.
@@ -213,7 +213,6 @@ HISTORY
   Corrected errors on manual page and added a Swedish one.
   Use Mingw32 instead of CygWin for Win32 version.
   Improved news support, and detects gated Usenet posts in Fidonet.
-  Allows specifying message base file names with extension.
   Various bugfixes.
 
 
@@ -224,7 +223,7 @@ OS/2 and Win32 distribution:
 turqstat.doc - This documentation
 turqstat.dok - Documentation in Swedish
 turqstat.1   - Unix manual page
-turqstat-sv.1  Unix manual page in Swedish
+turqstat-sv.1- Unix manual page in Swedish
 COPYING      - The GNU General Public License, version 2
 
 src/ directory:

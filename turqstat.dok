@@ -203,20 +203,27 @@ HISTORIK
 2000-04-14 - v1.3.1 -
   R„ttade *.MSG- och news-"spool"-st”d f”r OS/2.
   Justerade tidszonsfunktioner.
-2000-  -   - v1.4 -
+2000-05-15 - v1.4 -
   Anv„nder autoconf f”r l„ttare anpassning till nya plattformar.
   Topplista ”ver Fidonetn„t och Internet-toppdom„ner.
-  St”d f”r localdefinierade datumformat.
+  OBS! Flaggan f”r att visa alla siffror i topplistorna har „ndrats.
+  St”d f”r "locale"-definierade datumformat.
   Hittar Internetadresser i Fidonetm”ten.
   Kan ange f”r JAM- och Squishdatabaser, inte bara basnamnet.
+  Korrigerade manualsidan, samt lade till en svensk.
+  Anv„nder Mingw32 i st„llet f”r CygWin f”r Win32-versionen.
+  F”rb„ttrat st”d f”r news, plus detektering av Usenetinl„gg i Fidonet.
+  Diverse felr„ttelser.
 
 
 BIFOGADE FILER
 
+OS/2- och Win32-distribution:
+
 turqstat.doc - Dokumentation p† engelska
 turqstat.dok - Denna dokumentation
 turqstat.1   - Unixmanualsida
-turqstat-sv.1  Unixmanualsida p† svenska
+turqstat-sv.1- Unixmanualsida p† svenska
 COPYING      - GNU General Public License, version 2
 
 src/-katalogen:
@@ -224,7 +231,7 @@ src/-katalogen:
   configure       - Konfigureringsskript (kr„ver sh-kompatibelt skal)
   Makefile.in     - Indatafil f”r Makefile (anv„nds av configure)
   configure.in    - Indatafil f”r configure (anv„nds av autoconf)
-  config.h.in     - Indatafil f”r config.h (used by configure)
+  config.h.in     - Indatafil f”r config.h (anv„nds av configure)
   acconfig.h      - Indatafil f”r config.h.in (anv„nds av autoconf)
   turqstat.cpp    - Huvudk„llkod f”r Turquoise
   arearead.h      - Headerfil som beskriver den abstrakta ”verklassen f”r

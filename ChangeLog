@@ -1,6 +1,9 @@
 2000-05-15 - peter karlsson <peter@softwolves.pp.se>
-  turqstast.doc
+  turqstat.doc
+  turqstat.dok
+  debian/rules
     Documented recent changes.
+    Added release date.
 
 2000-05-07 - peter karlsson <peter@softwolves.pp.se>
   statview.cpp
