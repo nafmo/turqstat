@@ -20,10 +20,12 @@ endiff
 
 echo * Makedist: Turquoise SuperStat version %ver
 
-if not isdir os2   md os2
-if not isdir win32 md win32
-if not isdir src   md src
-if not isdir src\mappings md src\mappings
+if not isdir dist              md dist
+if not isdir dist\os2          md dist\os2
+if not isdir dist\win32        md dist\win32
+if not isdir dist\src          md dist\src
+if not isdir dist\src\mappings md dist\src\mappings
+if not isdir dist\src\po       md dist\src\po
 
 rem autoconf
 rem autoheader
@@ -33,18 +35,27 @@ bash configure --without-qt
 make
 emxbind -s turqstat.exe
 
-copy turqstat.exe os2\
-copy Makefile     os2\
-copy config.h     os2\
+copy turqstat.exe dist\os2\
+copy Makefile     dist\os2\
+copy config.h     dist\os2\
 del  config.h
-copy README.os2   os2\
+copy README.os2   dist\os2\
 
-copy README.Win32                    win32\
-copy c:\dev\95\turqstat\turqstat.exe win32\turqstat.exe
+copy README.Win32                    dist\win32\
+copy c:\dev\95\turqstat\turqstat.exe dist\win32\turqstat.exe
 
-copy *.def *.cpp *.h Makefile.in config.h.in doxygen.conf.in configure configure.in ChangeLog src\
-copy mappings\*.txt mappings\*.cpp mappings\*.h mappings\*.in mappings\*.pl src\
+copy *.def *.cpp *.h Makefile.in config.h.in doxygen.conf.in configure configure.in ChangeLog dist\src\
+copy mappings\*.txt mappings\*.cpp mappings\*.h mappings\*.in mappings\*.pl dist\src\mappings\
+copy po\*.in po\*.sh po\*.po dist\src\po\
 
-rar a -s -av turq%ver.rar turqstat.do? turqstat.1 turqstat-sv.1 COPYING src\* os2\* win32\*
+make teal.exe
+for %a in (turqstat.do? *turqstat*.1 COPYING) do (
+  teal.exe -f IBMPC -t LATIN-1 -i %a -o dist\%a
+  touch /D%@filedate[%a] /T%@filetime[%a] dist\%a
+)
 
-deltree /y src
+pushd dist\
+rar a -s -av ..\turq%ver.rar turqstat.do? *.1 COPYING src\* mappings\* po\* os2\* win32\*
+popd
+
+deltree /y dist\
