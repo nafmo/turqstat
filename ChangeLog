@@ -1,3 +1,31 @@
+2000-12-04 - peter karlsson <peter@softwolves.pp.se>
+  statview.cpp
+    Always return something from CreateReport.
+
+  arearead.h
+  fdapxread.h
+  jamread.h
+  mypointread.h
+  mytime.cpp
+  mytime.h
+  newsspoolread.h
+  output.h
+  qtbars.cpp
+  qtbars.h
+  qtgui.h
+  qtlist.h
+  qtreport.h
+  sdmread.h
+  squishread.h
+  statengine.h
+  statview.h
+  tanstaaflread.h
+  turqstat.cpp
+  utility.cpp
+  utility.h
+  version.h
+    Added JavaDoc-style source documentation.
+
 2000-12-03 - peter karlsson <peter@softwolves.pp.se>
   debian/
     Added Debian menu entry for XTurqstat.
