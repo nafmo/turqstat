@@ -1,0 +1,13 @@
+Source: turqstat
+Section: mail
+Priority: optional
+Maintainer: peter karlsson <peter@softwolves.pp.se>
+Standards-Version: 2.5.1
+
+Package: turqstat
+Architecture: any
+Depends: ${shlibs:Depends}
+Description: Fidonet message base statistics program
+ Turquoise SuperStat is a simple but powerful Fidonet message base
+ statistics program that can read messages that are stored in
+ SDM (*.MSG), SquishMail, JAM, FDAPX/w and MyPoint message bases.

@@ -1,0 +1,11 @@
+turqstat (1.2-1) unstable; urgency=low
+
+  * Initial Release.
+  * Took jamread.* from upcoming 1.3 version to be able to compile with
+    GNU C++ 2.95.
+
+ -- peter karlsson <peter@softwolves.pp.se>  Thu, 14 Oct 1999 20:43:27 +0200
+
+Local variables:
+mode: debian-changelog
+End:
