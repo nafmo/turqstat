@@ -65,7 +65,7 @@ public:
     inline void EnableDayStats(bool yes)    { daystats = yes;     };
 
     // Output format
-#ifdef HAVE_LOCALE_H
+#if defined(HAVE_LOCALE_H) || defined(HAVE_OS2_COUNTRYINFO) || defined(HAVE_WIN32_LOCALEINFO)
     /** Tell view whether dates should be written in locale format. */
     inline void UseLocale(bool yes)         { uselocale = yes;    };
 #endif
@@ -97,7 +97,7 @@ protected:
 
     bool        showversions, showallnums;
 
-#if defined(HAVE_LOCALE_H) || defined(__EMX__) || defined(__WIN32__)
+#if defined(HAVE_LOCALE_H) || defined(HAVE_OS2_COUNTRYINFO) || defined(HAVE_WIN32_LOCALEINFO)
     bool        uselocale;
 #endif
 

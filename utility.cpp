@@ -23,11 +23,11 @@
 #ifdef USE_OWN_GETOPT
 # include <string.h>
 #endif
-#if defined(__EMX__)
+#if defined(HAVE_OS2_COUNYTRYINFO)
 # define INCL_DOSNLS
 # include <os2.h>
 #endif
-#if defined(__WIN32__)
+#if defined(HAVE_WIN32_LOCALEINFO)
 # include <windows.h>
 #endif
 
@@ -257,10 +257,10 @@ void fixupctrlbuffer(char *body_p, char *ctrl_p)
     *newbody_p = 0;
 }
 
-#if defined(__EMX__)
+#if defined(HAVE_OS2_COUNTRYINFO)
 void localetimestring(const struct tm *time, size_t len, char *out)
 {
-    static _COUNTRYINFO countryinfo;
+    static COUNTRYINFO countryinfo;
     static bool datavalid = false;
 
     if (!datavalid)
@@ -297,6 +297,7 @@ void localetimestring(const struct tm *time, size_t len, char *out)
             break;
 
         case 2: // YMD
+        default: // Just in case
             usedlength = snprintf(out, len, "%04d%s%02d%s%02d",
                                   time->tm_year + 1900,
                                   countryinfo.szDateSeparator,
@@ -338,7 +339,7 @@ void localetimestring(const struct tm *time, size_t len, char *out)
              time->tm_min,
              ampm);
 }
-#elif defined(__WIN32__)
+#elif defined(HAVE_WIN32_LOCALEINFO)
 void localetimestring(const struct tm *time, size_t len, char *out)
 {
     // Convert C time struct to WinAPI time struct

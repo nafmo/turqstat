@@ -116,7 +116,7 @@ int main(int argc, char *argv[])
          daystats = true, versions = true, allnums = false,
          toporiginal = true, topnets = true, topdomains = true;
     time_t *range_start_p = NULL, *range_end_p = NULL;
-#if defined(HAVE_LOCALE_H) || defined(__EMX__) || defined(__WIN32__)
+#if defined(HAVE_LOCALE_H) || defined(HAVE_OS2_COUNTRYINFO) || defined(HAVE_WIN32_LOCALEINFO)
     bool uselocale = false;
 #endif
 
@@ -135,7 +135,7 @@ int main(int argc, char *argv[])
 
     // Handle arguments
     int c;
-#if defined(HAVE_LOCALE_H) || defined(__EMX__) || defined(__WIN32__)
+#if defined(HAVE_LOCALE_H) || defined(HAVE_OS2_COUNTRYINFO) || defined(HAVE_WIN32_LOCALEINFO)
     while (EOF != (c = getopt(argc, argv, "d:n:a:r:smofjptuQWRSPOHDVNTAL?")))
 #else
     while (EOF != (c = getopt(argc, argv, "d:n:a:r:smofjptuQWRSPOHDVNTA?")))
@@ -172,7 +172,7 @@ int main(int argc, char *argv[])
             case 'V':   versions = false;                           break;
             case 'A':   allnums = true;                             break;
 
-#if defined(HAVE_LOCALE_H) || defined(__EMX__) || defined(__WIN32__)
+#if defined(HAVE_LOCALE_H) || defined(HAVE_OS2_COUNTRYINFO) || defined(HAVE_WIN32_LOCALEINFO)
             case 'L':   uselocale = true;                           break;
 #endif
 
@@ -219,7 +219,7 @@ int main(int argc, char *argv[])
     view.EnableTopPrograms(topprograms);
     view.EnableWeekStats(weekstats);
     view.EnableDayStats(daystats);
-#if defined(HAVE_LOCALE_H) || defined(__EMX__) || defined(__WIN32__)
+#if defined(HAVE_LOCALE_H) || defined(HAVE_OS2_COUNTRYINFO) || defined(HAVE_WIN32_LOCALEINFO)
     view.UseLocale(uselocale);
 #endif
 
@@ -352,7 +352,7 @@ void helpscreen(void)
     cout << "  -R  Receivers   -O  Original" << endl;
     cout << "  -V  No program version info   -A  Show all numbers in toplists"
          << endl;
-#if defined(HAVE_LOCALE_H) || defined(__EMX__) || defined(__WIN32__)
+#if defined(HAVE_LOCALE_H) || defined(HAVE_OS2_COUNTRYINFO) || defined(HAVE_WIN32_LOCALEINFO)
     cout << "  -L  Use locale's date format" << endl;
 #endif
     cout << "    * = turn off for Usenet, turn on for Fidonet" << endl;
