@@ -223,7 +223,7 @@ void StatEngine::AddData(string fromname, string toname, string subject,
 
     if (subject.length() > 3)
     {
-        if (fcompare(subject.substr(0, 3), "re:") == 0)
+        while (fcompare(subject.substr(0, 3), "re:") == 0)
         {
             if (' ' == subject[3])
             {
@@ -296,7 +296,7 @@ void StatEngine::AddData(string fromname, string toname, string subject,
         if (-1 == howfar) howfar = controldata.length();
         program = controldata.substr(where + 5, howfar - where - 5);
     }
-    else if ((where = msgbody.find("--- ")) != -1)
+    else if ((where = msgbody.rfind("--- ")) != -1)
     {
         int howfar = msgbody.find('\n', where);
         if (-1 == howfar) howfar = msgbody.find('\r', where);
@@ -422,7 +422,12 @@ void StatEngine::AddData(string fromname, string toname, string subject,
 string StatEngine::ParseAddress(string controldata, string msgbody)
 {
     // Locate Origin
-    int index = msgbody.find(" * Origin: ");
+    // Handles these formats:
+    // (address)
+    // (network address)
+    // (address@network)
+    // (network#address)
+    int index = msgbody.rfind(" * Origin: ");
     if (-1 != index)
     {
         // Locate last '(' and ')' parenthesis on line
@@ -441,29 +446,38 @@ string StatEngine::ParseAddress(string controldata, string msgbody)
         if (-1 != rightparen && rightparen < endsat)
         {
             // Okay, we've found them, get the address
+            int space  = msgbody.find(' ', leftparen + 1);
+            int atsign = msgbody.find('@', leftparen + 1);
+            int number = msgbody.find('#', leftparen + 1);
+
+            if (space  != -1 && space  < rightparen) leftparen  = space;
+            if (atsign != -1 && atsign < rightparen) rightparen = atsign;
+            if (number != -1 && number < rightparen) leftparen  = number;
+
             return msgbody.substr(leftparen + 1, rightparen - leftparen - 1);
         }
     }
 
     // Locate MSGID
     // Handles these formats:
-    // MSGID Network#address serial
+    // MSGID network#address serial
     // MSGID address@network serial
     // MSGID address serial
     index = controldata.find("MSGID: ");
     if (-1 != index)
     {
-        int index2 = controldata.find(' ', index + 1);
-        if (-1 != index2)
+        int space = controldata.find(' ', index + 1);
+        if (-1 != space)
         {
-            int index3 = controldata.find(' ', index2 + 1);
-            int index4 = controldata.find('@', index2 + 1);
-            int index5 = controldata.find('#', index2 + 1);
-            if (index4 != -1 && index4 < index3) index3 = index4;
-            if (index5 != -1 && index5 < index3) index2 = index5;
-            if (-1 != index3)
+            int ends   = controldata.find(' ', space + 1);
+            int atsign = controldata.find('@', space + 1);
+            int number = controldata.find('#', space + 1);
+
+            if (atsign != -1 && atsign < ends) ends = atsign;
+            if (number != -1 && number < ends) space = number;
+            if (-1 != space)
             {
-                return controldata.substr(index2 + 1, index3 - index - 7);
+                return controldata.substr(space + 1, ends - index - 7);
             }
         }
     }
