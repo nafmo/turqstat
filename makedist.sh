@@ -28,7 +28,7 @@ cp -p debian/* turqstat-$ver/debian
 cp -p po/*.po po/update-po.sh po/Makefile.in turqstat-$ver/po/
 cp -p mappings/*.txt mappings/Makefile.in mappings/*.{cpp,h,pl} turqstat-$ver/mappings/
 
-fakeroot tar cvfz turqstat-$ver.tar.gz turqstat-$ver/*
+fakeroot tar cvfz turqstat_$ver.tar.gz turqstat-$ver/*
 if [ "$2" != "nodeb" ]; then
   cd turqstat-$ver
   fakeroot debian/rules binary
