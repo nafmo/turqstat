@@ -26,7 +26,7 @@ findfirst=no
 
 dnl Extra parameters -------------------------------------------------------
 AC_ARG_WITH(qt,
-[  --without-qt                 do not look for Qt or build Qt version],
+[  --without-qt            do not look for Qt or build Qt version],
 [if test "$withval" = "yes"; then
   qt=yes
 else

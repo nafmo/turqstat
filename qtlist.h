@@ -26,7 +26,7 @@ class StatEngine;
 
 class TopListWindow : public QDialog
 {
-	Q_OBJECT
+    Q_OBJECT
 
 public:
     enum toplist_e
