@@ -19,6 +19,10 @@
 #include <qpushbutton.h>
 #include <qstring.h>
 #include <qlayout.h>
+#include <qfiledialog.h>
+#include <qmessagebox.h>
+#include <qfile.h>
+#include <qtextstream.h>
 
 #include "qtlist.h"
 #include "statengine.h"
@@ -34,10 +38,16 @@ TopListWindow::TopListWindow(QWidget *parent, const char *name, toplist_e list)
     listview->setSorting(-1);
     layout->addWidget(listview);
 
-    // Add Dismiss button
+    // Add buttons
+    QHBoxLayout *buttonlayout = new QHBoxLayout(layout);
+    
     QPushButton *ok = new QPushButton(tr("Dismiss"), this);
-    layout->addWidget(ok);
+    buttonlayout->addWidget(ok);
     connect(ok, SIGNAL(clicked()), SLOT(accept()));
+
+    QPushButton *save = new QPushButton(tr("&Save"), this);
+    buttonlayout->addWidget(save);
+    connect(save, SIGNAL(clicked()), SLOT(saveToFile()));
 }
 
 TopListWindow::~TopListWindow()
@@ -52,45 +62,45 @@ void TopListWindow::fillOut(StatEngine *engine)
 
     switch (toplist)
     {
-    case Quoters:
-        setCaption(tr("Quoters"));
-        addQuoters(engine);
-        break;
+        case Quoters:
+            setCaption(tr("Quoters"));
+            addQuoters(engine);
+            break;
 
-    case Senders:
-        setCaption(tr("Senders"));
-        addSenders(engine);
-        break;
+        case Senders:
+            setCaption(tr("Senders"));
+            addSenders(engine);
+            break;
 
-    case OrigContent:
-        setCaption(tr("Original content per message"));
-        addOriginalContent(engine);
-        break;
+        case OrigContent:
+            setCaption(tr("Original content per message"));
+            addOriginalContent(engine);
+            break;
 
-    case FidoNets:
-        setCaption(tr("Fidonet nets"));
-        addFidoNets(engine);
-        break;
+        case FidoNets:
+            setCaption(tr("Fidonet nets"));
+            addFidoNets(engine);
+            break;
 
-    case Domains:
-        setCaption(tr("Internet topdomains"));
-        addDomains(engine);
-        break;
+        case Domains:
+            setCaption(tr("Internet topdomains"));
+            addDomains(engine);
+            break;
 
-    case Receivers:
-        setCaption(tr("Receivers"));
-        addReceivers(engine);
-        break;
+        case Receivers:
+            setCaption(tr("Receivers"));
+            addReceivers(engine);
+            break;
 
-    case Subjects:
-        setCaption(tr("Subjects"));
-        addSubjects(engine);
-        break;
+        case Subjects:
+            setCaption(tr("Subjects"));
+            addSubjects(engine);
+            break;
 
-    case Software:
-        setCaption(tr("Software"));
-        addSoftware(engine);
-        break;
+        case Software:
+            setCaption(tr("Software"));
+            addSoftware(engine);
+            break;
     }
 }
 
@@ -436,3 +446,145 @@ QString TopListWindow::percentString(int numerator, int denumerator)
     s = QString::number(percent, 'f', 2) + "%";
 }
 
+void TopListWindow::saveToFile()
+{
+    int numentries = listview->childCount();
+    int numcolumns = listview->columns();
+    if (0 == numentries || 0 == numcolumns)
+    {
+        QMessageBox::warning(this, "Turquoise SuperStat",
+                             tr("This list is empty"));
+        return;
+    }
+
+#define NUMFILTERS 3
+    const QString filter[NUMFILTERS] =
+    {
+#define PLAINTEXT 0
+        tr("Plain text (*.txt)"),
+#define COMMA 1
+        tr("Comma-separated file (*.csf)"),
+#define SEMICOLON 2
+        tr("Semi-colon separated file (*.csf)")
+    };
+
+    QFileDialog filedialog(QString::null,
+                           filter[0] + ";;" + filter[1] + ";;" + filter[2],
+                           this, "savefile", true);
+    filedialog.setMode(QFileDialog::AnyFile);
+    filedialog.setCaption(tr("Save toplist"));
+    filedialog.setShowHiddenFiles(false);
+    if (filedialog.exec() != QDialog::Accepted)
+    {
+        return;
+    }
+
+    int filternum = -1;
+    for (int i = 0; i < NUMFILTERS; i ++)
+    {
+        if (filedialog.selectedFilter() == filter[i])
+        {
+            filternum = i;
+        }
+    }
+    if (-1 == filternum)
+    {
+        return;
+    }
+
+    // Create the file
+    QFile output(filedialog.selectedFile());
+    if (!output.open(IO_WriteOnly | IO_Translate))
+    {
+        QMessageBox::warning(this, filedialog.selectedFile(),
+                             tr("Unable to create the selected file"));
+        return;
+    }
+
+    // Select output format
+    QString format;
+    unsigned defaultwidth = 1;
+    if (PLAINTEXT == filternum)
+    {
+        // Default: same width for all entries
+        defaultwidth = 80 / numcolumns;
+        if (!defaultwidth)
+        {
+            defaultwidth = 1;
+        }
+cout << numcolumns << endl;
+
+        // TODO: Give the user some option to edit this...
+//      columnwidth = new unsigned[numcolumns];
+//      unsigned *columnwidth = NULL;
+//      for (i = 0; i < numcolumns; i ++)
+//      {
+//          columnwidth[i] = defaultwidth;
+//      }
+    }
+
+    QTextStream out(&output);
+
+    // Print the titles
+    for (int i = 0; i < numcolumns; i ++)
+    {
+        QString s = listview->columnText(i);
+        if (i < numcolumns - 1)
+        {
+            switch (filternum)
+            {
+                case PLAINTEXT:
+                    s = s.leftJustify(defaultwidth, ' ', true);
+                    break;
+
+                case COMMA:
+                    s += ',';
+                    break;
+
+                case SEMICOLON:
+                    s += ';';
+                    break;
+            }
+        }
+        out << s;
+    }
+    out << endl;
+
+    QListViewItem *current = listview->firstChild();
+    // Print the entries
+    for (int i = 0; i < numentries; i ++)
+    {
+        for (int j = 0; j < numcolumns; j ++)
+        {
+            QString s = current->text(j);
+    
+            if (j < numcolumns - 1)
+            {
+                switch (filternum)
+                {
+                    case PLAINTEXT:
+                        s = s.leftJustify(defaultwidth, ' ', true);
+                        break;
+
+                    case COMMA:
+                        s.replace(QRegExp(","), ";");
+                        s += ',';
+                        break;
+
+                    case SEMICOLON:
+                        s.replace(QRegExp(";"), ",");
+                        s += ';';
+                        break;
+                }
+            }
+            out << s;
+        }
+        out << endl;
+
+        // Go to next item
+        current = current->nextSibling();
+    }
+
+    // Done
+    output.close();
+}

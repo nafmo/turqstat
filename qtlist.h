@@ -58,6 +58,9 @@ protected:
     QListView   *listview;
 
     enum toplist_e toplist;
+
+protected slots:
+    void saveToFile();
 };
 
 #endif
