@@ -1,3 +1,12 @@
+2001-02-08 - peter karlsson <peter@softwolves.pp.se>
+  debian/
+    Explicitly list only little-endian architectures in Debian packaging.
+
+  version.h
+  turqstat.doc
+  turqstat.dok
+    Updates for 2.0.2.
+
 2001-01-09 - peter karlsson <peter@softwolves.pp.se>
   newsspoolread.cpp
     Does not crash on news messages consisting solely of header
