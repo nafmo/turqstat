@@ -74,7 +74,7 @@ binary-arch: build install
 	dh_installdeb
 #	dh_perl
 	dh_shlibdeps
-	dh_gencontrol
+	dh_gencontrol -- -isp
 	dh_md5sums
 	dh_builddeb
 
