@@ -60,7 +60,7 @@ NewsSpoolRead::NewsSpoolRead(const char *path)
 
 NewsSpoolRead::~NewsSpoolRead()
 {
-    if (areapath) delete areapath;
+    if (areapath) free(areapath);
 }
 
 bool NewsSpoolRead::Transfer(time_t starttime, time_t endtime,
@@ -233,9 +233,9 @@ bool NewsSpoolRead::Transfer(time_t starttime, time_t endtime,
                             0, arrived);
 
         // Clean up our mess
-        delete msgbuf;
+        delete[] msgbuf;
 out:;
-        delete ctrlbuf;
+        delete[] ctrlbuf;
 out2:;
 
         display->UpdateProgress(++ msgn);

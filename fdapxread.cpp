@@ -34,7 +34,7 @@ FdApxRead::FdApxRead(const char *path, unsigned areanum)
 
 FdApxRead::~FdApxRead()
 {
-    if (areapath) delete areapath;
+    if (areapath) free(areapath);
 }
 
 bool FdApxRead::Transfer(time_t starttime, time_t endtime,
@@ -175,8 +175,8 @@ bool FdApxRead::Transfer(time_t starttime, time_t endtime,
                                     ? msghdrapx.timewritten
                                     : msghdrapx.timesentrcvd);
 
-            delete buf;
-            delete ctrlbuf;
+            delete[] buf;
+            delete[] ctrlbuf;
         out:;
         }
     }

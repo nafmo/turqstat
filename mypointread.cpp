@@ -34,7 +34,7 @@ MyPointRead::MyPointRead(const char *path, unsigned areanum)
 
 MyPointRead::~MyPointRead()
 {
-    if (areapath) delete areapath;
+    if (areapath) free(areapath);
 }
 
 bool MyPointRead::Transfer(time_t starttime, time_t endtime,
@@ -199,11 +199,11 @@ bool MyPointRead::Transfer(time_t starttime, time_t endtime,
                 display->WarningMessage(TDisplay::cannot_allocate_body,
                                         msgnum);
 
-                if (to_p)       delete to_p;
-                if (from_p)     delete from_p;
-                if (sub_p)      delete sub_p;
-                if (buf)        delete buf;
-                if (ctrlbuf)    delete ctrlbuf;
+                if (to_p)       delete[] to_p;
+                if (from_p)     delete[] from_p;
+                if (sub_p)      delete[] sub_p;
+                if (buf)        delete[] buf;
+                if (ctrlbuf)    delete[] ctrlbuf;
                 goto out;
             }
 
@@ -241,11 +241,11 @@ bool MyPointRead::Transfer(time_t starttime, time_t endtime,
                                 arrtim);
 
             // Deallocate
-            delete buf;
-            delete ctrlbuf;
-            delete to_p;
-            delete sub_p;
-            delete from_p;
+            delete[] buf;
+            delete[] ctrlbuf;
+            delete[] to_p;
+            delete[] sub_p;
+            delete[] from_p;
         }
         else
         {

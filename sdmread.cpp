@@ -58,7 +58,7 @@ SdmRead::SdmRead(const char *path, bool hasarrivetime) : isopus(hasarrivetime)
 
 SdmRead::~SdmRead()
 {
-    if (areapath) delete areapath;
+    if (areapath) free(areapath);
 }
 
 bool SdmRead::Transfer(time_t starttime, time_t endtime,
@@ -216,9 +216,9 @@ bool SdmRead::Transfer(time_t starttime, time_t endtime,
 
         // Clean up our mess
 out:;
-        delete ctrlbuf;
+        delete[] ctrlbuf;
 out2:;
-        delete msgbuf;
+        delete[] msgbuf;
 
         display->UpdateProgress(++ msgn);
         if (msg) fclose(msg);

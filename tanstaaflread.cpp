@@ -34,7 +34,7 @@ TanstaaflRead::TanstaaflRead(const char *path, unsigned areanum)
 
 TanstaaflRead::~TanstaaflRead()
 {
-    if (areapath) delete areapath;
+    if (areapath) free(areapath);
 }
 
 bool TanstaaflRead::Transfer(time_t starttime, time_t endtime,
@@ -177,8 +177,8 @@ bool TanstaaflRead::Transfer(time_t starttime, time_t endtime,
                                 msghdrtfl.timewritten,
                                 msghdrtfl.timewritten);
 
-            delete buf;
-            delete ctrlbuf;
+            delete[] buf;
+            delete[] ctrlbuf;
         out:;
         }
     }

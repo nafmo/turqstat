@@ -39,7 +39,7 @@ JamRead::JamRead(const char *path)
 
 JamRead::~JamRead()
 {
-    if (areapath) delete areapath;
+    if (areapath) free(areapath);
 }
 
 bool JamRead::Transfer(time_t starttime, time_t endtime,
@@ -255,7 +255,7 @@ bool JamRead::Transfer(time_t starttime, time_t endtime,
                                     ? hdrinfo.datewritten
                                     : hdrinfo.dateprocessed);
 
-            delete buf;
+            delete[] buf;
         out:;
         }
     }
