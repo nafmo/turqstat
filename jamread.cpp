@@ -71,7 +71,7 @@ bool JamRead::Transfer(time_t starttime, StatEngine &destination)
         return false;
     }
 
-    if (baseheader.signature != '\0MAJ')
+    if (memcmp(basehader.signature, Jam_signature) != 0)
     {
         cerr << "Error: Illegal JAM header" << endl;
         return false;
