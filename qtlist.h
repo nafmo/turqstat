@@ -27,7 +27,9 @@ using namespace std;
 
 class QListView;
 class StatEngine;
+#if !defined(HAVE_WORKING_WSTRING)
 class wstring;
+#endif
 
 /**
  * Class describing a window showing a toplist. This class is used in the Qt

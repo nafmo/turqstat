@@ -20,9 +20,9 @@
 #include <limits.h>
 #include <time.h>
 #if !defined(HAVE_FSTREAM_FORM_METHOD)
+# include <ios>
 # include <iomanip>
 #endif
-
 
 #include "statview.h"
 #include "statengine.h"
@@ -222,7 +222,12 @@ bool StatView::CreateReport(StatEngine *engine, string filename)
                             tmp.c_str(), data.messageswritten,
                             integ, fract);
 #else
-# error FIXME
+                if (tmp.length() > 58) tmp.erase(58);
+                report << left << setw(58) << tmp
+                       << right << setw(5) << data.messageswritten << ' '
+                       << setw(3) << integ << '.'
+                       << setfill('0') << setw(2) << fract << '%'
+                       << setfill(' ');
 #endif
 
                 report << endl;
@@ -258,7 +263,7 @@ bool StatView::CreateReport(StatEngine *engine, string filename)
                    << " were quotes." << endl;
 #else
             report << integ << "." << setfill('0') << setw(2) << fract
-                   << "%, were quotes" << endl;
+                   << "%, were quotes." << setfill(' ') << endl;
 #endif
 
             report << endl;
@@ -325,7 +330,10 @@ bool StatView::CreateReport(StatEngine *engine, string filename)
                         tmp.c_str(), data.messageswritten,
                         data.byteswritten);
 #else
-# error FIXME
+            if (tmp.length() > 50) tmp.erase(50);
+            report << left << setw(50) << tmp
+                   << right << setw(5) << data.messageswritten << ' '
+                   << setw(8) << data.byteswritten;
 #endif
 
             if (data.bytesquoted > 0)
@@ -432,7 +440,12 @@ bool StatView::CreateReport(StatEngine *engine, string filename)
                         data.byteswritten - data.bytesquoted,
                         data.messageswritten, originalpermsg);
 #else
-# error FIXME
+            if (tmp.length() > 43) tmp.erase(43);
+            report << left << setw(43) << tmp
+                   << right << setw(6) << data.byteswritten - data.bytesquoted
+                   << " /"
+                   << setw(5) << data.messageswritten << " = "
+                   << setw(5) << originalpermsg;
 #endif
 
             if (data.bytesquoted > 0)
@@ -500,7 +513,7 @@ bool StatView::CreateReport(StatEngine *engine, string filename)
             report << setw(5) << data.zone << ':'
                    << left << setw(5) << data.net << ' '
                    << right << setw(8) << data.messages << ' '
-                   << right << setw(8) << data.bytes << endl;
+                   << setw(8) << data.bytes;
 #endif
 
             report << endl;
@@ -555,7 +568,10 @@ bool StatView::CreateReport(StatEngine *engine, string filename)
             report.form("%-7.7s%8u %8u",
                         data.topdomain.c_str(), data.messages, data.bytes);
 #else
-# error FIXME
+            string tmp(data.topdomain, 0, 7);
+            report << left << setw(7) << tmp
+                   << right << setw(8) << data.messages << " "
+                   << setw(8) << data.bytes << endl;
 #endif
 
             report << endl;
@@ -620,7 +636,10 @@ bool StatView::CreateReport(StatEngine *engine, string filename)
                         data.messagesreceived,
                         data.messageswritten);
 #else
-# error FIXME
+            if (tmp.length() > 35) tmp.erase(35);
+            report << left << setw(35) << tmp
+                   << right << setw(5) << data.messagesreceived << ' '
+                   << setw(5) << data.messageswritten;
 #endif
 
             if (data.messageswritten)
@@ -701,7 +720,10 @@ bool StatView::CreateReport(StatEngine *engine, string filename)
             report.form("%-57.57s%6u %7u",
                         tmp.c_str(), data.count, data.bytes);
 #else
-# error FIXME
+            if (tmp.length() > 57) tmp.erase(57);
+            report << left << setw(57) << tmp
+                   << right << setw(6) << data.count << ' '
+                   << setw(7) << data.bytes;
 #endif
 
             report << endl;
@@ -756,7 +778,9 @@ bool StatView::CreateReport(StatEngine *engine, string filename)
 #if defined(HAVE_FSTREAM_FORM_METHOD)
             report.form("%-35.35s%6u", program.c_str(), data.count);
 #else
-# error FIXME
+            if (program.length() > 35) program.erase(35);
+            report << left << setw(35) << program
+                   << right << setw(6) << data.count;
 #endif
             report << endl;
 
@@ -851,10 +875,9 @@ bool StatView::CreateReport(StatEngine *engine, string filename)
 #if defined(HAVE_FSTREAM_FORM_METHOD)
                 report.form("%02d00-%02d59%6u ", i, i, hour[i]);
 #else
-// ### FIXME: Krävs det en setfill(' ') före sista?
                 report << setfill('0') << setw(2) << i << "00-"
-                       << setfill('0') << setw(2) << i << "59"
-                       << setw(6) << hour[i];
+                       << setw(2) << i << "59" << setfill(' ')
+                       << setw(6) << hour[i] << ' ';
 #endif
                 int len = (60 * hour[i]) / max;
                 for (int j = 0; j < len; j ++) report << '*';

@@ -365,7 +365,11 @@ wstring Decoder::Decode(const string &input)
 
         if (ucs)
         {
+#ifdef HAVE_WORKING_WSTRING
+            s += ucs;
+#else
             s.append(ucs);
+#endif
         }
 
         i ++;
@@ -433,7 +437,11 @@ wstring UTF8Decoder::Decode(const string &input)
             ucs |=  *i      & 0x3F;
         }
 
+#ifdef HAVE_WORKING_WSTRING
+        if (ucs) s += ucs;
+#else
         if (ucs) s.append(ucs);
+#endif
 
         i ++;
     }
