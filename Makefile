@@ -37,6 +37,7 @@ sdmread.o: sdmread.cpp sdmread.h arearead.h statengine.h datatypes.h utility.h
         gcc $(CFLAGS) -c sdmread.cpp
 
 dist: turqstat.exe source.rar
+        emxbind -s turqstat.exe
         rar -av a turqstat.rar turqstat.exe turqstat.doc turqstat.dok source.rar COPYING
         del source.rar
 
