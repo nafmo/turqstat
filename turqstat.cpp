@@ -25,11 +25,12 @@
 #include <string>
 #ifdef HAS_GETOPT_IN_UNISTD
 # include <unistd.h>
+#elif defined(HAS_GETOPT_IN_GETOPT)
+# include <getopt.h>
+#elif defined(USE_OWN_GETOPT)
+# include "mygetopt.h"
 #endif
 #include <stdlib.h>
-#ifdef HAS_GETOPT_IN_GETOPT
-# include <getopt.h>
-#endif
 #if defined(HAVE_TIMEZONE) || defined(HAVE_DAYLIGHT)
 # include <time.h>
 #endif
