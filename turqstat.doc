@@ -308,7 +308,7 @@ HISTORY
   Partial hack for GCC 3.0.
 2001-10-10 - v2.1.4 -
   Complete support for GCC 3.0.
-2001-  -   - v2.2 -
+2001-12-09 - v2.2 -
   Support for Usenet news via NNTP.
 
 
@@ -413,7 +413,7 @@ Thanks to Dan Gohman <gohmandj@mrs.umn.edu> for help with porting to GNU C++
 REQUIREMENTS FOR COMPILATION
 
 The program was developed under OS/2 using EMX 0.9d/GNU C/C++ 2.8.1, Debian
-2.2 with gcc 2.95.2 and Win32 with Mingw32 (gcc 2.95.2).
+2.2 with gcc 2.95.4 and Win32 with Mingw32 (gcc 2.95.2).
 
 The GUI version requires Qt version 2.1 or later to be installed.
 

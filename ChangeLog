@@ -1,3 +1,11 @@
+2001-12-09 - peter karlsson <peter@softwolves.pp.se>
+  nntpread.cpp
+    Win32 compile fixes.
+
+  turqstat.doc
+  turqstat.dok
+    2.2 release
+
 2001-11-27 - peter karlsson <peter@softwolves.pp.se>
   nntpread.cpp
     Moved winsock cleanup to destructor so it is called after all socket
