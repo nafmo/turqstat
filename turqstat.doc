@@ -25,7 +25,7 @@ binaries must be distributed.
 Even with this exception, licensing new message base access sources under GNU
 GPL is encouraged.
 
-This program may also be linked against any GUI library that means the Open
+This program may also be linked against any GUI library that meets the Open
 Source criteria, including, but not limited to, Troll Tech's Q Public License.
 Furthermore, the file mytime.cpp derives from the EMX library, which has this
 license: You are allowed to change and copy the emx library sources if you
