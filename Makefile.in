@@ -1,7 +1,6 @@
 # Makefile.in for Turquoise SuperStat
 #
 # $Id$
-# $Id$
 
 # Variables
 CXXFLAGS=@CXXFLAGS@ -I. -Wall
