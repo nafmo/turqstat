@@ -27,6 +27,11 @@
   Makefile.in
     Updated dependencies.
 
+  configure.in
+  utility.cpp
+    Compile fix for Mingw32: Check that wctype.h exists before trying to
+    include it.
+
 2001-05-05 - peter karlsson <peter@softwolves.pp.se>
   configure.in
   acconfig.h

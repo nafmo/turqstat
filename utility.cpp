@@ -18,10 +18,12 @@
 #include <config.h>
 #include <string>
 #include <ctype.h>
-#include <wctype.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <wchar.h>
+#if defined(HAVE_WCTYPE_H)
+# include <wctype.h>
+#endif
 #if defined(USE_OWN_GETOPT)
 # include <string.h>
 #endif
