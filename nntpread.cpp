@@ -40,6 +40,10 @@
 #  error "Missing <errno.h>"
 # endif
 #endif
+#if defined(HAVE_U_SLEEP)
+# include <stdlib.h>
+# define sleep(x) _sleep(x)
+#endif
 
 #include "nntpread.h"
 #include "statengine.h"
@@ -50,10 +54,13 @@
 # define INVALID_SOCKET -1
 #endif
 
-#if !defined(HAVE_SNPRINTF)
+#if !defined(HAVE_SNPRINTF) && !defined(HAVE_USNPRINTF)
 # define snprintf4(a,b,c,d)   sprintf(a,c,d)
 # define snprintf5(a,b,c,d,e) sprintf(a,c,d,e)
 #else
+# if defined(HAVE_USNPRINTF)
+#  define snprintf _snprintf
+# endif
 # define snprintf4 snprintf
 # define snprintf5 snprintf
 #endif
@@ -466,7 +473,11 @@ bool NntpRead::SendLine(const char *line)
         if (-1 == rc)
         {
             // Ignore "interrupted", "try again" and "would block" errors.
-            if (EINTR != errno && EAGAIN != errno && EWOULDBLOCK != errno)
+            if (EINTR != errno && EAGAIN != errno
+# if defined(EWOULDBLOCK)
+                && EWOULDBLOCK != errno
+# endif
+               )
             {
                 return false;
             }
