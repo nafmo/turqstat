@@ -146,7 +146,7 @@ bool StatView::CreateReport(StatEngine *engine, string filename,
                 else
                     tmp = "(none)";
 
-                report.form("%-35s%5u %-15s%3u.%02u%%",
+                report.form("%-35.35s%5u %-15s%3u.%02u%%",
                             tmp.c_str(), data.messageswritten,
                             data.address.c_str(), integ, fract);
                 report << endl;
@@ -232,10 +232,7 @@ bool StatView::CreateReport(StatEngine *engine, string filename,
             else
                 tmp = "(none)";
 
-            if (data.address.length() > 15)
-                data.address = data.address.substr(0, 15);
-
-            report.form("%-35s%5u %-15s%8u",
+            report.form("%-35.35s%5u %-15.15s%8u",
                          tmp.c_str(), data.messageswritten,
                          data.address.c_str(), data.byteswritten);
             if (data.bytesquoted > 0)
@@ -314,13 +311,7 @@ bool StatView::CreateReport(StatEngine *engine, string filename,
             else
                 tmp = "(none)";
 
-            if (data.address.length() > 15)
-                data.address = data.address.substr(0, 15);
-
-            if (tmp.length() > 28)
-                tmp = tmp.substr(0, 28);
-
-            report.form("%-28s%-15s%6u /%5u = %5u",
+            report.form("%-28.28s%-15.15s%6u /%5u = %5u",
                         tmp.c_str(), data.address.c_str(),
                         data.byteswritten - data.bytesquoted,
                         data.messageswritten, originalpermsg);
@@ -379,7 +370,7 @@ bool StatView::CreateReport(StatEngine *engine, string filename,
             else
                 tmp = "(none)";
 
-            report.form("%-35s%5u %5u",
+            report.form("%-35.35s%5u %5u",
                         tmp.c_str(),
                         data.messagesreceived,
                         data.messageswritten);
@@ -442,16 +433,11 @@ bool StatView::CreateReport(StatEngine *engine, string filename,
             }
 
             if (data.subject != "")
-            {
-                if (data.subject.length() > 55)
-                    tmp = data.subject.substr(0, 55);
-                else
-                    tmp = data.subject;
-            }
+                tmp = data.subject;
             else
                 tmp = "(none)";
 
-            report.form("%-55s%6u %7u",
+            report.form("%-55.55s%6u %7u",
                         tmp.c_str(), data.count, data.bytes);
 
             report << endl;
@@ -496,7 +482,7 @@ bool StatView::CreateReport(StatEngine *engine, string filename,
                 report.form("%4u. ", place);
             }
 
-            report.form("%-35s%6u", data.program.c_str(), data.count);
+            report.form("%-35.35s%6u", data.program.c_str(), data.count);
             report << endl;
 
             if (showversions)
