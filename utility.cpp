@@ -152,7 +152,7 @@ time_t rfcToTimeT(const string &datetime)
 }
 
 // Convert standard timespecs to time_t (in local time)
-time_t timespectoTimeT(const string &datetime)
+time_t timespecToTimeT(const string &datetime)
 {
     time_tt tt;
     struct tm tms;
