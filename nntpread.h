@@ -19,6 +19,12 @@
 #define __NNTPREAD_H
 
 #include <stdio.h>
+#include <config.h>
+#if defined(HAVE_WINSOCK_H)
+# include <winsock.h>
+#else
+# define SOCKET int
+#endif
 
 #include "arearead.h"
 
@@ -84,7 +90,7 @@ protected:
     /** Name of newsgroup. */
     char    *group;
     /** Communications socket. */
-    int     sockfd;
+    SOCKET  sockfd;
     FILE    *sock;
     /** Line buffer for NNTP response code. */
     char    buffer[512];

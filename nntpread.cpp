@@ -36,6 +36,11 @@
 #include "statengine.h"
 #include "output.h"
 
+#if !defined(INVALID_SOCKET)
+// This is used for winsock compatibility
+# define INVALID_SOCKET -1
+#endif
+
 #if !defined(HAVE_SNPRINTF)
 # define snprintf4(a,b,c,d)   sprintf(a,c,d)
 # define snprintf5(a,b,c,d,e) sprintf(a,c,d,e)
@@ -48,7 +53,7 @@ NntpRead::NntpRead(const char *_server, const char *_newsgroup)
 {
     server = strdup(_server);
     group = strdup(_newsgroup);
-    sockfd = -1;
+    sockfd = INVALID_SOCKET;
     articles = NULL;
 }
 
@@ -56,7 +61,7 @@ NntpRead::~NntpRead()
 {
     if (server) free(server);
     if (group) free(group);
-    if (sockfd != -1)
+    if (sockfd != INVALID_SOCKET)
     {
         SendCommand("QUIT\r\n");
 
@@ -84,6 +89,17 @@ bool NntpRead::Transfer(time_t starttime, time_t endtime,
 
     // We are unable to retrieve information on arrival times
     destination.NoArrivalTime();
+
+#if defined(HAVE_WINSOCK_H)
+    WORD versionrequest = MAKEWORD(1, 1);
+    WSADATA wsadata;
+    int err = WSAStartup(versionrequest, &wsadata);
+    if (err != 0)
+    {
+        display->ErrorMessage(TDisplay::nntp_communication_problem);
+        return false;
+    }
+#endif
 
     // Connect to the news server
     int response = ConnectServer();
@@ -358,6 +374,10 @@ out:;
         display->UpdateProgress(++ msgn);
     }
 
+#if defined(HAVE_WINSOCK_H)
+    WSACleanup();
+#endif
+
     return true;
 }
 
@@ -369,7 +389,7 @@ int NntpRead::ConnectServer()
     if (NULL == host) return -1;
 
     // Open socket
-    if (-1 == (sockfd = socket(AF_INET, SOCK_STREAM, IPPROTO_TCP)))
+    if (INVALID_SOCKET == (sockfd = socket(AF_INET, SOCK_STREAM, IPPROTO_TCP)))
         return -1;
 
     // Connect socket
@@ -402,6 +422,7 @@ int NntpRead::GetResponse()
 {
     // Retrieve response code
     char *p;
+    fflush(sock);
     fgets(buffer, sizeof buffer, sock);
     long int rc = strtol(buffer, &p, 10);
     if (p == buffer) rc = -1;
