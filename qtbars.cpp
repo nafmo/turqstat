@@ -1,4 +1,4 @@
-// Copyright (c) 2000-2001 Peter Karlsson
+// Copyright (c) 2000-2002 Peter Karlsson
 //
 // $Id$
 //
@@ -64,6 +64,7 @@ protected:
 #include "qtbars.moc"
 
 BarWindow::BarWindow(QWidget *parent, const char *name, bar_e bartype)
+    : QDialog(parent, name)
 {
     static const char *days[7] =
     {
