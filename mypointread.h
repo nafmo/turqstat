@@ -103,7 +103,7 @@ protected:
             le_uint16_t   flags1;
             uint8_t       flags2;
             uint8_t       split;
-            le_uint16_t      spare;
+            le_uint16_t   spare;
         } version2;
         struct
         {
