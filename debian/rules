@@ -1,5 +1,6 @@
 #!/usr/bin/make -f
 # GNU copyright 1997 to 1999 by Joey Hess.
+# Copyright 1999-2001 peter karlsson <peterk@debian.org>
 
 # Uncomment this to turn on verbose mode.
 #export DH_VERBOSE=1
@@ -10,21 +11,15 @@ export DH_COMPAT=2
 build: build-stamp
 build-stamp:
 	dh_testdir
-
 	./configure --prefix=/usr --mandir=\$${prefix}/share/man
-	# Add here commands to compile the package.
 	$(MAKE)
-
 	touch build-stamp
 
 clean:
 	dh_testdir
 	dh_testroot
 	rm -f build-stamp
-
-	# Add here commands to clean up after the build process.
 	-$(MAKE) distclean
-
 	dh_clean
 
 install: build
@@ -32,12 +27,11 @@ install: build
 	dh_testroot
 	dh_clean -k
 	dh_installdirs
-
-	# Add here commands to install the package into debian/turqstat.
+	# Install CLI version ("turqstat")
 	$(MAKE) install-text prefix=`pwd`/debian/turqstat/usr
 	cp -a ChangeLog debian/turqstat/usr/share/doc/turqstat/changelog
 	cp -a debian/changelog debian/turqstat/usr/share/doc/turqstat/changelog.Debian
-
+	# Install X version ("xturqstat")
 	$(MAKE) install-qt prefix=`pwd`/debian/xturqstat/usr
 	cp -a ChangeLog debian/xturqstat/usr/share/doc/xturqstat/changelog
 	cp -a debian/changelog debian/xturqstat/usr/share/doc/xturqstat/changelog.Debian
@@ -56,7 +50,6 @@ binary-arch: build install
 	dh_compress
 	dh_fixperms
 	dh_installdeb
-#	dh_perl
 	dh_shlibdeps
 	dh_gencontrol -- -isp
 	dh_md5sums
