@@ -1,3 +1,15 @@
+2001-02-08 - peter karlsson <peter@softwolves.pp.se>
+  Released 2.0.2, branching from 2.0 release:
+
+  2001-02-08 - peter karlsson <peter@softwolves.pp.se>
+    debian/
+      Explicitly list only little-endian architectures in Debian packaging.
+
+    version.h
+    turqstat.doc
+    turqstat.dok
+      Updates for 2.0.2.
+
 2001-01-17 - peter karlsson <peter@softwolves.pp.se>
   statview.cpp
   statview.h
