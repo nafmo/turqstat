@@ -1,6 +1,6 @@
 // Turquoise SuperStat
 //
-// A statistic collection program for Fidonet systems
+// A statistic collection program for Fidonet and Usenet systems
 // Version 1.3
 //
 // Copyright (c) 1998-2000 Peter Karlsson
@@ -79,7 +79,7 @@ int main(int argc, char *argv[])
 
     // Display banner
     cout << "Turquoise " << version
-         << " - Statistics tool for Fidonet message bases"
+         << " - Statistics tool for Fidonet and Usenet message bases"
          << endl;
     cout << copyright << ". GNU GPL 2 licensed." << endl;
     cout << "A Softwolves Software Release in " << releaseyear << "." << endl;
