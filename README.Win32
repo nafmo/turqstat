@@ -3,7 +3,13 @@ Softwolves Software, and there might be things that do not work properly.
 If you have any ideas on how to improve this version, please contact the
 author.
 
-This executable requires the file cygwin1.dll to run. This file can be
-obtained from Cygnus, http://www.cygnus.com/ or from Softwolves Software,
-http://www.softwolves.pp.se/wolves/. cygwin1.dll is distributed under the
-GNU General Public License.
+This executable is compiled using Mingw32, and should not require any extra
+DLLs to run. To compile your own version, you will need a Bourne shell
+compatible shell to run the configure script via. The bash shell is
+distributed in the CygWin distributions, which can be obtained from Cygnus,
+http://www.cygnus.com/ Turquoise SuperStat should be possible to compile with
+CygWin as well.
+
+Locale support seems to be lacking from both Mingw32 and CygWin at the moment.
+Mingw32 seems always to yield the US date format (DD/MM/YY) whereas CygWin
+gives a verbose date string.
