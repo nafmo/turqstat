@@ -18,6 +18,7 @@
 #include <limits.h>
 #include <iostream.h>
 #include <stdlib.h>
+#include <stdio.h>
 
 #include "statengine.h"
 #include "utility.h"
@@ -62,6 +63,7 @@ void StatEngine::AddData(string fromname, string toname, string subject,
                          time_t timewritten, time_t timereceived)
 {
     enum { None, Left, Right } direction;
+    string internetaddress;
 
     // Locate sender's name in database, and update statistics
     persondata_s *perstrav_p = people_p, *persfound_p = perstrav_p;
@@ -70,10 +72,19 @@ void StatEngine::AddData(string fromname, string toname, string subject,
     // subject lines.
     if (newsarea)
     {
+        string fromstring;
+
         int pos = controldata.find((char) 1);
         while (pos != -1)
         {
             pos ++;
+
+            // Fidonet-gated news areas often prefix headers with "RFC-"
+            if (fcompare(controldata.substr(pos, 4), "RFC-") == 0)
+            {
+                pos += 4;
+            }
+
             if (fcompare(controldata.substr(pos, 5), "From:") == 0)
             {
                 // Find where from name starts
@@ -85,9 +96,9 @@ void StatEngine::AddData(string fromname, string toname, string subject,
 
                 // And copy it
                 if (nextpos == -1)
-                    fromname = controldata.substr(pos);
+                    fromstring = controldata.substr(pos);
                 else
-                    fromname = controldata.substr(pos, nextpos - pos);
+                    fromstring = controldata.substr(pos, nextpos - pos);
 
                 // Prepare for next iteration
                 pos = nextpos;
@@ -105,11 +116,82 @@ void StatEngine::AddData(string fromname, string toname, string subject,
 
                 pos = nextpos;
             }
+            else if (fcompare(controldata.substr(pos, 5), "Date:") == 0)
+            {
+                pos += 5;
+                while (isspace(controldata[pos])) pos ++;
+
+                int nextpos = controldata.find((char) 1, pos);
+
+                if (nextpos == -1)
+                    timewritten = rfcToTimeT(controldata.substr(pos));
+                else
+                    timewritten =
+                        rfcToTimeT(controldata.substr(pos, nextpos - pos));
+
+                pos = nextpos;
+            }
             else
             {
                 pos = controldata.find((char) 1, pos);
             }
         }
+
+        // Parse From: string into name and address
+        // "email@domain.com"
+        // "email@domain.com (name)"
+        // "name <email@domain.com>"
+        int at    = fromstring.find('@');
+        int left  = fromstring.find('(');
+        int right = fromstring.find(')');
+        if (-1 == left || -1 == right || at > left)
+        {
+            left  = fromstring.find('<');
+            right = fromstring.find('>');
+            if (-1 == left || -1 == right)
+            {
+                // "email@domain.com"
+                fromname        = fromstring;
+                internetaddress = fromstring;
+            }
+            else
+            {
+                // "name <email@domain.com>"
+                fromname        = fromstring.substr(0, left - 1);
+                internetaddress = fromstring.substr(left + 1, right - left - 1);
+            }
+        }
+        else
+        {
+            // "email@domain.com (name)"
+            fromname        = fromstring.substr(left + 1, right - left - 1);
+            internetaddress = fromstring.substr(0, left - 1);
+        }
+
+        // Fixup name
+        // remove quotes
+        if ('\"' == fromname[0] && '\"' == fromname[fromname.length() - 1])
+            fromname = fromname.substr(1, fromname.length() - 2);
+
+        // kill QP
+        pos = fromname.find("=?iso-8859-1?Q?");
+        if (-1 == pos) pos = fromname.find("=?ISO-8859-1?Q?");
+        while (pos != -1)
+        {
+            int endsat = fromname.find("?=", pos + 1);
+
+            fromname = string(fromname.substr(0, pos) +
+                              DeQP(fromname.substr(pos + 15,
+                                                   endsat - pos - 15))) +
+                       fromname.substr(endsat + 2);
+
+            int pos1 = fromname.find("=?ISO-8859-1?Q?", pos + 1);
+            pos = fromname.find("=?iso-8859-1?Q?", pos + 1);
+            if ((pos1 != -1 && pos1 < pos) || pos == -1) pos = pos1;
+        }
+
+        if (0 == timewritten)
+            timewritten = timereceived;
     }
 
     if (NULL == perstrav_p)
@@ -117,7 +199,10 @@ void StatEngine::AddData(string fromname, string toname, string subject,
         people_p = new persondata_s;
         if (!people_p) errorquit(out_of_memory, 2);
         people_p->name = fromname;
-        people_p->address = ParseAddress(controldata, msgbody);
+        if (newsarea)
+            people_p->address = internetaddress;
+        else
+            people_p->address = ParseAddress(controldata, msgbody);
         persfound_p = people_p;
         numpeople ++;
     }
@@ -154,7 +239,10 @@ void StatEngine::AddData(string fromname, string toname, string subject,
             if (Right == direction) perstrav_p->right = persfound_p;
 
             persfound_p->name = fromname;
-            persfound_p->address = ParseAddress(controldata, msgbody);
+            if (newsarea)
+                persfound_p->address = internetaddress;
+            else
+                persfound_p->address = ParseAddress(controldata, msgbody);
 
             numpeople ++;
         }
@@ -182,7 +270,8 @@ void StatEngine::AddData(string fromname, string toname, string subject,
         if (-1 == nextcr) nextcr = msgbody.length();
         string thisline = msgbody.substr((int) currindex, nextcr - currindex);
 
-        if ("--- " == thisline.substr(0, 4) ||
+        // Break when we find a tear or Origin line
+        if (!newsarea && "--- " == thisline.substr(0, 4) ||
             thisline.length() == 3 && "---" == thisline)
         {
             foundtear = true;
@@ -194,10 +283,19 @@ void StatEngine::AddData(string fromname, string toname, string subject,
         else
             foundtear = false;
 
+        // Is this a quote?
         int gt = thisline.find('>'), lt = thisline.find('<');
         if (gt >= 0 && gt < 6 && (-1 == lt || gt < lt))
         {
             isquoted = true;
+        }
+
+        // Test for some common Usenet style quotes
+        if (newsarea && !isquoted)
+        {
+            int pipe = thisline.find('|');
+ 
+            if (0 == pipe) isquoted = true;
         }
 
         lastlinebytes = nextcr - currindex;
@@ -343,6 +441,8 @@ void StatEngine::AddData(string fromname, string toname, string subject,
 
     // Locate program name and version in database, and update statistics
     string program = "";
+    string programname;
+    int space1, space2;
 
     if (newsarea)
     {
@@ -362,6 +462,37 @@ void StatEngine::AddData(string fromname, string toname, string subject,
             while (isspace(controldata[where])) where ++;
             program = controldata.substr(where, howfar - where);
         }
+
+        // Split program name and version
+        // It is believed to be divided as such:
+        // "Program<space>Version<eol>" or
+        // "Program<space>Version<space>(extra)<eol>" or
+        // "Program/Version<space>rest" or
+        // "Program/Version<space>rest<space>(extra)<eol>" or
+        // "Program<space>(version)<eol>"
+
+        space1 = program.rfind(' ');
+        int firstspace = program.find(' ');
+        int slash = program.find('/');
+        int paren = program.find('(');
+        if (-1 == space1) firstspace = space1 = program.length();
+        if (slash != -1 && slash < firstspace) space1 = slash;
+        if (paren != -1 && paren < space1) space1 = paren;
+
+        // Special case: "Gnus v#.##/Emacs..."
+        if ('v' == program[firstspace + 1] &&
+            isdigit(program[firstspace + 2]))
+            space1 = firstspace;
+
+        paren = program.find('(', space1 + 1);
+        space2 = program.find(' ', space1 + 1);
+        if (-1 == space2)
+            if (-1 == paren)
+                space2 = program.length();
+            else
+                space2 = paren;
+
+        programname = program.substr(0, space1);
     }
     else
     {
@@ -380,22 +511,22 @@ void StatEngine::AddData(string fromname, string toname, string subject,
             if (-1 == howfar) howfar = msgbody.length();
             program = msgbody.substr(where + 4, howfar - where - 4);
         }
+
+        // Split program name and version
+        // It is believed to be divided as such:
+        // "Program<space>Version<space>Other"
+        // the last part is not counted
+
+        space1 = program.find(' ');
+        space2 = program.find(' ', space1 + 1);
+        if (-1 == space1) space1 = space2 = program.length();
+        if (-1 == space2) space2 = program.length();
+
+        if (space1 && '+' == program[space1 - 1])
+            programname = program.substr(0, space1 - 1);
+        else
+            programname = program.substr(0, space1);
     }
-
-    // Split program name and version
-    // It is believed to be divided as such: "Program<space>Version<space>Other"
-    // the last part is not counted
-
-    int space1 = program.find(' ');
-    int space2 = program.find(' ', space1 + 1);
-    if (-1 == space1) space1 = space2 = program.length();
-    if (-1 == space2) space2 = program.length();
-
-    string programname;
-    if (space1 && '+' == program[space1 - 1])
-        programname = program.substr(0, space1 - 1);
-    else
-        programname = program.substr(0, space1);
 
     if (programname != "")
     {
@@ -576,6 +707,27 @@ string StatEngine::ParseAddress(string controldata, string msgbody)
 
     // Give up
     return string("N/A");
+}
+
+string StatEngine::DeQP(string qp)
+{
+    string rc = "", hex = "";
+    int qpchar;
+
+    for (unsigned i = 0; i < qp.length(); i ++)
+        if ('=' == qp[i])
+        {
+            hex = qp.substr(i + 1, 2);
+            sscanf(hex.c_str(), "%x", &qpchar);
+            rc += (char) qpchar;
+            i += 2;
+        }
+        else if ('_' == qp[i])
+            rc += ' ';
+        else
+            rc += qp[i];
+
+    return rc;
 }
 
 bool StatEngine::GetTop(bool restart, persstat_s &result,

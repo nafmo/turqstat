@@ -195,6 +195,7 @@ protected:
 
     // Internal methods
     string ParseAddress(string, string);
+    string DeQP(string);
     void FlattenPeople(persstat_s *, persondata_s *);
     void FlattenSubjects(subjstat_s *, subjectdata_s *);
     void FlattenPrograms(progstat_s *, programdata_s *);
