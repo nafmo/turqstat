@@ -214,8 +214,23 @@ AC_TRY_COMPILE([ #include <unistd.h> ],
 AC_CHECK_FUNC(snprintf, AC_DEFINE(HAVE_SNPRINTF),
   AC_CHECK_FUNC(_snprintf, AC_DEFINE(HAVE_USNPRINTF)))
 
-AC_CHECK_FUNC(sleep, AC_DEFINE(HAVE_SLEEP),
-  AC_CHECK_FUNC(_sleep, AC_DEFINE(HAVE_U_SLEEP)))
+AC_CACHE_CHECK([for sleep in unistd.h], ac_cv_sleep,
+  AC_TRY_COMPILE([#include <unistd.h>
+                  struct s *sleep(const char *);],
+    [],
+    ac_cv_sleep=no, ac_cv_sleep=yes))
+if test "$ac_cv_sleep" = "yes"; then
+  AC_DEFINE(HAVE_SLEEP)
+#else
+  AC_CACHE_CHECK([for _sleep in stdlib.h], ac_cv__sleep,
+    AC_TRY_COMPILE([#include <stdlib.h>
+                    struct s *_sleep(const char *);],
+      [],
+      ac_cv__sleep=no, ac_cv__sleep=yes))
+  if test "$ac_cv__sleep" = "yes"; then
+    AC_DEFINE(HAVE_U_SLEEP)
+  fi
+fi
 
 AC_CHECK_FUNC(strcasestr, AC_DEFINE(HAVE_STRCASESTR))
 AC_CHECK_FUNC(stristr,    AC_DEFINE(HAVE_STRISTR))
