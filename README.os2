@@ -1,5 +1,5 @@
-The locale support for EMX is quite limited at the moment. Currently (EMX
-0.9d) only supports these locales:
+The locale support for EMX is quite limited at the moment. Currently EMX
+0.9d only supports these locales:
 
   Country       Locale
   -------       ------
