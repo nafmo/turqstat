@@ -77,6 +77,9 @@ if test "$ac_cv_header_limits_h" = "no"; then
   AC_MSG_ERROR(limits.h is needed to compile)
 fi
 AC_CHECK_HEADERS(stdint.h)
+if test "$findfirst" = "no"; then
+  AC_HEADER_DIRENT
+fi
 
 dnl Check for typedefs, structures, and compiler characteristics -----------
 AC_C_CONST
@@ -110,11 +113,21 @@ dnl Check for variables ----------------------------------------------------
 
 AC_MSG_CHECKING(for timezone in time.h)
 AC_TRY_COMPILE([ #include <time.h> ], [ timezone = 0; ],
-  AC_DEFINE(HAVE_TIMEZONE) AC_MSG_RESULT(yes), AC_MSG_RESULT(no))
+  AC_DEFINE(HAVE_TIMEZONE) AC_MSG_RESULT(yes),
+  AC_MSG_RESULT(no)
+  AC_MSG_CHECKING(for _timezone in time.h)
+  AC_TRY_COMPILE([ #include <time.h> ], [ _timezone = 0; ],
+    AC_DEFINE(HAVE_UTIMEZONE) AC_MSG_RESULT(yes),
+    AC_MSG_RESULT(no)))
 
 AC_MSG_CHECKING(for daylight in time.h)
 AC_TRY_COMPILE([ #include <time.h> ], [ daylight = 0; ],
-  AC_DEFINE(HAVE_DAYLIGHT) AC_MSG_RESULT(yes), AC_MSG_RESULT(no))
+  AC_DEFINE(HAVE_DAYLIGHT) AC_MSG_RESULT(yes),
+  AC_MSG_RESULT(no)
+  AC_MSG_CHECKING(for _daylight in time.h)
+  AC_TRY_COMPILE([ #include <time.h> ], [ _daylight = 0; ],
+    AC_DEFINE(HAVE_UDAYLIGHT) AC_MSG_RESULT(yes),
+    AC_MSG_RESULT(no)))
 
 dnl Check for other stuff --------------------------------------------------
 AC_LANG_CPLUSPLUS

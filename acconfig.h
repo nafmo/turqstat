@@ -16,6 +16,12 @@
 /* Define if time.h defines daylight variable */
 #undef HAVE_DAYLIGHT
 
+/* Define if time.h defines _daylight variable */
+#undef HAVE_UDAYLIGHT
+
 /* Define if time.h defines timezone variable */
 #undef HAVE_TIMEZONE
+
+/* Define if time.h defines _timezone variable */
+#undef HAVE_UTIMEZONE
 
