@@ -1,3 +1,12 @@
+2000-09-20 - peter karlsson <peter@softwolves.pp.se>
+  debian/
+    Updated scripts to create a package with the Qt version. The package is
+    called xturqstat.
+
+  Makefile.in
+    Added install target for the Qt version.
+    Renamed the Qt version binary from qturqstat to xturqstat.
+
 2000-09-19 - peter karlsson <peter@softwolves.pp.se>
   output.cpp
   outputqt.cpp
