@@ -1,6 +1,7 @@
 2000-04-28 - peter karlsson <peter@softwolves.pp.se>
   statengine.cpp
     Finds gated Internet/Usenet addresses in Fidonet areas.
+    Toplist over Internet topdomains.
 
   utility.cpp
   utility.h
@@ -9,6 +10,17 @@
 
   turqstat.def
     Corrected spelling.
+
+  jamread.cpp
+  jamread.h
+    Stores kludges relevant to finding Internet addresses in Fidonet areas
+    also for JAM.
+
+  statview.cpp
+  statview.h
+  statengine.h
+  turqstat.cpp
+    Toplist over Internet topdomains.
 
 2000-04-26 - peter karlsson <peter@softwolves.pp.se>
   statview.cpp
