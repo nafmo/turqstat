@@ -1,3 +1,24 @@
+2001-09-19 - peter karlsson <peter@softwolves.pp.se>
+  mytime.cpp
+    Fixed my_mktime so that it can handle time_t that is not an int, and
+    fixed some minor problems.
+
+  version.h
+    Prepare for 2.2.
+
+2001-09-15 - peter karlsson <peter@softwolves.pp.se>
+  statview.cpp
+    Cosmetic fix for the name underline.
+
+  qtlist.cpp
+    Add header needed for QT3 compilation.
+
+  turqstat.doc
+  turqstat.dok
+  version.h
+  debian/
+    Updates for 2.1.2.
+
 2001-08-30 - peter karlsson <peter@softwolves.pp.se>
   statengine.cpp
     Fix problem with a hang on illegal QP.
