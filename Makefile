@@ -6,7 +6,7 @@ CFLAGS=-Wall -O3 -g
 
 all: turqstat.exe
 
-turqstat.exe: turqstat.o statengine.o statview.o turqstat.def squishread.o fdapxread.o jamread.o mypointread.o utility.o sdmread.o tanstaaflread.o
+turqstat.exe: turqstat.o statengine.o statview.o turqstat.def squishread.o fdapxread.o jamread.o mypointread.o utility.o sdmread.o tanstaaflread.o newsspoolread.o
         gcc $(CFLAGS) -o turqstat.exe *.o -lstdcpp
 
 turqstat.o: turqstat.cpp statengine.h statview.h arearead.h squishread.h fdapxread.h jamread.h mypointread.h version.h tanstaaflread.h
@@ -38,6 +38,9 @@ mypointread.o: mypointread.cpp mypointread.h datatypes.h statengine.h arearead.h
 
 sdmread.o: sdmread.cpp sdmread.h arearead.h statengine.h datatypes.h utility.h
         gcc $(CFLAGS) -c sdmread.cpp
+
+newsspoolread.o: newsspoolread.cpp newsspoolread.h arearead.h utility.h
+        gcc $(CFLAGS) -c newsspoolread.cpp
 
 dist: turqstat.exe source.rar
         emxbind -s turqstat.exe
