@@ -23,6 +23,12 @@
 #include "fdapxread.h"
 #include "utility.h"
 
+#if defined(UNIX)
+# define DIRSEP '/'
+#else
+# define DIRSEP '\\'
+#endif
+
 FdApxRead::FdApxRead(const char *path, unsigned areanum)
 {
     areapath = strdup(path);
@@ -54,8 +60,8 @@ bool FdApxRead::Transfer(time_t starttime, StatEngine &destination)
     // Open the message area files
     // msgstat.apx - contains a record of area info
     string basepath = string(areapath);
-    if ('\\' != basepath[basepath.length() - 1])
-        basepath += '\\';
+    if (DIRSEP != basepath[basepath.length() - 1])
+        basepath += DIRSEP;
 
     string filepath = basepath + "msgstat.apx";
     FILE *msgstat = fopen(filepath.c_str(), "rb");

@@ -22,6 +22,12 @@
 
 #include "mypointread.h"
 
+#if defined(UNIX)
+# define DIRSEP '/'
+#else
+# define DIRSEP '\\'
+#endif
+
 MyPointRead::MyPointRead(const char *path, unsigned areanum)
 {
     areapath = strdup(path);
@@ -57,8 +63,8 @@ bool MyPointRead::Transfer(time_t starttime, StatEngine &destination)
 
     // Open the message area files
     string basepath = areapath;
-    if ('\\' != basepath[basepath.length() - 1])
-        basepath += '\\';
+    if (DIRSEP != basepath[basepath.length() - 1])
+        basepath += DIRSEP;
     basepath += "MYPOINT.";
 
     string filepath = basepath + ending;
