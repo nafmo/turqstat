@@ -1,0 +1,19 @@
+# Makefile.in for Turquoise SuperStat
+# Install Qt translation files
+#
+# $Id$
+
+# Variables
+QM=sv.qm
+prefix=@prefix@
+
+# Magic targets
+all: @QT@$(QM)
+
+install: @QT@$(QM)
+@NOINST@@QT@	install -d $(DESTDIR)@datadir@/xturqstat/locale 
+@NOINST@@QT@	install -m 644 $(QM) $(DESTDIR)@datadir@/xturqstat/locale 
+
+# Template targets
+@QT@%.qm: %.po
+@QT@	@QTMSGTOQM@ $< $@

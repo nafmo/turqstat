@@ -233,6 +233,10 @@ dnl Locate moc
   AC_PATH_PROG(QTMOC, moc, moc,
     $PATH:/bin:/usr/bin:/usr/local/bin:/usr/local/qt/bin:$QTDIR/bin)
 
+dnl Locate msg2qm
+  AC_PATH_PROG(QTMSGTOQM, msg2qm, msg2qm,
+    $PATH:/bin:/usr/bin:/usr/local/bin:/usr/local/qt/bin:$QTDIR/bin)
+
 else
   QT='# '
   NOQT=''
@@ -248,4 +252,4 @@ AC_SUBST(QTMOC)
 AC_SUBST(QTLIB)
 
 dnl Create output ----------------------------------------------------------
-AC_OUTPUT(Makefile)
+AC_OUTPUT(Makefile po/Makefile)
