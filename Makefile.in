@@ -15,14 +15,14 @@ prefix=/usr
 exec_prefix=${prefix}
 
 # Magic targets
-all: turqstat@EXE@
+all: turqstat@EXEEXT@
 
 debian:
 	fakeroot debian/rules binary
 
 clean:
 	-rm $(OBJS)
-	-rm turqstat@EXE@
+	-rm turqstat@EXEEXT@
 
 distclean: clean
 	-rm config.status config.log config.h Makefile
@@ -30,16 +30,16 @@ distclean: clean
 debianclean:
 	fakeroot debian/rules clean
 
-install: turqstat@EXE@
+install: turqstat@EXEEXT@
 	install -d $(DESTDIR)@bindir@ $(DESTDIR)@datadir@/doc/turqstat/ $(DESTDIR)@mandir@/man1
-	install -s turqstat@EXE@ $(DESTDIR)@bindir@
+	install -s turqstat@EXEEXT@ $(DESTDIR)@bindir@
 	install -m 644 turqstat.doc $(DESTDIR)@datadir@/doc/turqstat/
 	install -m 644 turqstat.dok $(DESTDIR)@datadir@/doc/turqstat/
 	install -m 644 turqstat.1   $(DESTDIR)@mandir@/man1/
 
 # Binary
-turqstat@EXE@: $(OBJS) $(DEF)
-	@CXX@ $(CXXFLAGS) $(LDFLAGS) -o turqstat@EXE@ $(OBJS) $(DEF) $(LIBS)
+turqstat@EXEEXT@: $(OBJS) $(DEF)
+	@CXX@ $(CXXFLAGS) $(LDFLAGS) -o turqstat@EXEEXT@ $(OBJS) $(DEF) $(LIBS)
 
 # Object files
 turqstat.o: turqstat.cpp statengine.h statview.h arearead.h squishread.h fdapxread.h jamread.h mypointread.h version.h tanstaaflread.h config.h
