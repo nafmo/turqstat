@@ -131,7 +131,7 @@ bool StatView::CreateReport(StatEngine *engine, string filename)
         struct tm *p4 = localtime(&wlatest);
         strftime(date, 64, dateformat, p4);
 
-        report << date;
+        report << date << ")";
     }
 
     report << endl;

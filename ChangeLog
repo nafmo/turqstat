@@ -1,3 +1,7 @@
+2000-04-26 - peter karlsson <peter@softwolves.pp.se>
+  statview.cpp
+    Cosmetic fix for an error introduced with the locale date format.
+
 2000-04-16 - peter karlsson <peter@softwolves.pp.se>
   configure.in
   acconfig.h
