@@ -21,6 +21,7 @@
 #include <stdio.h>
 
 #include "fdapxread.h"
+#include "utility.h"
 
 FdApxRead::FdApxRead(const char *path, unsigned areanum)
 {
@@ -99,8 +100,7 @@ bool FdApxRead::Transfer(time_t starttime, StatEngine &destination)
     bool stay = true;
     msghdrapx_s msghdrapx;
     unsigned msgnum = 0, high = msgstatapx.totalmsgs[areanumber - 1];
-    bool iskludge, wascr;
-    char *ctrl_p, *body_p, *newbody_p, *buf, *ctrlbuf;
+    char *buf, *ctrlbuf;
     while (stay)
     {
         if (1 != fread(&msghdrapx, sizeof (msghdrapx), 1, msghdr))
@@ -140,9 +140,6 @@ bool FdApxRead::Transfer(time_t starttime, StatEngine &destination)
             fread(buf, msghdrapx.txtsize, 1, msgtxt);
             buf[msghdrapx.txtsize] = 0;
 
-            // Copy out kludges and body to separate buffers
-            // kludges go into ctrlbuf, body stays in buf, but is
-            // relocated.
             ctrlbuf = new char[msghdrapx.txtsize + 1];
             if (!ctrlbuf)
             {
@@ -150,41 +147,8 @@ bool FdApxRead::Transfer(time_t starttime, StatEngine &destination)
                      << msgnum << ')' << endl;
             }
 
-            ctrl_p = ctrlbuf;
-            body_p = buf;
-            newbody_p = buf;
-
-            iskludge = false;
-            wascr = true;
-            while (*body_p)
-            {
-                if (wascr && 1 == *body_p)
-                    iskludge = true;
-
-
-                if (iskludge)
-                {
-                    // We don't CR/LF in the kludge buffer
-                    if ('\r' != *body_p && '\n' != *body_p)
-                        *(ctrl_p ++) = *body_p;
-                }
-                else
-                    *(newbody_p ++) = *body_p;
-
-                if ('\r' == *body_p || '\n' == *body_p)
-                {
-                    iskludge = false;
-                    wascr = true;
-                }
-                else
-                    wascr = false;
-
-                body_p ++;
-            }
-
-            // Zero terminate what we got
-            *ctrl_p = 0;
-            *newbody_p = 0;
+            // Separate kludges from text
+            fixupctrlbuffer(buf, ctrlbuf);
 
             destination.AddData(string(msghdrapx.sendername),
                                 string(msghdrapx.recipientname),
