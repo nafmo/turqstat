@@ -1,4 +1,4 @@
-Turquoise SuperStat 1.3 - An area statistics program for Fidonet
+Turquoise SuperStat 1.3.1 - An area statistics program for Fidonet
 (c) Copyright 1998-2000 Peter Karlsson.
 A Softwolves Software Release in 2000
 
@@ -171,6 +171,9 @@ HISTORY
   Added support for Usenet news spools.
   Linux distribution as .deb file.
   Various bugfixes.
+2000-04-14 - v1.3.1 -
+  Corrected *.MSG and news spool support for OS/2.
+  Adjusted time zone functions.
 
 
 INCLUDED FILES
