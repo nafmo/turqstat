@@ -461,3 +461,55 @@ redo:
     return (int) (unsigned char) '?';
 }
 #endif // USE_OWN_GETOPT
+
+#ifndef HAVE_WORKING_WSTRING
+wstring::wstring(size_t n)
+{
+    // Allocate at least 32 characters, less is a waste.
+    size = n < 32 ? 32 : n;
+    data_p = new wchar_t[n];
+    *data_p = 0;
+}
+
+wstring::wstring(const wstring &s)
+{
+    // Allocate at least 32 characters, less is a waste.
+    size = s.length() + 1 <? 32;
+    data_p = new wchar_t[size];
+    wcscpy(data_p, s.data_p);
+}
+
+wstring::~wstring()
+{
+    // Clean up
+    delete[] data_p;
+}
+
+wstring &wstring::operator+=(const wstring &s)
+{
+    // Calculate new size
+    size_t newchars = wcslen(s.data_p);
+    size_t newsize = wcslen(data_p) + newchars;
+    if (newsize > size)
+    {
+        // Grow in increments of 32 characters.
+        size += ((newchars + newsize) / 32 + 1) * 32;
+        wchar_t *new_p = new wchar_t[size];
+        wcscpy(new_p, s.data_p);
+        delete[] data_p;
+        data_p = new_p;
+    }
+
+    // Append
+    wcscat(data_p, s.data_p);
+
+    return *this;
+}
+
+wchar_t wstring::operator[](size_t n) const
+{
+    // Check argument for validity
+    return (n >= 0 && n <= wcslen(data_p)) ? data_p[n] : 0;
+}
+
+#endif // !HAVE_WORKING_WSTRING

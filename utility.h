@@ -131,6 +131,74 @@ extern char *optarg;
  * @return Next option on command line, or '?' if an invalid option was found.
  */
 int getopt(int _argc, char **_argv, const char *opts);
-#endif
+#endif // USE_OWN_GETOPT
+
+#ifndef HAVE_WORKING_WSTRING
+# include <wchar.h>
+/**
+ * Simple wide-string class to use instead of the C++ standard one.
+ * Provides justa about enough functionality for use with this program.
+ */
+class wstring
+{
+public:
+    /**
+     * Create a wide string object pre-allocating size for it.
+     * Growing can be done, but it is not very efficient.
+     * @param n Number of characters to allocate space for. Include room
+     *          for a terminating null character.
+     */
+    wstring(size_t n);
+
+    /**
+     * Create a wide string object by copying an existing one.
+     * Growing can be done, but it is not very efficient.
+     * @param s String to copy.
+     */
+    wstring(const wstring &s);
+
+    /**
+     * Create a wide string object.
+     */
+    wstring() { wstring::wstring(32); }
+
+    /**
+     * Standard destructor.
+     */
+    ~wstring();
+
+    /**
+     * Append characters to the end of the string.
+     * @param s String to append.
+     */
+    wstring &operator+=(const wstring &s);
+
+    /**
+     * Retrieve string as a C wide string pointer.
+     * @return A pointer to the internal data.
+     */
+    inline wchar_t *c_str() const { return data_p; };
+
+    /**
+     * Retrieve a character at an index.
+     * @param n Index to retrieve character at.
+     * @return The character requested.
+     */
+    wchar_t operator[](size_t n) const;
+
+    /**
+     * Retrieve length of the string.
+     * @return Number of characters (not bytes) in string.
+     */
+    inline size_t length() const { return wcslen(data_p); };
+
+private:
+    /** Contained string. */
+    wchar_t *data_p;
+
+    /** Length of data buffer in characters (not bytes). */
+    size_t size;
+};
+#endif // !HAVE_WORKING_WSTRING
 
 #endif
