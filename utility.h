@@ -19,7 +19,41 @@
 #define __UTILITY_H
 
 #include <string>
+#include <time.h>
 
+// MS-DOS style time stamp
+#if defined(__GNUC__) || defined(__EMX__)
+# pragma pack(1)
+#endif
+
+struct stamp_s
+{
+    struct
+    {
+        unsigned short da: 5;
+        unsigned short mo: 4;
+        unsigned short yr: 7;
+    } date;
+
+    struct
+    {
+        unsigned short ss: 5;
+        unsigned short mm: 6;
+        unsigned short hh: 5;
+    } time;
+};
+
+#if defined(__GNUC__) || defined(__EMX__)
+# pragma pack()
+#endif
+
+// Compare two strings case in-sensitively
 int fcompare(const string &s1, const string &s2);
+// Convert DOS style time-stamp to time_t
+time_t stampToTimeT(struct stamp_s *st);
+// Convert FTSC style time-stamp to time_t
+time_t asciiToTimeT(const char *datetime);
+// Separate kludges and body
+void fixupctrlbuffer(char *body_p, char *ctrl_p);
 
 #endif
