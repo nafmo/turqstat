@@ -32,7 +32,7 @@ class MyPointRead : public AreaRead
 {
 public:
     // Constructor and destructor
-    MyPointRead(const char *path);
+    MyPointRead(const char *path, unsigned areanum);
     virtual ~MyPointRead();
 
     // Transfer function
@@ -40,6 +40,7 @@ public:
 
 protected:
     char        *areapath;
+    unsigned	areanumber;
 
     // Header of area file (.A??)
 
@@ -65,42 +66,75 @@ protected:
         UINT8       ro;
         UINT8       arenum;
         UINT16      delnum;
-        char        spare[14];      /* Total size: 192 */
-        char        fill[256-192-2];/* Fill to 256 bytes */
+        char        spare[14];      // Total size: 192
+        char        fill[256-192-2];// Fill to 256 bytes
         UINT32      null;
     };
 
     // Letter structure in area file
 
-    struct ltrhdr_s
+    union ltrhdr_u
     {
-        UINT32      delim;          /* $feffffff */
-        UINT16      ltrsiz;
-        UINT32      arrtim;
-        UINT8       area;
-        UINT8       chrset;
-        UINT16      destzone;
-        UINT16      destnet;
-        UINT16      destnode;
-        UINT16      destpoint;
-        UINT16      origzone;
-        UINT16      orignet;
-        UINT16      orignode;
-        UINT16      origpoint;
-        UINT32      ltrtim;
-        UINT16      fromp;
-        UINT16      subjp;
-        UINT16      ltridp;
-        UINT16      qltrid;
-        UINT16      replyp;
-        UINT16      qreply;
-        UINT16      textp;
-        UINT16      originp;
-        UINT16      lflags;
-        UINT16      flags1;
-        UINT8       flags2;
-        UINT8       split;
-        UINT16      spare;
+        struct
+        {
+            UINT32      delim;          // $feffffff
+            UINT16      ltrsiz;
+            UINT32      arrtim;
+            UINT8       area;
+            UINT8       chrset;
+            UINT16      destzone;
+            UINT16      destnet;
+            UINT16      destnode;
+            UINT16      destpoint;
+            UINT16      origzone;
+            UINT16      orignet;
+            UINT16      orignode;
+            UINT16      origpoint;
+            UINT32      ltrtim;
+            UINT16      fromp;
+            UINT16      subjp;
+            UINT16      ltridp;
+            UINT16      qltrid;
+            UINT16      replyp;
+            UINT16      qreply;
+            UINT16      textp;
+            UINT16      originp;
+            UINT16      lflags;
+            UINT16      flags1;
+            UINT8       flags2;
+            UINT8       split;
+            UINT16      spare;
+        } version2;
+        struct
+        {
+            UINT32      delim;          // $feffffff
+            UINT16      ltrsiz;
+            UINT32      arrtim;
+            UINT8       area;
+            UINT8       chrset;
+            UINT16      destzone;
+            UINT16      destnet;
+            UINT16      destnode;
+            UINT16      destpoint;
+            UINT16      origzone;
+            UINT16      orignet;
+            UINT16      orignode;
+            UINT16      origpoint;
+            UINT32      ltrtim;
+            UINT16      fromp;
+            UINT16      subjp;
+            UINT16      ltridp;
+            UINT32      qltrid;
+            UINT16      replyp;
+            UINT32      qreply;
+            UINT16      textp;
+            UINT16      originp;
+            UINT16      lflags;
+            UINT16      flags1;
+            UINT8       flags2;
+            UINT8       split;			// Total size: 58 byte
+            UINT8		spare[64-58];	// Fill to 64 bytes
+        } version3;
     };
 
     struct ltrtrl_s
@@ -117,9 +151,10 @@ protected:
         UINT8       rdrpy;
     };
 
-    const Mypoint_msgbaseversion    = 2;
-    const UINT32 Mypoint_delimeter  = 0xfeffffff;
-    const Mypoint_delete            = 0x40;
+    static const UINT8  Mypoint_msgbaseversion2 = 2;
+    static const UINT8  Mypoint_msgbaseversion3 = 3;
+    static const UINT32 Mypoint_delimeter       = 0xfeffffff;
+    static const UINT8  Mypoint_delete          = 0x40;
 };
 
 #endif
