@@ -18,6 +18,7 @@
 #include <fstream.h>
 #include <limits.h>
 #include "statview.h"
+#include "version.h"
 
 static const char *days[] =
     { "Monday   ",
@@ -42,7 +43,7 @@ bool StatView::CreateReport(StatEngine *engine, string filename,
     if (!(report.is_open())) return false;
 
     // Include data as given from the statistics engine
-    report << "Turquoise SuperStat 1.1 * Message area statistics" << endl;
+    report << "Turquoise SuperStat " << version << " * Message area statistics" << endl;
     report << "=================================================" << endl;
     report << endl;
     report << "(c) Copyright 1998-1999 Peter Karlsson" << endl;
