@@ -26,6 +26,8 @@
 
 #include "jamread.h"
 
+const UINT8 JamRead::Jam_signature[4] = "JAM";
+
 JamRead::JamRead(const char *path)
 {
     areapath = strdup(path);

@@ -101,7 +101,7 @@ protected:
     };
 
     static const UINT16 Jam_msgbaseversion = 1;
-    static const UINT8  Jam_signature[4]   = "JAM";
+    static const UINT8  Jam_signature[4];//= "JAM";
 };
 
 #if defined(__GNUC__) || defined(__EMX__)
