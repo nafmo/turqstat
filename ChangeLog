@@ -1,3 +1,10 @@
+2001-11-15 - peter karlsson <peter@softwolves.pp.se>
+  configure.in
+  Makefile.in
+  turqstat.cpp
+  qtgui.cpp
+    Made it possible to compile entirely without NNTP support.
+
 2001-11-12 - peter karlsson <peter@softwolves.pp.se>
   nntpread.cpp
     More Winsock fixes.

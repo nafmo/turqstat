@@ -46,7 +46,9 @@
 #include "sdmread.h"
 #include "tanstaaflread.h"
 #include "newsspoolread.h"
-#include "nntpread.h"
+#if defined(HAVE_NNTP)
+# include "nntpread.h"
+#endif
 #include "version.h"
 #include "utility.h"
 #include "mytime.h"
@@ -73,7 +75,9 @@ public:
         jam,        ///< JAM message base format.
         mypoint,    ///< MyPoint message base format.
         tanstaafl,  ///< Tanstaafl message base format.
+#if defined(HAVE_NNTP)
         nntp,       ///< Usenet news server (nntp).
+#endif
         newsspool   ///< Usenet news spool.
     };
 
@@ -165,7 +169,9 @@ int main(int argc, char *argv[])
             case 'j':   basetype = StatRetr::jam;                   break;
             case 'p':   basetype = StatRetr::mypoint;               break;
             case 't':   basetype = StatRetr::tanstaafl;             break;
+#if defined(HAVE_NNTP)
             case 'U':   basetype = StatRetr::nntp;                  break;
+#endif
             case 'u':   basetype = StatRetr::newsspool;             break;
 
             case 'Q':   quoters = false;                            break;
@@ -310,9 +316,11 @@ StatRetr::StatRetr(StatEngine &engine, StatView &view,
                 area = new NewsSpoolRead(areapath[counter]);
                 break;
 
+#if defined(HAVE_NNTP)
             case nntp:
                 area = new NntpRead(basepath, areapath[counter]);
                 break;
+#endif
 
             default:
                 TDisplay::GetOutputObject()->
@@ -357,7 +365,11 @@ void helpscreen(void)
     cout << endl;
     cout << "Input selection options:" << endl;
     cout << "  -s  Squish       -j  JAM          -p  MyPoint*" << endl;
-    cout << "  -m  FTSC *.MSG   -f  FDAPX/w*     -U  Usenet nntp server**" << endl;
+    cout << "  -m  FTSC *.MSG   -f  FDAPX/w*"
+#if defined(HAVE_NNTP)
+                                            "     -U  Usenet nntp server**"
+#endif
+         << endl;
     cout << "  -o  Opus *.MSG   -t  Tanstaafl*   -u  Usenet news spool" << endl;
     cout << "    * = requires -a parameter         ** = use -a for server" << endl;
     cout << endl;

@@ -60,8 +60,9 @@
 #include "sdmread.h"
 #include "tanstaaflread.h"
 #include "newsspoolread.h"
-#include "nntpread.h"
-//#include "version.h"
+#if defined(HAVE_NNTP)
+# include "nntpread.h"
+#endif
 #include "mytime.h"
 #include "utility.h"
 
@@ -75,8 +76,10 @@ InfoWindow::InfoWindow()
     QPopupMenu *filemenu = new QPopupMenu(menu);
     filemenu->insertItem(tr("&Open message base"), this, SLOT(open()),
                          CTRL+Key_O);
+#if defined(HAVE_NNTP)
     filemenu->insertItem(tr("Open &news group"), this, SLOT(opennews()),
                          CTRL+Key_U);
+#endif
     filemenu->insertItem(tr("&Clear data"), this, SLOT(clear()), CTRL+Key_L);
     filemenu->insertItem(tr("&Save report"), this, SLOT(report()), CTRL+Key_S);
     filemenu->insertSeparator();
@@ -377,6 +380,7 @@ void InfoWindow::open()
 
 void InfoWindow::opennews()
 {
+#if defined(HAVE_NNTP) // moc bug (cannot ifdef out a slot)
     // Select news server
     bool ok;
     QString server = QInputDialog::getText("Turquoise SuperStat",
@@ -416,6 +420,7 @@ void InfoWindow::opennews()
 
     // Update information boxes
     emit newdata();
+#endif
 }
 
 void InfoWindow::transfer(AreaRead *area, bool isnews)

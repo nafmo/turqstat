@@ -44,7 +44,7 @@ fi],
 [locale=yes])
 
 AC_ARG_WITH(nntp,
-[  --without-nntp          do not build with locale support],
+[  --without-nntp          do not build with NNTP support],
 [if test "$withval" = "yes"; then
   nntp=yes
 else
@@ -123,7 +123,11 @@ AC_EXEEXT
 
 if test "$nntp" = "yes"; then
   AC_DEFINE(HAVE_NNTP)
+  NONNTP=''
+else
+  NONNTP='# '
 fi
+AC_SUBST(NONNTP)
 
 dnl We read binary data, so we need to know the endian ---------------------
 AC_C_BIGENDIAN
