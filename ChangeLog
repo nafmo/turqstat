@@ -2,6 +2,9 @@
   statview.cpp
     Cosmetic fix for an error introduced with the locale date format.
 
+  mypointread.cpp
+    Use fixupctrlbuffer instead of own code.
+
 2000-04-16 - peter karlsson <peter@softwolves.pp.se>
   configure.in
   acconfig.h

@@ -123,10 +123,8 @@ bool MyPointRead::Transfer(time_t starttime, StatEngine &destination)
     bool stay = true;
     flags_s flags;
     unsigned msgnum = 0;
-    bool iskludge, wascr;
     unsigned tosize, fromsize, subjsize, bodysize;
-    char *ctrlbuf, *buf, *to_p, *from_p, *sub_p,
-         *ctrl_p, *body_p, *newbody_p;
+    char *ctrlbuf, *buf, *to_p, *from_p, *sub_p;
     uint16_t fromp, subjp, textp, ltrsiz, ltrtrl_ltrsiz;
     uint32_t delim, arrtim, ltrtim;
 
@@ -226,43 +224,8 @@ bool MyPointRead::Transfer(time_t starttime, StatEngine &destination)
                 return false;
             }
 
-            // Copy out kludges and body to separate buffers
-            // kludges go into ctrlbuf, body stays in buf, but is
-            // relocated.
-            ctrl_p = ctrlbuf;
-            body_p = buf;
-            newbody_p = buf;
-
-            iskludge = false;
-            wascr = true;
-            while (*body_p)
-            {
-                if (wascr && 1 == *body_p)
-                    iskludge = true;
-
-                if (iskludge)
-                {
-                    // We don't CR/LF in the kludge buffer
-                    if ('\r' != *body_p && '\n' != *body_p)
-                        *(ctrl_p ++) = *body_p;
-                }
-                else
-                    *(newbody_p ++) = *body_p;
-
-                if ('\r' == *body_p || '\n' == *body_p)
-                {
-                    iskludge = false;
-                    wascr = true;
-                }
-                else
-                    wascr = false;
-
-                body_p ++;
-            }
-
-            // Zero terminate what we got
-            *ctrl_p = 0;
-            *newbody_p = 0;
+            // Separate kludges from text
+            fixupctrlbuffer(buf, ctrlbuf);
 
             destination.AddData(string(from_p),
                                 string(to_p),
