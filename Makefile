@@ -48,7 +48,7 @@ dist: turqstat.exe source.rar
         del source.rar
 
 source.rar:
-        rar -s -av a source.rar *.def *.cpp *.h Makefile*
+        rar -s -av a source.rar *.def *.cpp *.h Makefile* ChangeLog
 
 clean:
         -del *.o
