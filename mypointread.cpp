@@ -94,27 +94,32 @@ bool MyPointRead::Transfer(time_t starttime, StatEngine &destination)
     fseek(flagf, sizeof (flags_s), SEEK_SET);
 
     // Check size of ltrhdr structure;
-    size_t sizeof_ltrhdr;
+    size_t sizeof_ltrhdr, sizeof_ltrtrl;
     ltrhdr_u ltrhdr;
+    ltrtrl_u ltrtrl;
     if (Mypoint_msgbaseversion2 == msgbaserevision)
     {
         sizeof_ltrhdr = sizeof (ltrhdr.version2);
+        sizeof_ltrtrl = sizeof (ltrtrl.version2);
     }
     else //if (Mypoint_msgbaseversion3 == msgbaserevision)
     {
         sizeof_ltrhdr = sizeof (ltrhdr.version3);
+        sizeof_ltrtrl = sizeof (ltrtrl.version3);
     }
+
+    // Seek past dummy message trailer
+    fseek(areaf, sizeof_ltrtrl, SEEK_CUR);
 
     // Read messages one by one
     bool stay = true;
-    ltrtrl_s ltrtrl;
     flags_s flags;
     unsigned msgnum = 0;
     bool iskludge, wascr;
     unsigned tosize, fromsize, subjsize, bodysize;
     char *ctrlbuf, *buf, *to_p, *from_p, *sub_p,
          *ctrl_p, *body_p, *newbody_p;
-    UINT16 fromp, subjp, textp, ltrsiz;
+    UINT16 fromp, subjp, textp, ltrsiz, ltrtrl_ltrsiz;
     UINT32 delim, arrtim, ltrtim;
 
     while (stay)
@@ -168,7 +173,7 @@ bool MyPointRead::Transfer(time_t starttime, StatEngine &destination)
             tosize   = fromp - sizeof_ltrhdr;
             fromsize = subjp - fromp;
             subjsize = textp - subjp;
-            bodysize = ltrsiz- textp - sizeof (ltrtrl_s);
+            bodysize = ltrsiz- textp - sizeof_ltrtrl;
 
             to_p    = new char[tosize  ];
             from_p  = new char[fromsize];
@@ -189,14 +194,23 @@ bool MyPointRead::Transfer(time_t starttime, StatEngine &destination)
                 goto out;
             }
 
-            fread(to_p,    tosize,            1, areaf);
-            fread(from_p,  fromsize,          1, areaf);
-            fread(sub_p,   subjsize,          1, areaf);
-            fread(buf,     bodysize,          1, areaf);    // Text + kludges
-            fread(&ltrtrl, sizeof (ltrtrl_s), 1, areaf);
+            fread(to_p,    tosize,        1, areaf);
+            fread(from_p,  fromsize,      1, areaf);
+            fread(sub_p,   subjsize,      1, areaf);
+            fread(buf,     bodysize,      1, areaf);    // Text + kludges
+            fread(&ltrtrl, sizeof_ltrtrl, 1, areaf);
+
+            if (Mypoint_msgbaseversion2 == msgbaserevision)
+            {
+                ltrtrl_ltrsiz = ltrtrl.version2.ltrsiz;
+            }
+            else //if (Mypoint_msgbaseversion3 == msgbaserevision)
+            {
+                ltrtrl_ltrsiz = ltrtrl.version3.ltrsiz;
+            }
 
             // Check for inconsistencies
-            if (ltrtrl.ltrsiz != ltrsiz)
+            if (ltrtrl_ltrsiz != ltrsiz)
             {
                 cerr << "Message area garbled (footer does not match header)!"
                      << endl;

@@ -40,7 +40,7 @@ public:
 
 protected:
     char        *areapath;
-    unsigned	areanumber;
+    unsigned    areanumber;
 
     // Header of area file (.A??)
 
@@ -68,7 +68,6 @@ protected:
         UINT16      delnum;
         char        spare[14];      // Total size: 192
         char        fill[256-192-2];// Fill to 256 bytes
-        UINT32      null;
     };
 
     // Letter structure in area file
@@ -132,15 +131,23 @@ protected:
             UINT16      lflags;
             UINT16      flags1;
             UINT8       flags2;
-            UINT8       split;			// Total size: 58 byte
-            UINT8		spare[64-58];	// Fill to 64 bytes
+            UINT8       split;          // Total size: 58 byte
+            UINT8       spare[64-58];   // Fill to 64 bytes
         } version3;
     };
 
-    struct ltrtrl_s
+    union ltrtrl_u
     {
-        UINT16      ltrsiz;
-        UINT16      ltrnum;
+        struct
+        {
+            UINT16      ltrsiz;
+            UINT16      ltrnum;
+        } version2;
+        struct
+        {
+            UINT16      ltrsiz;
+            UINT32      ltrnum;
+        } version3;
     };
 
     // Flag files (.F??)
