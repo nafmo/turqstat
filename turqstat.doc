@@ -43,7 +43,8 @@ about this:
  * Quoter blacklist.
  * Toplist of senders.
  * Toplist of original content per message.
- * Toplist of receivers (only Fidonet).
+ * Toplist of Fidonet nets (Fidonet only).
+ * Toplist of receivers (Fidonet only).
  * Toplist of subjects.
  * Toplist of used software.
  * Postings by weekday.
@@ -63,6 +64,8 @@ several areas. Outputfile is the path to the text file that the statistics are
 to be written to.
 
 These extra options are available:
+
+General options:
 
 -d <days>
    Selects the number of days back to count messages from. The default is 0,
@@ -103,13 +106,17 @@ These extra options are available:
 -u Select a Usenet news spool. The areapath parameter should be the path in
    which the news article files reside.
 
+Toplist selection:
+
 -Q Turns the quoter blacklist off (default is on).
 
 -W Turns the writer toplist off (default is on).
 
 -O Turns the original content per message toplist off (default is on).
 
--R Turns the recipient toplist off (default is on).
+-N Turns the top nets list off (default is on) (Fidonet only).
+
+-R Turns the recipient toplist off (default is on) (Fidonet only).
 
 -S Turns the subject toplist off (default is on).
 
@@ -122,11 +129,17 @@ These extra options are available:
 -V Turns the display of versions in the program toplist off (default is
    on).
 
--N Display all numbers in toplists (default is off).
+Output options:
+
+-A Display all numbers in toplists (default is off).
+
+-L Use the locale defined date format (default is to use the ISO-8601 format).
+   Please note that the support for local date formats varies with platform
+   and compiler.
 
 The options can be aggregated on the command line, for example:
 
-  turqstat -mWRSPHD d:\text\output.txt d:\msgbase\thisarea
+  turqstat -mWRSPHDON d:\text\output.txt d:\msgbase\thisarea
 
 will create quoter blacklist (only) from the *.MSG message base in the
 d:\msgbase\thisarea directory. The options are case sensitive.
@@ -148,6 +161,13 @@ However, some message base formats, notably FTSC *.MSG and tanstaafl message
 bases, lack an arrival time stamp, so in these cases the date written stamp
 will be used instead. For Usenet news spools, the file create date is
 considered to be the arrival time.
+
+Since the time calculations are using the standard C library functions, there
+are certain problems involved with timezones. As far possible, all timezone
+functions are turned off, but this does not work on all platforms (CygWin on
+Win32 is one example). But, turning timezones off will yield file timestamps
+(used on Usenet spools) in GMT. This is a problem, and if anyone has any good
+ideas on how to solve it, please contact me.
 
 
 HISTORY
@@ -176,6 +196,8 @@ HISTORY
   Adjusted time zone functions.
 2000-  -   - v1.4 -
   Uses autoconf for easier portability.
+  Toplist over Fidonet nets.
+  Support for locale date formats.
 
 
 INCLUDED FILES
@@ -225,6 +247,7 @@ os2/ directory:
   config.h        - config.h to use if you cannot run configure (EMX)
   Makefile        - Makefile to use if you cannot run configure (EMX)
   turqstat.exe    - Main executable file (OS/2, EMX)
+  README.os2      - OS/2 release notes
 
 win32/ directory:
   turqstat.exe    - Main executable file (Win32 i386, CygWin)
@@ -239,8 +262,8 @@ binary package.
 REQUIREMENTS FOR COMPILATION
 
 The program was developed under OS/2 using EMX 0.9d/GNU C/C++ 2.8.1 and Debian
-2.2 with gcc 2.95.2, and has also been tested under CygWin b20. It should
-compile using any standard C++ compiler. The program must probably be
+2.2 with gcc 2.95.2, and has also been tested under Mingw32 (gcc 2.95.2). It
+should compile using any standard C++ compiler. The program must probably be
 rewritten to support "big endian" processors.
 
 

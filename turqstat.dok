@@ -43,6 +43,7 @@ skapar statistik inom f”ljande omr†den:
  * Svartlista ”ver citatvolym.
  * Topplista ”ver avs„ndare.
  * Topplista ”ver originalinneh†ll per meddelande.
+ * Topplista ”ver Fidonetn„t (endast Fidonet).
  * Topplista ”ver mottagare (endast Fidonet).
  * Topplista ”ver „renderader.
  * Topplista ”ver programvara.
@@ -61,6 +62,8 @@ anges f”r att f† kombinerad statistik f”r flera m”ten. Utdatafil „r s”kv„gen
 till den textfil som statistiken skall skrivas till.
 
 Dessa extra kommandoradsv„xlar „r tillg„ngliga:
+
+Allm„nna parametrar:
 
 -d <dagar>
    V„ljer det antal dagar tillbaka som meddelanden skall r„knas fr†n. Det
@@ -107,7 +110,9 @@ Dessa extra kommandoradsv„xlar „r tillg„ngliga:
 
 -O St„nger av originalinneh†llstopplista (f”rinst„llt v„rde „r p†).
 
--R St„nger av mottagartopplista (f”rinst„llt v„rde „r p†).
+-N St„nger av n„ttopplistan (f”rinst„llt v„rde „r p†) (enbart Fidonet).
+
+-R St„nger av mottagartopplista (f”rinst„llt v„rde „r p†) (enbart Fidonet).
 
 -S St„nger av „renderadstopplista (f”rinst„llt v„rde „r p†).
 
@@ -120,11 +125,17 @@ Dessa extra kommandoradsv„xlar „r tillg„ngliga:
 -V St„nger av visning av versioenr i programtopplista (f”rinst„llt v„rde „r
    p†).
 
--N Visar alla siffror i topplistorna (f”rinst„llt v„rde „r av).
+Utseende p† utdata:
+
+-A Visar alla siffror i topplistorna (f”rinst„llt v„rde „r av).
+
+-L Anv„nd datumformatet enligt "locale"-definition (f”rinst„llt v„rde „r att
+   anv„nda ISO-8601-format). Observera att st”det f”r lokala datumformat
+   varierar beroende p† plattform och kompilatorer.
 
 V„xlarna kan kombineras p† kommandoraden, till exempel:
 
-  turqstat -mWRSPHD d:\text\output.txt d:\msgbase\thisarea
+  turqstat -mWRSPHDON d:\text\output.txt d:\msgbase\thisarea
 
 kommer att skapa (enbart) en citatvolymsvartlista f”r *.MSG-meddelandebasen i
 katalogen d:\msgbase\thisarea. V„xlarna „r skiftl„gesk„nsliga.
@@ -146,6 +157,13 @@ Dock saknar vissa meddelandebasformat, n„mligen FTSC *.MSG och tanstaafls
 format, dessa ankomsttider. D„rf”r kommer i dessa fall datumet n„r texten
 skrivits ist„llet att anv„ndas. F”r Usenet news anses filskapandedatumet vara
 ankomsttiden.
+
+Eftersom tidsber„kningarna anv„nder Cs standardbiblioteksfunktioner finns
+vissa problem vad g„ller tidszoner. S† l†ngt som m”jligt st„ngs alla
+tidszonsfunktioner av, men det fungerar inte p† alla plattformar (CygWin p†
+Win32 „r ett exempel). Men, om man st„nger av tidszoner s† blir tidsst„mplar
+p† filer (vilket anv„nds i Usenet-"spools") i GMT. Detta „r ett problem, och
+om n†gon har n†gra bra id‚er f”r att l”sa problemet - kontakta mig.
 
 
 HISTORIK
@@ -173,7 +191,9 @@ HISTORIK
   R„ttade *.MSG- och news-"spool"-st”d f”r OS/2.
   Justerade tidszonsfunktioner.
 2000-  -   - v1.4 -
-  Anv„nder autoconf f”r l„ttare anpassning.
+  Anv„nder autoconf f”r l„ttare anpassning till nya plattformar.
+  Topplista ”ver Fidonetn„t.
+  St”d f”r localdefinierade datumformat.
 
 
 BIFOGADE FILER
@@ -221,9 +241,10 @@ os2/-katalogen:
   config.h        - config.h att anv„nda om du inte kan k”ra configure (EMX)
   Makefile        - Makefile att anv„nda om du inte kan k”ra configure (EMX)
   turqstat.exe    - K”rbar fil (OS/2, EMX)
+  README.os2      - Information om OS/2-versionen
 
 win32/-katalogen:
-  turqstat.exe    - K”rbar fil (Win32 i386, CygWin)
+  turqstat.exe    - K”rbar fil (Win32 i386, Mingw32)
   README.Win32    - Information om Win32-versionen
 
 Unixdistributionen best†r av en .tar.gz-fil med all k„llkod listad ovan, plus
@@ -235,9 +256,9 @@ bin„rpaket f”r Debian.
 KRAV F™R KOMPILERING
 
 Programmet utvecklades under OS/2 med EMX 0.9d/GNU C/C++ 2.8.1 och Debian 2.2
-med gcc 2.95.2, och har „ven testats under CygWin b20. Det b”r kompilera under
-valfri standard-C++-kompilator. Programmet m†ste troligen g”ras om f”r att
-st”da processorer av typen "big endian".
+med gcc 2.95.2, och har „ven testats under Mingw32 (gcc 2.95.2). Det b”r
+kompilera under valfri standard-C++-kompilator. Programmet m†ste troligen
+g”ras om f”r att st”da processorer av typen "big endian".
 
 
 KONTAKT
