@@ -16,7 +16,7 @@ fi
 echo '* Makedist: Turquoise SuperStat version '$ver
 
 rm -rf turqstat-$ver/
-mkdir -p turqstat-$ver/debian turqstat-$ver/po
+mkdir -p turqstat-$ver/debian turqstat-$ver/po turqstat-$ver/mappings
 autoconf
 autoheader
 cp -p *.spec *.def *.cpp *.h Makefile.in config.h.in doxygen.conf.in configure configure.in ChangeLog COPYING turqstat-$ver/
@@ -41,6 +41,7 @@ touch -r   xturqstat-sv.1 turqstat-$ver/xturqstat-sv.1
 
 cp -p debian/* turqstat-$ver/debian
 cp -p po/*.po po/update-po.sh po/Makefile.in turqstat-$ver/po/
+cp -p mappings/*.txt mappings/Makefile.in mappings/*.{cpp,h,pl} turqstat-$ver/mappings/
 
 fakeroot tar cvfz turqstat-$ver.tar.gz turqstat-$ver/*
 if [ "$2" != "nodeb" ]; then
