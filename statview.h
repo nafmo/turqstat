@@ -20,7 +20,9 @@
 
 #include <string>
 
+#if !defined(HAVE_IMPLICIT_NAMESPACE)
 using namespace std;
+#endif
 
 class StatEngine;
 

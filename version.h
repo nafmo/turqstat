@@ -20,7 +20,9 @@
 
 #include <string>
 
+#if !defined(HAVE_IMPLICIT_NAMESPACE)
 using namespace std;
+#endif
 
 /** String describing the current version number. */
 const string version = "2.1.3";
