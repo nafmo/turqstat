@@ -1,3 +1,8 @@
+2001-07-05 - peter karlsson <peter@softwolves.pp.se>
+  datatypes.h
+  doxygen.conf.in
+    Doxygen documentation updates.
+
 2001-07-04 - peter karlsson <peter@softwolves.pp.se>
   Released 2.0.3, branching from 2.0 release:
 

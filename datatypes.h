@@ -73,41 +73,55 @@
 # if defined(__GNUC__) || defined(__EMX__)
 #  pragma pack(1)
 # endif
+
 // Little-endian emulation layer
+
+/** Class that emulates a 16-bit unsigned little-endian value */
 class le_uint16_t
 {
 public:
+    /** Assign a 16-bit unsigned value to the variable. */
     le_uint16_t &operator=(uint16_t);
+    /** Convert variable to corresponding machine-endian value. */
     operator uint16_t();
 private:
-    uint8_t data[2];
+    uint8_t data[2]; ///< 16 bits in a byte field
 };
 
+/** Class that emulates a 16-bit signed little-endian value */
 class le_int16_t
 {
 public:
+    /** Assign a 16-bit signed value to the variable. */
     le_int16_t &operator=(int16_t);
+    /** Convert variable to corresponding machine-endian value. */
     operator int16_t();
 private:
-    uint8_t data[2];
+    uint8_t data[2]; ///< 16 bits in a byte field
 };
 
+/** Class that emulates a 32-bit unsigned little-endian value */
 class le_uint32_t
 {
 public:
+    /** Assign a 32-bit unsigned value to the variable. */
     le_uint32_t &operator=(uint32_t);
+    /** Convert variable to corresponding machine-endian value. */
     operator uint32_t();
 private:
-    uint8_t data[4];
+    uint8_t data[4]; ///< 32 bits in a byte field
 };
 
+/** Class that emulates a 32-bit signed little-endian value */
 class le_int32_t
 {
 public:
+    /** Assign a 32-bit signed value to the variable. */
     le_int32_t &operator=(int32_t);
+    /** Convert variable to corresponding machine-endian value. */
     operator int32_t();
 private:
-    uint8_t data[4];
+    uint8_t data[4]; ///< 32 bits in a byte field
 };
 # if defined(__GNUC__) || defined(__EMX__)
 #  pragma pack()
