@@ -169,6 +169,9 @@ HISTORIK
   Lade till st”d f”r Usenet news-"spool".
   Linuxversion distribueras som .deb-fil.
   Diverse felr„ttelser.
+2000-04-14 - v1.3.1 -
+  R„ttade *.MSG- och news-"spool"-st”d f”r OS/2.
+  Justerade tidszonsfunktioner.
 2000-  -   - v1.4 -
   Anv„nder autoconf f”r l„ttare anpassning.
 
