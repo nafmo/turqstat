@@ -77,7 +77,11 @@ void TDisplay::UpdateProgress(int messages)
 
 void TDisplay::ErrorMessage(errormessages_e errormessage, string data)
 {
-    QString msg = GetMessage(errormessage).arg(data.c_str());
+    QString msg = GetMessage(errormessage);
+    if (msg.find('%') != -1)
+    {
+        msg = msg.arg(data.c_str());
+    }
     QMessageBox::critical(NULL, "Turquoise SuperStat", msg,
                           QMessageBox::Ok | QMessageBox::Default, 0, 0);
 }
@@ -110,7 +114,11 @@ void TDisplay::InternalErrorQuit(errormessages_e errormessage,
 
 void TDisplay::WarningMessage(errormessages_e errormessage, string data)
 {
-    QString msg = GetMessage(errormessage).arg(data.c_str());
+    QString msg = GetMessage(errormessage);
+    if (msg.find('%') != -1)
+    {
+        msg = msg.arg(data.c_str());
+    }
     QMessageBox::warning(NULL, "Turquoise SuperStat", msg,
                          QMessageBox::Ok | QMessageBox::Default, 0, 0);
 }
