@@ -62,7 +62,17 @@ void errorquit(const char *message, int rc);
 // Print internal error message and quit
 void internalerrorquit(const char *message, int rc);
 
+// Error messages for errorquit
 extern const char *area_not_allocated;
 extern const char *out_of_memory;
+
+#ifdef USE_OWN_GETOPT
+// Index to next non-option parameter
+extern int optind;
+// Pointer to option argument
+extern char *optarg;
+// Retrieve command line parameters
+int getopt(int _argc, char **_argv, const char *opts);
+#endif
 
 #endif

@@ -27,8 +27,6 @@
 # include <unistd.h>
 #elif defined(HAS_GETOPT_IN_GETOPT)
 # include <getopt.h>
-#elif defined(USE_OWN_GETOPT)
-# include "mygetopt.h"
 #endif
 #include <stdlib.h>
 #if defined(HAVE_TIMEZONE) || defined(HAVE_UTIMEZONE) || defined(HAVE_DAYLIGHT) || defined(HAVE_UDAYLIGHT)

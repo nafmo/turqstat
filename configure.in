@@ -106,8 +106,6 @@ AC_TRY_COMPILE([ #include <time.h> ], [  struct tm t; t.tm_gmtoff = 0; ],
   AC_MSG_RESULT(no))
 
 dnl Check for library functions --------------------------------------------
-GETOPT=
-GETOPTH=
 AC_MSG_CHECKING(for getopt in unistd.h)
 AC_TRY_COMPILE([ #include <unistd.h> ],
   [ int argc; char **argv; int c = getopt(argc, argv, "x"); int d = optarg; ],
@@ -118,12 +116,7 @@ AC_TRY_COMPILE([ #include <unistd.h> ],
     [ int argc; char **argv; int c = getopt(argc, argv, "x"); int d = optarg; ],
     AC_DEFINE(HAS_GETOPT_IN_GETOPT) AC_MSG_RESULT(yes),
     AC_MSG_RESULT(no)
-    AC_DEFINE(USE_OWN_GETOPT)
-    GETOPT=mygetopt.o
-    GETOPTH=mygetopt.h))
-
-AC_SUBST(GETOPT)
-AC_SUBST(GETOPTH)
+    AC_DEFINE(USE_OWN_GETOPT)))
 
 dnl Check for variables ----------------------------------------------------
 

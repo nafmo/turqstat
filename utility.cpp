@@ -20,6 +20,9 @@
 #include <ctype.h>
 #include <stdio.h>
 #include <stdlib.h>
+#ifdef USE_OWN_GETOPT
+# include <string.h>
+#endif
 
 #include "utility.h"
 
@@ -221,3 +224,87 @@ void internalerrorquit(const char *message, int rc)
     exit(rc);
 }
 
+#ifdef USE_OWN_GETOPT
+int optind = 0;
+char *optarg = NULL;
+
+// Retrieve command line parameters
+int getopt(int _argc, char **_argv, const char *opts)
+{
+    static int curarg = 1, curind = 0;
+
+redo:
+    // Have we reached the last or a non-option argument?
+    if (curarg >= _argc || (0 == curind && *_argv[curarg] != '-'))
+    {
+        optind = curarg;
+        return EOF;
+    }
+
+    // Check for -- and end if so
+    if (0 == curind && '-' == _argv[curarg][1])
+    {
+        optind = curarg + 1;
+        return EOF;
+    }
+
+    // Skip dash
+    if (0 == curind) curind ++;
+
+    // Move to next argument if at end
+    if (0 == _argv[curarg][curind])
+    {
+        curarg ++;
+        optind = curarg;
+        curind = 0;
+        goto redo;
+    }
+
+    // Check this option
+    int option = (int) (unsigned char) _argv[curarg][curind];
+
+    char *p;
+    if (NULL != (p = strchr(opts, option)))
+    {
+        // Does it take an argument?
+        if (':' == *(p + 1))
+        {
+            // Yes.
+            // More characters in this parameter?
+            curind ++;
+            if (_argv[curarg][curind] == '\0')
+            {
+                // No, next parameter is argument
+                if (curarg + 1 >= _argc)
+                {
+                    fprintf(stderr, "Option requires an argument: %c\n",
+                            (char) option);
+                    return (int) (unsigned char) '?';
+                }
+                optarg = _argv[curarg + 1];
+                curarg += 2;
+                curind = 0;
+            }
+            else
+            {
+                // Yes, rest of this parameter is argument
+                optarg = &_argv[curarg][curind];
+                curarg ++;
+                curind = 0;
+            }
+        }
+        else
+        {
+            // No.
+            // Point to next character for next run
+            curind ++;
+            optarg = NULL;
+        }
+        return option;
+    }
+    curind ++;
+
+    // Unknown
+    return (int) (unsigned char) '?';
+}
+#endif // USE_OWN_GETOPT
