@@ -92,14 +92,14 @@ void StatEngine::AddData(string in_fromname, string in_toname, string in_subject
 
     // In news areas, we search the control information for From and
     // subject lines.
-    if (newsarea || controldata.find("\x1""RFC-From") != (size_t) -1 ||
-        controldata.find("\x1""REPLYADDR") != (size_t) -1)
+    if (newsarea || controldata.find("\x1""RFC-From") != string::npos ||
+        controldata.find("\x1""REPLYADDR") != string::npos)
     {
         string fromstring;
         bool foundfrom = false;
 
-        int pos = controldata.find((char) 1);
-        while (pos != -1)
+        string::size_type pos = controldata.find((char) 1);
+        while (pos != string::npos)
         {
             pos ++;
 
@@ -116,10 +116,10 @@ void StatEngine::AddData(string in_fromname, string in_toname, string in_subject
                 while (isspace(controldata[pos])) pos ++;
 
                 // And where it ends
-                int nextpos = controldata.find((char) 1, pos);
+                string::size_type nextpos = controldata.find((char) 1, pos);
 
                 // And copy it
-                if (nextpos == -1)
+                if (string::npos == nextpos)
                     fromstring = controldata.substr(pos);
                 else
                     fromstring = controldata.substr(pos, nextpos - pos);
@@ -138,10 +138,10 @@ void StatEngine::AddData(string in_fromname, string in_toname, string in_subject
                 while (isspace(controldata[pos])) pos ++;
 
                 // And where it ends
-                int nextpos = controldata.find((char) 1, pos);
+                string::size_type nextpos = controldata.find((char) 1, pos);
 
                 // And copy it
-                if (nextpos == -1)
+                if (string::npos == nextpos)
                     fromstring = controldata.substr(pos);
                 else
                     fromstring = controldata.substr(pos, nextpos - pos);
@@ -156,9 +156,9 @@ void StatEngine::AddData(string in_fromname, string in_toname, string in_subject
             {
                 pos += 8;
                 while (isspace(controldata[pos])) pos ++;
-                int nextpos = controldata.find((char) 1, pos);
+                string::size_type nextpos = controldata.find((char) 1, pos);
 
-                if (nextpos == -1)
+                if (string::npos == nextpos)
                     in_subject = controldata.substr(pos);
                 else
                     in_subject = controldata.substr(pos, nextpos - pos);
@@ -170,9 +170,9 @@ void StatEngine::AddData(string in_fromname, string in_toname, string in_subject
                 pos += 5;
                 while (isspace(controldata[pos])) pos ++;
 
-                int nextpos = controldata.find((char) 1, pos);
+                string::size_type nextpos = controldata.find((char) 1, pos);
 
-                if (nextpos == -1)
+                if (string::npos == nextpos)
                     timewritten = rfcToTimeT(controldata.substr(pos));
                 else
                     timewritten =
@@ -192,14 +192,14 @@ void StatEngine::AddData(string in_fromname, string in_toname, string in_subject
             // "email@domain.com"
             // "email@domain.com (name)"
             // "name <email@domain.com>"
-            int at    = fromstring.find('@');
-            int left  = fromstring.find('(');
-            int right = fromstring.find(')');
-            if (-1 == left || -1 == right || at > left)
+            string::size_type at    = fromstring.find('@');
+            string::size_type left  = fromstring.find('(');
+            string::size_type right = fromstring.find(')');
+            if (string::npos == left || string::npos == right || at > left)
             {
                 left  = fromstring.find('<');
                 right = fromstring.find('>');
-                if (-1 == left || -1 == right)
+                if (string::npos == left || string::npos == right)
                 {
                     // "email@domain.com"
                     if (in_fromname.empty())
@@ -327,11 +327,12 @@ void StatEngine::AddData(string in_fromname, string in_toname, string in_subject
     bool isquoted = false, foundtear = false;
     do
     {
-        int nextcr = msgbody.find('\n', currindex);
-        int nextcr2 = msgbody.find('\r', currindex);
-        if (nextcr2 >= 0 && (nextcr2 < nextcr || -1 == nextcr))
+        string::size_type nextcr = msgbody.find('\n', currindex);
+        string::size_type nextcr2 = msgbody.find('\r', currindex);
+        if (nextcr2 != string::npos &&
+            (nextcr2 < nextcr || string::npos == nextcr))
             nextcr = nextcr2;
-        if (-1 == nextcr) nextcr = msgbody.length();
+        if (string::npos == nextcr) nextcr = msgbody.length();
         string thisline = msgbody.substr((int) currindex, nextcr - currindex);
 
         // Break when we find a tear or Origin line
@@ -351,8 +352,8 @@ void StatEngine::AddData(string in_fromname, string in_toname, string in_subject
         }
 
         // Is this a quote?
-        int gt = thisline.find('>'), lt = thisline.find('<');
-        if (gt >= 0 && gt < 6 && (-1 == lt || gt < lt))
+        string::size_type gt = thisline.find('>'), lt = thisline.find('<');
+        if (gt >= 0 && gt < 6 && (string::npos == lt || gt < lt))
         {
             isquoted = true;
         }
@@ -360,7 +361,7 @@ void StatEngine::AddData(string in_fromname, string in_toname, string in_subject
         // Test for some common Usenet style quotes
         if (newsarea && !isquoted)
         {
-            int pipe = thisline.find('|');
+            string::size_type pipe = thisline.find('|');
 
             if (0 == pipe) isquoted = true;
         }
@@ -400,9 +401,9 @@ void StatEngine::AddData(string in_fromname, string in_toname, string in_subject
     if (!newsarea && persfound_p->address != "N/A")
     {
         string myaddress = ParseAddress(controldata, msgbody);
-        int colon = myaddress.find(':');
-        int slash = myaddress.find('/', colon);
-        if (colon != -1 && slash != -1)
+        string::size_type colon = myaddress.find(':');
+        string::size_type slash = myaddress.find('/', colon);
+        if (colon != string::npos && slash != string::npos)
         {
             const char *address = myaddress.c_str();
             unsigned zone = strtoul(address, NULL, 10);
@@ -490,8 +491,8 @@ void StatEngine::AddData(string in_fromname, string in_toname, string in_subject
     // Locate sender's domain in database and update
     if (!internetaddress.empty())
     {
-        int lastperiod = internetaddress.rfind('.');
-        if (lastperiod != -1)
+        string::size_type lastperiod = internetaddress.rfind('.');
+        if (lastperiod != string::npos)
         {
             string topdomain = internetaddress.substr(lastperiod + 1);
 
@@ -696,20 +697,20 @@ void StatEngine::AddData(string in_fromname, string in_toname, string in_subject
     // Locate program name and version in database, and update statistics
     string program = "";
     string in_programname;
-    int space1, space2;
+    string::size_type space1, space2;
 
     if (newsarea)
     {
         // User-Agent takes precedence over X-Newsreader
-        int where;
-        if ((where = controldata.find("X-Newsreader:")) != -1)
+        string::size_type where;
+        if ((where = controldata.find("X-Newsreader:")) != string::npos)
         {
             int howfar = controldata.find((char) 1, where);
             where += 14;
             while (isspace(controldata[where])) where ++;
             program = controldata.substr(where, howfar - where);
         }
-        else if ((where = controldata.find("User-Agent:")) != -1)
+        else if ((where = controldata.find("User-Agent:")) != string::npos)
         {
             int howfar = controldata.find((char) 1, where);
             where += 11;
@@ -726,12 +727,12 @@ void StatEngine::AddData(string in_fromname, string in_toname, string in_subject
         // "Program<space>(version)<eol>"
 
         space1 = program.rfind(' ');
-        int firstspace = program.find(' ');
-        int slash = program.find('/');
-        int paren = program.find('(');
-        if (-1 == space1) firstspace = space1 = program.length();
-        if (slash != -1 && slash < firstspace) space1 = slash;
-        if (paren != -1 && paren < space1) space1 = paren;
+        string::size_type firstspace = program.find(' ');
+        string::size_type slash = program.find('/');
+        string::size_type paren = program.find('(');
+        if (string::npos == space1) firstspace = space1 = program.length();
+        if (slash != string::npos && slash < firstspace) space1 = slash;
+        if (paren != string::npos && paren < space1) space1 = paren;
 
         // Special case: "Gnus v#.##/Emacs..."
         if ('v' == program[firstspace + 1] &&
@@ -740,28 +741,30 @@ void StatEngine::AddData(string in_fromname, string in_toname, string in_subject
 
         paren = program.find('(', space1 + 1);
         space2 = program.find(' ', space1 + 1);
-        if (-1 == space2)
-            if (-1 == paren)
+        if (string::npos == space2)
+        {
+            if (string::npos == paren)
                 space2 = program.length();
             else
                 space2 = paren;
+        }
 
         in_programname = program.substr(0, space1);
 
         // Special case: Pine (only identifies in Message-ID)
         where = controldata.find("\x1""Message-ID:");
-        if (in_programname.empty() && where != -1)
+        if (in_programname.empty() && where != string::npos)
         {
             where ++;
-            int howfar = controldata.find((char) 1, where);
+            string::size_type howfar = controldata.find((char) 1, where);
             if (fcompare(controldata.substr(where + 13, 5), "Pine.") == 0)
             {
                 program =
                     controldata.substr(where, howfar - where);
                 in_programname = "Pine";
                 space1 = 17;
-                int firstperiod = program.find('.', 18);
-                if (firstperiod != -1) program[firstperiod] = ' ';
+                string::size_type firstperiod = program.find('.', 18);
+                if (firstperiod != string::npos) program[firstperiod] = ' ';
                 space2 = program.find('.', 24);
             }
         }
@@ -769,20 +772,21 @@ void StatEngine::AddData(string in_fromname, string in_toname, string in_subject
     else
     {
         // PID takes precedence over tearline
-        int where;
-        if ((where = controldata.find("PID: ")) != -1)
+        string::size_type where;
+        if ((where = controldata.find("PID: ")) != string::npos)
         {
-            int howfar = controldata.find((char) 1, where);
-            if (-1 == howfar) howfar = controldata.length();
+            string::size_type howfar = controldata.find((char) 1, where);
+            if (string::npos == howfar) howfar = controldata.length();
             program = controldata.substr(where + 5, howfar - where - 5);
         }
-        else if ((where = msgbody.rfind("--- ")) != -1)
+        else if ((where = msgbody.rfind("--- ")) != string::npos)
         {
-            int howfar = msgbody.find('\n', where);
-            int nextcr = msgbody.find('\r', where);
-            if (-1 == howfar || (nextcr != -1 && nextcr < howfar))
+            string::size_type howfar = msgbody.find('\n', where);
+            string::size_type nextcr = msgbody.find('\r', where);
+            if (string::npos == howfar ||
+                (nextcr != string::npos && nextcr < howfar))
                 howfar = nextcr;
-            if (-1 == howfar) howfar = msgbody.length();
+            if (string::npos == howfar) howfar = msgbody.length();
             program = msgbody.substr(where + 4, howfar - where - 4);
         }
 
@@ -793,8 +797,8 @@ void StatEngine::AddData(string in_fromname, string in_toname, string in_subject
 
         space1 = program.find(' ');
         space2 = program.find(' ', space1 + 1);
-        if (-1 == space1) space1 = space2 = program.length();
-        if (-1 == space2) space2 = program.length();
+        if (string::npos == space1) space1 = space2 = program.length();
+        if (string::npos == space2) space2 = program.length();
 
         if (space1 && '+' == program[space1 - 1])
             in_programname = program.substr(0, space1 - 1);
@@ -950,33 +954,37 @@ string StatEngine::ParseAddress(string controldata, string msgbody) const
     // (network address)
     // (address@network)
     // (network#address)
-    int index = msgbody.rfind(" * Origin: ");
-    if (-1 != index)
+    string::size_type index = msgbody.rfind(" * Origin: ");
+    if (string::npos != index)
     {
         // Locate last '(' and ')' parenthesis on line
-        int endsat = msgbody.find('\n', index);
-        int endsat2 = msgbody.find('\r', index);
-        if (endsat2 >= 0 && (endsat2 < endsat || -1 == endsat))
+        string::size_type endsat = msgbody.find('\n', index);
+        string::size_type endsat2 = msgbody.find('\r', index);
+        if (endsat2 >= 0 && (endsat2 < endsat || string::npos == endsat))
             endsat = endsat2;
-        if (-1 == endsat) endsat = msgbody.length();
-        int leftparen = msgbody.find('(', index), prevleftparen = leftparen;
-        while (leftparen != -1 && leftparen < endsat)
+        if (string::npos == endsat) endsat = msgbody.length();
+        string::size_type leftparen =
+            msgbody.find('(', index), prevleftparen = leftparen;
+        while (leftparen != string::npos && leftparen < endsat)
         {
             prevleftparen = leftparen;
             leftparen = msgbody.find('(', leftparen + 1);
         }
         leftparen = prevleftparen; // for clarity
-        int rightparen = msgbody.find(')', leftparen);
-        if (-1 != rightparen && rightparen < endsat)
+        string::size_type rightparen = msgbody.find(')', leftparen);
+        if (string::npos != rightparen && rightparen < endsat)
         {
             // Okay, we've found them, get the address
-            int space  = msgbody.find(' ', leftparen + 1);
-            int atsign = msgbody.find('@', leftparen + 1);
-            int number = msgbody.find('#', leftparen + 1);
+            string::size_type space  = msgbody.find(' ', leftparen + 1);
+            string::size_type atsign = msgbody.find('@', leftparen + 1);
+            string::size_type number = msgbody.find('#', leftparen + 1);
 
-            if (space  != -1 && space  < rightparen) leftparen  = space;
-            if (atsign != -1 && atsign < rightparen) rightparen = atsign;
-            if (number != -1 && number < rightparen) leftparen  = number;
+            if (space  != string::npos && space  < rightparen)
+                leftparen  = space;
+            if (atsign != string::npos && atsign < rightparen)
+                rightparen = atsign;
+            if (number != string::npos && number < rightparen)
+                leftparen  = number;
 
             return msgbody.substr(leftparen + 1, rightparen - leftparen - 1);
         }
@@ -988,18 +996,18 @@ string StatEngine::ParseAddress(string controldata, string msgbody) const
     // MSGID address@network serial
     // MSGID address serial
     index = controldata.find("MSGID: ");
-    if (-1 != index)
+    if (string::npos != index)
     {
-        int space = controldata.find(' ', index + 1);
-        if (-1 != space)
+        string::size_type space = controldata.find(' ', index + 1);
+        if (string::npos != space)
         {
-            int ends   = controldata.find(' ', space + 1);
-            int atsign = controldata.find('@', space + 1);
-            int number = controldata.find('#', space + 1);
+            string::size_type ends   = controldata.find(' ', space + 1);
+            string::size_type atsign = controldata.find('@', space + 1);
+            string::size_type number = controldata.find('#', space + 1);
 
-            if (atsign != -1 && atsign < ends) ends = atsign;
-            if (number != -1 && number < ends) space = number;
-            if (-1 != space)
+            if (atsign != string::npos && atsign < ends) ends = atsign;
+            if (number != string::npos && number < ends) space = number;
+            if (string::npos != space)
             {
                 return controldata.substr(space + 1, ends - index - 7);
             }
@@ -1018,14 +1026,15 @@ wstring StatEngine::DeQP(const string &qp, Decoder *maindecoder_p) const
     wstring rc(qp.length() + 1);
 #endif
     string hex;
-    int qpchar, pos, endpos, current = 0;
+    int qpchar;
+    string::size_type pos, endpos, current = 0;
 
     pos = qp.find("=?");
-    while (pos >= 0)
+    while (pos != string::npos)
     {
-        int qpos = qp.find('?', pos + 3);
+        unsigned qpos = qp.find('?', pos + 3);
 
-        if (-1 != qpos && '?' == qp[qpos + 2])
+        if (string::npos != qpos && '?' == qp[qpos + 2])
         {
             char quotetype = qp[qpos + 1];
 
@@ -1034,7 +1043,15 @@ wstring StatEngine::DeQP(const string &qp, Decoder *maindecoder_p) const
 
             // Locate end of QP/Base64 string
             endpos = qp.find("?=", qpos + 3);
-            current = endpos + 2;
+            if (endpos != string::npos)
+            {
+                current = endpos + 2;
+            } 
+            else 
+            {
+                // Ignore bogus QP
+                current = pos;
+            }
 
             string tmpstr;
             if ('b' == quotetype || 'B' == quotetype)
@@ -1045,7 +1062,7 @@ wstring StatEngine::DeQP(const string &qp, Decoder *maindecoder_p) const
                     "abcdefghijklmnopqrstuvwxyz" // 26-51
                     "0123456789+/=";             // 52-63 + pad
                 int b64buf = 0, b64count = 0, c;
-                for (int i = qpos + 3; i < endpos; i ++)
+                for (unsigned i = qpos + 3; i < endpos; i ++)
                 {
                     char *p = strchr(base64, qp[i]);
                     int b64val = p ? (p - base64) : 0;
@@ -1076,7 +1093,7 @@ wstring StatEngine::DeQP(const string &qp, Decoder *maindecoder_p) const
             else
             {            
                 // Convert QP code to bytestream
-                for (int i = qpos + 3; i < endpos; i ++)
+                for (unsigned i = qpos + 3; i < endpos; i ++)
                 {
                     if ('=' == qp[i])
                     {
@@ -1104,7 +1121,8 @@ wstring StatEngine::DeQP(const string &qp, Decoder *maindecoder_p) const
         }
         else
         {
-            pos = -1;
+            pos = string::npos;
+            current = 0;
         }
     }
 
