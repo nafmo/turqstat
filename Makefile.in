@@ -35,9 +35,11 @@ debian:
 @QT@clean:
 @QT@	-rm $(OBJS) $(QTOBJS) moc_* *.moc
 @QT@	-rm $(EXE)
+@QT@	-make -C po clean
 
 distclean: clean
 	-rm config.status config.log config.cache config.h Makefile
+	-make -C po distclean
 
 debianclean:
 	fakeroot debian/rules clean

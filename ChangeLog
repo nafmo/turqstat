@@ -1,3 +1,8 @@
+2001-03-14 - peter karlsson <peter@softwolves.pp.se>
+  Makefile.in
+  po/Makefile.in
+    Improved clean and distclean targets.
+
 2001-02-20 - peter karlsson <peter@softwolves.pp.se>
   configure.in
     Corrected mis-detection of Qt directory when QTDIR is set.

@@ -14,6 +14,15 @@ install: @QT@$(QM)
 @NOINST@@QT@	install -d $(DESTDIR)@datadir@/xturqstat/locale 
 @NOINST@@QT@	install -m 644 $(QM) $(DESTDIR)@datadir@/xturqstat/locale 
 
+clean:
+@QT@	-rm $(QM)
+
+distclean:
+	-rm Makefile @QT@$(QM)
+
 # Template targets
 @QT@%.qm: %.po
 @QT@	@QTMSGTOQM@ $< $@
+
+# List phony targets
+.PHONY: all install clean distclean
