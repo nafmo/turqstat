@@ -1,3 +1,9 @@
+turqstat (2.1.4.1) unstable; urgency=low
+
+  * Yet another GCC 3.0 fix.
+
+ -- peter karlsson <peterk@debian.org>  Wed, 11 Oct 2001 23:00:00 +0200
+
 turqstat (2.1.4) unstable; urgency=low
 
   * Now compiles with GCC 3.0.
