@@ -1,8 +1,8 @@
 Source: turqstat
 Section: mail
 Priority: optional
-Maintainer: peter karlsson <peter@softwolves.pp.se>
-Standards-Version: 2.5.1
+Maintainer: peter karlsson <peterk@debian.org>
+Standards-Version: 3.0.1
 
 Package: turqstat
 Architecture: any

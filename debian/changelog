@@ -1,12 +1,15 @@
 turqstat (1.5) unstable; urgency=low
 
   * Now officially maintained in Debian by the original author.
-  * Works around timezone problems.
+  * Works around timezone problems by trying to avoid the C library
+    functions.
   * Corrections in documentation.
   * Merged this ChangeLog with the official Debian version of it.
+  * Updated to more recent debhelper code, which among other things means an
+    update to Standards-Version 3.0.1.
   * For more info, see the original ChangeLog.
 
- -- peter karlsson <peter@softwolves.pp.se>  Fri, 16 Jun 2000 23:13:00 +0200
+ -- peter karlsson <peterk@debian.org>  Thu, 22 Jun 2000 16:45:42 +0200
 
 turqstat (1.4) unstable; urgency=low
 
