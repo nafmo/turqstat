@@ -32,12 +32,25 @@ static const char *days[] =
       "Saturday ",
       "Sunday   " };
 
-bool StatView::CreateReport(StatEngine *engine, string filename,
-    unsigned maxnumber,
-    bool quoters = true, bool topwritten = true, bool topreceived = true,
-    bool topsubjects = true, bool topprograms = true, bool weekstats = true,
-    bool daystats = true, bool showversions = true, bool showallnums = false,
-    bool toporiginal = true)
+StatView::StatView()
+{
+    // Initialize all values
+    quoters = false;
+    topwritten = false;
+    topreceived = false;
+    toporiginal = false;
+    topnets = false;
+    topsubjects = false;
+    topprograms = false;
+    weekstats = false;
+    daystats = false;
+
+    showversions = false;
+    showallnums = false;
+    maxnumber = 15;
+}
+
+bool StatView::CreateReport(StatEngine *engine, string filename)
 {
     // If we give 0 as maximum entries, we want unlimited (=UINT_MAX...)
     if (0 == maxnumber) maxnumber = UINT_MAX;
@@ -359,6 +372,48 @@ bool StatView::CreateReport(StatEngine *engine, string filename,
 
             place ++;
             oldoriginalpermsg = originalpermsg;
+        }
+
+        report << endl;
+    }
+
+    if (topnets && !news)
+    {
+        report << "-------------------------------------------"
+                  "----------------------------------" << endl;
+
+        report << "Toplist of nets" << endl;
+        report << endl;
+
+        unsigned place = 1;
+        bool restart = true;
+        StatEngine::netstat_s data;
+        unsigned oldcount = 0;
+        while (place <= maxnumber && engine->GetTopNets(restart, data))
+        {
+            if (restart)
+            {
+                restart = false;
+
+                report << "Place  Zone:Net   Messages    Bytes" << endl;
+            }
+
+            if (!showallnums && data.messages == oldcount)
+            {
+                report << "      ";
+            }
+            else
+            {
+                report.form("%4u. ", place);
+            }
+
+            report.form("%5u:%-5u %8u %8u",
+                        data.zone, data.net, data.messages, data.bytes);
+
+            report << endl;
+
+            place ++;
+            oldcount = data.messages;
         }
 
         report << endl;

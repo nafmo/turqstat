@@ -25,15 +25,35 @@ class StatEngine;
 class StatView
 {
 public:
-    bool CreateReport(StatEngine *engine, string filename,
-                      unsigned maxnumber,
-                      bool quoters = true, bool topwritten = true,
-                      bool topreceived = true, bool topsubjects = true,
-                      bool topprograms = true, bool weekstats = true,
-                      bool daystats = true, bool showversions = true,
-                      bool showallnums = false, bool toporiginal = true);
+    StatView();
+
+    // Toggles for toplist selection
+    inline void EnableQuoters(bool yes)     { quoters = yes;      };
+    inline void EnableTopWritten(bool yes)  { topwritten = yes;   };
+    inline void EnableTopOriginal(bool yes) { toporiginal = yes;  };
+    inline void EnableTopNets(bool yes)     { topnets = yes;      };
+    inline void EnableTopReceived(bool yes) { topreceived = yes;  };
+    inline void EnableTopSubjects(bool yes) { topsubjects = yes;  };
+    inline void EnableTopPrograms(bool yes) { topprograms = yes;  };
+    inline void EnableWeekStats(bool yes)   { weekstats = yes;    };
+    inline void EnableDayStats(bool yes)    { daystats = yes;     };
+
+    // Toplist flags
+    inline void ShowVersions(bool yes)      { showversions = yes; };
+    inline void ShowAllNums(bool yes)       { showallnums = yes;  };
+
+    inline void SetMaxEntries(unsigned max) { maxnumber = max;    };
+
+    // This does the actual work
+    bool CreateReport(StatEngine *engine, string filename);
 
 protected:
+    bool        quoters, topwritten, toporiginal, topnets, topreceived,
+                topsubjects, topprograms, weekstats, daystats;
+
+    bool        showversions, showallnums;
+
+    unsigned    maxnumber;
 };
 
 #endif
