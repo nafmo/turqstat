@@ -1,6 +1,14 @@
+2001-07-18 - peter karlsson <peter@softwolves.pp.se>
+  debian/
+    Some fixes to get the 2.1 archives to build.
+
 2001-07-17 - peter karlsson <peter@softwolves.pp.se>
   convert.cpp
     Fix typo that occured on Win32 build.
+
+  turqstat.doc
+  turqstat.dok
+    Updates for 2.1.
 
 2001-07-12 - peter karlsson <peter@softwolves.pp.se>
   utility.cpp
