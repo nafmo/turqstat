@@ -531,6 +531,7 @@ wstring &wstring::operator=(const wstring &s)
         delete[] data_p;
         data_p = new_p;
     }
+    return *this;
 }
 
 void wstring::append(const wstring &s)
