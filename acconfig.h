@@ -21,3 +21,9 @@
 
 /* Define if platform primarily uses backslash as path separators */
 #undef BACKSLASH_PATHS
+
+/* Define if C library includes snprintf */
+#undef HAS_SNPRINTF
+
+/* Define if C library includes _snprintf instead of snprint */
+#undef HAS_USNPRINTF

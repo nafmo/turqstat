@@ -1,4 +1,10 @@
-2000-04-09 - peter karlsson <peter@softwolves.pp.se>
+2000-11-12 - peter karlsson <peter@softwolves.pp.se>
+  acconfig.h
+  configure.in
+  output.cpp
+    Adjusted for compilers lacking snprintf.
+
+2000-11-12 - peter karlsson <peter@softwolves.pp.se>
   Merged branch dealing with Qt GUI:
 
   2000-11-12 - peter karlsson <peter@softwolves.pp.se>

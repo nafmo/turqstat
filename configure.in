@@ -136,6 +136,9 @@ AC_TRY_COMPILE([ #include <unistd.h> ],
     AC_MSG_RESULT(no)
     AC_DEFINE(USE_OWN_GETOPT)))
 
+AC_CHECK_FUNC(snprintf, AC_DEFINE(HAS_SNPRINTF),
+  AC_CHECK_FUNC(_snprintf, AC_DEFINE(HAS_USNPRINTF)))
+
 dnl Check for variables ----------------------------------------------------
 
 AC_MSG_CHECKING(for timezone in time.h)
