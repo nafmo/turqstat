@@ -23,8 +23,8 @@
 #ifdef HAS_EMX_FINDFIRST
 # include <emx/syscalls.h>
 # include <io.h>
-#elif defined(HAVE_MINGW32_DIR_H)
-# include <mingw32/dir.h>
+#elif defined(HAVE_LIBCRTDLL)
+# include <io.h>
 #else
 # ifdef HAVE_DIRENT_H
 # include <dirent.h>
@@ -43,7 +43,7 @@
 #  endif
 # endif
 #endif
-#ifndef HAVE_MINGW32_DIR_H
+#ifndef HAVE_LIBCRTDLL
 # include <sys/types.h>
 # include <sys/stat.h>
 #endif
@@ -74,7 +74,7 @@ bool NewsSpoolRead::Transfer(time_t starttime, StatEngine &destination)
     destination.NewsArea();
 
     // Open the message directory
-#if defined(HAS_EMX_FINDFIRST) || (HAVE_MINGW32_DIR_H)
+#if defined(HAS_EMX_FINDFIRST) || (HAVE_LIBCRTDLL)
     string dirname = string(areapath);
     if (dirname[dirname.length() - 1] != '\\')
     {
@@ -99,7 +99,7 @@ bool NewsSpoolRead::Transfer(time_t starttime, StatEngine &destination)
         cerr << "Unable to open spool directory" << endl;
         return false;
     }
-#else // no HAS_EMX_FINDFIRST or HAVE_MINGW32_DIR_H
+#else // no HAS_EMX_FINDFIRST or HAVE_LIBCRTDLL
     DIR *spooldir = opendir(areapath);
     if (!spooldir)
     {
@@ -121,7 +121,7 @@ bool NewsSpoolRead::Transfer(time_t starttime, StatEngine &destination)
     unsigned long msgn = 0;
     long length, thislength;
     string from, subject;
-#ifndef HAVE_MINGW32_DIR_H
+#ifndef HAVE_LIBCRTDLL
     struct stat msgstat;
 #endif
 
@@ -129,11 +129,11 @@ bool NewsSpoolRead::Transfer(time_t starttime, StatEngine &destination)
 # define FILENAME spooldir.name
 # define FILESIZE (spooldir.size_lo | (spooldir.size_hi << 16))
     while (0 == rc)
-#elif defined(HAVE_MINGW32_DIR_H)
+#elif defined(HAVE_LIBCRTDLL)
 # define FILENAME spooldir.name
 # define FILESIZE spooldir.size
-    while (0 == rc)
-#else // no HAS_EMX_FINDFIRST or HAVE_MINGW32_DIR_H
+    while (rc != -1)
+#else // no HAS_EMX_FINDFIRST or HAVE_LIBCRTDLL
 # define FILENAME spooldirent_p->d_name
 # define FILESIZE msgstat.st_size
     struct dirent *spooldirent_p;
@@ -158,7 +158,7 @@ bool NewsSpoolRead::Transfer(time_t starttime, StatEngine &destination)
             goto out2;
         }
 
-#ifdef HAVE_MINGW32_DIR_H
+#ifdef HAVE_LIBCRTDLL
         arrived = spooldir.time_create;
 #else
         stat(thisfile.c_str(), &msgstat);
@@ -225,12 +225,12 @@ out2:;
 
 #ifdef HAS_EMX_FINDFIRST
         rc = __findnext(&spooldir);
-#elif defined(HAVE_MINGW32_DIR_H)
+#elif defined(HAVE_LIBCRTDLL)
         rc = _findnext(spoolhandle, &spooldir);
 #endif
     }
 
-#ifdef HAVE_MINGW32_DIR_H
+#ifdef HAVE_LIBCRTDLL
     _findclose(spoolhandle);
 #elif !defined(HAS_EMX_FINDFIRST)
     closedir(spooldir);
