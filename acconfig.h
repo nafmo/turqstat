@@ -13,6 +13,9 @@
 /* Define if no system getopt is available */
 #undef USE_OWN_GETOPT
 
+/* Define if you have the <sys/socket.h> header file.  */
+#undef HAVE_SYS_SOCKET_H
+
 /* Define if struct tm has tm_gmtoff */
 #undef HAVE_TM_GMTOFF
 

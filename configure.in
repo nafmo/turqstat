@@ -144,9 +144,21 @@ if test "$ac_cv_header_wctype_h" = "no"; then
   fi
 fi
 
-AC_CHECK_HEADERS(netdb.h sys/socket.h netinet/in.h winsock.h)
-if test "$ac_cv_header_winsock_h" = "yes"; then
-  LIBS="-lwsock32 $LIBS"
+AC_CHECK_HEADERS(netdb.h netinet/in.h)
+AC_CACHE_CHECK([for sys/socket.h], ac_cv_header_sys_socket_h,
+  AC_TRY_COMPILE([#include <sys/types.h>
+#include <sys/socket.h>], [],
+    ac_cv_header_sys_socket_h=yes,
+    ac_cv_header_sys_socket_h=no))
+if test "$ac_cv_header_sys_socket_h" = "yes"; then
+  AC_DEFINE(HAVE_SYS_SOCKET_H)
+fi
+
+if test "$ac_cv_header_sys_socket_h" = "no"; then
+  AC_CHECK_HEADERS(winsock.h)
+  if text "$ac_cv_header_winsock.h" = "yes"; then
+    LIBS="-lwsock32 $LIBS"
+  fi
 fi
 
 dnl Check for typedefs, structures, and compiler characteristics -----------
