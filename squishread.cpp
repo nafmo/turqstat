@@ -60,7 +60,7 @@ bool SquishRead::Transfer(time_t starttime, StatEngine &destination)
         return false;
     }
 
-    SINT32 offset = baseheader.len - sizeof (sqbase_s);
+    int32_t offset = baseheader.len - sizeof (sqbase_s);
     if (offset > 0)
     {
         fseek(sqd, offset, SEEK_CUR);
@@ -72,10 +72,10 @@ bool SquishRead::Transfer(time_t starttime, StatEngine &destination)
         return false;
     }
 
-    SINT32 sqhdroffset = baseheader.sz_sqhdr - sizeof(sqhdr_s);
+    int32_t sqhdroffset = baseheader.sz_sqhdr - sizeof(sqhdr_s);
 
     // Read messages
-    UINT32 current = baseheader.begin_frame;
+    uint32_t current = baseheader.begin_frame;
     if (0 == current)
     {
         cerr << "Message base is empty" << endl;
@@ -89,7 +89,7 @@ bool SquishRead::Transfer(time_t starttime, StatEngine &destination)
         return false;
     }
 
-    UINT32 msgn, msglen;
+    uint32_t msgn, msglen;
     char *ctrlbuf = NULL, *msgbuf = NULL;
     sqhdr_s sqhdr;
     xmsg_s xmsg;

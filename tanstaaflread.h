@@ -18,8 +18,14 @@
 #ifndef __TANSTAAFLREAD_H
 #define __TANSTAAFLREAD_H
 
+#include <config.h>
+#ifdef HAVE_STDINT_H
+# include <stdint.h>
+#else
+# include "datatypes.h"
+#endif
+
 #include "arearead.h"
-#include "datatypes.h"
 
 #if defined(__GNUC__) || defined(__EMX__)
 # pragma pack(1)
@@ -43,46 +49,46 @@ protected:
 
     struct addr_s
     {
-        UINT16  zone, net, node, point;
+        uint16_t  zone, net, node, point;
     };
 
     struct msghdrtfl_s /* msghdr.tfl */
     {
-        char    recipientname[36];
-        char    sendername[36];
-        char    subject[72];
-        UINT32  msgidcrc;
-        UINT32  replycrc;
-        UINT32  replyto;
-        UINT32  replynext;
-        UINT32  replyprev;
-        UINT32  timewritten;
-        UINT32  replychild;
-        addr_s  recipientaddress;
-        addr_s  senderaddress;
-        UINT32  statusflags;
-        UINT32  txtpos;
-        UINT32  txtsize;
-        UINT16  foldernumber;
-        UINT16  foldernumberreplyto;
-        UINT16  foldernumberreplynext;
-        UINT16  foldernumberreplyprev;
+        uint8_t   recipientname[36];
+        uint8_t   sendername[36];
+        uint8_t   subject[72];
+        uint32_t  msgidcrc;
+        uint32_t  replycrc;
+        uint32_t  replyto;
+        uint32_t  replynext;
+        uint32_t  replyprev;
+        uint32_t  timewritten;
+        uint32_t  replychild;
+        addr_s    recipientaddress;
+        addr_s    senderaddress;
+        uint32_t  statusflags;
+        uint32_t  txtpos;
+        uint32_t  txtsize;
+        uint16_t  foldernumber;
+        uint16_t  foldernumberreplyto;
+        uint16_t  foldernumberreplynext;
+        uint16_t  foldernumberreplyprev;
     };
 
-    static const UINT32 Tanstaafl_local   = 0x01;
-    static const UINT32 Tanstaafl_sent    = 0x10;
-    static const UINT32 Tanstaafl_deleted = 0x80000000;
+    static const uint32_t Tanstaafl_local   = 0x01;
+    static const uint32_t Tanstaafl_sent    = 0x10;
+    static const uint32_t Tanstaafl_deleted = 0x80000000;
 
     struct msgstattfl_s /* msgstat.tfl */
     {
-        UINT16  msgbaseversion;
-        UINT8   reserved[254];
-        UINT32  totalmsgs[2000];
-        UINT32  lastreadptrs[2000];
-        UINT32  unread[2000];
+        uint16_t  msgbaseversion;
+        uint8_t   reserved[254];
+        uint32_t  totalmsgs[2000];
+        uint32_t  lastreadptrs[2000];
+        uint32_t  unread[2000];
     };
 
-    static const UINT32 Tanstaafl_msgbaseversion = 1;
+    static const uint32_t Tanstaafl_msgbaseversion = 1;
 };
 
 #if defined(__GNUC__) || defined(__EMX__)

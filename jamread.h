@@ -18,8 +18,14 @@
 #ifndef __JAMREAD_H
 #define __JAMREAD_H
 
+#include <config.h>
+#ifdef HAVE_STDINT_H
+# include <stdint.h>
+#else
+# include "datatypes.h"
+#endif
+
 #include "arearead.h"
-#include "datatypes.h"
 
 #if defined(__GNUC__) || defined(__EMX__)
 # pragma pack(1)
@@ -43,64 +49,64 @@ protected:
     // .JHR
     struct jamhdr_header_s
     {
-        UINT8   signature[4];   // 'JAM\0'
-        UINT32  datecreated;
-        UINT32  modcounter;
-        UINT32  activemsgs;
-        UINT32  passwordcrc;
-        UINT32  basemsgnum;
-        UINT8   _reserved[1000];
+        uint8_t   signature[4];   // 'JAM\0'
+        uint32_t  datecreated;
+        uint32_t  modcounter;
+        uint32_t  activemsgs;
+        uint32_t  passwordcrc;
+        uint32_t  basemsgnum;
+        uint8_t   _reserved[1000];
     };
 
     struct jamhdr_msg_s
     {
-        UINT8   signature[4];   // 'JAM\0'
-        UINT16  revision;
-        UINT16  _reserved;
-        UINT32  subfieldlen;
-        UINT32  timesread;
-        UINT32  msgidcrc;
-        UINT32  replycrc;
-        UINT32  replyto;
-        UINT32  reply1st;
-        UINT32  replynext;
-        UINT32  datewritten;
-        UINT32  datereceived;
-        UINT32  dateprocessed;
-        UINT32  messagenumber;
-        UINT32  attribute;
-        UINT32  _attribute2;
-        UINT32  offset;
-        UINT32  txtlen;
-        UINT32  passwordcrc;
-        UINT32  cost;
+        uint8_t   signature[4];   // 'JAM\0'
+        uint16_t  revision;
+        uint16_t  _reserved;
+        uint32_t  subfieldlen;
+        uint32_t  timesread;
+        uint32_t  msgidcrc;
+        uint32_t  replycrc;
+        uint32_t  replyto;
+        uint32_t  reply1st;
+        uint32_t  replynext;
+        uint32_t  datewritten;
+        uint32_t  datereceived;
+        uint32_t  dateprocessed;
+        uint32_t  messagenumber;
+        uint32_t  attribute;
+        uint32_t  _attribute2;
+        uint32_t  offset;
+        uint32_t  txtlen;
+        uint32_t  passwordcrc;
+        uint32_t  cost;
     };
 
-    static const UINT32 Jam_deleted = 0x80000000L;
+    static const uint32_t Jam_deleted = 0x80000000L;
 
     struct jamhdr_subhdr_s
     {
-        UINT16  loid;
-        UINT16  _hiid;
-        UINT32  datlen;
-     /* UINT8   buffer[datlen]; */
+        uint16_t  loid;
+        uint16_t  _hiid;
+        uint32_t  datlen;
+     /* uint8_t   buffer[datlen]; */
     };
 
-    static const UINT16 Jam_sender      = 2;
-    static const UINT16 Jam_recipient   = 3;
-    static const UINT16 Jam_MSGID       = 4;
-    static const UINT16 Jam_subject     = 6;
-    static const UINT16 Jam_PID         = 7;
+    static const uint16_t Jam_sender      = 2;
+    static const uint16_t Jam_recipient   = 3;
+    static const uint16_t Jam_MSGID       = 4;
+    static const uint16_t Jam_subject     = 6;
+    static const uint16_t Jam_PID         = 7;
 
     // *.JDX
     struct jamjdx_s
     {
-        UINT32  recipientcrc;
-        UINT32  jhroffset;
+        uint32_t  recipientcrc;
+        uint32_t  jhroffset;
     };
 
-    static const UINT16 Jam_msgbaseversion = 1;
-    static const UINT8  Jam_signature[4];//= "JAM";
+    static const uint16_t Jam_msgbaseversion = 1;
+    static const uint8_t  Jam_signature[4];//= "JAM";
 };
 
 #if defined(__GNUC__) || defined(__EMX__)

@@ -18,8 +18,14 @@
 #ifndef __FDAPXREAD_H
 #define __FDAPXREAD_H
 
+#include <config.h>
+#ifdef HAVE_STDINT_H
+# include <stdint.h>
+#else
+# include "datatypes.h"
+#endif
+
 #include "arearead.h"
-#include "datatypes.h"
 
 #if defined(__GNUC__) || defined(__EMX__)
 # pragma pack(1)
@@ -43,46 +49,46 @@ protected:
 
     struct addr_s
     {
-        UINT16  zone, net, node, point;
+        uint16_t  zone, net, node, point;
     };
 
     struct msghdrapx_s /* MSGHDR.APX */
     {
-        char    recipientname[36];
-        char    sendername[36];
-        char    subject[72];
-        UINT32  msgidcrc;
-        UINT32  replycrc;
-        UINT16  replyto;
-        UINT16  replynext;
-        UINT16  reply1st;
-        UINT32  timewritten;
-        UINT32  timesentrcvd;
-        addr_s  recipientaddress;
-        addr_s  senderaddress;
-        UINT32  statusflags;
-        UINT32  txtpos;
-        UINT16  txtsize;
-        UINT16  foldernumber;
-        UINT16  foldernumberreplyto;
-        UINT16  foldernumberreplynext;
-        UINT16  foldernumberreply1st;
+        uint8_t   recipientname[36];
+        uint8_t   sendername[36];
+        uint8_t   subject[72];
+        uint32_t  msgidcrc;
+        uint32_t  replycrc;
+        uint16_t  replyto;
+        uint16_t  replynext;
+        uint16_t  reply1st;
+        uint32_t  timewritten;
+        uint32_t  timesentrcvd;
+        addr_s    recipientaddress;
+        addr_s    senderaddress;
+        uint32_t  statusflags;
+        uint32_t  txtpos;
+        uint16_t  txtsize;
+        uint16_t  foldernumber;
+        uint16_t  foldernumberreplyto;
+        uint16_t  foldernumberreplynext;
+        uint16_t  foldernumberreply1st;
     };
 
-    static const UINT32 Fdapx_local   = 0x01;
-    static const UINT32 Fdapx_sent    = 0x10;
-    static const UINT32 Fdapx_deleted = 0x80000000;
+    static const uint32_t Fdapx_local   = 0x01;
+    static const uint32_t Fdapx_sent    = 0x10;
+    static const uint32_t Fdapx_deleted = 0x80000000;
 
     struct msgstatapx_s /* MSGSTAT.APX */
     {
-        UINT16  msgbaseversion;
-        UINT8   reserved[254];
-        UINT16  totalmsgs[2000];
-        UINT16  highestmsg[2000];
-        UINT16  lastreadptrs[2000];
+        uint16_t  msgbaseversion;
+        uint8_t   reserved[254];
+        uint16_t  totalmsgs[2000];
+        uint16_t  highestmsg[2000];
+        uint16_t  lastreadptrs[2000];
     };
 
-    static const UINT32 Fdapx_msgbaseversion = 3;
+    static const uint32_t Fdapx_msgbaseversion = 3;
 };
 
 #if defined(__GNUC__) || defined(__EMX__)

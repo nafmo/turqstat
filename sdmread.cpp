@@ -120,7 +120,7 @@ bool SdmRead::Transfer(time_t starttime, StatEngine &destination)
     unsigned long msglen;
     char *msgbuf = NULL, *ctrlbuf = NULL;
     time_t written, arrived;
-    UINT32 msgn = 0;
+    uint32_t msgn = 0;
 
 #ifdef HAS_EMX_FINDFIRST
 # define FILENAME sdmdir.name

@@ -159,9 +159,9 @@ bool FdApxRead::Transfer(time_t starttime, StatEngine &destination)
             // Separate kludges from text
             fixupctrlbuffer(buf, ctrlbuf);
 
-            destination.AddData(string(msghdrapx.sendername),
-                                string(msghdrapx.recipientname),
-                                string(msghdrapx.subject),
+            destination.AddData(string((char *) msghdrapx.sendername),
+                                string((char *) msghdrapx.recipientname),
+                                string((char *) msghdrapx.subject),
                                 string(ctrlbuf), string(buf),
                                 msghdrapx.timewritten,
                                 (msghdrapx.statusflags & Fdapx_local)

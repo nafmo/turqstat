@@ -18,8 +18,14 @@
 #ifndef __SDMREAD_H
 #define __SDMREAD_H
 
+#include <config.h>
+#ifdef HAVE_STDINT_H
+# include <stdint.h>
+#else
+# include "datatypes.h"
+#endif
+
 #include "arearead.h"
-#include "datatypes.h"
 #include "utility.h"
 
 class StatEngine;
@@ -40,25 +46,25 @@ protected:
 
     struct sdmhead_s
     {
-        UINT8   fromusername[36];
-        UINT8   tousername[36];
-        UINT8   subject[72];
-        UINT8   datetime[20];       // "Dd Mmm Yy  HH:MM:SS"
+        uint8_t   fromusername[36];
+        uint8_t   tousername[36];
+        uint8_t   subject[72];
+        uint8_t   datetime[20];       // "Dd Mmm Yy  HH:MM:SS"
                                     // "Www Dd Mmm Yy HH:MM"
-        UINT16  timesread;
-        UINT16  destnode;
-        UINT16  orignode;
-        UINT16  cost;
-        UINT16  orignet;
-        UINT16  destnet;
+        uint16_t  timesread;
+        uint16_t  destnode;
+        uint16_t  orignode;
+        uint16_t  cost;
+        uint16_t  orignet;
+        uint16_t  destnet;
         union
         {
             struct // FTSC style
             {
-                UINT16  destzone;
-                UINT16  origzone;
-                UINT16  destpoint;
-                UINT16  origpoint;
+                uint16_t  destzone;
+                uint16_t  origzone;
+                uint16_t  destpoint;
+                uint16_t  origpoint;
             } ftsc;
             struct // Opus style
             {
@@ -66,9 +72,9 @@ protected:
                 stamp_s arrived;
             } opus;
         };
-        UINT16  replyto;
-        UINT16  attribute;
-        UINT16  nextreply;
+        uint16_t  replyto;
+        uint16_t  attribute;
+        uint16_t  nextreply;
     };
 };
 

@@ -165,9 +165,9 @@ bool TanstaaflRead::Transfer(time_t starttime, StatEngine &destination)
             // Separate kludges from text
             fixupctrlbuffer(buf, ctrlbuf);
 
-            destination.AddData(string(msghdrtfl.sendername),
-                                string(msghdrtfl.recipientname),
-                                string(msghdrtfl.subject),
+            destination.AddData(string((char *) msghdrtfl.sendername),
+                                string((char *) msghdrtfl.recipientname),
+                                string((char *) msghdrtfl.subject),
                                 string(ctrlbuf), string(buf),
                                 msghdrtfl.timewritten,
                                 msghdrtfl.timewritten);

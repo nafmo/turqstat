@@ -90,7 +90,7 @@ bool MyPointRead::Transfer(time_t starttime, StatEngine &destination)
     fread(&hdr, sizeof (hdr), 1, areaf);
 
     // Check for valid message base versions
-    UINT8 msgbaserevision = hdr.areaprf[0];
+    uint8_t msgbaserevision = hdr.areaprf[0];
     if (Mypoint_msgbaseversion2 != msgbaserevision &&
         Mypoint_msgbaseversion3 != msgbaserevision)
     {
@@ -127,8 +127,8 @@ bool MyPointRead::Transfer(time_t starttime, StatEngine &destination)
     unsigned tosize, fromsize, subjsize, bodysize;
     char *ctrlbuf, *buf, *to_p, *from_p, *sub_p,
          *ctrl_p, *body_p, *newbody_p;
-    UINT16 fromp, subjp, textp, ltrsiz, ltrtrl_ltrsiz;
-    UINT32 delim, arrtim, ltrtim;
+    uint16_t fromp, subjp, textp, ltrsiz, ltrtrl_ltrsiz;
+    uint32_t delim, arrtim, ltrtim;
 
     while (stay)
     {

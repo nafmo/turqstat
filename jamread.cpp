@@ -29,7 +29,7 @@
 #include "utility.h"
 #include "statengine.h"
 
-const UINT8 JamRead::Jam_signature[4] = "JAM";
+const uint8_t JamRead::Jam_signature[4] = "JAM";
 
 JamRead::JamRead(const char *path)
 {

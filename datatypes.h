@@ -1,43 +1,28 @@
-#include <config.h>
-#ifdef HAVE_STDINT_H
-# include <stdint.h>
+#ifndef __DATATYPES_H
+#define __DATATYPES_H
 
-  // Define datatypes according to stdint.h
-  typedef uint8_t UINT8;
-  typedef int8_t SINT8;
-
-  typedef uint16_t UINT16;
-  typedef int16_t SINT16;
-
-  typedef uint32_t UINT32;
-  typedef int32_t SINT32;
-
-#else // no HAVE_STDINT_H
-# ifndef HAVE_LIMITS_H
-#  error Neither limits.h or stdint.h are present -- cannot determine sizes
-# endif
 # include <limits.h>
 
   // Define datatypes according to limits.h
 
 # if (UCHAR_MAX == 255)
-   typedef unsigned char UINT8;
-   typedef signed char SINT8;
+   typedef unsigned char uint8_t;
+   typedef signed char int8_t;
 # else
 #  error No 8-bit integer type found
 # endif
 
 # if (UCHAR_MAX == 65535)
-   typedef unsigned char UINT16;
-   typedef signed char SINT16;
+   typedef unsigned char uint16_t;
+   typedef signed char int16_t;
 # else
 #  if (USHRT_MAX == 65535)
-    typedef unsigned short UINT16;
-    typedef signed short SINT16;
+    typedef unsigned short uint16_t;
+    typedef signed short int16_t;
 #  else
 #   if (UINT_MAX == 65535)
-     typedef unsigned int UINT16;
-     typedef signed int SINT16;
+     typedef unsigned int uint16_t;
+     typedef signed int int16_t;
 #   else
 #    error No 16-bit integer type found
 #   endif
@@ -45,20 +30,20 @@
 # endif
 
 # if (UCHAR_MAX == 4294967295U)
-   typedef unsigned char UINT32;
-   typedef signed char SINT32;
+   typedef unsigned char uint32_t;
+   typedef signed char int32_t;
 # else
 #  if (USHRT_MAX == 4294967295U)
-    typedef unsigned short UINT32;
-    typedef signed short SINT32;
+    typedef unsigned short uint32_t;
+    typedef signed short int32_t;
 #  else
 #   if (UINT_MAX == 4294967295U)
-     typedef unsigned int UINT32;
-     typedef signed int SINT32;
+     typedef unsigned int uint32_t;
+     typedef signed int int32_t;
 #   else
 #    if (ULONG_MAX == 4294967295)
-      typedef unsigned long UINT32;
-      typedef signed long SINT32;
+      typedef unsigned long uint32_t;
+      typedef signed long int32_t;
 #    else
 #     error No 32-bit integer type found
 #    endif
