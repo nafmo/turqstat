@@ -1,4 +1,4 @@
-// Copyright (c) 1998-1999 Peter Karlsson
+// Copyright (c) 1998-2000 Peter Karlsson
 //
 // $Id$
 //
@@ -114,6 +114,9 @@ public:
     inline void NoArrivalTime(void)         { hasarrivaltime = false;  };
     inline bool HasArrivalTime(void)        { return hasarrivaltime;   };
 
+    inline void NewsArea(void)              { newsarea = true;         };
+    inline bool IsNewsArea(void)            { return newsarea;         };
+
 protected:
     // Data types used by statistics engine
     struct persondata_s
@@ -188,7 +191,7 @@ protected:
     unsigned            currperson, currsubject, currprogram;
     list_t              currpersontype;
     programversion_s    *currversion;
-    bool                hasarrivaltime;
+    bool                hasarrivaltime, newsarea;
 
     // Internal methods
     string ParseAddress(string, string);

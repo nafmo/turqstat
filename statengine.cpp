@@ -1,4 +1,4 @@
-// Copyright (c) 1998-1999 Peter Karlsson
+// Copyright (c) 1998-2000 Peter Karlsson
 //
 // $Id$
 //
@@ -42,6 +42,7 @@ StatEngine::StatEngine(void)
     earliestwritten = latestwritten = earliestreceived = latestreceived = 0;
     currpersontype = None;
     hasarrivaltime = true;
+    newsarea = false;
 }
 
 StatEngine::~StatEngine(void)
@@ -64,6 +65,52 @@ void StatEngine::AddData(string fromname, string toname, string subject,
 
     // Locate sender's name in database, and update statistics
     persondata_s *perstrav_p = people_p, *persfound_p = perstrav_p;
+
+    // In news areas, we search the control information for From and
+    // subject lines.
+    if (newsarea)
+    {
+        int pos = controldata.find((char) 1);
+        while (pos != -1)
+        {
+            pos ++;
+            if (fcompare(controldata.substr(pos, 5), "From:") == 0)
+            {
+                // Find where from name starts
+                pos += 5;
+                while (isspace(controldata[pos])) pos ++;
+
+                // And where it ends
+                int nextpos = controldata.find((char) 1, pos);
+
+                // And copy it
+                if (nextpos == -1)
+                    fromname = controldata.substr(pos);
+                else
+                    fromname = controldata.substr(pos, nextpos - pos);
+
+                // Prepare for next iteration
+                pos = nextpos;
+            }
+            else if (fcompare(controldata.substr(pos, 8), "Subject:") == 0)
+            {
+                pos += 8;
+                while (isspace(controldata[pos])) pos ++;
+                int nextpos = controldata.find((char) 1, pos);
+
+                if (nextpos == -1)
+                    subject = controldata.substr(pos);
+                else
+                    subject = controldata.substr(pos, nextpos - pos);
+
+                pos = nextpos;
+            }
+            else
+            {
+                int pos = controldata.find((char) 1, pos);
+            }
+        }
+    }
 
     if (NULL == perstrav_p)
     {
@@ -185,44 +232,47 @@ void StatEngine::AddData(string fromname, string toname, string subject,
     msgcount ++;
 
     // Locate recipient's name in database, and update statistics
-    persfound_p = perstrav_p = people_p; // people_p can't be NULL here
-    direction = None;
-    do
+    if (!newsarea)
     {
-        // trav_p points to leaf above
-        if (Left == direction) perstrav_p = perstrav_p->left;
-        if (Right == direction) perstrav_p = perstrav_p->right;
-
-        // found_p points to the leaf (NULL at the end, which is where
-        // we need the leaf above to add the leaf to)
-        if (fcompare(toname, perstrav_p->name) < 0)
+        persfound_p = perstrav_p = people_p; // people_p can't be NULL here
+        direction = None;
+        do
         {
-            direction = Left;
-            persfound_p = perstrav_p->left;
-        }
-        if (fcompare(toname, perstrav_p->name) > 0)
+            // trav_p points to leaf above
+            if (Left == direction) perstrav_p = perstrav_p->left;
+            if (Right == direction) perstrav_p = perstrav_p->right;
+
+            // found_p points to the leaf (NULL at the end, which is where
+            // we need the leaf above to add the leaf to)
+            if (fcompare(toname, perstrav_p->name) < 0)
+            {
+                direction = Left;
+                persfound_p = perstrav_p->left;
+            }
+            if (fcompare(toname, perstrav_p->name) > 0)
+            {
+                direction = Right;
+                persfound_p = perstrav_p->right;
+            }
+        } while (NULL != persfound_p &&
+                 fcompare(persfound_p->name, toname) != 0);
+
+        if (NULL == persfound_p)
         {
-            direction = Right;
-            persfound_p = perstrav_p->right;
+            // No name was found, add a leaf with the new name
+            persfound_p = new persondata_s;
+            if (!persfound_p) errorquit(out_of_memory, 2);
+            if (Left == direction) perstrav_p->left = persfound_p;
+            if (Right == direction) perstrav_p->right = persfound_p;
+
+            persfound_p->name = toname;
+            persfound_p->address = "N/A";
+
+            numpeople ++;
         }
-    } while (NULL != persfound_p &&
-             fcompare(persfound_p->name, toname) != 0);
 
-    if (NULL == persfound_p)
-    {
-        // No name was found, add a leaf with the new name
-        persfound_p = new persondata_s;
-        if (!persfound_p) errorquit(out_of_memory, 2);
-        if (Left == direction) perstrav_p->left = persfound_p;
-        if (Right == direction) perstrav_p->right = persfound_p;
-
-        persfound_p->name = toname;
-        persfound_p->address = "N/A";
-
-        numpeople ++;
+        persfound_p->messagesreceived ++;
     }
-
-    persfound_p->messagesreceived ++;
 
     if (subject.length() > 3)
     {
@@ -293,20 +343,43 @@ void StatEngine::AddData(string fromname, string toname, string subject,
 
     // Locate program name and version in database, and update statistics
     string program = "";
-    // PID takes precedence over tearline
-    int where;
-    if ((where = controldata.find("PID: ")) != -1)
+
+    if (newsarea)
     {
-        int howfar = controldata.find((char) 1, where);
-        if (-1 == howfar) howfar = controldata.length();
-        program = controldata.substr(where + 5, howfar - where - 5);
+        // User-Agent takes precedence over X-Newsreader
+        int where;
+        if ((where = controldata.find("X-Newsreader:")) != -1)
+        {
+            int howfar = controldata.find((char) 1, where);
+            where += 14;
+            while (isspace(controldata[where])) where ++;
+            program = controldata.substr(where, howfar - where);
+        }
+        else if ((where = controldata.find("User-Agent:")) != -1)
+        {
+            int howfar = controldata.find((char) 1, where);
+            where += 11;
+            while (isspace(controldata[where])) where ++;
+            program = controldata.substr(where, howfar - where);
+        }
     }
-    else if ((where = msgbody.rfind("--- ")) != -1)
+    else
     {
-        int howfar = msgbody.find('\n', where);
-        if (-1 == howfar) howfar = msgbody.find('\r', where);
-        if (-1 == howfar) howfar = msgbody.length();
-        program = msgbody.substr(where + 4, howfar - where - 4);
+        // PID takes precedence over tearline
+        int where;
+        if ((where = controldata.find("PID: ")) != -1)
+        {
+            int howfar = controldata.find((char) 1, where);
+            if (-1 == howfar) howfar = controldata.length();
+            program = controldata.substr(where + 5, howfar - where - 5);
+        }
+        else if ((where = msgbody.rfind("--- ")) != -1)
+        {
+            int howfar = msgbody.find('\n', where);
+            if (-1 == howfar) howfar = msgbody.find('\r', where);
+            if (-1 == howfar) howfar = msgbody.length();
+            program = msgbody.substr(where + 4, howfar - where - 4);
+        }
     }
 
     // Split program name and version
