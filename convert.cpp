@@ -278,11 +278,19 @@ Decoder *Decoder::GetDecoderByMIMEHeaders(const char *headers)
     char *charset = headers ? strcasestr(headers, "charset=") : NULL;
 #elif defined(HAVE_STRISTR)
     char *charset = headers ? stristr(headers, "charset=") : NULL;
-#elif defined(HAVE_STRLWR)
+#else
     const char *charset = NULL;
     if (headers)
     {
+#if defined(HAVE_STRLWR)
         char *lowercaseheaders = strlwr(strdup(headers));
+#else
+        char *lowercaseheaders = strdup(headers);
+        for (char *p = lowercaseheaders; *p; p ++)
+        {
+            *p = tolower(*p);
+        }
+#endif
         char *find = strstr(lowercaseheaders, "charset=");
         charset = headers + (find - lowercaseheaders);
         free(lowercaseheaders);
