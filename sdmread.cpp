@@ -167,7 +167,7 @@ bool SdmRead::Transfer(time_t starttime, StatEngine &destination)
         }
 
         // Add to statistics
-        if (written >= starttime)
+        if (arrived >= starttime)
         {
             destination.AddData(string((char *) sdmhead.fromusername),
                                 string((char *) sdmhead.tousername),
