@@ -3097,7 +3097,7 @@ rm -f conftest*
 
 echo $ac_n "checking if platform uses backslashes in paths""... $ac_c" 1>&6
 echo "configure:3100: checking if platform uses backslashes in paths" >&5
-if test "$ac_cv_emx" = "yes" || test "$ac_cv_mingw32" = "yes" || test "$ac_cv_cygwin" = "yes"; then
+if test "$ac_cv_emx" = "yes" || test "$ac_cv_mingw32" = "yes" || test "$ac_cv_cygwin" = "yes" || test "$ac_cv_djgpp" = "yes"; then
   echo "$ac_t""yes" 1>&6
   cat >> confdefs.h <<\EOF
 #define BACKSLASH_PATHS 1
@@ -3107,7 +3107,7 @@ else
   echo "$ac_t""no" 1>&6
 fi
 
-if test "$ac_cv_emx" = "yes" || test "$ac_cv_mingw32" = "yes" || test "$ac_cv_cygwin" = "yes"; then
+if test "$ac_cv_emx" = "yes" || test "$ac_cv_mingw32" = "yes" || test "$ac_cv_cygwin" = "yes" || test "$ac_cv_djgpp" = "yes"; then
   NOINST='# '
 else
   NOINST=''

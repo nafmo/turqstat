@@ -23,6 +23,8 @@
 #ifdef HAVE_EMX_FINDFIRST
 # include <emx/syscalls.h>
 # include <io.h>
+#elif defined(HAVE_DJGPP_FINDFIRST)
+# include <dir.h>
 #elif defined(HAVE_LIBCRTDLL)
 # include <io.h>
 #else
@@ -79,7 +81,7 @@ bool NewsSpoolRead::Transfer(time_t starttime, time_t endtime,
     destination.NewsArea();
 
     // Open the message directory
-#if defined(HAVE_EMX_FINDFIRST) || (HAVE_LIBCRTDLL)
+#if defined(HAVE_EMX_FINDFIRST) || defined(HAVE_LIBCRTDLL) || defined(HAVE_DJGPP_FINDFIRST)
     string dirname = string(areapath);
     if (dirname[dirname.length() - 1] != '\\')
     {
@@ -91,6 +93,9 @@ bool NewsSpoolRead::Transfer(time_t starttime, time_t endtime,
 # ifdef HAVE_EMX_FINDFIRST
     struct _find spooldir;
     int rc = __findfirst(searchpath.c_str(), 0x2f, &spooldir);
+# elif defined(HAVE_DJGPP_FINDFIRST)
+    struct ffblk sdmdir;
+    int rc = findfirst(searchpath.c_str(), FA_RDONLY | FA_ARCH);
 # else
     struct _finddata_t spooldir;
     int spoolhandle = _findfirst(searchpath.c_str(), &spooldir);
@@ -124,7 +129,7 @@ bool NewsSpoolRead::Transfer(time_t starttime, time_t endtime,
     unsigned long msgn = 0;
     long length, thislength;
     string from, subject;
-#ifndef HAVE_LIBCRTDLL
+#if !defined(HAVE_LIBCRTDLL) && !defined(HAVE_DJGPP_FINDFIRST)
     struct stat msgstat;
 #endif
 
@@ -133,6 +138,10 @@ bool NewsSpoolRead::Transfer(time_t starttime, time_t endtime,
 #ifdef HAVE_EMX_FINDFIRST
 # define FILENAME spooldir.name
 # define FILESIZE (spooldir.size_lo | (spooldir.size_hi << 16))
+    while (0 == rc)
+#elif defined(HAVE_DJGPP_FINDFIRST)
+# define FILENAME spooldir.ff_name
+# define FILESIZE spooldir.ff_size
     while (0 == rc)
 #elif defined(HAVE_LIBCRTDLL)
 # define FILENAME spooldir.name
@@ -165,15 +174,28 @@ bool NewsSpoolRead::Transfer(time_t starttime, time_t endtime,
 
 #ifdef HAVE_LIBCRTDLL
         arrived = spooldir.time_create;
+#elif defined(HAVE_DJGPP_FINDFIRST)
+        if (0 == strcmp(spooldir.lfn_magic, "LFN32"))
+        {
+            stamp_s create_time = { spooldir.lfn_cdate, spooldir.lfn_ctime };
+            arrived = stampToTimeT(&create_time);
+        }
+        else
+        {
+            stamp_s file_time = { spooldir.ff_fdate, spooldir.ff_ftime };
+            arrived = stampToTimeT(&file_time);
+        }
 #else
         stat(thisfile.c_str(), &msgstat);
         arrived = msgstat.st_mtime;
 #endif
 
-#ifdef HAVE_TIMEZONE
+#if !defined(HAVE_DJGPP_FINDFIRST)
+# ifdef HAVE_TIMEZONE
         arrived -= timezone * 60;
-#elif defined(HAVE_UTIMEZONE)
+# elif defined(HAVE_UTIMEZONE)
         arrived -= _timezone * 60;
+# endif
 #endif
 
         // Check if message is outside time range
@@ -243,6 +265,8 @@ out2:;
 
 #ifdef HAVE_EMX_FINDFIRST
         rc = __findnext(&spooldir);
+#elif defined(HAVE_DJGPP_FINDFIRST)
+        rc = findnext(&spooldir);
 #elif defined(HAVE_LIBCRTDLL)
         rc = _findnext(spoolhandle, &spooldir);
 #endif

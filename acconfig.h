@@ -1,6 +1,9 @@
 /* Define if we are using EMX's implementation of findfirst/findnext */
 #undef HAVE_EMX_FINDFIRST
 
+/* Define if we are using DJGPP's implementation of findfirst/findnext */
+#undef HAVE_DJGPP_FINDFIRST
+
 /* Define if getopt is found in unistd.h */
 #undef HAVE_GETOPT_IN_UNISTD
 
@@ -78,3 +81,6 @@
 
 /* Define if the fstream class has the GNU extension fstream::form */
 #undef HAVE_FSTREAM_FORM_METHOD
+
+/* Define if we have NNTP support */
+#undef HAVE_NNTP

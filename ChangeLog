@@ -2,6 +2,13 @@
   nntpread.cpp
     More Winsock fixes.
 
+  acconfig.h
+  config.h.in
+  configure.in
+  newsspoolread.cpp
+  sdmread.cpp
+    DJGPP compile fixes.
+
 2001-11-11 - peter karlsson <peter@softwolves.pp.se>
   nntpread.cpp
     Use recv and send instead of read and write on sockets, for Win32

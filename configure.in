@@ -355,15 +355,15 @@ AC_TRY_COMPILE([ #include <time.h> ], [ timezone = 0; ],
 
 dnl Check for other stuff --------------------------------------------------
 AC_MSG_CHECKING(if platform uses backslashes in paths)
-if test "$ac_cv_emx" = "yes" || test "$ac_cv_mingw32" = "yes" || test "$ac_cv_cygwin" = "yes"; then
+if test "$ac_cv_emx" = "yes" || test "$ac_cv_mingw32" = "yes" || test "$ac_cv_cygwin" = "yes" || test "$ac_cv_djgpp" = "yes"; then
   AC_MSG_RESULT(yes)
   AC_DEFINE(BACKSLASH_PATHS)
 else
   AC_MSG_RESULT(no)
 fi
 
-dnl Comment out install target in makefiles for OS/2 and Win32 targets
-if test "$ac_cv_emx" = "yes" || test "$ac_cv_mingw32" = "yes" || test "$ac_cv_cygwin" = "yes"; then
+dnl Comment out install target in makefiles for OS/2, DOS and Win32 targets
+if test "$ac_cv_emx" = "yes" || test "$ac_cv_mingw32" = "yes" || test "$ac_cv_cygwin" = "yes" || test "$ac_cv_djgpp" = "yes"; then
   NOINST='# '
 else
   NOINST=''
