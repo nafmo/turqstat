@@ -11,6 +11,11 @@ VPATH=@srcdir@
 # Magic targets
 all: $(OBJS)
 
+clean:
+	-rm $(OBJS)
+
+distclean: clean
+
 # Object files
 mappings.o: mappings.cpp mappings.h
 	@CXX@ $(CXXFLAGS) -c $(srcdir)/mappings.cpp
@@ -23,4 +28,4 @@ mappings.cpp mappings.h: makemappings.pl 8859-*.txt cp*.txt koi*.txt roman.txt
 	./makemappings.pl
 
 # List phony targets
-.PHONY: all
+.PHONY: all clean distclean
