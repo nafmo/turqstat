@@ -118,7 +118,7 @@ time_t timespecToTimeT(const string &datetime);
  */
 void fixupctrlbuffer(char *body_p, char *ctrl_p);
 
-#if defined(HAVE_LOCALE_H) || defined(HAVE_OS2_COUNYTRINFO) || defined(HAVE_WIN32_LOCALEINFO)
+#if defined(HAVE_LOCALE_H) || defined(HAVE_OS2_COUNTRYINFO) || defined(HAVE_WIN32_LOCALEINFO)
 /**
  * Create a string in the locale defined date format.
  * @param time Pointer to a structure containing the time to be created.
