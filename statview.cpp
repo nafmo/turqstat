@@ -16,7 +16,7 @@
 // Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 
 #include <fstream.h>
-#include <limit.h>
+#include <limits.h>
 #include "statview.h"
 
 static const char *days[] =
