@@ -55,9 +55,9 @@ public:
     inline bool GetTopWriters(bool restart, persstat_s &result)
         { return GetTop(restart, result, comparenumwritten, TopWrite); };
     inline bool GetTopReceivers(bool restart, persstat_s &result)
-        { return GetTop(restart, result, comparenumreceived, TopWrite); };
+        { return GetTop(restart, result, comparenumreceived, TopReceive); };
     inline bool GetTopQuoters(bool restart, persstat_s &result)
-        { return GetTop(restart, result, comparenumquoted, TopWrite); };
+        { return GetTop(restart, result, comparenumquoted, TopQuote); };
     inline bool GetTopBytePerMsg(bool restart, persstat_s &result)
         { return GetTop(restart, result, comparebytepermsg, TopBpm); };
 
