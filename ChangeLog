@@ -1,3 +1,19 @@
+2000-04-30 - peter karlsson <peter@softwolves.pp.se>
+  jamread.cpp
+  squishread.cpp
+    Allows for message base path names with extensions, to ease selection on
+    command line.
+
+  statview.cpp
+    Adjusted output format of the topdomain list somewhat.
+
+  statengine.cpp
+    Added detection for Pine in news areas (doesn't use standardized
+    identification methods).
+
+  README.os2
+    Rewording.
+
 2000-04-28 - peter karlsson <peter@softwolves.pp.se>
   statengine.cpp
     Finds gated Internet/Usenet addresses in Fidonet areas.
