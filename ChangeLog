@@ -1,3 +1,29 @@
+2000-09-19 - peter karlsson <peter@softwolves.pp.se>
+  output.cpp
+  outputqt.cpp
+  output.h
+    Changed name for the output object.
+    Made sure TDisplay::GetOutputObject() never return NULL.
+    Moved the errorquit routines here.
+
+  utility.cpp
+  utility.h
+    Removed the errorquit routines.
+
+  fdapxread.cpp
+  jamread.cpp
+  mypointread.cpp
+  newsspoolread.cpp
+  sdmread.cpp
+  squishread.cpp
+  statengine.cpp
+  tanstaaflread.cpp
+  turqstat.cpp
+    Use the display object instead of errorquit routines.
+
+  Makefile.in
+    More files include output.h now.
+
 2000-09-18 - peter karlsson <peter@softwolves.pp.se>
   qtgui.cpp
     Removed unimplemented "Save text file" from menu.
