@@ -34,7 +34,7 @@
 class StatRetr
 {
 public:
-    enum basetype_e { squish };
+    enum basetype_e { squish, sdm };
 
     StatRetr(char *areapath, char *outputfilepath, unsigned days,
              basetype_e basetype, unsigned maxnumber,
@@ -59,7 +59,7 @@ int main(int argc, char *argv[])
 
     // Handle arguments
     int c;
-    while (EOF != (c = getopt(argc, argv, "d:n:sQWRSPHD?")))
+    while (EOF != (c = getopt(argc, argv, "d:n:smQWRSPHD?")))
     {
         switch (c)
         {
@@ -67,6 +67,7 @@ int main(int argc, char *argv[])
             case 'n':   maxnum = strtoul(optarg, NULL, 10);         break;
 
             case 's':   basetype = StatRetr::squish;                break;
+            case 'm':   basetype = StatRetr::sdm;                   break;
 
             case 'Q':   quoters = false;                            break;
             case 'W':   topwritten = false;                         break;
@@ -89,6 +90,8 @@ int main(int argc, char *argv[])
                 cout << "  -n num         Maximum entries in toplists" << endl;
                 cout << endl;
                 cout << "  -s             Squish style message area (default)"
+                     << endl;
+                cout << "  -m             *.MSG style message area"
                      << endl;
                 cout << endl;
                 cout << "  -Q -W -R -S -P Turn quoters/written/received/"
@@ -135,8 +138,8 @@ StatRetr::StatRetr(char *areapath, char *outputfilepath, unsigned days,
 
     // Transfer from area to engine
     AreaRead *area;
-    if (squish == basetype)
-        area = new SquishRead(areapath);
+    if (squish == basetype || sdm == basetype)
+        area = new SquishRead(areapath, sdm == basetype);
     else
     {
         cerr << "Internal error." << endl;

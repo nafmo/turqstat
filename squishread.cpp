@@ -26,9 +26,10 @@ extern "C" {
 
 static time_t stampToTimeT(struct _stamp *st);
 
-SquishRead::SquishRead(const char *path)
+SquishRead::SquishRead(const char *path, bool issdm)
 {
     areapath = strdup(path);
+    sdm = issdm;
 }
 
 SquishRead::~SquishRead()
@@ -53,11 +54,18 @@ bool SquishRead::Transfer(time_t starttime, StatEngine &destination)
 
     // Open the area
     HAREA areahandle;
+    word msgtype;
+    if (sdm)
+        msgtype = MSGTYPE_SDM | MSGTYPE_ECHO;
+    else
+        msgtype = MSGTYPE_SQUISH;
+
     areahandle = MsgOpenArea((unsigned char *) areapath, MSGAREA_NORMAL,
-                             MSGTYPE_SQUISH);
+                             msgtype);
     if (!areahandle)
     {
-        cerr << "Cannot open area " << areapath << endl;
+        cerr << "Cannot open " << (sdm ? "*.MSG" : "Squish")
+             << "area " << areapath << endl;
         return false;
     }
 

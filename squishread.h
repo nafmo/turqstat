@@ -28,7 +28,7 @@ class SquishRead : public AreaRead
 {
 public:
     // Constructor and destructor
-    SquishRead(const char *path);
+    SquishRead(const char *path, bool issdm);
     virtual ~SquishRead();
 
     // Transfer function
@@ -36,6 +36,7 @@ public:
 
 protected:
     char    *areapath;
+    bool    sdm;
 };
 
 #endif
