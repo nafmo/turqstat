@@ -1,4 +1,4 @@
-xturqstat (2.1) unstable; urgency=low
+turqstat (2.1) unstable; urgency=low
 
   * Added character re-encoding for most single-byte character sets used in
     Fidonet and Usenet today.

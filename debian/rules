@@ -41,7 +41,7 @@ install: build
 
 	$(MAKE) install-qt prefix=`pwd`/debian/xturqstat/usr
 	cp -a ChangeLog debian/xturqstat/usr/share/doc/xturqstat/changelog
-	cp -a debian/changelog debian/xturqstat/usr/share/doc/xturqstat/changelog.Debian
+	cp -a debian/xturqstat.changelog debian/xturqstat/usr/share/doc/xturqstat/changelog.Debian
 
 # Build architecture-independent files here.
 binary-indep: build install
