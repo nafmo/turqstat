@@ -1,3 +1,7 @@
+2000-03-22 - peter karlsson <peter@softwolves.pp.se>
+  Makefile.CygWin
+    Support for news spools.
+
 2000-03-19 - peter karlsson <peter@softwolves.pp.se>
   statengine.cpp
     Handles tearlines ending with \r\n correctly.
