@@ -33,7 +33,22 @@ public:
     {
         // Public error messages
         out_of_memory, area_not_allocated, message_base_mismatch,
-        out_of_memory_area,
+        out_of_memory_area, cannot_open, cannot_read,
+        area_out_of_range, illegal_area,
+        strange_squish_header, message_base_empty, strange_squish_offset,
+        premature_squish_end, illegal_squish_header,
+        cannot_open_spool, cannot_open_file,
+        illegal_jam_header,
+        cannot_read_header,
+        illegal_tanstaafl_version, tanstaafl_version_0,
+        cannot_open_msg_directory, broken_msg,
+        illegal_fdapx_version,
+        illegal_mypoint_version, mypoint_area_garbled, mypoint_area_garbled_2,
+
+        // Public warning messages
+        abnormal_squish_frame,
+        cannot_allocate_control, cannot_allocate_control_file,
+        cannot_allocate_body, cannot_allocate_body_file,
 
         // Internal error messages
         program_halted, cannot_allocate_tdisplay
@@ -42,12 +57,12 @@ public:
     // Message methods
     void SetMessagesTotal(int number);
     void UpdateProgress(int messages);
-    void ErrorMessage(string errormessage);
-    void ErrorMessage(string errormessage, int number);
+    void ErrorMessage(errormessages_e errormessage, string data = "");
+    void ErrorMessage(errormessages_e errormessage, int data);
     void ErrorQuit(errormessages_e errormessage, int returncode);
     void InternalErrorQuit(errormessages_e errormessage, int returncode);
-    void WarningMessage(string errormessage);
-    void WarningMessage(string errormessage, int number);
+    void WarningMessage(errormessages_e errormessage, string data = "");
+    void WarningMessage(errormessages_e errormessage, int data);
 
     static TDisplay *GetOutputObject();
 

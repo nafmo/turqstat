@@ -68,8 +68,7 @@ bool JamRead::Transfer(time_t starttime, StatEngine &destination)
         }
         if (!jdx)
         {
-            string msg = string("Cannot open ") + filepath;
-            display->ErrorMessage(msg);
+            display->ErrorMessage(TDisplay::cannot_open, filepath);
             return false;
         }
     }
@@ -79,22 +78,20 @@ bool JamRead::Transfer(time_t starttime, StatEngine &destination)
     FILE *jhr = fopen(filepath.c_str(), "rb");
     if (!jhr)
     {
-        string msg = string("Cannot open ") + filepath;
-        display->ErrorMessage(msg);
+        display->ErrorMessage(TDisplay::cannot_open, filepath);
         return false;
     }
 
     jamhdr_header_s baseheader;
     if (1 != fread(&baseheader, sizeof (jamhdr_header_s), 1, jhr))
     {
-        string msg = string("Cannot open ") + filepath;
-        display->ErrorMessage(msg);
+        display->ErrorMessage(TDisplay::cannot_open, filepath);
         return false;
     }
 
     if (memcmp(baseheader.signature, Jam_signature, sizeof(Jam_signature)) != 0)
     {
-        display->ErrorMessage("Illegal JAM header");
+        display->ErrorMessage(TDisplay::illegal_jam_header);
         return false;
     }
 
@@ -103,8 +100,7 @@ bool JamRead::Transfer(time_t starttime, StatEngine &destination)
     FILE *jdt = fopen(filepath.c_str(), "rb");
     if (!jdt)
     {
-        string msg = string("Cannot open ") + filepath;
-        display->ErrorMessage(msg);
+        display->ErrorMessage(TDisplay::cannot_open, filepath);
         return false;
     }
 
@@ -135,7 +131,7 @@ bool JamRead::Transfer(time_t starttime, StatEngine &destination)
         if (1 != fread(&hdrinfo, sizeof (jamhdr_msg_s), 1, jhr))
         {
             // Could not read message, quit
-            display->ErrorMessage("Unable to read header #",
+            display->ErrorMessage(TDisplay::cannot_read_header,
                                   found + baseheader.basemsgnum);
             return false;
         }
@@ -162,8 +158,7 @@ bool JamRead::Transfer(time_t starttime, StatEngine &destination)
 
             if (!buf)
             {
-                display->WarningMessage("Unable to allocate memory for "
-                                        "message body #",
+                display->WarningMessage(TDisplay::cannot_allocate_body,
                                         found + baseheader.basemsgnum);
                 goto out;
             }

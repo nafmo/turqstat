@@ -1,3 +1,17 @@
+2000-11-11 - peter karlsson <peter@softwolves.pp.se>
+  output.h
+  output.cpp
+  outputqt.cpp
+  fdapxread.cpp
+  jamread.cpp
+  mypointread.cpp
+  newsspoolread.cpp
+  sdmread.cpp
+  squishread.cpp
+  tanstaaflread.cpp
+    Removed all hardcoded error and warning messages.
+
+
 2000-10-07 - peter karlsson <peter@softwolves.pp.se>
   qtgui.cpp
     Disable also the top Fidonet net menu entry for news.

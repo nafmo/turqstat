@@ -51,8 +51,7 @@ bool FdApxRead::Transfer(time_t starttime, StatEngine &destination)
     // Check that the folder number is valid
     if (areanumber < 1 || areanumber > 1999)
     {
-        display->ErrorMessage("Invalid area number chosen "
-                              "(must be between 1-1999)");
+        display->ErrorMessage(TDisplay::area_out_of_range, 1999);
         return false;
     }
 
@@ -72,23 +71,21 @@ bool FdApxRead::Transfer(time_t starttime, StatEngine &destination)
     FILE *msgstat = fopen(filepath.c_str(), "rb");
     if (!msgstat)
     {
-        string msg = string("Cannot open ") + filepath;
-        display->ErrorMessage(msg);
+        display->ErrorMessage(TDisplay::cannot_open, filepath);
         return false;
     }
 
     msgstatapx_s msgstatapx;
     if (1 != fread(&msgstatapx, sizeof (msgstatapx_s), 1, msgstat))
     {
-        string msg = string("Could not read from ") + filepath;
-        display->ErrorMessage(msg);
+        display->ErrorMessage(TDisplay::cannot_open, filepath);
         return false;
     }
     fclose(msgstat);
 
     if (Fdapx_msgbaseversion != msgstatapx.msgbaseversion)
     {
-        display->ErrorMessage("Illegal FDAPX/w message base version");
+        display->ErrorMessage(TDisplay::illegal_fdapx_version);
         return false;
     }
 
@@ -96,8 +93,7 @@ bool FdApxRead::Transfer(time_t starttime, StatEngine &destination)
     FILE *msghdr = fopen(filepath.c_str(), "rb");
     if (!msghdr)
     {
-        string msg = string("Cannot open ") + filepath;
-        display->ErrorMessage(msg);
+        display->ErrorMessage(TDisplay::cannot_open, filepath);
         return false;
     }
 
@@ -105,8 +101,7 @@ bool FdApxRead::Transfer(time_t starttime, StatEngine &destination)
     FILE *msgtxt = fopen(filepath.c_str(), "rb");
     if (!msgstat)
     {
-        string msg = string("Cannot open ") + filepath;
-        display->ErrorMessage(msg);
+        display->ErrorMessage(TDisplay::cannot_open, filepath);
         return false;
     }
 
@@ -150,8 +145,8 @@ bool FdApxRead::Transfer(time_t starttime, StatEngine &destination)
             buf = new char[msghdrapx.txtsize + 1];
             if (!buf)
             {
-                display->WarningMessage("Unable to allocate memory for "
-                                        "message body #", msgnum);
+                display->WarningMessage(TDisplay::cannot_allocate_body,
+                                        msgnum);
                 goto out;
             }
 
@@ -161,8 +156,8 @@ bool FdApxRead::Transfer(time_t starttime, StatEngine &destination)
             ctrlbuf = new char[msghdrapx.txtsize + 1];
             if (!ctrlbuf)
             {
-                display->WarningMessage("Unable to allocate memory for "
-                                        "control data #", msgnum);
+                display->WarningMessage(TDisplay::cannot_allocate_control,
+                                        msgnum);
             }
 
             // Separate kludges from text

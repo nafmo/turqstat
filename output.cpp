@@ -1,6 +1,6 @@
 // Copyright (c) 2000 Peter Karlsson
 //
-// $Id: output.cpp,v 1.2.2.1 2000/09/19 17:17:56 peter Exp $
+// $Id: output.cpp,v 1.2.2.2 2000/09/25 18:07:08 peter Exp $
 //
 // This program is free software; you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -16,8 +16,11 @@
 // Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 
 #include <iostream>
+#include <stdio.h>
 
 #include "output.h"
+
+#define STRLEN 256
 
 static string GetMessage(TDisplay::errormessages_e);
 
@@ -55,14 +58,51 @@ void TDisplay::UpdateProgress(int message)
     }
 }
 
-void TDisplay::ErrorMessage(string errormessage)
+void TDisplay::ErrorMessage(errormessages_e errormessage, string data)
 {
-    cerr << "Error: " << errormessage << endl;
+    char msg[STRLEN];
+    string msgtemplate = GetMessage(errormessage);
+    snprintf(msg, STRLEN, msgtemplate.c_str(), data.c_str());
+    cerr << "Error: " << msg << endl;
 }
 
-void TDisplay::ErrorMessage(string errormessage, int number)
+void TDisplay::ErrorMessage(errormessages_e errormessage, int data)
 {
-    cerr << "Error: " << errormessage << number << endl;
+    char msg[STRLEN];
+    string msgtemplate = GetMessage(errormessage);
+    snprintf(msg, STRLEN, msgtemplate.c_str(), data);
+    cerr << "Error: " << msg << endl;
+}
+
+void TDisplay::ErrorQuit(errormessages_e errormessage, int returncode)
+{
+    ErrorMessage(errormessage);
+    cerr << GetMessage(program_halted) << endl;
+    exit(returncode);
+}
+
+void TDisplay::InternalErrorQuit(errormessages_e errormessage,
+                                 int returncode)
+{
+    cerr << "Internal error: " << GetMessage(errormessage) << endl;
+    cerr << GetMessage(program_halted) << endl;
+    exit(returncode);
+}
+
+void TDisplay::WarningMessage(errormessages_e errormessage, string data)
+{
+    char msg[STRLEN];
+    string msgtemplate = GetMessage(errormessage);
+    snprintf(msg, STRLEN, msgtemplate.c_str(), data.c_str());
+    cerr << "Warning: " << msg << endl;
+}
+
+void TDisplay::WarningMessage(errormessages_e errormessage, int data)
+{
+    char msg[STRLEN];
+    string msgtemplate = GetMessage(errormessage);
+    snprintf(msg, STRLEN, msgtemplate.c_str(), data);
+    cerr << "Warning: " << msg << endl;
 }
 
 static string GetMessage(TDisplay::errormessages_e errormessage)
@@ -90,33 +130,112 @@ static string GetMessage(TDisplay::errormessages_e errormessage)
             s = "Program halted!";
             break;
 
-		case TDisplay::cannot_allocate_tdisplay:
-		    s = "Unable to allocate memory for output object!";
-		    break;
+        case TDisplay::cannot_allocate_tdisplay:
+            s = "Unable to allocate memory for output object!";
+            break;
+
+        case TDisplay::cannot_open:
+            s = "Cannot open %s";
+            break;
+
+        case TDisplay::cannot_read:
+            s = "Cannot read from %s";
+            break;
+
+        case TDisplay::strange_squish_header:
+            s = "Strange Squish header length";
+            break;
+
+        case TDisplay::message_base_empty:
+            s = "Message base is empty";
+            break;
+
+        case TDisplay::strange_squish_offset:
+            s = "Strange Squish header offset";
+            break;
+
+        case TDisplay::premature_squish_end:
+            s = "Premature end of Squish data";
+            break;
+
+        case TDisplay::illegal_squish_header:
+            s = "Illegal Squish header ID";
+            break;
+
+        case TDisplay::abnormal_squish_frame:
+            s = "Not normal Squish frame #%d";
+            break;
+
+        case TDisplay::cannot_allocate_control:
+            s = "Unable to allocate memory for control data #%d";
+            break;
+
+        case TDisplay::cannot_allocate_control_file:
+            s = "Unable to allocate memory for control data for %s";
+            break;
+
+        case TDisplay::cannot_allocate_body:
+            s = "Unable to allocate memory for message body #%d";
+            break;
+
+        case TDisplay::cannot_allocate_body_file:
+            s = "Unable to allocate memory for message body for %s";
+            break;
+
+        case TDisplay::cannot_open_spool:
+            s = "Unable to open spool directory";
+            break;
+
+        case TDisplay::cannot_open_file:
+            s = "Cannot open %s";
+            break;
+
+        case TDisplay::illegal_jam_header:
+            s = "Illegal JAM header";
+            break;
+
+        case TDisplay::cannot_read_header:
+            s = "Unable to read header #%d";
+            break;
+
+        case TDisplay::area_out_of_range:
+            s = "Invalid area number chosen (must be between 1-%d)";
+            break;
+
+        case TDisplay::illegal_area:
+            s = "Invalid area number chosen";
+            break;
+
+        case TDisplay::illegal_tanstaafl_version:
+            s = "Illegal tanstaafl message base version";
+            break;
+
+        case TDisplay::illegal_fdapx_version:
+            s = "Illegal FDAPX/w message base version";
+            break;
+
+        case TDisplay::illegal_mypoint_version:
+            s = "Illegal MyPoint message base version: %d";
+            break;
+
+        case TDisplay::tanstaafl_version_0:
+            s = "Tanstaafl message base version is 0, assuming 1";
+            break;
+
+        case TDisplay::cannot_open_msg_directory:
+            s = "Unable to open *.MSG directory";
+            break;
+
+        case TDisplay::broken_msg:
+            s = "Broken MSG file %s";
+            break;
+
+        case TDisplay::mypoint_area_garbled:
+            s = "Message area garbled (illegal delimeter)!";
+            break;
+
+        case TDisplay::mypoint_area_garbled_2:
+            s = "Message area garbled (footer does not match header)!";
+            break;
     }
-}
-
-void TDisplay::ErrorQuit(errormessages_e errormessage, int returncode)
-{
-    ErrorMessage(GetMessage(errormessage));
-    cerr << GetMessage(program_halted) << endl;
-    exit(returncode);
-}
-
-void TDisplay::InternalErrorQuit(errormessages_e errormessage,
-                                        int returncode)
-{
-    ErrorMessage(string("Internal error: ") + GetMessage(errormessage));
-    cerr << GetMessage(program_halted) << endl;
-    exit(returncode);
-}
-
-void TDisplay::WarningMessage(string errormessage)
-{
-    cerr << "Warning: " << errormessage << endl;
-}
-
-void TDisplay::WarningMessage(string errormessage, int number)
-{
-    cerr << "Warning: " << errormessage << number << endl;
 }

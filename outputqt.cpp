@@ -75,18 +75,51 @@ void TDisplay::UpdateProgress(int messages)
     }
 }
 
-void TDisplay::ErrorMessage(string errormessage)
+void TDisplay::ErrorMessage(errormessages_e errormessage, string data)
 {
-    QMessageBox::critical(NULL, "Turquoise SuperStat", errormessage.c_str(),
+    QString msg = GetMessage(errormessage).arg(data.c_str());
+    QMessageBox::critical(NULL, "Turquoise SuperStat", msg,
                           QMessageBox::Ok | QMessageBox::Default, 0, 0);
 }
 
-void TDisplay::ErrorMessage(string errormessage, int number)
+void TDisplay::ErrorMessage(errormessages_e errormessage, int data)
+{
+    QString msg = GetMessage(errormessage).arg(data);
+    QMessageBox::critical(NULL, "Turquoise SuperStat", msg,
+                          QMessageBox::Ok | QMessageBox::Default, 0, 0);
+}
+
+void TDisplay::ErrorQuit(errormessages_e errormessage, int returncode)
 {
     QMessageBox::critical(NULL, "Turquoise SuperStat",
-                          QString(errormessage.c_str()) +
-                          QString::number(number),
+                          GetMessage(errormessage),
                           QMessageBox::Ok | QMessageBox::Default, 0, 0);
+    cerr << GetMessage(program_halted) << endl;
+    exit(returncode);
+}
+
+void TDisplay::InternalErrorQuit(errormessages_e errormessage,
+                                        int returncode)
+{
+    QMessageBox::critical(NULL, qApp->translate("TDisplay", "Internal error"),
+                          GetMessage(errormessage),
+                          QMessageBox::Ok | QMessageBox::Default, 0, 0);
+    cerr << GetMessage(program_halted) << endl;
+    exit(returncode);
+}
+
+void TDisplay::WarningMessage(errormessages_e errormessage, string data)
+{
+    QString msg = GetMessage(errormessage).arg(data.c_str());
+    QMessageBox::warning(NULL, "Turquoise SuperStat", msg,
+                         QMessageBox::Ok | QMessageBox::Default, 0, 0);
+}
+
+void TDisplay::WarningMessage(errormessages_e errormessage, int data)
+{
+    QString msg = GetMessage(errormessage).arg(data);
+    QMessageBox::warning(NULL, "Turquoise SuperStat", msg,
+                        QMessageBox::Ok | QMessageBox::Default, 0, 0);
 }
 
 static QString GetMessage(TDisplay::errormessages_e errormessage)
@@ -116,42 +149,132 @@ static QString GetMessage(TDisplay::errormessages_e errormessage)
             s = qApp->translate("TDisplay", "Program halted!");
             break;
 
-		case TDisplay::cannot_allocate_tdisplay:
-		    s = qApp->translate("TDisplay",
-		                        "Unable to allocate memory for output object!");
-		    break;
+        case TDisplay::cannot_allocate_tdisplay:
+            s = qApp->translate("TDisplay",
+                                "Unable to allocate memory for output object!");
+            break;
+
+        case TDisplay::cannot_open:
+            s = qApp->translate("TDisplay", "Cannot open %1");
+            break;
+
+        case TDisplay::cannot_read:
+            s = qApp->translate("TDisplay", "Cannot read from %1");
+            break;
+
+        case TDisplay::strange_squish_header:
+            s = qApp->translate("TDisplay", "Strange Squish header length");
+            break;
+
+        case TDisplay::message_base_empty:
+            s = qApp->translate("TDisplay", "Message base is empty");
+            break;
+
+        case TDisplay::strange_squish_offset:
+            s = qApp->translate("TDisplay", "Strange Squish header offset");
+            break;
+
+        case TDisplay::premature_squish_end:
+            s = qApp->translate("TDisplay", "Premature end of Squish data");
+            break;
+
+        case TDisplay::illegal_squish_header:
+            s = qApp->translate("TDisplay", "Illegal Squish header ID");
+            break;
+
+        case TDisplay::abnormal_squish_frame:
+            s = qApp->translate("TDisplay", "Not normal Squish frame #%1");
+            break;
+
+        case TDisplay::cannot_allocate_control:
+            s = qApp->translate("TDisplay",
+                                "Unable to allocate memory for control "
+                                "data #%1");
+            break;
+
+        case TDisplay::cannot_allocate_control_file:
+            s = qApp->translate("TDisplay",
+                                "Unable to allocate memory for control "
+                                "data for %1");
+            break;
+
+        case TDisplay::cannot_allocate_body:
+            s = qApp->translate("TDisplay",
+                                "Unable to allocate memory for message "
+                                "body #%1");
+            break;
+
+        case TDisplay::cannot_allocate_body_file:
+            s = qApp->translate("TDisplay",
+                                "Unable to allocate memory for message "
+                                "body for %1");
+            break;
+
+        case TDisplay::cannot_open_spool:
+            s = qApp->translate("TDisplay", "Unable to open spool directory");
+            break;
+
+        case TDisplay::cannot_open_file:
+            s = qApp->translate("TDisplay", "Cannot open %1");
+            break;
+
+        case TDisplay::illegal_jam_header:
+            s = qApp->translate("TDisplay", "Illegal JAM header");
+            break;
+
+        case TDisplay::cannot_read_header:
+            s = qApp->translate("TDisplay", "Unable to read header #%1");
+            break;
+
+        case TDisplay::area_out_of_range:
+            s = qApp->translate("TDisplay",
+                                "Invalid area number chosen (must be "
+                                "between 1-%1");
+            break;
+
+        case TDisplay::illegal_area:
+            s = qApp->translate("TDisplay",
+                                "Invalid area number chosen ");
+            break;
+
+        case TDisplay::illegal_tanstaafl_version:
+            s = qApp->translate("TDisplay",
+                                "Illegal tanstaafl message base version");
+            break;
+
+        case TDisplay::illegal_fdapx_version:
+            s = qApp->translate("TDisplay",
+                                "Illegal FDAPX/w message base version");
+            break;
+
+        case TDisplay::illegal_mypoint_version:
+            s = qApp->translate("TDisplay",
+                                "Illegal MyPoint message base version: %1");
+            break;
+
+        case TDisplay::tanstaafl_version_0:
+            s = qApp->translate("TDisplay",
+                                "Tanstaafl message base version is 0, "
+                                "assuming 1");
+            break;
+
+        case TDisplay::cannot_open_msg_directory:
+            s = qApp->translate("TDisplay", "Unable to open *.MSG directory");
+            break;
+
+        case TDisplay::broken_msg:
+            s = qApp->translate("TDisplay", "Broken MSG file %1");
+            break;
+
+        case TDisplay::mypoint_area_garbled:
+            s = qApp->translate("TDisplay",
+                                "Message area garbled (illegal delimeter)!");
+            break;
+
+        case TDisplay::mypoint_area_garbled_2:
+            s = qApp->translate("TDisplay",
+                                "Message area garbled (footer does not "
+                                "match header)!");
+            break;
     }
-}
-
-void TDisplay::ErrorQuit(errormessages_e errormessage, int returncode)
-{
-    QMessageBox::critical(NULL, "Turquoise SuperStat",
-                          GetMessage(errormessage),
-                          QMessageBox::Ok | QMessageBox::Default, 0, 0);
-    cerr << GetMessage(program_halted) << endl;
-    exit(returncode);
-}
-
-void TDisplay::InternalErrorQuit(errormessages_e errormessage,
-                                        int returncode)
-{
-    QMessageBox::critical(NULL, qApp->translate("TDisplay", "Internal error"),
-                          GetMessage(errormessage),
-                          QMessageBox::Ok | QMessageBox::Default, 0, 0);
-    cerr << GetMessage(program_halted) << endl;
-    exit(returncode);
-}
-
-void TDisplay::WarningMessage(string errormessage)
-{
-    QMessageBox::warning(NULL, "Turquoise SuperStat", errormessage.c_str(),
-                         QMessageBox::Ok | QMessageBox::Default, 0, 0);
-}
-
-void TDisplay::WarningMessage(string errormessage, int number)
-{
-    QMessageBox::warning(NULL, "Turquoise SuperStat",
-                         QString(errormessage.c_str()) +
-                         QString::number(number),
-                         QMessageBox::Ok | QMessageBox::Default, 0, 0);
 }

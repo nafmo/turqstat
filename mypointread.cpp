@@ -57,7 +57,7 @@ bool MyPointRead::Transfer(time_t starttime, StatEngine &destination)
     // Sanity check
     if (ending[1] > '9' || ending[2] > 'Z')
     {
-        display->ErrorMessage("Illegal area number");
+        display->ErrorMessage(TDisplay::illegal_area);
         return false;
     }
 
@@ -77,8 +77,7 @@ bool MyPointRead::Transfer(time_t starttime, StatEngine &destination)
     FILE *areaf = fopen(filepath.c_str(), "rb");
     if (!areaf)
     {
-        string msg = string("Cannot open ") + filepath;
-        display->ErrorMessage(msg);
+        display->ErrorMessage(TDisplay::cannot_open, filepath);
         return false;
     }
 
@@ -87,8 +86,7 @@ bool MyPointRead::Transfer(time_t starttime, StatEngine &destination)
     FILE *flagf = fopen(filepath.c_str(), "rb");
     if (!flagf)
     {
-        string msg = string("Cannot open ") + filepath;
-        display->ErrorMessage(msg);
+        display->ErrorMessage(TDisplay::cannot_open, filepath);
         return false;
     }
 
@@ -100,7 +98,7 @@ bool MyPointRead::Transfer(time_t starttime, StatEngine &destination)
     if (Mypoint_msgbaseversion2 != msgbaserevision &&
         Mypoint_msgbaseversion3 != msgbaserevision)
     {
-        display->ErrorMessage("Illegal MyPoint message base version: ",
+        display->ErrorMessage(TDisplay::illegal_mypoint_version,
                               msgbaserevision);
         return false;
     }
@@ -173,7 +171,7 @@ bool MyPointRead::Transfer(time_t starttime, StatEngine &destination)
         if (delim != Mypoint_delimeter)
         {
             // Something went wrong
-            display->ErrorMessage("Message area garbled (illegal delimeter)!");
+            display->ErrorMessage(TDisplay::mypoint_area_garbled);
             fclose(areaf);
             return false;
         }
@@ -196,8 +194,8 @@ bool MyPointRead::Transfer(time_t starttime, StatEngine &destination)
 
             if (!buf || !ctrlbuf || !to_p || !from_p || !sub_p)
             {
-                display->WarningMessage("Unable to allocate memory for "
-                                        "message body #", msgnum);
+                display->WarningMessage(TDisplay::cannot_allocate_body,
+                                        msgnum);
 
                 if (to_p)       delete to_p;
                 if (from_p)     delete from_p;
@@ -225,8 +223,7 @@ bool MyPointRead::Transfer(time_t starttime, StatEngine &destination)
             // Check for inconsistencies
             if (ltrtrl_ltrsiz != ltrsiz)
             {
-                display->ErrorMessage("Message area garbled "
-                                      "(footer does not match header)!");
+                display->ErrorMessage(TDisplay::mypoint_area_garbled_2);
                 fclose(areaf);
                 return false;
             }

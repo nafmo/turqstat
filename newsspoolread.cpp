@@ -98,14 +98,14 @@ bool NewsSpoolRead::Transfer(time_t starttime, StatEngine &destination)
 
     if (-1 == rc)
     {
-        display->ErrorMessage("Unable to open spool directory");
+        display->ErrorMessage(TDisplay::cannot_open_spool);
         return false;
     }
 #else // no HAS_EMX_FINDFIRST or HAVE_LIBCRTDLL
     DIR *spooldir = opendir(areapath);
     if (!spooldir)
     {
-        display->ErrorMessage("Unable to open spool directory");
+        display->ErrorMessage(TDisplay::cannot_open_spool);
         return false;
     }
 
@@ -158,8 +158,7 @@ bool NewsSpoolRead::Transfer(time_t starttime, StatEngine &destination)
         msg = fopen(thisfile.c_str(), "r");
         if (!msg)
         {
-            string msg = string("Cannot open ") + thisfile;
-            display->WarningMessage(msg);
+            display->WarningMessage(TDisplay::cannot_open_file, thisfile);
             goto out2;
         }
 
@@ -183,9 +182,8 @@ bool NewsSpoolRead::Transfer(time_t starttime, StatEngine &destination)
         ctrlbuf = new char[length + 1];
         if (!ctrlbuf)
         {
-            string msg = string("Unable to allocate memory for control "
-                                "data for ") + thisfile;
-            display->WarningMessage(msg);
+            display->WarningMessage(TDisplay::cannot_allocate_control_file,
+                                    thisfile);
             goto out2;
         }
 
@@ -214,9 +212,8 @@ bool NewsSpoolRead::Transfer(time_t starttime, StatEngine &destination)
         msgbuf = new char[msglen];
         if (!msgbuf)
         {
-            string msg = string("Unable to allocate memory for message "
-                                "body for ") + thisfile;
-            display->WarningMessage(msg);
+            display->WarningMessage(TDisplay::cannot_allocate_body_file,
+                                    thisfile);
             goto out;
         }
 

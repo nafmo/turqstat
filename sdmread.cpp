@@ -99,14 +99,14 @@ bool SdmRead::Transfer(time_t starttime, StatEngine &destination)
 
     if (-1 == rc)
     {
-        display->ErrorMessage("Unable to open *.MSG directory");
+        display->ErrorMessage(TDisplay::cannot_open_msg_directory);
         return false;
     }
 #else // no HAS_EMX_FINDFIRST or HAVE_LIBCRTDLL
     DIR *sdmdir = opendir(areapath);
     if (!sdmdir)
     {
-        display->ErrorMessage("Unable to open *.MSG directory");
+        display->ErrorMessage(TDisplay::cannot_open_msg_directory);
         return false;
     }
 
@@ -155,8 +155,7 @@ bool SdmRead::Transfer(time_t starttime, StatEngine &destination)
         msg = fopen(thisfile.c_str(), "rb");
         if (!msg)
         {
-            string msg = string("Cannot open ") + thisfile;
-            display->WarningMessage(msg);
+            display->WarningMessage(TDisplay::cannot_open, thisfile);
             goto out;
         }
 
@@ -167,8 +166,7 @@ bool SdmRead::Transfer(time_t starttime, StatEngine &destination)
         // Read the message header
         if (1 != fread(&sdmhead, sizeof (sdmhead_s), 1, msg))
         {
-            string msg = string("Broken MSG file ") + thisfile;
-            display->WarningMessage(msg);
+            display->WarningMessage(TDisplay::broken_msg, thisfile);
             goto out;
         }
 
@@ -177,18 +175,16 @@ bool SdmRead::Transfer(time_t starttime, StatEngine &destination)
         msgbuf = new char[msglen];
         if (!msgbuf)
         {
-            string msg = string("Unable to allocate memory for message "
-                                "body for ") + thisfile;
-            display->WarningMessage(msg);
+            display->WarningMessage(TDisplay::cannot_allocate_body_file,
+                                    thisfile);
             goto out2;
         }
 
         ctrlbuf = new char[msglen];
         if (!ctrlbuf)
         {
-            string msg = string("Unable to allocate memory for control "
-                                "data for ") + thisfile;
-            display->WarningMessage(msg);
+            display->WarningMessage(TDisplay::cannot_allocate_control_file,
+                                    thisfile);
             goto out;
         }
 
