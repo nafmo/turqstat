@@ -10,7 +10,7 @@ turqstat (2.0) unstable; urgency=low
     update to Standards-Version 3.0.1.
   * For more info, see the original ChangeLog.
 
- -- peter karlsson <peterk@debian.org>  Thu, 21 Sep 2000 20:09:00 +0200
+ -- peter karlsson <peterk@debian.org>  Sun, 26 Nov 2000 14:21:00 +0100
 
 turqstat (1.4) unstable; urgency=low
 
