@@ -19,7 +19,7 @@ rm -rf turqstat-$ver/
 mkdir -p turqstat-$ver/debian turqstat-$ver/po
 autoconf
 autoheader
-cp -p *.spec *.def *.cpp *.h Makefile.in config.h.in configure configure.in ChangeLog COPYING turqstat-$ver/
+cp -p *.spec *.def *.cpp *.h Makefile.in config.h.in doxygen.conf.in configure configure.in ChangeLog COPYING turqstat-$ver/
 rm turqstat-$ver/config.h
 rm turqstat-$ver/moc*.cpp
 
