@@ -71,7 +71,7 @@ bool JamRead::Transfer(time_t starttime, StatEngine &destination)
         return false;
     }
 
-    if (memcmp(basehader.signature, Jam_signature) != 0)
+    if (memcmp(baseheader.signature, Jam_signature, sizeof(Jam_signature)) != 0)
     {
         cerr << "Error: Illegal JAM header" << endl;
         return false;
@@ -123,10 +123,10 @@ bool JamRead::Transfer(time_t starttime, StatEngine &destination)
             // Check if message is too old
             if (0 == hdrinfo.dateprocessed)
             {
-                if (hdrinfo.datewritten < starttime)
+                if ((time_t) hdrinfo.datewritten < starttime)
                     goto out;
             }
-            else if (hdrinfo.dateprocessed < starttime)
+            else if ((time_t) hdrinfo.dateprocessed < starttime)
                 goto out;
 
             // Retrieve message body
