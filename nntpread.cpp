@@ -483,7 +483,10 @@ bool NntpRead::SendLine(const char *line)
             // Ignore "interrupted", "try again" and "would block" errors.
 # if defined(HAVE_WINSOCK_H)
             int wsa_errno = WSAGetLastError();
-            if (WSAEINTR != wsa_errno && WSAEAGAIN != wsa_errno &&
+            if (WSAEINTR != wsa_errno &&
+#  if defined(WSAEAGAIN)
+                WSAEAGAIN != wsa_errno &&
+#  endif
                 WSAEWOULDBLOCK != wsa_errno)
 # else
             if (EINTR != errno && EAGAIN != errno
@@ -568,7 +571,11 @@ bool NntpRead::GetLine(char *outbuffer, size_t maxlen)
                 // Ignore "interrupted" and "try again" errors.
 # if defined(HAVE_WINSOCK_H)
                 int wsa_errno = WSAGetLastError();
-                if (WSAEINTR != wsa_errno && WSAEAGAIN != wsa_errno)
+                if (WSAEINTR != wsa_errno
+#  if defined(WSAEAGAIN)
+                    && WSAEAGAIN != wsa_errno
+#  endif
+                   )
 # else
                 if (EINTR != errno && EAGAIN != errno)
 # endif
