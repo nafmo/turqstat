@@ -15,22 +15,15 @@
 // along with this program; if not, write to the Free Software
 // Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 
-#ifdef HAS_SMAPI
-
 #include <iostream.h>
 #include <time.h>
 #include <string.h>
-extern "C" {
-#include <msgapi.h>
-}
+#include <stdio.h>
 #include "squishread.h"
 
-static time_t stampToTimeT(struct _stamp *st);
-
-SquishRead::SquishRead(const char *path, bool issdm)
+SquishRead::SquishRead(const char *path)
 {
     areapath = strdup(path);
-    sdm = issdm;
 }
 
 SquishRead::~SquishRead()
@@ -47,115 +40,143 @@ bool SquishRead::Transfer(time_t starttime, StatEngine &destination)
         return false;
     }
 
-    // Open the MSGAPI
-    struct _minf mi;
-    memset(&mi, 0, sizeof(mi));
-    //mi.def_zone = 2;
-    MsgOpenApi(&mi);
-
-    // Open the area
-    HAREA areahandle;
-    word msgtype;
-    if (sdm)
-        msgtype = MSGTYPE_SDM | MSGTYPE_ECHO;
-    else
-        msgtype = MSGTYPE_SQUISH;
-
-    areahandle = MsgOpenArea((unsigned char *) areapath, MSGAREA_NORMAL,
-                             msgtype);
-    if (!areahandle)
+    // Open the message area files
+    // <name>.sqd - contains everything we need
+    string filepath = string(areapath) + ".sqd";
+    FILE *sqd = fopen(filepath.c_str(), "rb");
+    if (!sqd)
     {
-        cerr << "Cannot open " << (sdm ? "*.MSG" : "Squish")
-             << "area " << areapath << endl;
+        cerr << "Error: Cannot open " << filepath << endl;
         return false;
     }
 
-    // Lock area
-    MsgLock(areahandle);
-
-    // Read messages
-    HMSG msghandle;
-    XMSG msg;
-    dword msgn, ctrllen, msglen, high = MsgHighMsg(areahandle);
-    char *ctrlbuf, *msgbuf;
-
-    for (msgn = 1L; msgn <= high; msgn ++)
+    sqbase_s baseheader;
+    if (1 != fread(&baseheader, sizeof (sqbase_s), 1, sqd))
     {
-        msghandle = MsgOpenMsg(areahandle, MOPEN_READ, msgn);
-        if (msghandle)
-        {
-            // Opening message succeeded
-            ctrllen = MsgGetCtrlLen(msghandle);
-            ctrlbuf = new char[ctrllen];
-            if (!ctrlbuf)
-            {
-                cerr << "Unable to allocate memory for control data (msg #"
-                     << msgn << ')' << endl;
-                goto out1;
-            }
-
-            msglen = MsgGetTextLen(msghandle);
-            msgbuf = new char[msglen];
-            if (!msgbuf)
-            {
-                cerr << "Unable to allocate memory for message body (msg #"
-                     << msgn << ')' << endl;
-                goto out2;
-            }
-
-            MsgReadMsg(msghandle, &msg, 0L, msglen, (unsigned char *) msgbuf,
-                       ctrllen, (unsigned char *) ctrlbuf);
-
-            // Add to statistics
-            if (stampToTimeT(&msg.date_arrived) >= starttime)
-            {
-                destination.AddData(string((char *) msg.from),
-                                    string((char *) msg.to),
-                                    string((char *) msg.subj),
-                                    string(ctrlbuf), string(msgbuf),
-                                    stampToTimeT(&msg.date_written),
-                                    stampToTimeT(&msg.date_arrived));
-            }
-
-            // Clean up our mess
-
-            delete msgbuf;
-out2:;
-            delete ctrlbuf;
-out1:;
-            MsgCloseMsg(msghandle);
-        }
-
-        cout << 100 * msgn / high << "% done\r";
+        cerr << "Error: Couldn't read from " << filepath << endl;
+        return false;
+    }
+    
+    SINT32 offset = baseheader.len - sizeof (sqbase_s);
+    if (offset > 0)
+    {
+        fseek(sqd, offset, SEEK_CUR);
+    }
+    else if (offset < 0)
+    {
+        cerr << "Strange Squish header length" << endl;
+        fclose(sqd);
+        return false;
     }
 
-    // Close area and API
-    MsgCloseArea(areahandle);
-    MsgCloseApi();
+    SINT32 sqhdroffset = baseheader.sz_sqhdr - sizeof(sqhdr_s);
+
+    // Read messages
+    UINT32 current = baseheader.begin_frame;
+    if (current < sizeof (sqbase_s))
+    {
+        cerr << "Strange Squish header offset" << endl;
+        fclose(sqd);
+        return false;
+    }
+
+    UINT32 msgn, msglen;
+    char *ctrlbuf = NULL, *msgbuf = NULL;
+    sqhdr_s sqhdr;
+    xmsg_s xmsg;
+
+    for (msgn = 1L; msgn <= baseheader.high_msg; msgn ++)
+    {
+        fseek(sqd, current, SEEK_SET);
+
+        // Read the SQHDR
+        if (1 != fread(&sqhdr, sizeof (sqhdr_s), 1, sqd))
+        {
+            cerr << "Premature end of Squish data" << endl;
+            fclose(sqd);
+            return false;
+        }
+
+        if (sqhdr.id != Squish_id)
+        {
+            cerr << "Illegal Squish header ID" << endl;
+            fclose(sqd);
+            return false;
+        }
+
+        current = sqhdr.next_frame;
+
+        if (Squish_type_normal != sqhdr.frame_type)
+        {
+            cerr << "Not normal Squish frame: " << msgn << endl;
+            continue;
+        }
+
+        if (sqhdroffset) fseek(sqd, sqhdroffset, SEEK_CUR);
+
+        // Read the XMSG
+        if (1 != fread(&xmsg, sizeof (xmsg_s), 1, sqd))
+        {
+            cerr << "Premature end of Squish data" << endl;
+            fclose(sqd);
+            return false;
+        }
+
+        ctrlbuf = new char[sqhdr.clen + 1];
+        if (!ctrlbuf)
+        {
+            cerr << "Unable to allocate memory for control data (msg #"
+                 << msgn << ')' << endl;
+            goto out;
+        }
+        fread(ctrlbuf, sqhdr.clen, 1, sqd);
+        ctrlbuf[sqhdr.clen] = 0;
+
+        msglen = sqhdr.msg_length - sizeof(xmsg_s) - sqhdr.clen;
+        msgbuf = new char[msglen + 1];
+        if (!msgbuf)
+        {
+            cerr << "Unable to allocate memory for message body (msg #"
+                 << msgn << ')' << endl;
+            goto out2;
+        }
+        
+        fread(msgbuf, msglen, 1, sqd);
+        msgbuf[msglen] = 0;
+        // Remove SEEN-BY and PATH that are in Squish part of the body
+        fixupctrlbuffer(msgbuf, NULL);
+
+cerr<<"Kludges"<<endl;
+cerr<<"========= "<<strlen(ctrlbuf)<<endl;
+for(int i=0;i<strlen(ctrlbuf);i++)if(1==ctrlbuf[i])cerr<<endl;else
+cerr<<ctrlbuf[i];cerr<<endl;
+cerr<<"========="<<endl;
+cerr<<"Body "<<strlen(msgbuf)<<endl;
+cerr<<"========="<<endl;
+for(int i=0;i<strlen(msgbuf);i++)if(13==msgbuf[i])cerr<<endl;else
+cerr<<msgbuf[i];cerr<<endl;
+cerr<<"========="<<endl;
+        // Add to statistics
+        if (stampToTimeT(&xmsg.date_arrived) >= starttime)
+        {
+            destination.AddData(string((char *) xmsg.from),
+                                string((char *) xmsg.to),
+                                string((char *) xmsg.subject),
+                                string(ctrlbuf), string(msgbuf),
+                                stampToTimeT(&xmsg.date_written),
+                                stampToTimeT(&xmsg.date_arrived));
+        }
+
+        // Clean up our mess
+out:;        
+        delete ctrlbuf;
+out2:;
+        delete msgbuf;
+
+        cout << 100 * msgn / baseheader.high_msg << "% done\r";
+    }
+
+    fclose(sqd);
 
     return true;
 }
-
-// The following is from MsgEd 4.30:
-//  Written on 10-Jul-94 by John Dennis and released to the public domain.
-
-static time_t stampToTimeT(struct _stamp *st)
-{
-    time_t tt;
-    struct tm tms;
-    if (0 == st->date.da || 0 == st->date.mo)
-    {
-        return 0;
-    }
-    tms.tm_sec = st->time.ss << 1;
-    tms.tm_min = st->time.mm;
-    tms.tm_hour = st->time.hh;
-    tms.tm_mday = st->date.da;
-    tms.tm_mon = st->date.mo - 1;
-    tms.tm_year = st->date.yr + 80;
-    tms.tm_isdst = -1;
-    tt = mktime(&tms);
-    return tt;
-}
-
-#endif /* HAS_SMAPI */
