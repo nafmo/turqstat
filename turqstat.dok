@@ -1,4 +1,4 @@
-Turquoise SuperStat 1.4 - Ett m”tesstatistikprogram f”r Fidonet och Usenet
+Turquoise SuperStat 1.5 - Ett m”tesstatistikprogram f”r Fidonet och Usenet
 (c) Copyright 1998-2000 Peter Karlsson.
 A Softwolves Software Release in 2000
 
@@ -180,13 +180,6 @@ format, dessa ankomsttider. D„rf”r kommer i dessa fall datumet n„r texten
 skrivits ist„llet att anv„ndas. F”r Usenet news anses filskapandedatumet vara
 ankomsttiden.
 
-Eftersom tidsber„kningarna anv„nder Cs standardbiblioteksfunktioner finns
-vissa problem vad g„ller tidszoner. S† l†ngt som m”jligt st„ngs alla
-tidszonsfunktioner av, men det fungerar inte p† alla plattformar (CygWin p†
-Win32 „r ett exempel). Men, om man st„nger av tidszoner s† blir tidsst„mplar
-p† filer (vilket anv„nds i Usenet-"spools") i GMT. Detta „r ett problem, och
-om n†gon har n†gra bra id‚er f”r att l”sa problemet - kontakta mig.
-
 
 HISTORIK
 
@@ -261,6 +254,10 @@ src/-katalogen:
   sdmread.h       - Headerfil f”r ovanst†ende
   tanstaaflread.cpp K„llkod f”r l„sning av tanstaafl-meddelandebaser
   tanstaaflread.h - Headerfil f”r ovanst†ende
+  mytime.cpp      - K„llkod med tidsfunktioner
+  mytime.h        - Headerfil f”r ovanst†ende
+  output.cpp      - Funktioner f”r att visa felmeddelanden
+  output.h        - Headerfil f”r ovanst†ende
   statengine.cpp  - Statistiksinl„sningsmotorn
   statengine.h    - Headerfil f”r ovanst†ende
   statview.cpp    - "Vyn", skapar utdatafilen

@@ -14,6 +14,12 @@
     Displays output via output object instead of directly referencing cout
     and cerr.
 
+  turqstat.doc
+  turqstat.dok
+  turqstat.1
+  turqstat-sv.1
+    Documentation updates.
+
   utility.cpp
     Extra security measure to avoid NULL pointer references.
 

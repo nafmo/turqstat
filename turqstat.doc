@@ -1,4 +1,4 @@
-Turquoise SuperStat 1.4 - An area statistics program for Fidonet and Usenet
+Turquoise SuperStat 1.5 - An area statistics program for Fidonet and Usenet
 (c) Copyright 1998-2000 Peter Karlsson.
 A Softwolves Software Release in 2000
 
@@ -179,13 +179,6 @@ bases, lack an arrival time stamp, so in these cases the date written stamp
 will be used instead. For Usenet news spools, the file create date is
 considered to be the arrival time.
 
-Since the time calculations are using the standard C library functions, there
-are certain problems involved with timezones. As far possible, all timezone
-functions are turned off, but this does not work on all platforms (CygWin on
-Win32 is one example). But, turning timezones off will yield file timestamps
-(used on Usenet spools) in GMT. This is a problem, and if anyone has any good
-ideas on how to solve it, please contact me.
-
 
 HISTORY
 
@@ -260,6 +253,10 @@ src/ directory:
   sdmread.h       - Header file for the above
   tanstaaflread.cpp Access sources for tanstaafl message bases
   tanstaaflread.h - Header file for the above
+  mytime.cpp      - Time function sources
+  mytime.h        - Header file for the above
+  output.cpp      - Functions to display error messages
+  output.h        - Header file for the above
   statengine.cpp  - The statistics gathering engine
   statengine.h    - Header file for the above
   statview.cpp    - The "view", creates the output file
