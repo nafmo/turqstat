@@ -1,3 +1,20 @@
+1999-10-26 - peter karlsson <pk@mds.mdh.se>
+  utility.cpp
+  utility.h
+    Added error handling function.
+
+  statengine.cpp
+    Now checks that all memory allocations work.
+
+  turqstat.cpp
+  fdapxread.cpp
+  jamread.cpp
+  mypointread.cpp
+  sdmread.cpp
+  squishread.cpp
+  tanstaaflread.cpp
+    Uses new error handling function.
+
 1999-10-20 - peter karlsson <pk@mds.mdh.se>
   sdmread.cpp
   statengine.cpp

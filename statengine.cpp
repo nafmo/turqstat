@@ -68,6 +68,7 @@ void StatEngine::AddData(string fromname, string toname, string subject,
     if (NULL == perstrav_p)
     {
         people_p = new persondata_s;
+        if (!people_p) errorquit(out_of_memory, 2);
         people_p->name = fromname;
         people_p->address = ParseAddress(controldata, msgbody);
         persfound_p = people_p;
@@ -101,6 +102,7 @@ void StatEngine::AddData(string fromname, string toname, string subject,
         {
             // No name was found, add a leaf with the new name
             persfound_p = new persondata_s;
+            if (!persfound_p) errorquit(out_of_memory, 2);
             if (Left == direction) perstrav_p->left = persfound_p;
             if (Right == direction) perstrav_p->right = persfound_p;
 
@@ -210,6 +212,7 @@ void StatEngine::AddData(string fromname, string toname, string subject,
     {
         // No name was found, add a leaf with the new name
         persfound_p = new persondata_s;
+        if (!persfound_p) errorquit(out_of_memory, 2);
         if (Left == direction) perstrav_p->left = persfound_p;
         if (Right == direction) perstrav_p->right = persfound_p;
 
@@ -241,6 +244,7 @@ void StatEngine::AddData(string fromname, string toname, string subject,
     if (NULL == subjects_p)
     {
         subjects_p = new subjectdata_s;
+        if (!subjects_p) errorquit(out_of_memory, 2);
         subjects_p->subject = subject;
         subfound_p = subjects_p;
 
@@ -274,6 +278,7 @@ void StatEngine::AddData(string fromname, string toname, string subject,
         {
             // No name was found, add a leaf with the new name
             subfound_p = new subjectdata_s;
+            if (!subfound_p) errorquit(out_of_memory, 2);
             if (Left == direction) subtrav_p->left = subfound_p;
             if (Right == direction) subtrav_p->right = subfound_p;
 
@@ -325,6 +330,7 @@ void StatEngine::AddData(string fromname, string toname, string subject,
         if (NULL == programs_p)
         {
             programs_p = new programdata_s;
+            if (!programs_p) errorquit(out_of_memory, 2);
             programs_p->programname = programname;
             progfound_p = programs_p;
 
@@ -358,6 +364,7 @@ void StatEngine::AddData(string fromname, string toname, string subject,
             {
                 // No name was found, add a leaf with the new name
                 progfound_p = new programdata_s;
+                if (!progfound_p) errorquit(out_of_memory, 2);
                 if (Left == direction) progtrav_p->left = progfound_p;
                 if (Right == direction) progtrav_p->right = progfound_p;
 
@@ -393,6 +400,7 @@ void StatEngine::AddData(string fromname, string toname, string subject,
             {
                 programversion_s *next_p = *vertrav_pp; // =NULL if at end
                 *vertrav_pp = new programversion_s;
+                if (!*vertrav_pp) errorquit(out_of_memory, 2);
                 (*vertrav_pp)->version = programvers;
                 (*vertrav_pp)->next    = next_p;
             }
@@ -502,6 +510,7 @@ bool StatEngine::GetTop(bool restart, persstat_s &result,
         if (NULL != persontoplist_p) delete[] persontoplist_p;
 
         persontoplist_p = new persstat_s[numpeople];
+        if (!persontoplist_p) errorquit(out_of_memory, 2);
         FlattenPeople(persontoplist_p, people_p);
 
         // 2. Sort the list according to number of written texts
@@ -552,6 +561,7 @@ bool StatEngine::GetTopSubjects(bool restart, subjstat_s &result)
         if (NULL != subjecttoplist_p) delete[] subjecttoplist_p;
 
         subjecttoplist_p = new subjstat_s[numsubjects];
+        if (!subjecttoplist_p) errorquit(out_of_memory, 2);
         FlattenSubjects(subjecttoplist_p, subjects_p);
 
         // 2. Sort the list according to number of written texts
@@ -596,6 +606,7 @@ bool StatEngine::GetTopPrograms(bool restart, progstat_s &result)
         if (NULL != programtoplist_p) delete[] programtoplist_p;
 
         programtoplist_p = new progstat_s[numprograms];
+        if (!programtoplist_p) errorquit(out_of_memory, 2);
         FlattenPrograms(programtoplist_p, programs_p);
 
         // 2. Sort the list according to number of written texts

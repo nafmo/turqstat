@@ -30,6 +30,7 @@
 #endif
 
 #include "sdmread.h"
+#include "utility.h"
 
 SdmRead::SdmRead(const char *path, bool hasarrivetime) : isopus(hasarrivetime)
 {
@@ -46,8 +47,7 @@ bool SdmRead::Transfer(time_t starttime, StatEngine &destination)
     // Check that we got the path correctly in initialization
     if (!areapath)
     {
-        cerr << "Internal error: Area path was not allocated properly" << endl;
-        return false;
+        internalerrorquit(area_not_allocated, 1);
     }
 
     // Non-Opus SDM doesn't have arrival times

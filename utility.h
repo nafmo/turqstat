@@ -55,5 +55,12 @@ time_t stampToTimeT(struct stamp_s *st);
 time_t asciiToTimeT(const char *datetime);
 // Separate kludges and body
 void fixupctrlbuffer(char *body_p, char *ctrl_p);
+// Print error message and quit
+void errorquit(const char *message, int rc);
+// Print internal error message and quit
+void internalerrorquit(const char *message, int rc);
+
+extern const char *area_not_allocated;
+extern const char *out_of_memory;
 
 #endif

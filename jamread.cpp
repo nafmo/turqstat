@@ -25,6 +25,7 @@
 #include <stdio.h>
 
 #include "jamread.h"
+#include "utility.h"
 
 const UINT8 JamRead::Jam_signature[4] = "JAM";
 
@@ -43,8 +44,7 @@ bool JamRead::Transfer(time_t starttime, StatEngine &destination)
     // Check that we got the path correctly in initialization
     if (!areapath)
     {
-        cerr << "Internal error: Area path was not allocated properly" << endl;
-        return false;
+        internalerrorquit(area_not_allocated, 1);
     }
 
     // Open the message area files

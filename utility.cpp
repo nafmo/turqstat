@@ -18,6 +18,7 @@
 #include <string>
 #include <ctype.h>
 #include <stdio.h>
+#include <stdlib.h>
 
 #include "utility.h"
 
@@ -157,3 +158,29 @@ void fixupctrlbuffer(char *body_p, char *ctrl_p)
     if (ctrl_p) *ctrl_p = 0;
     *newbody_p = 0;
 }
+
+// Print error message and quit
+void errorquit(const char *message, int rc)
+{
+    if (message)
+        cerr << message << endl;
+    else
+        internalerrorquit("No error message", rc);
+    cerr << "Program halted";
+    exit(rc);
+}
+
+const char *area_not_allocated = "Area path was not allocated properly.";
+const char *out_of_memory = "Out of memory.";
+
+// Print internal error message and quit
+void internalerrorquit(const char *message, int rc)
+{
+	if (message)
+       cerr << "Internal error: " << message << endl;
+    else
+       cerr << "Internal error." << endl;
+    cerr << "Program halted";
+    exit(rc);
+}
+

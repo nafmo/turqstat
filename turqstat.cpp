@@ -38,6 +38,7 @@
 #include "sdmread.h"
 #include "tanstaaflread.h"
 #include "version.h"
+#include "utility.h"
 
 class StatRetr
 {
@@ -229,12 +230,12 @@ StatRetr::StatRetr(char **areapath, int numpaths, char *outputfilepath,
                 break;
 
             default:
-                cerr << "Internal error." << endl;
+                internalerrorquit("Message base format mismatch.", 1);
                 exit(1);
         }
 
         if (!area)
-            cerr << "Internal error: Unable to allocate area object." << endl;
+            errorquit("Out of memory allocating area object.", 1);
         if (!(area->Transfer(from, engine))) return;
 
         cout << "Finished reading " << areapath[counter] << endl;

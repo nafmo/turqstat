@@ -19,7 +19,9 @@
 #include <time.h>
 #include <string.h>
 #include <stdio.h>
+
 #include "squishread.h"
+#include "utility.h"
 
 SquishRead::SquishRead(const char *path)
 {
@@ -36,8 +38,7 @@ bool SquishRead::Transfer(time_t starttime, StatEngine &destination)
     // Check that we got the path correctly in initialization
     if (!areapath)
     {
-        cerr << "Internal error: Area path was not allocated properly" << endl;
-        return false;
+        internalerrorquit(area_not_allocated, 1);
     }
 
     // Open the message area files
