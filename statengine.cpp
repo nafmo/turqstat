@@ -35,8 +35,7 @@ StatEngine::StatEngine(void)
     subjecttoplist_p = NULL;
     programtoplist_p = NULL;
     currversion = NULL;
-    earliestwritten = earliestreceived = LONG_MAX; // 2038-bug!
-    latestwritten = latestreceived = 0;
+    datesvalid = false;
     currpersontype = None;
 }
 
@@ -117,14 +116,16 @@ void StatEngine::AddData(String fromname, String toname, String subject,
     //  number of lines and bytes in message
     //  number of quoted lines and bytes in message
     unsigned lines = 0, bytes = 0, qlines = 0, qbytes = 0;
-    unsigned lastlinebytes;
-    int currindex = 0;
-    bool isquoted = false, foundtear;
+    unsigned lastlinebytes = 0;
+    unsigned currindex = 0;
+    bool isquoted = false, foundtear = false;
     do
     {
         int nextcr = msgbody.index('\n', currindex);
+        int nextcr2 = msgbody.index('\r', currindex);
+        if (nextcr2 < nextcr || -1 == nextcr) nextcr = nextcr2;
         if (-1 == nextcr) nextcr = msgbody.length();
-        String thisline = msgbody.at(currindex, nextcr - currindex);
+        String thisline = msgbody.at((int) currindex, nextcr - currindex);
 
         if ("--- " == thisline.at(0, 4) ||
             thisline.length() == 3 && "---" == thisline)
@@ -291,9 +292,11 @@ void StatEngine::AddData(String fromname, String toname, String subject,
     {
         int where = msgbody.index("--- ");
         int howfar = msgbody.index('\n', where);
+        if (-1 == howfar) howfar = msgbody.index('\r', where);
         if (-1 == howfar) howfar = msgbody.length();
         program = msgbody.at(where + 4, howfar - where - 4);
     }
+
     // Split program name and version
     // It is believed to be divided as such: "Program<space>Version<space>Other"
     // the last part is not counted
@@ -305,77 +308,94 @@ void StatEngine::AddData(String fromname, String toname, String subject,
 
     String programname = program.at(0, space1);
 
-    programdata_s *progtrav_p = programs_p, *progfound_p = progtrav_p;
-    if (NULL == programs_p)
+    if (programname != "")
     {
-        programs_p = new programdata_s;
-        programs_p->programname = programname;
-        progfound_p = programs_p;
-
-        numprograms ++;
-    }
-    else
-    {
-        direction = None;
-        do
+        programdata_s *progtrav_p = programs_p, *progfound_p = progtrav_p;
+        if (NULL == programs_p)
         {
-            // trav_p points to leaf above
-            if (Left == direction) progtrav_p = progtrav_p->left;
-            if (Right == direction) progtrav_p = progtrav_p->right;
-
-            // found_p points to the leaf (NULL at the end, which is where
-            // we need the leaf above to add the leaf to)
-            if (programname < progtrav_p->programname)
-            {
-                direction = Left;
-                progfound_p = progtrav_p->left;
-            }
-            if (programname > progtrav_p->programname)
-            {
-                direction = Right;
-                progfound_p = progtrav_p->right;
-            }
-        } while (NULL != progfound_p && progfound_p->programname != programname);
-
-        if (NULL == progfound_p)
-        {
-            // No name was found, add a leaf with the new name
-            progfound_p = new programdata_s;
-            if (Left == direction) progtrav_p->left = progfound_p;
-            if (Right == direction) progtrav_p->right = progfound_p;
-
-            progfound_p->programname = programname;
+            programs_p = new programdata_s;
+            programs_p->programname = programname;
+            progfound_p = programs_p;
 
             numprograms ++;
         }
-    }
-
-    progfound_p->count ++;
-
-    if (space2 - space1 > 1)
-    {
-        // Locate version number in the linked list, if we do not
-        // find it, add it to it.
-        String programvers = program.at(space1 + 1, space2 - space1 - 1);
-        programversion_s **vertrav_pp = &(progfound_p->versions_p);
-        while (*vertrav_pp != NULL && (*vertrav_pp)->version != programvers)
+        else
         {
-            vertrav_pp = &((*vertrav_pp)->next);
+            direction = None;
+            do
+            {
+                // trav_p points to leaf above
+                if (Left == direction) progtrav_p = progtrav_p->left;
+                if (Right == direction) progtrav_p = progtrav_p->right;
+
+                // found_p points to the leaf (NULL at the end, which is where
+                // we need the leaf above to add the leaf to)
+                if (programname < progtrav_p->programname)
+                {
+                    direction = Left;
+                    progfound_p = progtrav_p->left;
+                }
+                if (programname > progtrav_p->programname)
+                {
+                    direction = Right;
+                    progfound_p = progtrav_p->right;
+                }
+            } while (NULL != progfound_p && progfound_p->programname != programname);
+
+            if (NULL == progfound_p)
+            {
+                // No name was found, add a leaf with the new name
+                progfound_p = new programdata_s;
+                if (Left == direction) progtrav_p->left = progfound_p;
+                if (Right == direction) progtrav_p->right = progfound_p;
+
+                progfound_p->programname = programname;
+
+                numprograms ++;
+            }
         }
 
-        if (NULL == *vertrav_pp)
+        progfound_p->count ++;
+
+        if (space2 - space1 > 1)
         {
-            *vertrav_pp = new programversion_s;
-            (*vertrav_pp)->version = programvers;
+            // Locate version number in the linked list, if we do not
+            // find it, add it to it.
+            String programvers = program.at(space1 + 1, space2 - space1 - 1);
+
+            programversion_s **vertrav_pp = &(progfound_p->versions_p);
+            while (*vertrav_pp != NULL && (*vertrav_pp)->version != programvers)
+            {
+                vertrav_pp = &((*vertrav_pp)->next);
+            }
+
+            if (NULL == *vertrav_pp)
+            {
+                *vertrav_pp = new programversion_s;
+                (*vertrav_pp)->version = programvers;
+            }
+            (*vertrav_pp)->count ++;
         }
-        (*vertrav_pp)->count ++;
     }
 
     // Check writing and receiption date and add to statistics
-    if (timewritten  < earliestwritten)     earliestwritten  = timewritten;
-    if (timewritten  > latestwritten)       latestwritten    = timewritten;
-    if (timereceived < earliestreceived)    earliestreceived = timereceived;
-    if (timereceived > latestreceived)      latestreceived   = timereceived;
+    if (timewritten != 0) // 0 date indicates error
+    {
+        if (!datesvalid || timewritten  < earliestwritten)
+            earliestwritten  = timewritten;
+        if (!datesvalid || timewritten  > latestwritten)
+            latestwritten    = timewritten;
+    }
+    if (timereceived != 0)
+    {
+        if (!datesvalid || timereceived < earliestreceived)
+            earliestreceived = timereceived;
+        if (!datesvalid || timereceived > latestreceived)
+            latestreceived   = timereceived;
+    }
+
+    if (!datesvalid && timewritten != 0 && timereceived != 0)
+        datesvalid = true;
 
     struct tm *tm_p = localtime(&timewritten);
     daycount[tm_p->tm_wday] ++;
@@ -384,27 +404,14 @@ void StatEngine::AddData(String fromname, String toname, String subject,
 
 String StatEngine::ParseAddress(String controldata, String msgbody)
 {
-    // Locate MSGID
-    int index = controldata.index("MSGID: ");
-    if (-1 != index)
-    {
-        int index2 = controldata.index(' ', index + 1);
-        if (-1 != index2)
-        {
-            int index3 = controldata.index(' ', index2 + 1);
-            if (-1 != index3)
-            {
-                return controldata.at(index2 + 1, index3 - index - 7);
-            }
-        }
-    }
-
     // Locate Origin
-    index = msgbody.index(" * Origin: ");
+    int index = msgbody.index(" * Origin: ");
     if (-1 != index)
     {
         // Locate last '(' and ')' parenthesis on line
         int endsat = msgbody.index('\n', index);
+        int endsat2 = msgbody.index('\r', index);
+        if (endsat2 < endsat || -1 == endsat) endsat = endsat2;
         if (-1 == endsat) endsat = msgbody.length();
         int leftparen = msgbody.index('(', index), prevleftparen = leftparen;
         while (leftparen != -1 && leftparen < endsat)
@@ -418,6 +425,29 @@ String StatEngine::ParseAddress(String controldata, String msgbody)
         {
             // Okay, we've found them, get the address
             return msgbody.at(leftparen + 1, rightparen - leftparen - 1);
+        }
+    }
+
+    // Locate MSGID
+    // Handles these formats:
+    // MSGID Network#address serial
+    // MSGID address@network serial
+    // MSGID address serial
+    index = controldata.index("MSGID: ");
+    if (-1 != index)
+    {
+        int index2 = controldata.index(' ', index + 1);
+        if (-1 != index2)
+        {
+            int index3 = controldata.index(' ', index2 + 1);
+            int index4 = controldata.index('@', index2 + 1);
+            int index5 = controldata.index('#', index2 + 1);
+            if (index4 != -1 && index4 < index3) index3 = index4;
+            if (index5 != -1 && index5 < index3) index2 = index5;
+            if (-1 != index3)
+            {
+                return controldata.at(index2 + 1, index3 - index - 7);
+            }
         }
     }
 
@@ -612,15 +642,19 @@ int comparenumreceived(const void *p1, const void *p2)
 
 int comparenumquoted(const void *p1, const void *p2)
 {
-    unsigned long d1 =
-        ((unsigned long) (((StatEngine::persstat_s *) p1)->bytesquoted)) *
-        ((unsigned long) (((StatEngine::persstat_s *) p2)->byteswritten));
-    unsigned long d2 =
-        ((unsigned long) (((StatEngine::persstat_s *) p2)->bytesquoted)) *
-        ((unsigned long) (((StatEngine::persstat_s *) p1)->byteswritten));
+    unsigned long long d1 =
+        ((unsigned long long)
+         (((StatEngine::persstat_s *) p1)->bytesquoted)) *
+        ((unsigned long long)
+         (((StatEngine::persstat_s *) p2)->byteswritten));
+    unsigned long long d2 =
+        ((unsigned long long)
+         (((StatEngine::persstat_s *) p2)->bytesquoted)) *
+        ((unsigned long long)
+         (((StatEngine::persstat_s *) p1)->byteswritten));
 
-    if (d1 < d2) return -1;
-    if (d1 > d2) return 1;
+    if (d1 < d2) return 1;
+    if (d1 > d2) return -1;
     return 0;
 }
 

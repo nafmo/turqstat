@@ -168,11 +168,12 @@ protected:
     };
 
     // Variables used by the statistics engine
-    unsigned        msgcount, totallines, totalqlines, totalbytes, totalqbytes;;
+    unsigned        msgcount, totallines, totalqlines, totalbytes, totalqbytes;
     unsigned        daycount[7], hourcount[24];
     unsigned        numpeople, numsubjects, numprograms;
     time_t          earliestwritten, latestwritten;
     time_t          earliestreceived, latestreceived;
+    bool            datesvalid;
     persondata_s    *people_p;
     programdata_s   *programs_p;
     subjectdata_s   *subjects_p;
