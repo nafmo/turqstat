@@ -675,6 +675,26 @@ void StatEngine::AddData(string fromname, string toname, string subject,
                 space2 = paren;
 
         programname = program.substr(0, space1);
+
+        // Special case: Pine (only identifies in Message-ID)
+        where = controldata.find("\x1""Message-ID:");
+        if (programname.empty() && where != -1)
+        {
+            where ++;
+            int howfar = controldata.find((char) 1, where);
+            if (fcompare(controldata.substr(where + 13, 5), "Pine.") == 0)
+            {
+                program =
+                    controldata.substr(where, howfar - where);
+                programname = "Pine";
+                space1 = 17;
+                int firstperiod = program.find('.', 18);
+                if (firstperiod != -1) program[firstperiod] = ' ';
+                space2 = program.find('.', 24);
+cerr << "PINE: program='" << program << "' space1=" << space1 << " space2="
+<< space2 << endl;
+            }
+        }
     }
     else
     {
