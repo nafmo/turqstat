@@ -7,6 +7,10 @@
     Removed unnecessary strcasestr usage.
     Fixed the other strcasestr occurance for Win32.
 
+  Makefile.in
+  teal.cpp
+    Added Teal - a trivial character set re-encoder.
+
 2001-05-15 - peter karlsson <peter@softwolves.pp.se>
   statengine.cpp
     Corrected problems with conversion of names and subjects in gated news

@@ -13,8 +13,10 @@ QTLIBS=@QTLIB@
 DESTDIR=
 OBJS=turqstat.o statengine.o statview.o squishread.o fdapxread.o jamread.o mypointread.o utility.o sdmread.o tanstaaflread.o newsspoolread.o mytime.o output.o mappings.o convert.o
 QTOBJS=qtgui.o moc_qtgui.o qtlist.o moc_qtlist.o qtreport.o moc_qtreport.o qtbars.o moc_qtbars.o statengine.o statview.o squishread.o fdapxread.o jamread.o mypointread.o utility.o sdmread.o tanstaaflread.o newsspoolread.o mytime.o outputqt.o mappings.o convert.o
+TEALOBJS=teal.o convert.o utility.o mappings.o mytime.o
 @QT@EXE=turqstat@EXEEXT@ xturqstat@EXEEXT@
 @NOQT@EXE=turqstat@EXEEXT@
+TEALEXE=teal@EXEEXT@
 DEF=@DEF@
 prefix=@prefix@
 exec_prefix=@exec_prefix@
@@ -29,12 +31,12 @@ debian:
 	fakeroot debian/rules binary
 
 @NOQT@clean:
-@NOQT@	-rm $(OBJS)
-@NOQT@	-rm $(EXE)
+@NOQT@	-rm $(OBJS) $(TEALOBJS)
+@NOQT@	-rm $(EXE) $(TEALEXE)
 
 @QT@clean:
-@QT@	-rm $(OBJS) $(QTOBJS) moc_* *.moc
-@QT@	-rm $(EXE)
+@QT@	-rm $(OBJS) $(QTOBJS) $(TEALOBJS) moc_* *.moc
+@QT@	-rm $(EXE) $(TEALEXE)
 @QT@	-make -C po clean
 
 distclean: clean
@@ -160,6 +162,13 @@ convert.o: convert.cpp convert.h mappings.h utility.h
 
 @QT@outputqt.o: outputqt.cpp output.h config.h
 @QT@	@CXX@ $(CXXFLAGS) $(QTFLAGS) -c $(srcdir)/outputqt.cpp
+
+# Utility program Teal
+teal@EXEEXT@: teal.o convert.o utility.o
+	@CXX@ $(CXXFLAGS) $(LDFLAGS) -o teal@EXEEXT@ $(TEALOBJS) $(LIBS)
+
+teal.o: teal.cpp config.h utility.h convert.h
+	@CXX@ $(CXXFLAGS) -c $(srcdir)/teal.cpp
 
 # Other files
 doxygen.conf: doxygen.conf.in config.status
