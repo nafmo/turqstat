@@ -5,6 +5,7 @@
   utility.cpp
   utility.h
     Length-limitation in fcompare (strncasecmp look-a-like).
+    SEEN-BY bugfix.
 
   turqstat.def
     Corrected spelling.

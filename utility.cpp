@@ -194,6 +194,13 @@ void fixupctrlbuffer(char *body_p, char *ctrl_p)
         }
 
         body_p ++;
+
+        if (nextseenby_p && body_p > nextseenby_p)
+        {
+            // If we go past a SEEN-BY embedded in the text, search for the
+            // next occurance.
+            nextseenby_p = strstr(body_p, "SEEN-BY");
+        }
     }
 
     // Zero terminate what we got
