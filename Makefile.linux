@@ -53,7 +53,7 @@ debian-install: turqstat
 	install -m 644 turqstat.dok $(DESTDIR)/usr/share/doc/turqstat/
 	install -m 644 turqstat.1   $(DESTDIR)/usr/share/man/man1/
 
-# Used to make a Debian distro from my local CVS tree files
+# Used to make a distribution from my local CVS tree files
 # do not use for distributed archives
 VER ?= x.x
 dist:
