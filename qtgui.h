@@ -1,4 +1,4 @@
-// Copyright (c) 2000-2001 Peter Karlsson
+// Copyright (c) 2000-2002 Peter Karlsson
 //
 // $Id$
 //
@@ -27,6 +27,7 @@ class StatEngine;
 class QMenuBar;
 class QLineEdit;
 class QProgressDialog;
+class ProgressText;
 
 /**
  * Class describing our main window. This class is used in the Qt version to
@@ -43,11 +44,20 @@ public:
     ~InfoWindow();
 
     /**
-     * Retrieve the progress dialog associated with the main window.
+     * Retrieve the progress bar dialog associated with the main window.
+     *
+     * @param maximum Total number of steps to display.
      * @return Pointer to the QProgressDialog object used with the main
      *         window.
      */
-    QProgressDialog *getProgressDialog() { return progress; };
+    QProgressDialog *getProgressDialog(int maximum);
+
+    /**
+     * Retrieve the progress text dialog associated with the main window.
+     *
+     * @return Pointer to the ProgressText object used with the main window.
+     */
+     ProgressText *getProgressText();
 
     /**
      * Retrieve global main window object. Use this static method to
@@ -78,7 +88,9 @@ private:
     QLineEdit *latestwritten;
 
     /** Progress bar dialog. */
-    QProgressDialog *progress;
+    QProgressDialog *progressdialog;
+    /** Progress text dialog. */
+    ProgressText *progresstext;
 
     // Internal state
     bool hasnews,   ///< State variable indicating if we have seen news areas.

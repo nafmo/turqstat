@@ -4,7 +4,7 @@
 // Qt version.
 // Version 2.2
 //
-// Copyright (c) 2000-2001 Peter Karlsson
+// Copyright (c) 2000-2002 Peter Karlsson
 //
 // $Id$
 //
@@ -30,8 +30,8 @@
 #include <stdlib.h>
 
 #include <qglobal.h>
-#if QT_VERSION < 210
-# error This program is written for Qt version 2.1.0 or later
+#if QT_VERSION < 230
+# error This program is written for Qt version 2.3.0 or later
 #endif
 
 #include <qapplication.h>
@@ -50,6 +50,7 @@
 #include "qtlist.h"
 #include "qtreport.h"
 #include "qtbars.h"
+#include "qtprogress.h"
 
 #include "statengine.h"
 #include "arearead.h"
@@ -207,7 +208,8 @@ InfoWindow::InfoWindow()
 
     // Objects owned
     engine = new StatEngine;
-    progress = NULL;
+    progressdialog = NULL;
+    progresstext = NULL;
 
     // Reset start date
     start = time_t(0);
@@ -218,6 +220,46 @@ InfoWindow::InfoWindow()
 InfoWindow::~InfoWindow()
 {
     delete engine;
+}
+
+QProgressDialog *InfoWindow::getProgressDialog(int maximum)
+{
+    if (!progressdialog)
+    {
+        if (progresstext)
+        {
+            return NULL; // Error condition
+        }
+
+        progressdialog =
+            new QProgressDialog(hasnews ? tr("Reading news group")
+                                        : tr("Reading message base"),
+                                0, maximum, this, "progress", true);
+        progressdialog->setCaption("Turquoise SuperStat");
+        progressdialog->setMinimumDuration(1000);
+    }
+
+    return progressdialog;
+}
+
+ProgressText *InfoWindow::getProgressText()
+{
+    if (!progresstext)
+    {
+        if (progressdialog)
+        {
+            return NULL; // Error condition
+        }
+
+        progresstext =
+            new ProgressText(this, "progress2",
+                             hasnews ? tr("Reading news group")
+                                     : tr("Reading message base"));
+        progresstext->setCaption("Turquoise SuperStat");
+        progresstext->show();
+    }
+
+    return progresstext;
 }
 
 InfoWindow *InfoWindow::getMainWindow()
@@ -425,18 +467,14 @@ void InfoWindow::opennews()
 
 void InfoWindow::transfer(AreaRead *area, bool isnews)
 {
-    progress =
-        new QProgressDialog(isnews ? tr("Reading news group")
-                                   : tr("Reading message base"), 0, 100, this,
-                            "progress", true);
-    progress->setCaption("Turquoise SuperStat");
-    progress->setMinimumDuration(1000);
-    area->Transfer(start, end, *engine);
-    engine->AreaDone();
     hasnews = isnews;
     hasany = true;
 
-    delete progress;
+    area->Transfer(start, end, *engine);
+    engine->AreaDone();
+
+    delete progressdialog; progressdialog = NULL;
+    delete progresstext;   progresstext   = NULL;
 }
 
 void InfoWindow::incompatible()

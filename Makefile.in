@@ -12,7 +12,7 @@ LIBS=@LIBS@
 QTLIBS=@QTLIB@
 DESTDIR=
 OBJS=turqstat.o statengine.o statview.o squishread.o fdapxread.o jamread.o mypointread.o utility.o sdmread.o tanstaaflread.o newsspoolread.o mytime.o output.o mappings.o convert.o datatypes.o @NONNTP@nntpread.o
-QTOBJS=qtgui.o moc_qtgui.o qtlist.o moc_qtlist.o qtreport.o moc_qtreport.o qtbars.o moc_qtbars.o statengine.o statview.o squishread.o fdapxread.o jamread.o mypointread.o utility.o sdmread.o tanstaaflread.o newsspoolread.o mytime.o outputqt.o mappings.o convert.o datatypes.o @NONNTP@nntpread.o
+QTOBJS=qtgui.o moc_qtgui.o qtlist.o moc_qtlist.o qtreport.o moc_qtreport.o qtbars.o moc_qtbars.o qtprogress.o moc_qtprogress.o statengine.o statview.o squishread.o fdapxread.o jamread.o mypointread.o utility.o sdmread.o tanstaaflread.o newsspoolread.o mytime.o outputqt.o mappings.o convert.o datatypes.o @NONNTP@nntpread.o
 TEALOBJS=teal.o convert.o utility.o mappings.o mytime.o
 @QT@EXE=turqstat@EXEEXT@ xturqstat@EXEEXT@
 @NOQT@EXE=turqstat@EXEEXT@
@@ -127,7 +127,7 @@ convert.o: convert.cpp convert.h mappings.h utility.h
 datatypes.o: datatypes.cpp datatypes.h config.h
 	@CXX@ $(CXXFLAGS) -c $(srcdir)/datatypes.cpp
 
-@QT@qtgui.o: qtgui.cpp qtgui.h qtlist.h qtreport.h statengine.h arearead.h squishread.h fdapxread.h jamread.h mypointread.h sdmread.h tanstaaflread.h newsspoolread.h utility.h qtbars.h mytime.h convert.h config.h
+@QT@qtgui.o: qtgui.cpp qtgui.h qtlist.h qtreport.h statengine.h arearead.h squishread.h fdapxread.h jamread.h mypointread.h sdmread.h tanstaaflread.h newsspoolread.h utility.h qtbars.h mytime.h convert.h qtprogress.h config.h
 @QT@	@CXX@ $(CXXFLAGS) $(QTFLAGS) -c $(srcdir)/qtgui.cpp
 
 @QT@moc_qtgui.o: moc_qtgui.cpp
@@ -166,7 +166,16 @@ datatypes.o: datatypes.cpp datatypes.h config.h
 @QT@qtbars.moc: qtbars.cpp
 @QT@	@QTMOC@ -o qtbars.moc qtbars.cpp
 
-@QT@outputqt.o: outputqt.cpp output.h config.h
+@QT@qtprogress.o: qtprogress.cpp qtprogress.h
+@QT@	@CXX@ $(CXXFLAGS) $(QTFLAGS) -c $(srcdir)/qtprogress.cpp
+
+@QT@moc_qtprogress.cpp: qtprogress.h
+@QT@	@QTMOC@ -o moc_qtprogress.cpp qtprogress.h
+
+@QT@moc_qtprogress.o: moc_qtprogress.cpp
+@QT@	@CXX@ $(CXXFLAGS) $(QTFLAGS) -c moc_qtprogress.cpp
+
+@QT@outputqt.o: outputqt.cpp output.h qtprogress.h config.h
 @QT@	@CXX@ $(CXXFLAGS) $(QTFLAGS) -c $(srcdir)/outputqt.cpp
 
 # Utility program Teal

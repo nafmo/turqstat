@@ -1,4 +1,4 @@
-// Copyright (c) 2000-2001 Peter Karlsson
+// Copyright (c) 2000-2002 Peter Karlsson
 //
 // $Id$
 //
@@ -24,6 +24,7 @@
 #include <qapplication.h>
 
 #include "output.h"
+#include "qtprogress.h"
 
 static QString GetMessage(TDisplay::errormessages_e);
 
@@ -48,31 +49,27 @@ void TDisplay::SetMessagesTotal(int number)
 {
     maximum = number;
 
-    QProgressDialog *p = InfoWindow::getMainWindow()->getProgressDialog();
-    if (!p) return;
-
     if (maximum > 0)
     {
+        QProgressDialog *p =
+            InfoWindow::getMainWindow()->getProgressDialog(maximum);
         p->setTotalSteps(number);
+        p->setProgress(0);
     }
-    else
-    {
-        p->setTotalSteps(100);
-    }
-    p->setProgress(0);
 }
 
 void TDisplay::UpdateProgress(int messages)
 {
-    QProgressDialog *p = InfoWindow::getMainWindow()->getProgressDialog();
-    if (!p) return;
-
-    if (maximum <= 0)
+    if (maximum > 0)
     {
-        p->setProgress(messages % 100);
+        QProgressDialog *p =
+            InfoWindow::getMainWindow()->getProgressDialog(maximum);
+        p->setProgress(messages);
     }
     else
     {
+        ProgressText *p =
+            InfoWindow::getMainWindow()->getProgressText();
         p->setProgress(messages);
     }
 }
