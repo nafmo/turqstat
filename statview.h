@@ -1,4 +1,4 @@
-// Copyright © 1998-2000 Peter Karlsson
+// Copyright (c) 1998-2001 Peter Karlsson
 //
 // $Id$
 //
@@ -97,7 +97,7 @@ protected:
 
     bool        showversions, showallnums;
 
-#ifdef HAVE_LOCALE_H
+#if defined(HAVE_LOCALE_H) || defined(__EMX__)
     bool        uselocale;
 #endif
 

@@ -78,7 +78,7 @@ turqstat.o: turqstat.cpp statengine.h statview.h arearead.h squishread.h fdapxre
 statengine.o: statengine.cpp statengine.h config.h output.h
 	@CXX@ $(CXXFLAGS) -c $(srcdir)/statengine.cpp
 
-statview.o: statview.cpp statview.h statengine.h version.h config.h
+statview.o: statview.cpp statview.h statengine.h version.h config.h utility.h
 	@CXX@ $(CXXFLAGS) -c $(srcdir)/statview.cpp
 
 squishread.o: squishread.cpp squishread.h arearead.h statengine.h datatypes.h utility.h config.h output.h

@@ -1,4 +1,4 @@
-// Copyright (c) 1998-2000 Peter Karlsson
+// Copyright (c) 1998-2001 Peter Karlsson
 //
 // $Id$
 //
@@ -22,6 +22,10 @@
 #include <stdlib.h>
 #ifdef USE_OWN_GETOPT
 # include <string.h>
+#endif
+#if defined(__EMX__)
+# define INCL_DOSNLS
+# include <os2.h>
 #endif
 
 #include "utility.h"
@@ -204,6 +208,95 @@ void fixupctrlbuffer(char *body_p, char *ctrl_p)
     if (ctrl_p) *ctrl_p = 0;
     *newbody_p = 0;
 }
+
+#if defined(__EMX__)
+void localetimestring(const struct tm *time, size_t len, char *out)
+{
+    static _COUNTRYINFO countryinfo;
+    static bool datavalid = false;
+
+    if (!datavalid)
+    {
+        // Retrieve locale information on first call
+        COUNTRYCODE country = { 0, 0 };
+        ULONG datalength;
+        DosQueryCtryInfo(sizeof countryinfo, &country, &countryinfo,
+                         &datalength);
+        datavalid = true;
+    }
+
+    int usedlength;
+
+    // First print date
+    switch (countryinfo.fsDateFmt)
+    {
+        case 0: // MDY
+            usedlength = snprintf(out, len, "%02%s%02d%s%04d",
+                                  time->tm_mon + 1,
+                                  countryinfo.szDateSeparator,
+                                  time->tm_mday,
+                                  countryinfo.szDateSeparator,
+                                  time->tm_year + 1900);
+            break;
+
+        case 1: // DMY
+            usedlength = snprintf(out, len, "%02%s%02d%s%04d",
+                                  time->tm_mday,
+                                  countryinfo.szDateSeparator,
+                                  time->tm_mon + 1,
+                                  countryinfo.szDateSeparator,
+                                  time->tm_year + 1900);
+            break;
+
+        case 2: // YMD
+            usedlength = snprintf(out, len, "%04d%s%02d%s%02d",
+                                  time->tm_year + 1900,
+                                  countryinfo.szDateSeparator,
+                                  time->tm_mon + 1,
+                                  countryinfo.szDateSeparator,
+                                  time->tm_mday);
+            break;
+
+    }
+    out += usedlength;
+    len -= usedlength;
+
+    // Then print time
+    char *ampm = "";
+    int hour = time->tm_hour;
+    if (0 == countryinfo.fsTimeFmt)
+    {
+        // 12-hour clock
+        if (hour >= 12)
+        {
+            ampm = "PM";
+            hour -= 12;
+        }
+        else
+        {
+            ampm = "AM";
+        }
+
+        // Hour 0 = hour 12
+        if (0 == hour)
+        {
+            hour += 12;
+        }
+    }
+
+    snprintf(out, len, " %d%s%02d%s",
+             hour,
+             countryinfo.szTimeSeparator,
+             time->tm_min,
+             ampm);
+}
+#else if defined(HAVE_LOCALE_H)
+void localetimestring(const struct tm *time, size_t len, char *out)
+{
+    strftime(out, len, "%x %X", time);
+}
+#endif
+
 
 #ifdef USE_OWN_GETOPT
 int optind = 0;

@@ -1,14 +1,2 @@
-The locale support for EMX is quite limited at the moment. Currently EMX
-0.9d only supports these locales:
-
-  Country       Locale
-  -------       ------
-  France        FRAN
-  Germany       GERM
-  Italy         ITAL
-  Spain         SPAI
-  U.K.          UK
-  U.S.A         USA
-
-To enable a locale, set the environment variable LANG to the appropriate
-value, e.g SET LANG=UK
+For EMX, the locale date format used is the one determined in your OS/2
+system settings, and it will always be numeric.

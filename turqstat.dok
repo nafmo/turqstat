@@ -1,4 +1,4 @@
-Turquoise SuperStat 2.0.1 - Ett m”tesstatistikprogram f”r Fidonet och Usenet
+Turquoise SuperStat 2.1 - Ett m”tesstatistikprogram f”r Fidonet och Usenet
 (c) Copyright 1998-2001 Peter Karlsson.
 A Softwolves Software Release in 2001
 
@@ -275,6 +275,8 @@ HISTORIK
   Diverse felr„ttelser.
 2001-01-09 - v2.0.1 -
   Fixade fel som kraschade newsspoolst”det.
+2001-  -   - v2.1 -
+  Anv„ns OS/2-API-funktioner f”r att h„mta lokalt datumformat.
 
 
 BIFOGADE FILER

@@ -1,4 +1,4 @@
-// Copyright (c) 1998-2000 Peter Karlsson
+// Copyright (c) 1998-2001 Peter Karlsson
 //
 // $Id$
 //
@@ -22,6 +22,7 @@
 
 #include "statview.h"
 #include "statengine.h"
+#include "utility.h"
 #include "version.h"
 
 static const char *days[] =
@@ -56,14 +57,6 @@ bool StatView::CreateReport(StatEngine *engine, string filename)
 {
     // If we give 0 as maximum entries, we want unlimited (=UINT_MAX...)
     if (0 == maxnumber) maxnumber = UINT_MAX;
-
-    // Select date format
-    const char *dateformat;
-#ifdef HAVE_LOCALE_H
-    if (uselocale) dateformat = "%x %X";
-    else
-#endif
-    dateformat = "%Y-%m-%d %H:%M:%S";
 
     // Create a report file
     fstream report(filename.c_str(), ios::out);
@@ -108,13 +101,23 @@ bool StatView::CreateReport(StatEngine *engine, string filename)
     time_t earliest = engine->GetEarliestReceived();
     struct tm *p1 = gmtime(&earliest);
     char date[64];
-    strftime(date, 64, dateformat, p1);
+#if defined(HAVE_LOCALE_H) || defined(__EMX__)
+    if (uselocale)
+        localetimestring(p1, 64, date);
+    else
+#endif
+        strftime(date, 64, "%Y-%m-%d %H:%M:%S", p1);
 
     report << "between " << date << " and ";
 
     time_t latest = engine->GetLastReceived();
     struct tm *p2 = gmtime(&latest);
-    strftime(date, 64, dateformat, p2);
+#if defined(HAVE_LOCALE_H) || defined(__EMX__)
+    if (uselocale)
+        localetimestring(p2, 64, date);
+    else
+#endif
+        strftime(date, 64, "%Y-%m-%d %H:%M:%S", p2);
 
     report << date;
 
@@ -124,13 +127,23 @@ bool StatView::CreateReport(StatEngine *engine, string filename)
 
         time_t wearliest = engine->GetEarliestWritten();
         struct tm *p3 = gmtime(&wearliest);
-        strftime(date, 64, dateformat, p3);
+#if defined(HAVE_LOCALE_H) || defined(__EMX__)
+        if (uselocale)
+            localetimestring(p3, 64, date);
+        else
+#endif
+            strftime(date, 64, "%Y-%m-%d %H:%M:%S", p3);
 
         report << date << " and ";
 
         time_t wlatest = engine->GetLastWritten();
         struct tm *p4 = gmtime(&wlatest);
-        strftime(date, 64, dateformat, p4);
+#if defined(HAVE_LOCALE_H) || defined(__EMX__)
+        if (uselocale)
+            localetimestring(p4, 64, date);
+        else
+#endif
+            strftime(date, 64, "%Y-%m-%d %H:%M:%S", p4);
 
         report << date << ")";
     }

@@ -1,9 +1,9 @@
 // Turquoise SuperStat
 //
 // A statistic collection program for Fidonet and Usenet systems
-// Version 2.0
+// Version 2.1
 //
-// Copyright (c) 1998-2000 Peter Karlsson
+// Copyright (c) 1998-2001 Peter Karlsson
 //
 // $Id$
 //
@@ -106,7 +106,7 @@ int main(int argc, char *argv[])
          topsubjects = true, topprograms = true, weekstats = true,
          daystats = true, versions = true, allnums = false,
          toporiginal = true, topnets = true, topdomains = true;
-#ifdef HAVE_LOCALE_H
+#if defined(HAVE_LOCALE_H) || defined(__EMX__)
     bool uselocale = false;
 #endif
 
@@ -125,7 +125,7 @@ int main(int argc, char *argv[])
 
     // Handle arguments
     int c;
-#ifdef HAVE_LOCALE_H
+#if defined(HAVE_LOCALE_H) || defined(__EMX__)
     while (EOF != (c = getopt(argc, argv, "d:n:a:smofjptuQWRSPOHDVNTAL?")))
 #else
     while (EOF != (c = getopt(argc, argv, "d:n:a:smofjptuQWRSPOHDVNTA?")))
@@ -160,7 +160,7 @@ int main(int argc, char *argv[])
             case 'V':   versions = false;                           break;
             case 'A':   allnums = true;                             break;
 
-#ifdef HAVE_LOCALE_H
+#if defined(HAVE_LOCALE_H) || defined(__EMX__)
             case 'L':   uselocale = true;                           break;
 #endif
 
@@ -207,7 +207,7 @@ int main(int argc, char *argv[])
     view.EnableTopPrograms(topprograms);
     view.EnableWeekStats(weekstats);
     view.EnableDayStats(daystats);
-#ifdef HAVE_LOCALE_H
+#if defined(HAVE_LOCALE_H) || defined(__EMX__)
     view.UseLocale(uselocale);
 #endif
 
@@ -337,7 +337,7 @@ void helpscreen(void)
     cout << "  -R  Receivers   -O  Original" << endl;
     cout << "  -V  No program version info   -A  Show all numbers in toplists"
          << endl;
-#ifdef HAVE_LOCALE_H
+#if defined(HAVE_LOCALE_H) || defined(__EMX__)
     cout << "  -L  Use locale's date format" << endl;
 #endif
     cout << "    * = turn off for Usenet, turn on for Fidonet" << endl;

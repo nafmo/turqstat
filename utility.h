@@ -1,4 +1,4 @@
-// Copyright (c) 1998-2000 Peter Karlsson
+// Copyright (c) 1998-2001 Peter Karlsson
 //
 // $Id$
 //
@@ -88,6 +88,16 @@ time_t rfcToTimeT(string datetime);
  *               NULL, kludge data will be thrown away.
  */
 void fixupctrlbuffer(char *body_p, char *ctrl_p);
+
+#if defined(HAVE_LOCALE_H) || defined(__EMX__)
+/**
+ * Create a string in the locale defined date format.
+ * @param time Pointer to a structure containing the time to be created.
+ * @param len  Maximum length of buffer.
+ * @param out  Pointer to a string where the locale date will be saved.
+ */
+void localetimestring(const struct tm *time, size_t len, char *out);
+#endif
 
 #ifdef USE_OWN_GETOPT
 /** Index to next non-option parameter. */
