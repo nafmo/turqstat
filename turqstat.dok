@@ -54,11 +54,10 @@ Turquoise SuperStat „r helt kommandoradsstyrd, och formatet „r som f”ljer:
 
   turqstat [v„xlar] utdatafil areas”kv„g(ar)
 
-d„r areas”kv„g(ar) „r s”kv„gen till meddelandebasfilen eller -katalogen (beror
-p† valt meddelandebasformat). Flera s”kv„gar kan anges f”r att f† kombinerad
-statistik f”r flera m”ten (vilket dock inte fungerar s† bra f”r FDAPX/w- eller
-MyPointdatabaser f”r tillf„llet). Utdatafil „r s”kv„gen till den textfil som
-statistiken skall skrivas till.
+d„r areas”kv„g(ar) „r s”kv„gen till meddelandebasfilen, eller m”tesnumret
+(beror p† valt meddelandebasformat). Flera s”kv„gar eller m”tesnummer kan
+anges f”r att f† kombinerad statistik f”r flera m”ten. Utdatafil „r s”kv„gen
+till den textfil som statistiken skall skrivas till.
 
 Dessa extra kommandoradsv„xlar „r tillg„ngliga:
 
@@ -70,9 +69,9 @@ Dessa extra kommandoradsv„xlar „r tillg„ngliga:
    V„ljer maximalt antal poster i topplistorna. F”rinst„llt v„rde „r 15. 0
    anger att ingen gr„ns anv„nds.
 
--a <nummer>
-   V„ljer meddelandebasnummer f”r FXAPX/w- och MyPointmeddelandebaser, vilken
-   har alla meddelanden i samma filer.
+-a <s”kv„g>
+   V„ljer meddelandebass”kv„g f”r FXAPX/w-, MyPoint- och
+   tanstaaflmeddelandebaser, vilka har alla meddelandebaser i samma filer.
 
 -s V„ljer meddelandebaser av Squishtyp (f”rinst„llt v„rde). Areas”kv„gen skall
    vara basnamnet p† Squishfilerna.
@@ -87,16 +86,16 @@ Dessa extra kommandoradsv„xlar „r tillg„ngliga:
    JAM-filerna.
 
 -f V„ljer meddelandebaser av FDAPX/w-typ. Kr„ver att parametern -a anv„nds
-   f”r att v„lja m”tesnummer (1-1999). Areas”kv„gen skall vara den katalog i
-   vilken meddelandebasen ligger.
+   f”r att v„lja meddelandebass”kv„gen. Areas”kv„gen skall vara m”tesnumret
+   (1-1999).
 
 -t V„ljer meddelandebaser av tanstaafl-typ. Kr„ver att parametern -a anv„nds
-   af”r att v„lja m”tesnummer (1-1999). Areas”kv„gen skall vara den katalog i
-   vilken meddelandebasen ligger.
+   f”r att v„lja meddelandebass”kv„gen. Areas”kv„gen skall vara m”tesnumret
+   (1-1999).
 
 -p V„ljer meddelandebaser av MyPoint-typ. Kr„ver att parametern -a anv„nds f”r
-   att v„lja m”tesnummer. Areas”kv„gen skall vara den till MyPoints
-   AREAS-katalog.
+   f”r att v„lja meddelandebass”kv„gen (underkatalogen AREAS). Areas”kv„gen
+   skall vara m”tesnumret.
 
 -Q St„nger av citatvolymsvartlistan (f”rinst„llt v„rde „r p†).
 
@@ -162,6 +161,7 @@ HISTORIK
   OBS! Ordningen p† kommandoradsparametrarna har „ndrats.
   Lade till topplista ”ver medeloriginalinneh†ll per meddelande.
   Lade till st”d f”r tanstaafl-meddelandebaser.
+  Diverse felr„ttelser.
 
 
 BIFOGADE FILER
@@ -214,6 +214,6 @@ g”ras om f”r att st”da processorer av typen "big endian".
 
 KONTAKT
 
-F”rfattaren, Peter Karlsson, kan n†s via n„tpost p† 2:206/221.0, eller via
+F”rfattaren, Peter Karlsson, kan n†s via n„tpost p† 2:206/224.42, eller via
 Internet-e-post p† peter@softwolves.pp.se. Information om detta program
 finns p† webben p† http://www.softwolves.pp.se/wolves/

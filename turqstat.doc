@@ -56,11 +56,11 @@ Turquoise SuperStat is entirely command line driven, and the format is this:
 
   turqstat [options] outputfile areapath(s)
 
-where areapath(s) is the path to the message area file or directory (depends
-on the message base format selected). Several area paths may be specified to
-do combined statistics for several areas (not very useful for FDAPX/w or
-MyPoint message base formats at the moment, though). Outputfile is the path to
-the text file that the statistics are to be written to.
+where areapath(s) is the path to the message area file, or the message base
+number (depends on the message base format selected). Several area
+paths/message base numbers may be specified to do combined statistics for
+several areas. Outputfile is the path to the text file that the statistics are
+to be written to.
 
 These extra options are available:
 
@@ -72,9 +72,9 @@ These extra options are available:
    Selects the maximum number of entries in the toplists. The default is 15.
    0 indicates no limit.
 
--a <num>
-   Selects the area number for the FDAPX/w and MyPoint message bases, which
-   has all messages in the same files.
+-a <path>
+   Selects the message base path for the FDAPX/w, MyPoint and taanstafl
+   message bases, which have all message bases in the same files.
 
 -s Selects Squish style message base (default). The areapath parameter should
    be the base name of the Squish files.
@@ -88,17 +88,17 @@ These extra options are available:
 -j Select JAM style message base. The areapath parameter should be the base
    name of the JAM files.
 
--f Selects FDAPX/w style message base. Requires the use of the -a parameter
-   to select the area number (1-1999). The areapath parameter should be the
-   directory in which the message base files resides.
+-f Selects FDAPX/w style message base. Requires the use of the -a parameter to
+   select the message base path. The areapath parameter should be the area
+   number (1-1999).
 
 -t Selects tanstaafl style message base. Requires the use of the -a parameter
-   to select the area number (1-1999). The areapath parameter should be the
-   directory in which the message base files resides.
+   to select the message base path. The areapath parameter should be the area
+   number (1-1999).
 
 -p Selects MyPoint style message base. Requires the use of the -a parameter to
-   select the area number. The areapath parameter should be the path to the
-   MyPoint AREAS subdirectory.
+   select the message base path (the AREAS subdirectory). The areapath
+   parameter should be the area number.
 
 -Q Turns the quoter blacklist off (default is on).
 
@@ -165,6 +165,7 @@ HISTORY
   NB! The order of the command line parameters has changed.
   Added toplist of average original content per message.
   Added support for tanstaafl message bases.
+  Various bugfixes.
 
 
 INCLUDED FILES
@@ -209,15 +210,15 @@ creating a Debian binary package.
 
 REQUIREMENTS FOR COMPILATION
 
-The program was developed under OS/2 using EMX 0.9c/GNU C/C++ 2.7.2.1 and
-Debian pre-2.2 with gcc 2.95.2, and has also been tested under CygWin b20.
-It should compile using any standard C++ compiler. The program must
-probably be rewritten to support "big endian" processors.
+The program was developed under OS/2 using EMX 0.9d/GNU C/C++ 2.8.1 and Debian
+pre-2.2 with gcc 2.95.2, and has also been tested under CygWin b20. It should
+compile using any standard C++ compiler. The program must probably be
+rewritten to support "big endian" processors.
 
 
 CONTACT
 
-The author, Peter Karlsson, can be contacted via netmail at 2:206/221.0, or
+The author, Peter Karlsson, can be contacted via netmail at 2:206/224.42, or
 via Internet e-mail at peter@softwolves.pp.se. Information about this
 program is available on the world wide web at
 http://www.softwolves.pp.se/wolves/
