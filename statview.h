@@ -26,13 +26,13 @@ class StatView
 public:
     bool CreateReport(StatEngine *engine, string filename,
                       unsigned maxnumber,
-                      bool quoters, bool topwritten, bool topreceived,
-                      bool topsubjects, bool topprograms,
-                      bool weekstats, bool daystats, bool showversions,
-                      bool showallnums);
+                      bool quoters = true, bool topwritten = true,
+                      bool topreceived = true, bool topsubjects = true,
+                      bool topprograms = true, bool weekstats = true,
+                      bool daystats = true, bool showversions = true,
+                      bool showallnums = false);
 
 protected:
-    string Mangle(string, unsigned);
 };
 
 #endif
