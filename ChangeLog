@@ -29,6 +29,10 @@
   version.h
     Updated to version 1.5.
 
+  debian/changelog
+  debian/copyright
+    Preliminary version 1.5 info.
+
 2000-06-12 - peter karlsson <peter@softwolves.pp.se>
   turqstat.doc
   turqstat.dok
