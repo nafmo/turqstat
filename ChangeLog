@@ -1,3 +1,15 @@
+2001-01-09 - peter karlsson <peter@softwolves.pp.se>
+  newsspoolread.cpp
+    Does not crash on news messages consisting solely of header
+    (reported by Jesús Carrete Montaña)
+
+  statview.cpp
+  version.h
+  turqstat.doc
+  turqstat.dok
+  debian/
+    Updates for 2.0.1.
+
 2000-11-26 - peter karlsson <peter@softwolves.pp.se>
   qtlist.cpp
     Comma-separated files are *.csv, not *.csf.

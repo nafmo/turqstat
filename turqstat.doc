@@ -1,6 +1,6 @@
-Turquoise SuperStat 2.0 - An area statistics program for Fidonet and Usenet
-(c) Copyright 1998-2000 Peter Karlsson.
-A Softwolves Software Release in 2000
+Turquoise SuperStat 2.0.1 - An area statistics program for Fidonet and Usenet
+(c) Copyright 1998-2001 Peter Karlsson.
+A Softwolves Software Release in 2001
 
 http://www.softwolves.pp.se/wolves/
 
@@ -273,6 +273,8 @@ HISTORY
   Clarified documentation.
   Added an X GUI version using Qt.
   Various bugfixes.
+2001-01-09 - v2.0.1 -
+  Fix crasher bug in news spool support.
 
 
 INCLUDED FILES
@@ -324,6 +326,14 @@ src/ directory:
   datatypes.h     - Compiler-independent datatype declarations
   version.h       - Current version number
   turqstat.def    - Application title file for OS/2
+  qtbars.cpp      - Posting frequency window (Qt)
+  qtbars.h        - Header file for the above
+  qtgui.cpp       - Main window (Qt)
+  qtgui.h         - Header file for the above
+  qtlist.cpp      - List window (Qt)
+  qtlist.h        - Header file for the above
+  qtreport.cpp    - Statistic saving window (Qt)
+  qtreport.h      - Header file for the above
 
 os2/ directory:
   config.h        - config.h to use if you cannot run configure (EMX)

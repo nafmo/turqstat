@@ -1,6 +1,6 @@
-Turquoise SuperStat 2.0 - Ett m”tesstatistikprogram f”r Fidonet och Usenet
-(c) Copyright 1998-2000 Peter Karlsson.
-A Softwolves Software Release in 2000
+Turquoise SuperStat 2.0.1 - Ett m”tesstatistikprogram f”r Fidonet och Usenet
+(c) Copyright 1998-2001 Peter Karlsson.
+A Softwolves Software Release in 2001
 
 http://www.softwolves.pp.se/wolves/
 
@@ -267,12 +267,14 @@ HISTORIK
   Anv„nder Mingw32 i st„llet f”r CygWin f”r Win32-versionen.
   F”rb„ttrat st”d f”r news.
   Diverse felr„ttelser.
-2000-11-26 - v1.5 -
+2000-11-26 - v2.0 -
   Egna tidsfunktioner f”r att motverka tidszonsproblem i C-biblioteket.
   Gjorde hj„lpsk„rmen mer l„ttl„slig.
   F”rtydligade dokumentationen.
   Lade till grafisk X-version (anv„nder Qt).
   Diverse felr„ttelser.
+2001-01-09 - v2.0.1 -
+  Fixade fel som kraschade newsspoolst”det.
 
 
 BIFOGADE FILER
@@ -324,6 +326,14 @@ src/-katalogen:
   datatypes.h     - Kompilatoroberoende datatypdeklarationer
   version.h       - Aktuellt versionnummer
   turqstat.def    - Applikationstitelfil f”r OS/2
+  qtbars.cpp      - Postningsfrekvensf”nster (Qt)
+  qtbars.h        - Prototypfil f”r ovanst†ende
+  qtgui.cpp       - Huvudf”nster (Qt)
+  qtgui.h         - Prototypfil f”r ovanst†ende
+  qtlist.cpp      - Listf”nster (Qt)
+  qtlist.h        - Prototypfil f”r ovanst†ende
+  qtreport.cpp    - Statistikspararf”nster (Qt)
+  qtreport.h      - Prototypfil f”r ovanst†ende
 
 os2/-katalogen:
   config.h        - config.h att anv„nda om du inte kan k”ra configure (EMX)
