@@ -34,6 +34,12 @@
 /* Define if C library includes _snprintf instead of snprint */
 #undef HAVE_USNPRINTF
 
+/* Define if C library includes sleep */
+#undef HAVE_SLEEP
+
+/* Define if C library includes _sleep instead of sleep */
+#undef HAVE_U_SLEEP
+
 /* Define if C library includes strcasestr */
 #undef HAVE_STRCASESTR
 

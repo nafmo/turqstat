@@ -3,6 +3,11 @@
     Use recv and send instead of read and write on sockets, for Win32
     compatibility.
 
+  configure.in
+  config.h.in
+  acconfig.h
+    Added check for sleep() function for Win32 compatibility.
+
 2001-11-09 - peter karlsson <peter@softwolves.pp.se>
   nntpread.cpp
   nntpread.h
