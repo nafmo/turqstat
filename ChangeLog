@@ -1,3 +1,7 @@
+2001-01-10 - peter karlsson <peter@softwolves.pp.se>
+  Makefile.in
+    Once and for all fixed the directory problems.
+
 2001-01-09 - peter karlsson <peter@softwolves.pp.se>
   Released 2.0.1, branching from 2.0 release:
 
