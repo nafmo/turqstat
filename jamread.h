@@ -44,7 +44,7 @@ protected:
     // .JHR
     struct jamhdr_header_s
     {
-        UINT32  signature;      // 'JAM\0'
+        UINT8   signature[4];   // 'JAM\0'
         UINT32  datecreated;
         UINT32  modcounter;
         UINT32  activemsgs;
@@ -55,7 +55,7 @@ protected:
 
     struct jamhdr_msg_s
     {
-        UINT32  signature;      // 'JAM\0'
+        UINT8   signature[4];   // 'JAM\0'
         UINT16  revision;
         UINT16  _reserved;
         UINT32  subfieldlen;
@@ -77,7 +77,7 @@ protected:
         UINT32  cost;
     };
 
-    const Jam_deleted = 0x80000000L;
+    static const UINT32 Jam_deleted = 0x80000000L;
 
     struct jamhdr_subhdr_s
     {
@@ -87,11 +87,11 @@ protected:
      /* UINT8   buffer[datlen]; */
     };
 
-    const Jam_sender      = 2;
-    const Jam_recipient   = 3;
-    const Jam_MSGID       = 4;
-    const Jam_subject     = 6;
-    const Jam_PID         = 7;
+    static const UINT16 Jam_sender      = 2;
+    static const UINT16 Jam_recipient   = 3;
+    static const UINT16 Jam_MSGID       = 4;
+    static const UINT16 Jam_subject     = 6;
+    static const UINT16 Jam_PID         = 7;
 
     // *.JDX
     struct jamjdx_s
@@ -100,7 +100,8 @@ protected:
         UINT32  jhroffset;
     };
 
-    const Jam_msgbaseversion = 1;
+    static const UINT16 Jam_msgbaseversion = 1;
+    static const UINT8  Jam_signature[4]   = "JAM";
 };
 
 #endif
