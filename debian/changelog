@@ -1,3 +1,10 @@
+turqstat (2.1.1) unstable; urgency=low
+
+  * Fix a bug which caused hangs when illegal QP sequences were encountered.
+   (Reported by: Gonzalo Paniagua Javier <gpanjav@jazzfree.com>)
+
+ -- peter karlsson <peterk@debian.org>  Thu, 30 Aug 2001 19:00:00 +0200
+
 turqstat (2.1) unstable; urgency=low
 
   * Made it possible to select date ranges for input.
