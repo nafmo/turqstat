@@ -1,3 +1,18 @@
+2001-06-11 - peter karlsson <peter@softwolves.pp.se>
+  Makefile.in
+    Corrected target for teal.
+
+  mappings/Makefile.in
+    Added magic target for simple creation of targets.
+
+  convert.cpp
+  convert.h
+  mappings/makemappings.pl
+  mappings.cpp
+  mappings.h
+    Use RFC-1345 as fallback for undefined characters in the output
+    character set.
+
 2001-06-10 - peter karlsson <peter@softwolves.pp.se>
   convert.cpp
   convert.h
