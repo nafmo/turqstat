@@ -41,6 +41,11 @@ public:
      */
     virtual bool Transfer(time_t starttime, time_t endtime,
                           StatEngine &destination) = 0;
+
+    /*
+     * Virtual destructor. Overridden by subclasses which need destruction.
+     */
+    virtual ~AreaRead() {};
 };
 
 #endif
