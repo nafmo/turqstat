@@ -1,3 +1,14 @@
+2000-11-12 - peter karlsson <peter@softwolves.pp.se>
+  Makefile.in
+    More dependencies.
+
+  outputqt.cpp
+    Only use QString::arg if there's something to insert into.
+
+  qtgui.cpp
+  qtgui.h
+    Added support for selecting starting time for statistics.
+
 2000-11-11 - peter karlsson <peter@softwolves.pp.se>
   qtreport.cpp
   qtreport.h
