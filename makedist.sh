@@ -21,6 +21,7 @@ autoconf
 autoheader
 cp -p *.spec *.def *.cpp *.h Makefile.in config.h.in configure configure.in ChangeLog COPYING turqstat-$ver/
 rm turqstat-$ver/config.h
+rm turqstat-$ver/moc*.cpp
 iso2dos -i turqstat.doc  turqstat-$ver/turqstat.doc
 touch -r   turqstat.doc  turqstat-$ver/turqstat.doc
 iso2dos -i turqstat.dok  turqstat-$ver/turqstat.dok

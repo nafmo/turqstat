@@ -47,6 +47,7 @@
 #include "version.h"
 #include "utility.h"
 #include "mytime.h"
+#include "output.h"
 
 class StatRetr
 {
@@ -251,12 +252,16 @@ StatRetr::StatRetr(StatEngine &engine, StatView &view,
                 break;
 
             default:
-                internalerrorquit("Message base format mismatch.", 1);
+                TDisplay::GetOutputObject()->
+                    InternalErrorQuit(TDisplay::message_base_mismatch, 1);
                 exit(1);
         }
 
         if (!area)
-            errorquit("Out of memory allocating area object.", 1);
+        {
+            TDisplay::GetOutputObject()->ErrorQuit(TDisplay::out_of_memory_area,
+                                                   1);
+        }
         if (!(area->Transfer(from, engine))) return;
 
         engine.AreaDone();

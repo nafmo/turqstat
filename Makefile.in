@@ -4,25 +4,35 @@
 
 # Variables
 CXXFLAGS=@CXXFLAGS@ -I. -Wall
+@QT@QTFLAGS=-I@QTINCLUDE@
 LDFLAGS=@LDFLAGS@
 srcdir=@srcdir@
 VPATH=@scrdir@
 LIBS=@LIBS@
+QTLIBS=@QTLIB@
 DESTDIR=
 OBJS=turqstat.o statengine.o statview.o squishread.o fdapxread.o jamread.o mypointread.o utility.o sdmread.o tanstaaflread.o newsspoolread.o mytime.o output.o
+QTOBJS=qtgui.o moc_qtgui.o qtlist.o moc_qtlist.o qtreport.o moc_qtreport.o qtbars.o moc_qtbars.o statengine.o statview.o squishread.o fdapxread.o jamread.o mypointread.o utility.o sdmread.o tanstaaflread.o newsspoolread.o mytime.o outputqt.o
+@QT@EXE=turqstat@EXEEXT@ xturqstat@EXEEXT@
+@NOQT@EXE=turqstat@EXEEXT@
 DEF=@DEF@
 prefix=@prefix@
 exec_prefix=@exec_prefix@
+xbindir=@exec_prefix@/X11R6/bin
 
 # Magic targets
-all: turqstat@EXEEXT@
+all: $(EXE)
 
 debian:
 	fakeroot debian/rules binary
 
-clean:
-	-rm $(OBJS)
-	-rm turqstat@EXEEXT@
+@NOQT@clean:
+@NOQT@	-rm $(OBJS)
+@NOQT@	-rm $(EXE)
+
+@QT@clean:
+@QT@	-rm $(OBJS) $(QTOBJS) moc_* *.moc
+@QT@	-rm $(EXE)
 
 distclean: clean
 	-rm config.status config.log config.cache config.h Makefile
@@ -30,23 +40,34 @@ distclean: clean
 debianclean:
 	fakeroot debian/rules clean
 
-@NOINST@install: turqstat@EXEEXT@
+@NOINST@install: install-text @QT@install-qt
+@NOINST@
+@NOINST@install-text: turqstat@EXEEXT@
 @NOINST@	install -d $(DESTDIR)@bindir@ $(DESTDIR)@datadir@/doc/turqstat/ $(DESTDIR)@datadir@/doc/turqstat/sv/ $(DESTDIR)@mandir@/man1 $(DESTDIR)@mandir@/sv/man1/
 @NOINST@	install -s turqstat@EXEEXT@ $(DESTDIR)@bindir@
 @NOINST@	install -m 644 turqstat.doc $(DESTDIR)@datadir@/doc/turqstat/
 @NOINST@	install -m 644 turqstat.dok $(DESTDIR)@datadir@/doc/turqstat/sv/
 @NOINST@	install -m 644 turqstat.1   $(DESTDIR)@mandir@/man1/
 @NOINST@	install -m 644 turqstat-sv.1 $(DESTDIR)@mandir@/sv/man1/turqstat.1
+@NOINST@
+@NOINST@@QT@install-qt: xturqstat@EXEEXT@
+@NOINST@@QT@	install -d $(DESTDIR)$(xbindir) $(DESTDIR)@datadir@/doc/xturqstat/ $(DESTDIR)@datadir@/doc/xturqstat/sv/
+@NOINST@@QT@	install -s xturqstat@EXEEXT@ $(DESTDIR)$(xbindir)
+@NOINST@@QT@	install -m 644 turqstat.doc $(DESTDIR)@datadir@/doc/xturqstat/
+@NOINST@@QT@	install -m 644 turqstat.dok $(DESTDIR)@datadir@/doc/xturqstat/sv/
 
 # Binary
 turqstat@EXEEXT@: $(OBJS) $(DEF)
 	@CXX@ $(CXXFLAGS) $(LDFLAGS) -o turqstat@EXEEXT@ $(OBJS) $(DEF) $(LIBS)
 
+@QT@xturqstat@EXEEXT@: $(QTOBJS) $(DEF)
+@QT@	@CXX@ $(CXXFLAGS) $(QTFLAGS) $(LDFLAGS) -o xturqstat@EXEEXT@ $(QTOBJS) $(DEF) $(LIBS) $(QTLIBS)
+
 # Object files
-turqstat.o: turqstat.cpp statengine.h statview.h arearead.h squishread.h fdapxread.h jamread.h mypointread.h version.h tanstaaflread.h config.h mytime.h
+turqstat.o: turqstat.cpp statengine.h statview.h arearead.h squishread.h fdapxread.h jamread.h mypointread.h version.h tanstaaflread.h config.h mytime.h output.h
 	@CXX@ $(CXXFLAGS) -c $(srcdir)/turqstat.cpp
 
-statengine.o: statengine.cpp statengine.h config.h
+statengine.o: statengine.cpp statengine.h config.h output.h
 	@CXX@ $(CXXFLAGS) -c $(srcdir)/statengine.cpp
 
 statview.o: statview.cpp statview.h statengine.h version.h config.h
@@ -81,6 +102,48 @@ mytime.o: mytime.cpp mytime.h
 
 output.o: output.cpp output.h
 	@CXX@ $(CXXFLAGS) -c $(srcdir)/output.cpp
+
+@QT@qtgui.o: qtgui.cpp qtgui.h qtlist.h qtreport.h statengine.h arearead.h squishread.h fdapxread.h jamread.h mypointread.h sdmread.h tanstaaflread.h newsspoolread.h utility.h qtbars.h mytime.h
+@QT@	@CXX@ $(CXXFLAGS) $(QTFLAGS) -c $(srcdir)/qtgui.cpp
+
+@QT@moc_qtgui.o: moc_qtgui.cpp
+@QT@	@CXX@ $(CXXFLAGS) $(QTFLAGS) -c moc_qtgui.cpp
+
+@QT@moc_qtgui.cpp: qtgui.h
+@QT@	@QTMOC@ -o moc_qtgui.cpp qtgui.h
+
+@QT@qtlist.o: qtlist.cpp qtlist.h statengine.h
+@QT@	@CXX@ $(CXXFLAGS) $(QTFLAGS) -c $(srcdir)/qtlist.cpp
+
+@QT@moc_qtlist.cpp: qtlist.h
+@QT@	@QTMOC@ -o moc_qtlist.cpp qtlist.h
+
+@QT@moc_qtlist.o: moc_qtlist.cpp
+@QT@	@CXX@ $(CXXFLAGS) $(QTFLAGS) -c moc_qtlist.cpp
+
+@QT@qtreport.o: qtreport.cpp qtreport.h statview.h
+@QT@	@CXX@ $(CXXFLAGS) $(QTFLAGS) -c $(srcdir)/qtreport.cpp
+
+@QT@moc_qtreport.cpp: qtreport.h
+@QT@	@QTMOC@ -o moc_qtreport.cpp qtreport.h
+
+@QT@moc_qtreport.o: moc_qtreport.cpp
+@QT@	@CXX@ $(CXXFLAGS) $(QTFLAGS) -c moc_qtreport.cpp
+
+@QT@qtbars.o: qtbars.cpp qtbars.h statengine.h qtbars.moc
+@QT@	@CXX@ $(CXXFLAGS) $(QTFLAGS) -c $(srcdir)/qtbars.cpp
+
+@QT@moc_qtbars.cpp: qtbars.h
+@QT@	@QTMOC@ -o moc_qtbars.cpp qtbars.h
+
+@QT@moc_qtbars.o: moc_qtbars.cpp
+@QT@	@CXX@ $(CXXFLAGS) $(QTFLAGS) -c moc_qtbars.cpp
+
+@QT@qtbars.moc: qtbars.cpp
+@QT@	@QTMOC@ -o qtbars.moc qtbars.cpp
+
+@QT@outputqt.o: outputqt.cpp output.h
+@QT@	@CXX@ $(CXXFLAGS) $(QTFLAGS) -c $(srcdir)/outputqt.cpp
 
 # List phony targets
 .PHONY: all debian clean distclean debianclean install

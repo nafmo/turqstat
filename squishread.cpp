@@ -38,14 +38,14 @@ SquishRead::~SquishRead()
 
 bool SquishRead::Transfer(time_t starttime, StatEngine &destination)
 {
+    // Get the output object
+    TDisplay *display = TDisplay::GetOutputObject();
+
     // Check that we got the path correctly in initialization
     if (!areapath)
     {
-        internalerrorquit(area_not_allocated, 1);
+        display->InternalErrorQuit(TDisplay::area_not_allocated, 1);
     }
-
-    // Get the output object
-    ProgressDisplay *display = ProgressDisplay::GetOutputObject();
 
     // Open the message area files
     // <name>.sqd - contains everything we need
@@ -62,8 +62,7 @@ bool SquishRead::Transfer(time_t starttime, StatEngine &destination)
         }
         if (!sqd)
         {
-            string msg = string("Cannot open ") + filepath;
-            display->ErrorMessage(msg);
+            display->ErrorMessage(TDisplay::cannot_open, filepath);
             return false;
         }
     }
@@ -71,8 +70,7 @@ bool SquishRead::Transfer(time_t starttime, StatEngine &destination)
     sqbase_s baseheader;
     if (1 != fread(&baseheader, sizeof (sqbase_s), 1, sqd))
     {
-        string msg = string("Could not read from ") + filepath;
-        display->ErrorMessage(msg);
+        display->ErrorMessage(TDisplay::cannot_read, filepath);
         return false;
     }
 
@@ -83,7 +81,7 @@ bool SquishRead::Transfer(time_t starttime, StatEngine &destination)
     }
     else if (offset < 0)
     {
-        display->ErrorMessage("Strange Squish header length");
+        display->ErrorMessage(TDisplay::strange_squish_header);
         fclose(sqd);
         return false;
     }
@@ -94,13 +92,13 @@ bool SquishRead::Transfer(time_t starttime, StatEngine &destination)
     uint32_t current = baseheader.begin_frame;
     if (0 == current)
     {
-        display->ErrorMessage("Message base is empty");
+        display->ErrorMessage(TDisplay::message_base_empty);
         fclose(sqd);
         return true;
     }
     else if (current < sizeof (sqbase_s))
     {
-        display->ErrorMessage("Strange Squish header offset");
+        display->ErrorMessage(TDisplay::strange_squish_offset);
         fclose(sqd);
         return false;
     }
@@ -119,14 +117,14 @@ bool SquishRead::Transfer(time_t starttime, StatEngine &destination)
         // Read the SQHDR
         if (1 != fread(&sqhdr, sizeof (sqhdr_s), 1, sqd))
         {
-            display->ErrorMessage("Premature end of Squish data");
+            display->ErrorMessage(TDisplay::premature_squish_end);
             fclose(sqd);
             return false;
         }
 
         if (sqhdr.id != Squish_id)
         {
-            display->ErrorMessage("Illegal Squish header ID");
+            display->ErrorMessage(TDisplay::illegal_squish_header);
             fclose(sqd);
             return false;
         }
@@ -135,7 +133,7 @@ bool SquishRead::Transfer(time_t starttime, StatEngine &destination)
 
         if (Squish_type_normal != sqhdr.frame_type)
         {
-            display->WarningMessage("Not normal Squish frame #", msgn);
+            display->WarningMessage(TDisplay::abnormal_squish_frame, msgn);
             continue;
         }
 
@@ -144,7 +142,7 @@ bool SquishRead::Transfer(time_t starttime, StatEngine &destination)
         // Read the XMSG
         if (1 != fread(&xmsg, sizeof (xmsg_s), 1, sqd))
         {
-            display->ErrorMessage("Premature end of Squish data");
+            display->ErrorMessage(TDisplay::premature_squish_end);
             fclose(sqd);
             return false;
         }
@@ -152,8 +150,7 @@ bool SquishRead::Transfer(time_t starttime, StatEngine &destination)
         ctrlbuf = new char[sqhdr.clen + 1];
         if (!ctrlbuf)
         {
-            display->WarningMessage("Unable to allocate memory for "
-                                    "control data #", msgn);
+            display->WarningMessage(TDisplay::cannot_allocate_control, msgn);
             goto out;
         }
         fread(ctrlbuf, sqhdr.clen, 1, sqd);
@@ -163,8 +160,7 @@ bool SquishRead::Transfer(time_t starttime, StatEngine &destination)
         msgbuf = new char[msglen + 1];
         if (!msgbuf)
         {
-            display->WarningMessage("Unable to allocate memory for "
-                                    "message body #", msgn);
+            display->WarningMessage(TDisplay::cannot_allocate_body, msgn);
             goto out2;
         }
 

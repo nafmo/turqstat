@@ -1,3 +1,145 @@
+2000-04-09 - peter karlsson <peter@softwolves.pp.se>
+  Merged branch dealing with Qt GUI:
+
+  2000-11-12 - peter karlsson <peter@softwolves.pp.se>
+    Makefile.in
+      More dependencies.
+
+    outputqt.cpp
+      Only use QString::arg if there's something to insert into.
+
+    qtgui.cpp
+    qtgui.h
+      Added support for selecting starting time for statistics.
+
+  2000-11-11 - peter karlsson <peter@softwolves.pp.se>
+    qtreport.cpp
+    qtreport.h
+      Added code supporting creation of detailed report from the Qt version.
+
+    qtbars.cpp
+    qtbars.h
+      Added code for daily and hourly posting breakdown.
+
+    qtgui.cpp
+    qtgui.h
+      Added menu items for creating reports and showing the posting
+      breakdowns.
+
+    output.h
+    output.cpp
+    outputqt.cpp
+    fdapxread.cpp
+    jamread.cpp
+    mypointread.cpp
+    newsspoolread.cpp
+    sdmread.cpp
+    squishread.cpp
+    tanstaaflread.cpp
+      Removed all hardcoded error and warning messages.
+
+    Makefile.in
+      Additions and dependency fixes.
+
+  2000-10-07 - peter karlsson <peter@softwolves.pp.se>
+    qtgui.cpp
+      Disable also the top Fidonet net menu entry for news.
+
+  2000-09-25 - peter karlsson <peter@softwolves.pp.se>
+    output.cpp
+    outputqt.cpp
+    output.h
+      Removed some hardcoded strings.
+
+  2000-09-20 - peter karlsson <peter@softwolves.pp.se>
+    debian/
+      Updated scripts to create a package with the Qt version. The package is
+      called xturqstat.
+
+    Makefile.in
+      Added install target for the Qt version.
+      Renamed the Qt version binary from qturqstat to xturqstat.
+
+  2000-09-19 - peter karlsson <peter@softwolves.pp.se>
+    output.cpp
+    outputqt.cpp
+    output.h
+      Changed name for the output object.
+      Made sure TDisplay::GetOutputObject() never return NULL.
+      Moved the errorquit routines here.
+
+    utility.cpp
+    utility.h
+      Removed the errorquit routines.
+
+    fdapxread.cpp
+    jamread.cpp
+    mypointread.cpp
+    newsspoolread.cpp
+    sdmread.cpp
+    squishread.cpp
+    statengine.cpp
+    tanstaaflread.cpp
+    turqstat.cpp
+      Use the display object instead of errorquit routines.
+
+    Makefile.in
+      More files include output.h now.
+
+  2000-09-18 - peter karlsson <peter@softwolves.pp.se>
+    qtgui.cpp
+      Removed unimplemented "Save text file" from menu.
+      Added "Clear data" to menu and implemented it.
+      Implemented area number selection for message bases needing that.
+      Simplified area type detection.
+
+    qtgui.h
+      Added slot and method for clearing of data.
+
+    qtlist.cpp
+    qtlish.h
+      Added "Save" button and implemented necessary code for saving to file.
+
+  2000-07-16 - peter karlsson <peter@softwolves.pp.se>
+    qtgui.cpp
+      Uses an instance of the QFileDialog class instead of one of its static
+      methods, to make it possible to retrieve selected filter settings.
+
+    configure.in
+    Makefile.in
+      Added autoconf magic for detecting Qt.
+
+  2000-07-14 - peter karlsson <peter@softwolves.pp.se>
+    qtgui.cpp
+    qtgui.h
+    qtlist.cpp
+    qtlist.h
+      Added display code for the remaining top lists
+      (senders, original content, Fidonet nets, Internet topdomains,
+       receivers, subjects, software)
+
+  2000-06-23 - peter karlsson <peter@softwolves.pp.se>
+    Makefile.in
+      Renamed moc files to conform to the Qt standard and added moc files
+      to the clean target.
+
+    qtgui.cpp
+    qtgui.h
+      Implemented code for displaying of quoter toplist.
+
+    qtlist.cpp
+    qtlist.h
+      Added Qt toplist display dialog code to the repository.
+
+  2000-06-22 - peter karlsson <peter@softwolves.pp.se>
+    outputqt.cpp
+    qtgui.cpp
+    qtgui.h
+      Added Qt GUI related files.
+
+    Makefile.in
+      Added Qt files to the Makefile. No Qt specific autoconf stuff yet.
+
 2000-11-11 - peter karlsson <peter@softwolves.pp.se>
   jamread.cpp
     Correctly handle messages marked as non-existing in the JDX file.

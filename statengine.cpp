@@ -22,6 +22,7 @@
 
 #include "statengine.h"
 #include "utility.h"
+#include "output.h"
 
 StatEngine::StatEngine(void)
 {
@@ -221,7 +222,10 @@ void StatEngine::AddData(string fromname, string toname, string subject,
     if (NULL == perstrav_p)
     {
         people_p = new persondata_s;
-        if (!people_p) errorquit(out_of_memory, 2);
+        if (!people_p)
+        {
+            TDisplay::GetOutputObject()->ErrorQuit(TDisplay::out_of_memory, 2);
+        }
         people_p->name = fromname;
         if (newsarea || !internetaddress.empty())
             people_p->address = internetaddress;
@@ -258,7 +262,11 @@ void StatEngine::AddData(string fromname, string toname, string subject,
         {
             // No name was found, add a leaf with the new name
             persfound_p = new persondata_s;
-            if (!persfound_p) errorquit(out_of_memory, 2);
+            if (!persfound_p)
+            {
+                TDisplay::GetOutputObject()->ErrorQuit(TDisplay::out_of_memory,
+                                                       2);
+            }
             if (Left == direction) perstrav_p->left = persfound_p;
             if (Right == direction) perstrav_p->right = persfound_p;
 
@@ -377,7 +385,12 @@ void StatEngine::AddData(string fromname, string toname, string subject,
             if (NULL == nets_p)
             {
                 nets_p = new netdata_s;
-                if (!nets_p) errorquit(out_of_memory, 2);
+                if (!nets_p)
+                {
+                    TDisplay::GetOutputObject()->
+                        ErrorQuit(TDisplay::out_of_memory, 2);
+                }
+
                 nets_p->zone = zone;
                 nets_p->net  = net;
 
@@ -426,7 +439,11 @@ void StatEngine::AddData(string fromname, string toname, string subject,
                 {
                     // No net was found
                     netfound_p = new netdata_s;
-                    if (!netfound_p) errorquit(out_of_memory, 2);
+                    if (!netfound_p)
+                    {
+                        TDisplay::GetOutputObject()->
+                            ErrorQuit(TDisplay::out_of_memory, 2);
+                    }
                     if (Left == direction) nettrav_p->left = netfound_p;
                     if (Right == direction) nettrav_p->right = netfound_p;
 
@@ -461,7 +478,11 @@ void StatEngine::AddData(string fromname, string toname, string subject,
             if (NULL == domains_p)
             {
                 domains_p = new domaindata_s;
-                if (!domains_p) errorquit(out_of_memory, 2);
+                if (!domains_p)
+                {
+                    TDisplay::GetOutputObject()->
+                        ErrorQuit(TDisplay::out_of_memory, 2);
+                }
                 domains_p->topdomain = topdomain;
 
                 domainfound_p = domains_p;
@@ -496,7 +517,11 @@ void StatEngine::AddData(string fromname, string toname, string subject,
                 {
                     // No net was found
                     domainfound_p = new domaindata_s;
-                    if (!domainfound_p) errorquit(out_of_memory, 2);
+                    if (!domainfound_p)
+                    {
+                        TDisplay::GetOutputObject()->
+                            ErrorQuit(TDisplay::out_of_memory, 2);
+                    }
                     if (Left == direction) domaintrav_p->left = domainfound_p;
                     if (Right == direction) domaintrav_p->right = domainfound_p;
 
@@ -541,7 +566,11 @@ void StatEngine::AddData(string fromname, string toname, string subject,
         {
             // No name was found, add a leaf with the new name
             persfound_p = new persondata_s;
-            if (!persfound_p) errorquit(out_of_memory, 2);
+            if (!persfound_p)
+            {
+                TDisplay::GetOutputObject()->ErrorQuit(TDisplay::out_of_memory,
+                                                       2);
+            }
             if (Left == direction) perstrav_p->left = persfound_p;
             if (Right == direction) perstrav_p->right = persfound_p;
 
@@ -574,7 +603,10 @@ void StatEngine::AddData(string fromname, string toname, string subject,
     if (NULL == subjects_p)
     {
         subjects_p = new subjectdata_s;
-        if (!subjects_p) errorquit(out_of_memory, 2);
+        if (!subjects_p)
+        {
+            TDisplay::GetOutputObject()->ErrorQuit(TDisplay::out_of_memory, 2);
+        }
         subjects_p->subject = subject;
         subfound_p = subjects_p;
 
@@ -608,7 +640,11 @@ void StatEngine::AddData(string fromname, string toname, string subject,
         {
             // No name was found, add a leaf with the new name
             subfound_p = new subjectdata_s;
-            if (!subfound_p) errorquit(out_of_memory, 2);
+            if (!subfound_p)
+            {
+                TDisplay::GetOutputObject()->ErrorQuit(TDisplay::out_of_memory,
+                                                       2);
+            }
             if (Left == direction) subtrav_p->left = subfound_p;
             if (Right == direction) subtrav_p->right = subfound_p;
 
@@ -736,7 +772,11 @@ void StatEngine::AddData(string fromname, string toname, string subject,
         if (NULL == programs_p)
         {
             programs_p = new programdata_s;
-            if (!programs_p) errorquit(out_of_memory, 2);
+            if (!programs_p)
+            {
+                TDisplay::GetOutputObject()->ErrorQuit(TDisplay::out_of_memory,
+                                                       2);
+            }
             programs_p->programname = programname;
             progfound_p = programs_p;
 
@@ -770,7 +810,11 @@ void StatEngine::AddData(string fromname, string toname, string subject,
             {
                 // No name was found, add a leaf with the new name
                 progfound_p = new programdata_s;
-                if (!progfound_p) errorquit(out_of_memory, 2);
+                if (!progfound_p)
+                {
+                    TDisplay::GetOutputObject()->
+                        ErrorQuit(TDisplay::out_of_memory, 2);
+                }
                 if (Left == direction) progtrav_p->left = progfound_p;
                 if (Right == direction) progtrav_p->right = progfound_p;
 
@@ -806,7 +850,11 @@ void StatEngine::AddData(string fromname, string toname, string subject,
             {
                 programversion_s *next_p = *vertrav_pp; // =NULL if at end
                 *vertrav_pp = new programversion_s;
-                if (!*vertrav_pp) errorquit(out_of_memory, 2);
+                if (!*vertrav_pp)
+                {
+                    TDisplay::GetOutputObject()->
+                        ErrorQuit(TDisplay::out_of_memory, 2);
+                }
                 (*vertrav_pp)->version = programvers;
                 (*vertrav_pp)->next    = next_p;
             }
@@ -969,7 +1017,10 @@ bool StatEngine::GetTop(bool restart, persstat_s &result,
         if (NULL != persontoplist_p) delete[] persontoplist_p;
 
         persontoplist_p = new persstat_s[numpeople];
-        if (!persontoplist_p) errorquit(out_of_memory, 2);
+        if (!persontoplist_p)
+        {
+            TDisplay::GetOutputObject()->ErrorQuit(TDisplay::out_of_memory, 2);
+        }
         flattenindex = 0;
         FlattenPeople(persontoplist_p, people_p);
 
@@ -1028,7 +1079,10 @@ bool StatEngine::GetTopSubjects(bool restart, subjstat_s &result)
         if (NULL != subjecttoplist_p) delete[] subjecttoplist_p;
 
         subjecttoplist_p = new subjstat_s[numsubjects];
-        if (!subjecttoplist_p) errorquit(out_of_memory, 2);
+        if (!subjecttoplist_p)
+        {
+            TDisplay::GetOutputObject()->ErrorQuit(TDisplay::out_of_memory, 2);
+        }
         flattenindex = 0;
         FlattenSubjects(subjecttoplist_p, subjects_p);
 
@@ -1081,7 +1135,10 @@ bool StatEngine::GetTopPrograms(bool restart, progstat_s &result)
         if (NULL != programtoplist_p) delete[] programtoplist_p;
 
         programtoplist_p = new progstat_s[numprograms];
-        if (!programtoplist_p) errorquit(out_of_memory, 2);
+        if (!programtoplist_p)
+        {
+            TDisplay::GetOutputObject()->ErrorQuit(TDisplay::out_of_memory, 2);
+        }
         flattenindex = 0;
         FlattenPrograms(programtoplist_p, programs_p);
 
@@ -1153,7 +1210,10 @@ bool StatEngine::GetTopNets(bool restart, netstat_s &result)
         if (NULL != nettoplist_p) delete[] nettoplist_p;
 
         nettoplist_p = new netstat_s[numnets];
-        if (!nettoplist_p) errorquit(out_of_memory, 2);
+        if (!nettoplist_p)
+        {
+            TDisplay::GetOutputObject()->ErrorQuit(TDisplay::out_of_memory, 2);
+        }
         flattenindex = 0;
         FlattenNets(nettoplist_p, nets_p);
 
@@ -1207,7 +1267,10 @@ bool StatEngine::GetTopDomains(bool restart, domainstat_s &result)
         if (NULL != domaintoplist_p) delete[] domaintoplist_p;
 
         domaintoplist_p = new domainstat_s[numdomains];
-        if (!domaintoplist_p) errorquit(out_of_memory, 2);
+        if (!domaintoplist_p)
+        {
+            TDisplay::GetOutputObject()->ErrorQuit(TDisplay::out_of_memory, 2);
+        }
         flattenindex = 0;
         FlattenDomains(domaintoplist_p, domains_p);
 

@@ -39,14 +39,14 @@ TanstaaflRead::~TanstaaflRead()
 
 bool TanstaaflRead::Transfer(time_t starttime, StatEngine &destination)
 {
+    // Get the output object
+    TDisplay *display = TDisplay::GetOutputObject();
+
     // Check that we got the path correctly in initialization
     if (!areapath)
     {
-        internalerrorquit(area_not_allocated, 1);
+        display->InternalErrorQuit(TDisplay::area_not_allocated, 1);
     }
-
-    // Get the output object
-    ProgressDisplay *display = ProgressDisplay::GetOutputObject();
 
     // Tanstaafl format lacks arrival times
     destination.NoArrivalTime();
@@ -54,8 +54,7 @@ bool TanstaaflRead::Transfer(time_t starttime, StatEngine &destination)
     // Check that the folder number is valid
     if (areanumber < 1 || areanumber > 1999)
     {
-        display->ErrorMessage("Invalid area number chosen "
-                              "(must be between 1-1999)");
+        display->ErrorMessage(TDisplay::area_out_of_range, 1999);
         return false;
     }
 
@@ -75,16 +74,14 @@ bool TanstaaflRead::Transfer(time_t starttime, StatEngine &destination)
     FILE *msgstat = fopen(filepath.c_str(), "rb");
     if (!msgstat)
     {
-        string msg = string("Cannot open ") + filepath;
-        display->ErrorMessage(msg);
+        display->ErrorMessage(TDisplay::cannot_open, filepath);
         return false;
     }
 
     msgstattfl_s msgstattfl;
     if (1 != fread(&msgstattfl, sizeof (msgstattfl_s), 1, msgstat))
     {
-        string msg = string("Could not read from ") + filepath;
-        display->ErrorMessage(msg);
+        display->ErrorMessage(TDisplay::cannot_read, filepath);
         return false;
     }
     fclose(msgstat);
@@ -93,22 +90,20 @@ bool TanstaaflRead::Transfer(time_t starttime, StatEngine &destination)
     // as 0 (or rather, never initialized) in 0.0.4.
     if (Tanstaafl_msgbaseversion < msgstattfl.msgbaseversion)
     {
-        display->ErrorMessage("Illegal tanstaafl message base version");
+        display->ErrorMessage(TDisplay::illegal_tanstaafl_version);
         return false;
     }
 
     if (Tanstaafl_msgbaseversion == 0)
     {
-        display->WarningMessage("tanstaafl message base version is 0, "
-                                "assuming 1");
+        display->WarningMessage(TDisplay::tanstaafl_version_0);
     }
 
     filepath = basepath + "msghdr.tfl";
     FILE *msghdr = fopen(filepath.c_str(), "rb");
     if (!msghdr)
     {
-        string msg = string("Cannot open ") + filepath;
-        display->ErrorMessage(msg);
+        display->ErrorMessage(TDisplay::cannot_open, filepath);
         return false;
     }
 
@@ -116,8 +111,7 @@ bool TanstaaflRead::Transfer(time_t starttime, StatEngine &destination)
     FILE *msgtxt = fopen(filepath.c_str(), "rb");
     if (!msgstat)
     {
-        string msg = string("Cannot open ") + filepath;
-        display->ErrorMessage(msg);
+        display->ErrorMessage(TDisplay::cannot_open, filepath);
         return false;
     }
 
@@ -156,8 +150,8 @@ bool TanstaaflRead::Transfer(time_t starttime, StatEngine &destination)
             buf = new char[msghdrtfl.txtsize + 1];
             if (!buf)
             {
-                display->WarningMessage("Unable to allocate memory for "
-                                        "message body #", msgnum);
+                display->WarningMessage(TDisplay::cannot_allocate_body,
+                                        msgnum);
                 goto out;
             }
 
@@ -167,8 +161,8 @@ bool TanstaaflRead::Transfer(time_t starttime, StatEngine &destination)
             ctrlbuf = new char[msghdrtfl.txtsize + 1];
             if (!ctrlbuf)
             {
-                display->WarningMessage("Unable to allocate memory for "
-                                        "control data #", msgnum);
+                display->WarningMessage(TDisplay::cannot_allocate_control,
+                                        msgnum);
             }
 
             // Separate kludges from text
