@@ -31,11 +31,12 @@
 #include "arearead.h"
 #include "squishread.h"
 #include "fdapxread.h"
+#include "jamread.h"
 
 class StatRetr
 {
 public:
-    enum basetype_e { unspecified, squish, sdm, fdapx };
+    enum basetype_e { unspecified, squish, sdm, fdapx, jam };
 
     StatRetr(char *areapath, char *outputfilepath, unsigned areanum,
              unsigned days,
@@ -66,7 +67,7 @@ int main(int argc, char *argv[])
 
     // Handle arguments
     int c;
-    while (EOF != (c = getopt(argc, argv, "d:n:a:smfQWRSPHD?")))
+    while (EOF != (c = getopt(argc, argv, "d:n:a:smfjQWRSPHD?")))
     {
         switch (c)
         {
@@ -84,6 +85,7 @@ int main(int argc, char *argv[])
                         return 1;
 #endif
             case 'f':   basetype = StatRetr::fdapx;                 break;
+            case 'j':   basetype = StatRetr::jam;                   break;
 
             case 'Q':   quoters = false;                            break;
             case 'W':   topwritten = false;                         break;
@@ -109,10 +111,10 @@ int main(int argc, char *argv[])
 #ifdef HAS_SMAPI
                 cout << "  -s             Squish style message area (default)"
                      << endl;
-                cout << "  -m             *.MSG style message area"
-                     << endl;
+                cout << "  -m             *.MSG style message area" << endl;
 #endif
-                cout << "  -f            FDAPX/w style message base (needs -a)"
+                cout << "  -j             JAM style message base" << endl;
+                cout << "  -f             FDAPX/w style message base (needs -a)"
                      << endl;
                 cout << endl;
                 cout << "  -Q -W -R -S -P Turn quoters/written/received/"
@@ -182,13 +184,17 @@ StatRetr::StatRetr(char *areapath, char *outputfilepath, unsigned areanum,
             area = new FdApxRead(areapath, areanum);
             break;
 
+        case jam:
+            area = new JamRead(areapath);
+            break;
+
         default:
             cerr << "Internal error." << endl;
             exit(1);
     }
 
     StatEngine engine;
-    area->Transfer(from, engine);
+    if (!(area->Transfer(from, engine))) return;
 
     // Create output
     StatView view;
