@@ -58,14 +58,6 @@ time_t asciiToTimeT(const char *datetime);
 time_t rfcToTimeT(string datetime);
 // Separate kludges and body
 void fixupctrlbuffer(char *body_p, char *ctrl_p);
-// Print error message and quit
-void errorquit(const char *message, int rc);
-// Print internal error message and quit
-void internalerrorquit(const char *message, int rc);
-
-// Error messages for errorquit
-extern const char *area_not_allocated;
-extern const char *out_of_memory;
 
 #ifdef USE_OWN_GETOPT
 // Index to next non-option parameter
