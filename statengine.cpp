@@ -233,8 +233,8 @@ void StatEngine::AddData(string in_fromname, string in_toname, string in_subject
         }
 
         // kill QP
-        if (foundfrom && newsarea) fromname = DeQP(in_fromname, decoder_p);
-        if (newsarea) subject = DeQP(in_subject, decoder_p);
+        if (foundfrom || !newsarea) fromname = DeQP(in_fromname, decoder_p);
+        if (in_subject.length()) subject = DeQP(in_subject, decoder_p);
 
         if (0 == timewritten)
             timewritten = timereceived;
