@@ -1,5 +1,9 @@
 2001-10-11 - peter karlsson <peter@softwolves.pp.se>
-  Merged in changes from 2.1.3 and 2.1.4:
+  Merged in changes from 2.1.3, 2.1.4 and 2.1.4.1:
+  2001-10-11 - peter karlsson <peter@softwolves.pp.se>
+    qtlist.h
+      Need to include <config.h> to resolve GCC 3.0 ambiguity.
+
   2001-10-10 - peter karlsson <peter@softwolves.pp.se>
     configure.in
     acconfig.h

@@ -18,6 +18,7 @@
 #ifndef __QTLIST_H
 #define __QTLIST_H
 
+#include <config.h>
 #include <qdialog.h>
 #include <string>
 
