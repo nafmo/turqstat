@@ -11,8 +11,8 @@ LIBS=@LIBS@
 DESTDIR=
 OBJS=turqstat.o statengine.o statview.o squishread.o fdapxread.o jamread.o mypointread.o utility.o sdmread.o tanstaaflread.o newsspoolread.o
 DEF=@DEF@
-prefix=/usr
-exec_prefix=${prefix}
+prefix=@prefix@
+exec_prefix=@exec_prefix@
 
 # Magic targets
 all: turqstat@EXEEXT@
@@ -30,13 +30,13 @@ distclean: clean
 debianclean:
 	fakeroot debian/rules clean
 
-install: turqstat@EXEEXT@
-	install -d $(DESTDIR)@bindir@ $(DESTDIR)@datadir@/doc/turqstat/ $(DESTDIR)@datadir@/doc/turqstat/sv/ $(DESTDIR)@mandir@/man1 $(DESTDIR)@mandir@/sv/man1/
-	install -s turqstat@EXEEXT@ $(DESTDIR)@bindir@
-	install -m 644 turqstat.doc $(DESTDIR)@datadir@/doc/turqstat/
-	install -m 644 turqstat.dok $(DESTDIR)@datadir@/doc/turqstat/sv/
-	install -m 644 turqstat.1   $(DESTDIR)@mandir@/man1/
-	install -m 644 turqstat-sv.1 $(DESTDIR)@mandir@/sv/man1/turqstat.1
+@NOINST@install: turqstat@EXEEXT@
+@NOINST@	install -d $(DESTDIR)@bindir@ $(DESTDIR)@datadir@/doc/turqstat/ $(DESTDIR)@datadir@/doc/turqstat/sv/ $(DESTDIR)@mandir@/man1 $(DESTDIR)@mandir@/sv/man1/
+@NOINST@	install -s turqstat@EXEEXT@ $(DESTDIR)@bindir@
+@NOINST@	install -m 644 turqstat.doc $(DESTDIR)@datadir@/doc/turqstat/
+@NOINST@	install -m 644 turqstat.dok $(DESTDIR)@datadir@/doc/turqstat/sv/
+@NOINST@	install -m 644 turqstat.1   $(DESTDIR)@mandir@/man1/
+@NOINST@	install -m 644 turqstat-sv.1 $(DESTDIR)@mandir@/sv/man1/turqstat.1
 
 # Binary
 turqstat@EXEEXT@: $(OBJS) $(DEF)
