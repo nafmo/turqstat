@@ -2102,7 +2102,7 @@ if test "$qt" = "yes"; then
 echo "configure:2103: checking for Qt include files" >&5
   if test "$QTDIR" != ""; then
     if test -e $QTDIR'/include/qapp.h'; then
-      QTINCLUDE=$QTDIR'/include/qapp.h'
+      QTINCLUDE=$QTDIR'/include'
     fi
   fi
   if test "$QTINCLUDE" = ""; then
