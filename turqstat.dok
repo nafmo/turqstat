@@ -277,6 +277,8 @@ HISTORIK
   Fixade fel som kraschade newsspoolst”det.
 2001-02-08 - v2.0.2 -
   Korrigeringar i Debianpaketering.
+2001-07-04 - v2.0.3 -
+  Fixade big-endian-arkitekturer.
 
 
 BIFOGADE FILER

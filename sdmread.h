@@ -1,4 +1,4 @@
-// Copyright (c) 1999-2000 Peter Karlsson
+// Copyright (c) 1999-2001 Peter Karlsson
 //
 // $Id$
 //
@@ -19,12 +19,8 @@
 #define __SDMREAD_H
 
 #include <config.h>
-#ifdef HAVE_STDINT_H
-# include <stdint.h>
-#else
-# include "datatypes.h"
-#endif
 
+#include "datatypes.h"
 #include "arearead.h"
 #include "utility.h"
 
@@ -46,25 +42,25 @@ protected:
 
     struct sdmhead_s
     {
-        uint8_t   fromusername[36];
-        uint8_t   tousername[36];
-        uint8_t   subject[72];
-        uint8_t   datetime[20];       // "Dd Mmm Yy  HH:MM:SS"
+        uint8_t     fromusername[36];
+        uint8_t     tousername[36];
+        uint8_t     subject[72];
+        uint8_t     datetime[20];   // "Dd Mmm Yy  HH:MM:SS"
                                     // "Www Dd Mmm Yy HH:MM"
-        uint16_t  timesread;
-        uint16_t  destnode;
-        uint16_t  orignode;
-        uint16_t  cost;
-        uint16_t  orignet;
-        uint16_t  destnet;
+        le_uint16_t timesread;
+        le_uint16_t destnode;
+        le_uint16_t orignode;
+        le_uint16_t cost;
+        le_uint16_t orignet;
+        le_uint16_t destnet;
         union
         {
             struct // FTSC style
             {
-                uint16_t  destzone;
-                uint16_t  origzone;
-                uint16_t  destpoint;
-                uint16_t  origpoint;
+                le_uint16_t  destzone;
+                le_uint16_t  origzone;
+                le_uint16_t  destpoint;
+                le_uint16_t  origpoint;
             } ftsc;
             struct // Opus style
             {
@@ -72,9 +68,9 @@ protected:
                 stamp_s arrived;
             } opus;
         };
-        uint16_t  replyto;
-        uint16_t  attribute;
-        uint16_t  nextreply;
+        le_uint16_t  replyto;
+        le_uint16_t  attribute;
+        le_uint16_t  nextreply;
     };
 };
 

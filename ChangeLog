@@ -1,3 +1,17 @@
+2001-07-04 - peter karlsson <peter@softwolves.pp.se>
+  Makefile.in
+  configure.in
+  datatypes.cpp
+  datatypes.h
+  fdapxread.h
+  jamread.h
+  mypointread.h
+  sdmread.h
+  squishread.h
+  tanstaaflread.h
+  debian/
+    Made it work on big-endian architectures.
+
 2001-02-08 - peter karlsson <peter@softwolves.pp.se>
   debian/
     Explicitly list only little-endian architectures in Debian packaging.

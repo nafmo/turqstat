@@ -1,4 +1,4 @@
-// Copyright (c) 1999-2000 Peter Karlsson
+// Copyright (c) 1999-2001 Peter Karlsson
 //
 // $Id$
 //
@@ -19,12 +19,8 @@
 #define __SQUISHREAD_H
 
 #include <config.h>
-#ifdef HAVE_STDINT_H
-# include <stdint.h>
-#else
-# include "datatypes.h"
-#endif
 
+#include "datatypes.h"
 #include "arearead.h"
 #include "utility.h"
 
@@ -50,35 +46,35 @@ protected:
     // .SQD
     struct sqbase_s
     {
-        uint16_t  len;
-        uint16_t  reserved;
-        uint32_t  num_msg;
-        uint32_t  high_msg;
-        uint32_t  skip_msg;
-        uint32_t  high_water;
-        uint32_t  uid;
-        uint8_t   base[80];
-        uint32_t  begin_frame;
-        uint32_t  last_frame;
-        uint32_t  free_frame;
-        uint32_t  last_free_frame;
-        uint32_t  end_frame;
-        uint32_t  max_msg;
-        uint16_t  keep_days;
-        uint16_t  sz_sqhdr;
-        uint8_t   reserved2[124];
+        le_uint16_t len;
+        le_uint16_t reserved;
+        le_uint32_t num_msg;
+        le_uint32_t high_msg;
+        le_uint32_t skip_msg;
+        le_uint32_t high_water;
+        le_uint32_t uid;
+        uint8_t     base[80];
+        le_uint32_t begin_frame;
+        le_uint32_t last_frame;
+        le_uint32_t free_frame;
+        le_uint32_t last_free_frame;
+        le_uint32_t end_frame;
+        le_uint32_t max_msg;
+        le_uint16_t keep_days;
+        le_uint16_t sz_sqhdr;
+        uint8_t     reserved2[124];
     };
 
     struct sqhdr_s
     {
-        uint32_t  id;     //0xAFAE4453
-        uint32_t  next_frame;
-        uint32_t  prev_frame;
-        uint32_t  frame_length;
-        uint32_t  msg_length; //-sizeof(xmsg_s)-clen
-        uint32_t  clen;
-        uint16_t  frame_type;
-        uint16_t  reserved;
+        le_uint32_t id;     //0xAFAE4453
+        le_uint32_t next_frame;
+        le_uint32_t prev_frame;
+        le_uint32_t frame_length;
+        le_uint32_t msg_length; //-sizeof(xmsg_s)-clen
+        le_uint32_t clen;
+        le_uint16_t frame_type;
+        le_uint16_t reserved;
     };
 
     static const uint32_t Squish_id = 0xAFAE4453;
@@ -87,25 +83,25 @@ protected:
 
     struct xmsg_s
     {
-        uint32_t  attr;
-        uint8_t   from[36];
-        uint8_t   to[36];
-        uint8_t   subject[72];
-        uint16_t  origzone;
-        uint16_t  orignet;
-        uint16_t  orignode;
-        uint16_t  origpoint;
-        uint16_t  destzone;
-        uint16_t  destnet;
-        uint16_t  destnode;
-        uint16_t  destpoint;
-        stamp_s   date_written;
-        stamp_s   date_arrived;
-        int16_t   utc_ofs;
-        uint32_t  replyto;
-        uint32_t  replies[9];
-        uint32_t  umsgid;
-        uint8_t   ftsc_date[20];
+        le_uint32_t attr;
+        uint8_t     from[36];
+        uint8_t     to[36];
+        uint8_t     subject[72];
+        le_uint16_t origzone;
+        le_uint16_t orignet;
+        le_uint16_t orignode;
+        le_uint16_t origpoint;
+        le_uint16_t destzone;
+        le_uint16_t destnet;
+        le_uint16_t destnode;
+        le_uint16_t destpoint;
+        stamp_s     date_written;
+        stamp_s     date_arrived;
+        le_int16_t  utc_ofs;
+        le_uint32_t replyto;
+        le_uint32_t replies[9];
+        le_uint32_t umsgid;
+        uint8_t     ftsc_date[20];
     };
 };
 

@@ -1,4 +1,4 @@
-// Copyright (c) 1999-2000 Peter Karlsson
+// Copyright (c) 1999-2001 Peter Karlsson
 //
 // $Id$
 //
@@ -19,12 +19,8 @@
 #define __MYPOINTREAD_H
 
 #include <config.h>
-#ifdef HAVE_STDINT_H
-# include <stdint.h>
-#else
-# include "datatypes.h"
-#endif
 
+#include "datatypes.h"
 #include "arearead.h"
 
 #if defined(__GNUC__) || defined(__EMX__)
@@ -55,22 +51,22 @@ protected:
         uint8_t       echoid[71];
         uint8_t       deskr[26];
         uint8_t       origin[51];
-        uint16_t      zone;
-        uint16_t      net;
-        uint16_t      node;
-        uint16_t      point;
-        uint16_t      bosszone;
-        uint16_t      bossnet;
-        uint16_t      bossnode;
-        uint16_t      bosspoint;
-        uint16_t      routezone;
-        uint16_t      routenet;
-        uint16_t      routenode;
-        uint16_t      routepoint;
-        uint16_t      delday;
+        le_uint16_t   zone;
+        le_uint16_t   net;
+        le_uint16_t   node;
+        le_uint16_t   point;
+        le_uint16_t   bosszone;
+        le_uint16_t   bossnet;
+        le_uint16_t   bossnode;
+        le_uint16_t   bosspoint;
+        le_uint16_t   routezone;
+        le_uint16_t   routenet;
+        le_uint16_t   routenode;
+        le_uint16_t   routepoint;
+        le_uint16_t   delday;
         uint8_t       ro;
         uint8_t       arenum;
-        uint16_t      delnum;
+        le_uint16_t   delnum;
         uint8_t       spare[14];      // Total size: 192
         uint8_t       fill[256-192-2];// Fill to 256 bytes
     };
@@ -81,60 +77,60 @@ protected:
     {
         struct
         {
-            uint32_t      delim;          // $feffffff
-            uint16_t      ltrsiz;
-            uint32_t      arrtim;
+            le_uint32_t   delim;          // $feffffff
+            le_uint16_t   ltrsiz;
+            le_uint32_t   arrtim;
             uint8_t       area;
             uint8_t       chrset;
-            uint16_t      destzone;
-            uint16_t      destnet;
-            uint16_t      destnode;
-            uint16_t      destpoint;
-            uint16_t      origzone;
-            uint16_t      orignet;
-            uint16_t      orignode;
-            uint16_t      origpoint;
-            uint32_t      ltrtim;
-            uint16_t      fromp;
-            uint16_t      subjp;
-            uint16_t      ltridp;
-            uint16_t      qltrid;
-            uint16_t      replyp;
-            uint16_t      qreply;
-            uint16_t      textp;
-            uint16_t      originp;
-            uint16_t      lflags;
-            uint16_t      flags1;
+            le_uint16_t   destzone;
+            le_uint16_t   destnet;
+            le_uint16_t   destnode;
+            le_uint16_t   destpoint;
+            le_uint16_t   origzone;
+            le_uint16_t   orignet;
+            le_uint16_t   orignode;
+            le_uint16_t   origpoint;
+            le_uint32_t   ltrtim;
+            le_uint16_t   fromp;
+            le_uint16_t   subjp;
+            le_uint16_t   ltridp;
+            le_uint16_t   qltrid;
+            le_uint16_t   replyp;
+            le_uint16_t   qreply;
+            le_uint16_t   textp;
+            le_uint16_t   originp;
+            le_uint16_t   lflags;
+            le_uint16_t   flags1;
             uint8_t       flags2;
             uint8_t       split;
-            uint16_t      spare;
+            le_uint16_t      spare;
         } version2;
         struct
         {
-            uint32_t      delim;          // $feffffff
-            uint16_t      ltrsiz;
-            uint32_t      arrtim;
+            le_uint32_t   delim;          // $feffffff
+            le_uint16_t   ltrsiz;
+            le_uint32_t   arrtim;
             uint8_t       area;
             uint8_t       chrset;
-            uint16_t      destzone;
-            uint16_t      destnet;
-            uint16_t      destnode;
-            uint16_t      destpoint;
-            uint16_t      origzone;
-            uint16_t      orignet;
-            uint16_t      orignode;
-            uint16_t      origpoint;
-            uint32_t      ltrtim;
-            uint16_t      fromp;
-            uint16_t      subjp;
-            uint16_t      ltridp;
-            uint32_t      qltrid;
-            uint16_t      replyp;
-            uint32_t      qreply;
-            uint16_t      textp;
-            uint16_t      originp;
-            uint16_t      lflags;
-            uint16_t      flags1;
+            le_uint16_t   destzone;
+            le_uint16_t   destnet;
+            le_uint16_t   destnode;
+            le_uint16_t   destpoint;
+            le_uint16_t   origzone;
+            le_uint16_t   orignet;
+            le_uint16_t   orignode;
+            le_uint16_t   origpoint;
+            le_uint32_t   ltrtim;
+            le_uint16_t   fromp;
+            le_uint16_t   subjp;
+            le_uint16_t   ltridp;
+            le_uint32_t   qltrid;
+            le_uint16_t   replyp;
+            le_uint32_t   qreply;
+            le_uint16_t   textp;
+            le_uint16_t   originp;
+            le_uint16_t   lflags;
+            le_uint16_t   flags1;
             uint8_t       flags2;
             uint8_t       split;          // Total size: 58 byte
             uint8_t       spare[64-58];   // Fill to 64 bytes
@@ -145,13 +141,13 @@ protected:
     {
         struct
         {
-            uint16_t      ltrsiz;
-            uint16_t      ltrnum;
+            le_uint16_t   ltrsiz;
+            le_uint16_t   ltrnum;
         } version2;
         struct
         {
-            uint16_t      ltrsiz;
-            uint32_t      ltrnum;
+            le_uint16_t   ltrsiz;
+            le_uint32_t   ltrnum;
         } version3;
     };
 

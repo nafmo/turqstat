@@ -2,11 +2,11 @@ Source: turqstat
 Section: mail
 Priority: optional
 Maintainer: peter karlsson <peterk@debian.org>
-Standards-Version: 3.2.1
+Standards-Version: 3.0.1
 Build-Depends: debhelper, libqt2.1-dev | libqt2.2-dev
 
 Package: turqstat
-Architecture: i386 ia64 alpha arm mipsel hurd-i386
+Architecture: any
 Depends: ${shlibs:Depends}
 Suggests: crashmail | news-transport-system
 Description: Fidonet and Usenet message base statistics program
@@ -18,7 +18,7 @@ Description: Fidonet and Usenet message base statistics program
  This is the command line based version.
 
 Package: xturqstat
-Architecture: i386 ia64 alpha arm mipsel hurd-i386
+Architecture: any
 Depends: ${shlibs:Depends}
 Suggests: crashmail | news-transport-system, turqstat
 Description: Fidonet and Usenet message base statistics program for X

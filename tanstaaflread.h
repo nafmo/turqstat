@@ -1,4 +1,4 @@
-// Copyright (c) 1999-2000 Peter Karlsson
+// Copyright (c) 1999-2001 Peter Karlsson
 //
 // $Id$
 //
@@ -19,12 +19,8 @@
 #define __TANSTAAFLREAD_H
 
 #include <config.h>
-#ifdef HAVE_STDINT_H
-# include <stdint.h>
-#else
-# include "datatypes.h"
-#endif
 
+#include "datatypes.h"
 #include "arearead.h"
 
 #if defined(__GNUC__) || defined(__EMX__)
@@ -49,30 +45,30 @@ protected:
 
     struct addr_s
     {
-        uint16_t  zone, net, node, point;
+        le_uint16_t  zone, net, node, point;
     };
 
     struct msghdrtfl_s /* msghdr.tfl */
     {
-        uint8_t   recipientname[36];
-        uint8_t   sendername[36];
-        uint8_t   subject[72];
-        uint32_t  msgidcrc;
-        uint32_t  replycrc;
-        uint32_t  replyto;
-        uint32_t  replynext;
-        uint32_t  replyprev;
-        uint32_t  timewritten;
-        uint32_t  replychild;
-        addr_s    recipientaddress;
-        addr_s    senderaddress;
-        uint32_t  statusflags;
-        uint32_t  txtpos;
-        uint32_t  txtsize;
-        uint16_t  foldernumber;
-        uint16_t  foldernumberreplyto;
-        uint16_t  foldernumberreplynext;
-        uint16_t  foldernumberreplyprev;
+        uint8_t     recipientname[36];
+        uint8_t     sendername[36];
+        uint8_t     subject[72];
+        le_uint32_t msgidcrc;
+        le_uint32_t replycrc;
+        le_uint32_t replyto;
+        le_uint32_t replynext;
+        le_uint32_t replyprev;
+        le_uint32_t timewritten;
+        le_uint32_t replychild;
+        addr_s      recipientaddress;
+        addr_s      senderaddress;
+        le_uint32_t statusflags;
+        le_uint32_t txtpos;
+        le_uint32_t txtsize;
+        le_uint16_t foldernumber;
+        le_uint16_t foldernumberreplyto;
+        le_uint16_t foldernumberreplynext;
+        le_uint16_t foldernumberreplyprev;
     };
 
     static const uint32_t Tanstaafl_local   = 0x01;
@@ -81,11 +77,11 @@ protected:
 
     struct msgstattfl_s /* msgstat.tfl */
     {
-        uint16_t  msgbaseversion;
-        uint8_t   reserved[254];
-        uint32_t  totalmsgs[2000];
-        uint32_t  lastreadptrs[2000];
-        uint32_t  unread[2000];
+        le_uint16_t msgbaseversion;
+        uint8_t     reserved[254];
+        le_uint32_t totalmsgs[2000];
+        le_uint32_t lastreadptrs[2000];
+        le_uint32_t unread[2000];
     };
 
     static const uint32_t Tanstaafl_msgbaseversion = 1;

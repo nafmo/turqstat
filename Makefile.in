@@ -11,8 +11,8 @@ VPATH=@scrdir@
 LIBS=@LIBS@
 QTLIBS=@QTLIB@
 DESTDIR=
-OBJS=turqstat.o statengine.o statview.o squishread.o fdapxread.o jamread.o mypointread.o utility.o sdmread.o tanstaaflread.o newsspoolread.o mytime.o output.o
-QTOBJS=qtgui.o moc_qtgui.o qtlist.o moc_qtlist.o qtreport.o moc_qtreport.o qtbars.o moc_qtbars.o statengine.o statview.o squishread.o fdapxread.o jamread.o mypointread.o utility.o sdmread.o tanstaaflread.o newsspoolread.o mytime.o outputqt.o
+OBJS=turqstat.o statengine.o statview.o squishread.o fdapxread.o jamread.o mypointread.o utility.o sdmread.o tanstaaflread.o newsspoolread.o mytime.o output.o datatypes.o
+QTOBJS=qtgui.o moc_qtgui.o qtlist.o moc_qtlist.o qtreport.o moc_qtreport.o qtbars.o moc_qtbars.o statengine.o statview.o squishread.o fdapxread.o jamread.o mypointread.o utility.o sdmread.o tanstaaflread.o newsspoolread.o mytime.o outputqt.o datatypes.o
 @QT@EXE=turqstat@EXEEXT@ xturqstat@EXEEXT@
 @NOQT@EXE=turqstat@EXEEXT@
 DEF=@DEF@
@@ -105,8 +105,11 @@ newsspoolread.o: newsspoolread.cpp newsspoolread.h arearead.h utility.h config.h
 mytime.o: mytime.cpp mytime.h
 	@CXX@ $(CXXFLAGS) -c $(srcdir)/mytime.cpp
 
-output.o: output.cpp output.h
+output.o: output.cpp output.h config.h
 	@CXX@ $(CXXFLAGS) -c $(srcdir)/output.cpp
+
+datatypes.o: datatypes.cpp datatypes.h config.h
+	@CXX@ $(CXXFLAGS) -c $(srcdir)/datatypes.cpp
 
 @QT@qtgui.o: qtgui.cpp qtgui.h qtlist.h qtreport.h statengine.h arearead.h squishread.h fdapxread.h jamread.h mypointread.h sdmread.h tanstaaflread.h newsspoolread.h utility.h qtbars.h mytime.h
 @QT@	@CXX@ $(CXXFLAGS) $(QTFLAGS) -c $(srcdir)/qtgui.cpp

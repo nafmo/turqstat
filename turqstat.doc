@@ -277,6 +277,8 @@ HISTORY
   Fix crasher bug in news spool support.
 2001-02-08 - v2.0.2 -
   Corrections to Debian packaging.
+2001-07-04 - v2.0.3 -
+  Fix big-endian architectures.
 
 
 INCLUDED FILES
