@@ -1,4 +1,4 @@
-Turquoise SuperStat 1.5 - Ett m”tesstatistikprogram f”r Fidonet och Usenet
+Turquoise SuperStat 2.0 - Ett m”tesstatistikprogram f”r Fidonet och Usenet
 (c) Copyright 1998-2000 Peter Karlsson.
 A Softwolves Software Release in 2000
 
@@ -44,7 +44,7 @@ Squish, SquishMail and Maximus are trademarks of Scott J. Dudley.
 mktime.c (emx+gcc) -- Copyright (c) 1990-1996 by Eberhard Mattes
 
 
-ANVŽNDNING
+ANVŽNDNING (KOMMANDORADSVERSIONEN)
 
 Turquoise SuperStat l„ser inneh†llet i en Fidonetmeddelandebas i n†got av de
 st”dda formaten, eller Usenetgrupper i det vanliga "news spool"-formatet, och
@@ -171,6 +171,44 @@ katalogen d:\msgbase\thisarea. Flaggorna „r skiftl„gesk„nsliga.
 visar en snabbhj„lpsk„rm med en ”versikt ”ver tillg„ngliga flaggor.
 
 
+ANVŽNDNING (GRAFISK VERSION)
+
+Den grafiska versionen av Turquoise SuperStat har samma funktionalitet som
+kommandoradsversionen, men med alla funktioner tillg„ngliga genom ett
+l„ttanv„nt grafiskt gr„nssnitt. Den grafiska versionen byggs med Qt.
+
+Huvudf”nstret i den grafiska versionen inneh†ller statistik om den f”r
+n„rvarande valda dataupps„ttningen, vilken ursprungligen „r tom. F”r att ladda
+statistik m†ste du anv„nda menyerna, enligt nedan.
+
+ Arkiv - ™ppna meddelandebas
+
+L„ser statistik f”r en meddelandebas och visar statistik i huvudf”nstret.
+
+ Arkiv - T”m data
+
+T”mmer all inl„st data och †terst„ller den visade statistiken.
+
+ Arkiv - Spara rapport
+
+Sparar en rapport f”r den f”r tillf„llet inl„sta upps„ttningen statistik till
+en textfil, i samma format som kommandoradsversionen anv„nder.
+
+ Arkiv - Avsluta
+
+L„mnar programmet.
+
+ Redigera - V„lj startdatum
+
+L†ter dig v„lja fr†n hur m†nga dagar bak†t statistiken skall l„sas in n„r du
+anv„nder dig av Arkiv - ™ppna meddelandebas.
+
+ Visa
+
+Denna meny visar de olika topplistorna som finns att tillg†. Se stycket om
+kommandoradsversionen f”r mer detaljerade beskrivningar.
+
+
 TIDSSTŽMPLAR
 
 F”r att best„mma vilka meddelanden som skall t„ckas av statistiken eller inte
@@ -229,7 +267,7 @@ HISTORIK
   Anv„nder Mingw32 i st„llet f”r CygWin f”r Win32-versionen.
   F”rb„ttrat st”d f”r news.
   Diverse felr„ttelser.
-2000-  -   - v1.5 -
+2000-11-26 - v1.5 -
   Egna tidsfunktioner f”r att motverka tidszonsproblem i C-biblioteket.
   Gjorde hj„lpsk„rmen mer l„ttl„slig.
   F”rtydligade dokumentationen.
@@ -241,11 +279,13 @@ BIFOGADE FILER
 
 OS/2- och Win32-distribution:
 
-turqstat.doc - Dokumentation p† engelska
-turqstat.dok - Denna dokumentation
-turqstat.1   - Unixmanualsida
-turqstat-sv.1- Unixmanualsida p† svenska
-COPYING      - GNU General Public License, version 2
+turqstat.doc  - Dokumentation p† engelska
+turqstat.dok  - Denna dokumentation
+turqstat.1    - Unixmanualsida
+turqstat-sv.1 - Unixmanualsida p† svenska
+xturqstat.1   - Unixmanualsida, grafisk version
+xturqstat-sv.1- Unixmanualsida p† svenska, grafisk version
+COPYING       - GNU General Public License, version 2
 
 src/-katalogen:
   ChangeLog       - Logg ”ver „ndringar i k„llkoden
@@ -307,6 +347,9 @@ Programmet utvecklades under OS/2 med EMX 0.9d/GNU C/C++ 2.8.1 och Debian 2.2
 med gcc 2.95.2, och har „ven testats under Mingw32 (gcc 2.95.2). Det b”r
 kompilera under valfri standard-C++-kompilator. Programmet m†ste troligen
 g”ras om f”r att st”da processorer av typen "big endian".
+
+Den grafiska versionen kr„ver att Qt version 2.1 eller senare finns
+installerat.
 
 Om du vill skapa ett Debianpaket m†ste du installera Debians utvecklingspaket,
 bland andra debhelper och fakeroot (om du inte vill kompilera som root).
