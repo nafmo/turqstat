@@ -8,14 +8,16 @@
 // and copy the emx library sources if you keep the copyright message
 // intact.
 //
-// Modifications for Turquoise SuperStat copyright (c) 2000 Peter Karlsson.
+// Modifications for Turquoise SuperStat copyright (c) 2000-2001 Peter
+// Karlsson.
 
 #include <time.h>
 #include <limits.h>
 
 #include "mytime.h"
+#include "utility.h"
 
-static int day(int, int, int);
+static long day(long, long, long);
 
 // This variation of the mktime function will not do GMT adjustments on the
 // output.
@@ -42,6 +44,9 @@ time_t my_mktime(struct tm *t)
     }
 
     x = day(t->tm_year + 1900, t->tm_mon + 1, t->tm_mday);
+    if (-1 == x)
+        return (time_t) -1;
+
     /* 719528 = day(1970, 1, 1) */
     r = (long long) (x - 719528) * 24 * 60 * 60;
 
@@ -49,7 +54,7 @@ time_t my_mktime(struct tm *t)
     x = t->tm_sec + 60 * t->tm_min + 60 * 60 * t->tm_hour;
 
     r += x;
-    if (r < 0 || r > ULONG_MAX || r == (time_t)-1)
+    if (r < 0 || r > INFINITY || r == (time_t)-1)
         return (time_t) -1;
     return (time_t) r;
 }
@@ -57,9 +62,9 @@ time_t my_mktime(struct tm *t)
 /* year >= 1582, 1 <= month <= 12, 1 <= day <= 31 */
 
 /** Helper function that returns the day number for a given date. */
-static int day(int year, int month, int day)
+static long day(long year, long month, long day)
 {
-    int result;
+    long result;
 
     if (year < 1582 || year >= INT_MAX / 365)
         return -1;
