@@ -1,3 +1,7 @@
+2000-03-25 - peter karlsson <peter@softwolves.pp.se>
+  statview.cpp
+    Does not say "senders and recipients" for news areas.
+
 2000-03-22 - peter karlsson <peter@softwolves.pp.se>
   Makefile.CygWin
     Support for news spools.
@@ -161,7 +165,7 @@
     Added support for "original content per message" top list
     (nonfunctional at the moment)
 
-1999-08-21 - peter karlsson <peter@softwolves.pp.se>
+1999-07-21 - peter karlsson <peter@softwolves.pp.se>
   Makefile.CygWin
   turqstat.cpp
   utility.cpp

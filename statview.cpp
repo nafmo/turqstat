@@ -425,8 +425,10 @@ bool StatView::CreateReport(StatEngine *engine, string filename,
     if (topreceived || topwritten)
     {
         report << "A total of " << engine->GetTotalPeople()
-               << " people were identified (senders and recipients)"
-               << endl;
+               << " people were identified";
+        if (!news)
+            report << "(senders and recipients)";
+        report << '.' << endl;
         report << endl;
     }
 
