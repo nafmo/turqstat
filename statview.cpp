@@ -41,7 +41,8 @@ bool StatView::CreateReport(StatEngine *engine, String filename,
     report << "Turqoise * Message area statistics" << endl;
     report << "==================================" << endl;
     report << endl;
-    report << "(c) Copyright 1998 Peter Karlsson" << endl;
+    report << "(c) Copyright 1998-1999 Peter Karlsson" << endl;
+    report << "This is a BETA version" << endl;
     report << endl;
 
     report.form("This report covers %u messages that were received at this "
@@ -58,20 +59,20 @@ bool StatView::CreateReport(StatEngine *engine, String filename,
     struct tm *p2 = localtime(&latest);
 
     report.form("%04d-%02d-%02d %02d.%02d.%02d",
-                p1->tm_year + 1900, p1->tm_mon + 1, p1->tm_mday,
-                p1->tm_hour, p1->tm_min, p1->tm_sec);
+                p2->tm_year + 1900, p2->tm_mon + 1, p2->tm_mday,
+                p2->tm_hour, p2->tm_min, p2->tm_sec);
 
     report << " (written between ";
 
     time_t wearliest = engine->GetEarliestWritten();
-    struct tm *p3 = localtime(&earliest);
+    struct tm *p3 = localtime(&wearliest);
 
     report.form("%04d-%02d-%02d %02d.%02d.%02d and ",
                 p3->tm_year + 1900, p3->tm_mon + 1, p3->tm_mday,
                 p3->tm_hour, p3->tm_min, p3->tm_sec);
 
     time_t wlatest = engine->GetLastWritten();
-    struct tm *p4 = localtime(&latest);
+    struct tm *p4 = localtime(&wlatest);
 
     report.form("%04d-%02d-%02d %02d.%02d.%02d)",
                 p4->tm_year + 1900, p4->tm_mon + 1, p4->tm_mday,
@@ -105,9 +106,10 @@ bool StatView::CreateReport(StatEngine *engine, String filename,
             if (data.messageswritten > 2 && data.bytesquoted > 0)
             {
                 unsigned percentquotes =
-                    data.byteswritten ? ((100000 * data.bytesquoted) /
-                                         data.byteswritten)
-                                      : 0;
+                    data.byteswritten ?
+                      ((100000 * (unsigned long long) data.bytesquoted) /
+                       (unsigned long long) data.byteswritten)
+                      : 0;
                 if (percentquotes == oldpercent)
                 {
                     report << "      ";
@@ -119,7 +121,15 @@ bool StatView::CreateReport(StatEngine *engine, String filename,
 
                 unsigned integ = percentquotes / 1000;
                 unsigned fract = (percentquotes - integ * 1000 + 5) / 10;
-                report << Mangle(data.name, 35);
+                if (100 == fract)
+                {
+                    fract = 0;
+                    integ ++;
+                }
+                if ("" == data.name)
+                    report << "(none)                             ";
+                else
+                    report << Mangle(data.name, 35);
                 report.form("%5u ", data.messageswritten);
                 report << Mangle(data.address, 15);
                 report.form("%3u.%02u%%", integ, fract) << endl;
@@ -164,13 +174,21 @@ bool StatView::CreateReport(StatEngine *engine, String filename,
                 report.form("%4u. ", place);
             }
 
-            unsigned percentquotes =
+            unsigned long long percentquotes =
                 data.byteswritten ? ((10000 * data.bytesquoted) /
                                      data.byteswritten)
                              : 0;
             unsigned integ = percentquotes / 100;
             unsigned fract = (percentquotes - integ * 100 + 5) / 10;
-            report << Mangle(data.name, 35);
+            if (10 == fract)
+            {
+                fract = 0;
+                integ ++;
+            }
+            if ("" == data.name)
+                report << "(none)                             ";
+            else
+                report << Mangle(data.name, 35);
             report.form("%5u ", data.messageswritten);
             report << Mangle(data.address, 15);
             report.form(" %7u %3u.%1u%%",
@@ -216,7 +234,10 @@ bool StatView::CreateReport(StatEngine *engine, String filename,
                 report.form("%4u. ", place);
             }
 
-            report << Mangle(data.name, 35);
+            if ("" == data.name)
+                report << "(none)                             ";
+            else
+                report << Mangle(data.name, 35);
             report.form("%5u %5u ",
                         data.messagesreceived,
                         data.messageswritten);
@@ -236,7 +257,7 @@ bool StatView::CreateReport(StatEngine *engine, String filename,
         report << endl;
     }
 
-    if (topread)
+    if (topsubjects)
     {
         report << "-------------------------------------------"
                   "----------------------------------" << endl;
@@ -267,7 +288,11 @@ bool StatView::CreateReport(StatEngine *engine, String filename,
             }
 
 
-            report << Mangle(data.subject, 55);
+            if ("" == data.subject)
+                report << "(none)                                    "
+                          "             ";
+            else
+                report << Mangle(data.subject, 55);
             report.form("%6u %7u", data.count, data.bytes);
 
             report << endl;
