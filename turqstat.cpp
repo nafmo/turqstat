@@ -133,7 +133,7 @@ int main(int argc, char *argv[])
                 cout << "  -j             JAM style message base" << endl;
                 cout << "  -f             FDAPX/w style message base (needs -a)"
                      << endl;
-                cout << "  -f             Tanstaafl style message base (needs -a)"
+                cout << "  -t             Tanstaafl style message base (needs -a)"
                      << endl;
                 cout << "  -p             MyPoint style message base (needs -a)"
                      << endl;
