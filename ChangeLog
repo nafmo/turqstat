@@ -1,3 +1,15 @@
+2001-11-09 - peter karlsson <peter@softwolves.pp.se>
+  nntpread.cpp
+  nntpread.h
+    fdopen() on sockets is broken on Win32 and OS/2, so instead use own
+    buffering on these platforms.
+
+2001-11-04 - peter karlsson <peter@softwolves.pp.se>
+  config.h.in
+  configure.in
+  nntpread.cpp
+    Fixes for Win32 and OS/2.
+
 2001-10-31 - peter karlsson <peter@softwolves.pp.se>
   turqstat.dok
   turqstat.doc
