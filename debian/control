@@ -3,7 +3,7 @@ Section: mail
 Priority: optional
 Maintainer: peter karlsson <peterk@debian.org>
 Standards-Version: 3.0.1
-Build-Depends: debhelper, libqt2.1-dev | libqt2.2-dev
+Build-Depends: debhelper, libqt-dev (>= 2:2.1.0)
 
 Package: turqstat
 Architecture: any
