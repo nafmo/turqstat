@@ -174,21 +174,8 @@ void StatEngine::AddData(string fromname, string toname, string subject,
             fromname = fromname.substr(1, fromname.length() - 2);
 
         // kill QP
-        pos = fromname.find("=?iso-8859-1?Q?");
-        if (-1 == pos) pos = fromname.find("=?ISO-8859-1?Q?");
-        while (pos != -1)
-        {
-            int endsat = fromname.find("?=", pos + 1);
-
-            fromname = string(fromname.substr(0, pos) +
-                              DeQP(fromname.substr(pos + 15,
-                                                   endsat - pos - 15))) +
-                       fromname.substr(endsat + 2);
-
-            int pos1 = fromname.find("=?ISO-8859-1?Q?", pos + 1);
-            pos = fromname.find("=?iso-8859-1?Q?", pos + 1);
-            if ((pos1 != -1 && pos1 < pos) || pos == -1) pos = pos1;
-        }
+        fromname = DeQP(fromname);
+        subject = DeQP(subject);
 
         if (0 == timewritten)
             timewritten = timereceived;
@@ -266,7 +253,8 @@ void StatEngine::AddData(string fromname, string toname, string subject,
     {
         int nextcr = msgbody.find('\n', currindex);
         int nextcr2 = msgbody.find('\r', currindex);
-        if (nextcr2 < nextcr || -1 == nextcr) nextcr = nextcr2;
+        if (nextcr2 >= 0 && (nextcr2 < nextcr || -1 == nextcr))
+            nextcr = nextcr2;
         if (-1 == nextcr) nextcr = msgbody.length();
         string thisline = msgbody.substr((int) currindex, nextcr - currindex);
 
@@ -656,7 +644,8 @@ string StatEngine::ParseAddress(string controldata, string msgbody)
         // Locate last '(' and ')' parenthesis on line
         int endsat = msgbody.find('\n', index);
         int endsat2 = msgbody.find('\r', index);
-        if (endsat2 < endsat || -1 == endsat) endsat = endsat2;
+        if (endsat2 >= 0 && (endsat2 < endsat || -1 == endsat))
+            endsat = endsat2;
         if (-1 == endsat) endsat = msgbody.length();
         int leftparen = msgbody.find('(', index), prevleftparen = leftparen;
         while (leftparen != -1 && leftparen < endsat)
@@ -712,20 +701,39 @@ string StatEngine::ParseAddress(string controldata, string msgbody)
 string StatEngine::DeQP(string qp)
 {
     string rc = "", hex = "";
-    int qpchar;
+    int qpchar, pos, endpos, current = 0;
 
-    for (unsigned i = 0; i < qp.length(); i ++)
-        if ('=' == qp[i])
+    pos = qp.find("=?");
+    while (pos >= 0)
+    {
+        if (0 == fcompare(qp.substr(pos, 15), string("=?iso-8859-1?Q?")))
         {
-            hex = qp.substr(i + 1, 2);
-            sscanf(hex.c_str(), "%x", &qpchar);
-            rc += (char) qpchar;
-            i += 2;
+            rc += qp.substr(current, pos - current);
+            endpos = qp.find("?=", pos + 15);
+            current = endpos + 2;
+            for (int i = pos + 15; i < endpos; i ++)
+            {
+                if ('=' == qp[i])
+                {
+                    hex = qp.substr(i + 1, 2);
+                    sscanf(hex.c_str(), "%x", &qpchar);
+                    rc += (char) qpchar;
+                    i += 2;
+                }
+                else if ('_' == qp[i])
+                    rc += ' ';
+                else
+                    rc += qp[i];
+            }
+            pos = current;
         }
-        else if ('_' == qp[i])
-            rc += ' ';
         else
-            rc += qp[i];
+            pos ++;
+
+        pos = qp.find("=?", pos);
+    }
+
+    rc += qp.substr(current);
 
     return rc;
 }
