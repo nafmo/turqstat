@@ -1,3 +1,14 @@
+2001-06-10 - peter karlsson <peter@softwolves.pp.se>
+  convert.cpp
+  convert.h
+  mappings/makemappings.pl
+  mappings.cpp
+  mappings.h
+    Use variable length output encoding tables.
+
+  teal.cpp
+    Added option to list known character set names.
+
 2001-05-25 - peter karlsson <peter@softwolves.pp.se>
   turqstat.doc
   turqstat.dok
