@@ -164,7 +164,7 @@ convert.o: convert.cpp convert.h mappings.h utility.h
 @QT@	@CXX@ $(CXXFLAGS) $(QTFLAGS) -c $(srcdir)/outputqt.cpp
 
 # Utility program Teal
-teal@EXEEXT@: teal.o convert.o utility.o
+teal@EXEEXT@: $(TEALOBJS)
 	@CXX@ $(CXXFLAGS) $(LDFLAGS) -o teal@EXEEXT@ $(TEALOBJS) $(LIBS)
 
 teal.o: teal.cpp config.h utility.h convert.h
