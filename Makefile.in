@@ -4,25 +4,29 @@
 
 # Variables
 CXXFLAGS=@CXXFLAGS@ -I. -Wall
+QTFLAGS=-I/usr/include/qt
 LDFLAGS=@LDFLAGS@
 srcdir=@srcdir@
 VPATH=@scrdir@
 LIBS=@LIBS@
+QTLIBS=-lqt
 DESTDIR=
 OBJS=turqstat.o statengine.o statview.o squishread.o fdapxread.o jamread.o mypointread.o utility.o sdmread.o tanstaaflread.o newsspoolread.o mytime.o output.o
+QTOBJS=qtgui.o qtgui.moc.o statengine.o squishread.o fdapxread.o jamread.o mypointread.o utility.o sdmread.o tanstaaflread.o newsspoolread.o mytime.o outputqt.o
+EXE=turqstat@EXEEXT@ qturqstat@EXEEXT@
 DEF=@DEF@
 prefix=@prefix@
 exec_prefix=@exec_prefix@
 
 # Magic targets
-all: turqstat@EXEEXT@
+all: $(EXE)
 
 debian:
 	fakeroot debian/rules binary
 
 clean:
 	-rm $(OBJS)
-	-rm turqstat@EXEEXT@
+	-rm $(EXE)
 
 distclean: clean
 	-rm config.status config.log config.cache config.h Makefile
@@ -41,6 +45,9 @@ debianclean:
 # Binary
 turqstat@EXEEXT@: $(OBJS) $(DEF)
 	@CXX@ $(CXXFLAGS) $(LDFLAGS) -o turqstat@EXEEXT@ $(OBJS) $(DEF) $(LIBS)
+
+qturqstat@EXEEXT@: $(QTOBJS) $(DEF)
+	@CXX@ $(CXXFLAGS) $(QTFLAGS) $(LDFLAGS) -o qturqstat@EXEEXT@ $(QTOBJS) $(DEF) $(QTLIBS)
 
 # Object files
 turqstat.o: turqstat.cpp statengine.h statview.h arearead.h squishread.h fdapxread.h jamread.h mypointread.h version.h tanstaaflread.h config.h mytime.h
@@ -76,11 +83,23 @@ sdmread.o: sdmread.cpp sdmread.h arearead.h statengine.h datatypes.h utility.h c
 newsspoolread.o: newsspoolread.cpp newsspoolread.h arearead.h utility.h config.h output.h
 	@CXX@ $(CXXFLAGS) -c $(srcdir)/newsspoolread.cpp
 
+qtgui.o: qtgui.cpp qtgui.h statengine.h
+	@CXX@ $(CXXFLAGS) $(QTFLAGS) -c $(srcdir)/qtgui.cpp
+
 mytime.o: mytime.cpp mytime.h
 	@CXX@ $(CXXFLAGS) -c $(srcdir)/mytime.cpp
 
 output.o: output.cpp output.h
 	@CXX@ $(CXXFLAGS) -c $(srcdir)/output.cpp
+
+qtgui.moc.o: qtgui.moc.cpp
+	@CXX@ $(CXXFLAGS) $(QTFLAGS) -c -o qtgui.moc.o qtgui.moc.cpp
+
+qtgui.moc.cpp: qtgui.h
+	moc -o qtgui.moc.cpp qtgui.h
+
+outputqt.o: outputqt.cpp output.h
+	@CXX@ $(CXXFLAGS) $(QTFLAGS) -c $(srcdir)/outputqt.cpp
 
 # List phony targets
 .PHONY: all debian clean distclean debianclean install
