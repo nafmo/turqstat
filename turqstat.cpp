@@ -73,6 +73,10 @@ int main(int argc, char *argv[])
          toporiginal = true, topnets = true;
 
     // We don't want timezones here
+#ifdef FOOL_TZSET
+    putenv("TZ=GMT0");
+    tzset();
+#endif
 #ifdef HAVE_TIMEZONE
     timezone = 0;
 #endif

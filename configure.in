@@ -65,11 +65,13 @@ fi
 AC_SUBST(DEF)
 
 dnl Checks for libraries ---------------------------------------------------
+AC_LANG_CPLUSPLUS
 AC_CHECK_LIB($standardcpplib, cout)
 if test "$ac_cv_mingw32" = "yes"; then
   AC_CHECK_LIB(crtdll, _findfirst)
   findfirst=yes
 fi
+AC_LANG_C
 
 dnl Check for header files -------------------------------------------------
 AC_CHECK_HEADERS(limits.h)
@@ -113,7 +115,8 @@ dnl Check for variables ----------------------------------------------------
 
 AC_MSG_CHECKING(for timezone in time.h)
 AC_TRY_COMPILE([ #include <time.h> ], [ timezone = 0; ],
-  AC_DEFINE(HAVE_TIMEZONE) AC_MSG_RESULT(yes),
+  AC_DEFINE(HAVE_TIMEZONE) AC_MSG_RESULT(yes)
+  timezone=yes,
   AC_MSG_RESULT(no)
   AC_MSG_CHECKING(for _timezone in time.h)
   AC_TRY_COMPILE([ #include <time.h> ], [ _timezone = 0; ],
@@ -122,12 +125,31 @@ AC_TRY_COMPILE([ #include <time.h> ], [ timezone = 0; ],
 
 AC_MSG_CHECKING(for daylight in time.h)
 AC_TRY_COMPILE([ #include <time.h> ], [ daylight = 0; ],
-  AC_DEFINE(HAVE_DAYLIGHT) AC_MSG_RESULT(yes),
+  AC_DEFINE(HAVE_DAYLIGHT) AC_MSG_RESULT(yes)
+  daylight=yes,
   AC_MSG_RESULT(no)
   AC_MSG_CHECKING(for _daylight in time.h)
   AC_TRY_COMPILE([ #include <time.h> ], [ _daylight = 0; ],
     AC_DEFINE(HAVE_UDAYLIGHT) AC_MSG_RESULT(yes),
     AC_MSG_RESULT(no)))
+
+if test "$daylight" = "yes" && test "$timezone" = "yes"; then
+
+  AC_MSG_CHECKING(if we can fool tzset)
+  AC_TRY_RUN([
+#include <time.h>
+#include <stdlib.h>
+int main()
+{
+ putenv("TZ=GMT0");
+ tzset();
+ if (timezone != 0 || daylight != 0) exit(1);
+ exit(0);
+}],
+  AC_DEFINE(FOOL_TZSET) AC_MSG_RESULT(yes),
+  AC_MSG_RESULT(no),
+  AC_MSG_RESULT(assuming not when cross-compiling))
+fi
 
 dnl Check for other stuff --------------------------------------------------
 AC_LANG_CPLUSPLUS

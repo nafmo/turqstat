@@ -25,3 +25,5 @@
 /* Define if time.h defines _timezone variable */
 #undef HAVE_UTIMEZONE
 
+/* Define if we can remove timezone with putenv and tzset */
+#undef FOOL_TZSET
