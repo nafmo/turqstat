@@ -2,7 +2,7 @@
 //
 // A statistic collection program for Fidonet and Usenet systems
 // Qt version.
-// Version 1.5
+// Version 2.0
 //
 // Copyright (c) 2000 Peter Karlsson
 //
@@ -25,6 +25,7 @@
 #ifdef HAVE_LOCALE_H
 # include <locale.h>
 #endif
+#include <stdlib.h>
 
 #include <qglobal.h>
 #if QT_VERSION < 210
@@ -601,6 +602,28 @@ int main(int argc, char *argv[])
 {
     // Create an application
     QApplication gui(argc, argv);
+
+    // Support translations
+    QString language;
+    if (getenv("LANG"))
+    {
+        language = getenv("LANG");
+    }
+    else if (getenv("LC_MESSAGES"))
+    {
+        language = getenv("LC_MESSAGES");
+    }
+    else if (getenv("LC_ALL"))
+    {
+        language = getenv("LC_ALL");
+    }
+
+    QTranslator translator(NULL);
+    if (!language.isEmpty())
+    {
+        translator.load(language, "/usr/share/xturqstat/locale");
+        gui.installTranslator(&translator);
+    }
 
     // Create a window
     InfoWindow *mainwindow = InfoWindow::getMainWindow();
