@@ -1,4 +1,4 @@
-Turquoise SuperStat 1.0 - Ett m”tesstatistikprogram f”r Fidonet
+Turquoise SuperStat 1.1 - Ett m”tesstatistikprogram f”r Fidonet
 (c) Copyright 1998-1999 Peter Karlsson.
 A Softwolves Software Release in 1999
 
@@ -66,11 +66,12 @@ Dessa extra kommandoradsv„xlar „r tillg„ngliga:
    Mottagningsdatumet anv„nds, inte skapandedatumet.
 
 -n <antal>
-   V„ljer maximalt antal poster i topplistorna. F”rinst„llt v„rde „r 15.
+   V„ljer maximalt antal poster i topplistorna. F”rinst„llt v„rde „r 15. 0
+   anger att ingen gr„ns anv„nds.
 
 -a <nummer>
-   V„ljer meddelandebasnummer f”r FXAPX/w-meddelandebasen, vilken har alla
-   meddelanden i samma filer.
+   V„ljer meddelandebasnummer f”r FXAPX/w- och MyPoint meddelandebaser, vilken
+   har alla meddelanden i samma filer.
 
 -s V„ljer meddelandebaser av Squishtyp (f”rinst„llt v„rde). Kan endast
    anv„ndas om programmet l„nkades med SMAPI-biblioteket. Areas”kv„gen
@@ -87,8 +88,8 @@ Dessa extra kommandoradsv„xlar „r tillg„ngliga:
    f”r att v„lja m”tesnummer (1-1999). Areas”kv„gen skall vara den katalog
    i vilken meddelandebasen ligger.
 
--p V„ljer meddelandebaser av MyPoint-typ. Areas”kv„gen skall vara det
-   kompletta namnet hos antingen .A??- eller .F??-filen i MyPoints
+-p V„ljer meddelandebaser av MyPoint-typ. Kr„ver att parametern -a anv„nds f”r
+   att v„lja m”tesnummer. Areas”kv„gen skall vara den till MyPoints
    AREAS-katalog.
 
 -Q St„nger av citatvolymsvartlistan (f”rinst„llt v„rde „r p†).
@@ -125,6 +126,11 @@ visar en snabbhj„lpsk„rm med en ”versikt ”ver tillg„ngliga v„xlar.
 HISTORIK
 
 1999-06-06 - v1.0 - F”rsta sl„ppta version
+1999-07-03 - v1.1 -
+  Lade till st”d f”r revision 3 av MyPoints meddelandedatabaser.
+  MyPoint anv„nder areanummer, precis som FDAPX/w.
+  Listan ”ver versioner „r sorterad.
+  Buggfixar.
 
 
 BIFOGADE FILER

@@ -1,4 +1,4 @@
-Turquoise SuperStat 1.0 - An area statistics program for Fidonet
+Turquoise SuperStat 1.1 - An area statistics program for Fidonet
 (c) Copyright 1998-1999 Peter Karlsson.
 A Softwolves Software Release in 1999
 
@@ -69,10 +69,11 @@ These extra options are available:
 
 -n <num>
    Selects the maximum number of entries in the toplists. The default is 15.
+   0 indicates no limit.
 
 -a <num>
-   Selects the area number for the FDAPX/w message base, which has all
-   messages in the same files.
+   Selects the area number for the FDAPX/w and MyPoint message bases, which
+   has all messages in the same files.
 
 -s Selects Squish style message base (default). Can only be used if the
    program was linked with the SMAPI library. The areapath parameter should
@@ -89,9 +90,9 @@ These extra options are available:
    to select the area number (1-1999). The areapath parameter should be the
    directory in which the message base files resides.
 
--p Selects MyPoint style message base. The areapath parameter should be the
-   complete name of either the .A?? or the .F?? file in the MyPoint AREAS
-   subdirectory.
+-p Selects MyPoint style message base. Requires the use of the -a parameter to
+   select the area number. The areapath parameter should be the path to the
+   MyPoint AREAS subdirectory.
 
 -Q Turns the quoter blacklist off (default is on).
 
@@ -128,6 +129,11 @@ options.
 HISTORY
 
 1999-06-06 - v1.0 - First public release
+1999-07-03 - v1.1 -
+  Added support for revision 3 of MyPoint's message base.
+  MyPoint uses area numbers, just like FDAPX/w.
+  The version list is sorted.
+  Bug fixes.
 
 
 INCLUDED FILES
