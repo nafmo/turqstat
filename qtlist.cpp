@@ -25,6 +25,7 @@
 #include <qmessagebox.h>
 #include <qfile.h>
 #include <qtextstream.h>
+#include <qregexp.h>
 
 #include "qtlist.h"
 #include "statengine.h"

@@ -1,4 +1,4 @@
-Turquoise SuperStat 2.1 - An area statistics program for Fidonet and Usenet
+Turquoise SuperStat 2.1.2 - An area statistics program for Fidonet and Usenet
 (c) Copyright 1998-2001 Peter Karlsson.
 A Softwolves Software Release in 2001
 
@@ -298,6 +298,9 @@ HISTORY
   Added support for character re-coding.
 2001-08-30 - v2.1.1 -
   Fixed a bug that would cause a hang when encountering illegal QP.
+2001-09-15 - v2.1.2 -
+  Fix problems compiling against QT3.
+  Cosmetic fix for generated reports.
 
 
 INCLUDED FILES
