@@ -33,7 +33,8 @@ bool StatView::CreateReport(StatEngine *engine, string filename,
     unsigned maxnumber,
     bool quoters = true, bool topwritten = true, bool topreceived = true,
     bool topsubjects = true, bool topprograms = true, bool weekstats = true,
-    bool daystats = true, bool showversions = true, bool showallnums = false)
+    bool daystats = true, bool showversions = true, bool showallnums = false,
+    bool toporiginal = true)
 {
     // If we give 0 as maximum entries, we want unlimited (=UINT_MAX...)
     if (0 == maxnumber) maxnumber = UINT_MAX;
@@ -250,6 +251,88 @@ bool StatView::CreateReport(StatEngine *engine, string filename,
 
             place ++;
             oldwritten = data.messageswritten;
+        }
+
+        report << endl;
+    }
+
+    if (toporiginal)
+    {
+        report << "-------------------------------------------"
+                  "----------------------------------" << endl;
+
+        report << "Toplist of original contents per message" << endl;
+        report << endl;
+
+        unsigned place = 1;
+        bool restart = true;
+        StatEngine::persstat_s data;
+        unsigned oldoriginalpermsg = 0;
+        while (place <= maxnumber &&
+               engine->GetTopOriginalPerMsg(restart, data))
+        {
+            if (data.byteswritten <= data.bytesquoted ||
+                !data.messageswritten) break;
+
+            if (restart)
+            {
+                restart = false;
+                report << "Place Name                        "
+                          "Address         Orig. / Msgs = PerMsg Quoted"
+                       << endl;
+            }
+            unsigned originalpermsg =
+                (data.byteswritten - data.bytesquoted) / data.messageswritten;
+
+            if (!showallnums && originalpermsg == oldoriginalpermsg)
+            {
+                report << "      ";
+            }
+            else
+            {
+                report.form("%4u. ", place);
+            }
+
+            unsigned long long percentquotes =
+                data.byteswritten ? ((10000 * data.bytesquoted) /
+                                     data.byteswritten)
+                             : 0;
+            unsigned integ = percentquotes / 100;
+            unsigned fract = (percentquotes - integ * 100 + 5) / 10;
+            if (10 == fract)
+            {
+                fract = 0;
+                integ ++;
+            }
+
+            if (data.name != "")
+                tmp = data.name;
+            else
+                tmp = "(none)";
+
+            if (data.address.length() > 15)
+                data.address = data.address.substr(0, 15);
+
+            if (tmp.length() > 28)
+                tmp = tmp.substr(0, 28);
+
+            report.form("%-28%-16s%6u /%5u = %6u",
+                        tmp.c_str(), data.address.c_str(),
+                        data.byteswritten - data.bytesquoted,
+                        data.messageswritten, originalpermsg);
+            if (data.bytesquoted > 0)
+            {
+                report.form("%3u.%1u%%",
+                             integ, fract);
+            }
+            else if (showallnums)
+            {
+                report << "   N/A";
+            }
+            report << endl;
+
+            place ++;
+            oldoriginalpermsg = originalpermsg;
         }
 
         report << endl;

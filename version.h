@@ -20,6 +20,6 @@
 
 #include <string>
 
-const string version = "1.2";
+const string version = "1.3";
 
 #endif

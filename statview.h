@@ -30,7 +30,7 @@ public:
                       bool topreceived = true, bool topsubjects = true,
                       bool topprograms = true, bool weekstats = true,
                       bool daystats = true, bool showversions = true,
-                      bool showallnums = false);
+                      bool showallnums = false, bool toporiginal = true);
 
 protected:
 };

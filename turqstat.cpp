@@ -1,7 +1,7 @@
 // Turquoise SuperStat
 //
 // A statistic collection program for Fidonet systems
-// Version 1.2
+// Version 1.3
 //
 // Copyright (c) 1998-1999 Peter Karlsson
 //
@@ -49,7 +49,7 @@ public:
              bool quoters, bool topwritten, bool topreceived,
              bool topsubjects, bool topprograms,
              bool weekstats, bool daystats, bool showversions,
-             bool showallnums);
+             bool showallnums, bool toporiginal);
     ~StatRetr();
 };
 
@@ -61,7 +61,8 @@ int main(int argc, char *argv[])
     StatRetr::basetype_e basetype = StatRetr::squish;
     bool quoters = true, topwritten = true, topreceived = true,
          topsubjects = true, topprograms = true, weekstats = true,
-         daystats = true, versions = true, allnums = false;
+         daystats = true, versions = true, allnums = false,
+         toporiginal = true;
 
     // We don't want timezones here
 #if defined(__GNUC__) || defined(__EMX__)
@@ -82,7 +83,7 @@ int main(int argc, char *argv[])
 
     // Handle arguments
     int c;
-    while (EOF != (c = getopt(argc, argv, "d:n:a:smofjpQWRSPHDVN?")))
+    while (EOF != (c = getopt(argc, argv, "d:n:a:smofjpQWRSPOHDVN?")))
     {
         switch (c)
         {
@@ -102,6 +103,7 @@ int main(int argc, char *argv[])
             case 'R':   topreceived = false;                        break;
             case 'S':   topsubjects = false;                        break;
             case 'P':   topprograms = false;                        break;
+            case 'O':   toporiginal = false;                        break;
             case 'H':   daystats = false;                           break;
             case 'D':   weekstats = false;                          break;
 
@@ -133,6 +135,8 @@ int main(int argc, char *argv[])
                 cout << "  -Q -W -R -S -P Turn quoters/written/received/"
                                          "subjects/programs toplist off"
                      << endl;
+                cout << "  -O             Turn original per msg toplist off"
+                     << endl;
                 cout << "  -H -D          Turn hour/day statistics off"
                      << endl;
                 cout << "  -V             Don't provide version info for "
@@ -153,7 +157,8 @@ int main(int argc, char *argv[])
 
     StatRetr s(argv[optind], argv[optind + 1], areanum, days,
                basetype, maxnum, quoters, topwritten, topreceived, topsubjects,
-               topprograms, weekstats, daystats, versions, allnums);
+               topprograms, weekstats, daystats, versions, allnums,
+               toporiginal);
 
     return 0;
 }
@@ -164,7 +169,7 @@ StatRetr::StatRetr(char *areapath, char *outputfilepath, unsigned areanum,
                    bool quoters, bool topwritten, bool topreceived,
                    bool topsubjects, bool topprograms,
                    bool weekstats, bool daystats, bool showversions,
-                   bool showallnums)
+                   bool showallnums, bool toporiginal)
 {
     // Compute starting time
     time_t from;
@@ -216,7 +221,7 @@ StatRetr::StatRetr(char *areapath, char *outputfilepath, unsigned areanum,
     view.CreateReport(&engine, outputfilepath, maxnumber,
                       quoters, topwritten, topreceived, topsubjects,
                       topprograms, weekstats, daystats, showversions,
-                      showallnums);
+                      showallnums, toporiginal);
 }
 
 StatRetr::~StatRetr()

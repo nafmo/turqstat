@@ -719,6 +719,22 @@ int comparebytepermsg(const void *p1, const void *p2)
     return 0;
 }
 
+int compareoriginalpermsg(const void *p1, const void *p2)
+{
+    unsigned long d1 =
+        ((unsigned long) (((StatEngine::persstat_s *) p1)->byteswritten -
+                          ((StatEngine::persstat_s *) p1)->bytesquoted)) *
+        ((unsigned long) (((StatEngine::persstat_s *) p2)->messageswritten));
+    unsigned long d2 =
+        ((unsigned long) (((StatEngine::persstat_s *) p2)->byteswritten -
+                          ((StatEngine::persstat_s *) p2)->bytesquoted)) *
+        ((unsigned long) (((StatEngine::persstat_s *) p1)->messageswritten));
+
+    if (d1 < d2) return -1;
+    if (d1 > d2) return 1;
+    return 0;
+}
+
 int comparesubject(const void *p1, const void *p2)
 {
     unsigned d1 = (((StatEngine::subjstat_s *) p2)->count);

@@ -25,6 +25,7 @@ int comparenumwritten(const void *, const void *);
 int comparenumreceived(const void *, const void *);
 int comparenumquoted(const void *, const void *);
 int comparebytepermsg(const void *, const void *);
+int compareoriginalpermsg(const void *, const void *);
 int comparesubject(const void *, const void *);
 int compareprogram(const void *, const void *);
 
@@ -50,7 +51,7 @@ public:
                     messageswritten, messagesreceived;
     };
 
-    enum list_t { None, TopReceive, TopWrite, TopQuote, TopBpm };
+    enum list_t { None, TopReceive, TopWrite, TopQuote, TopBpm, TopOpm };
 
     inline bool GetTopWriters(bool restart, persstat_s &result)
         { return GetTop(restart, result, comparenumwritten, TopWrite); };
@@ -60,6 +61,8 @@ public:
         { return GetTop(restart, result, comparenumquoted, TopQuote); };
     inline bool GetTopBytePerMsg(bool restart, persstat_s &result)
         { return GetTop(restart, result, comparebytepermsg, TopBpm); };
+    inline bool GetTopOriginalPerMsg(bool restart, persstat_s &result)
+        { return GetTop(restart, result, compareoriginalpermsg, TopOpm); };
 
     struct subjstat_s
     {
