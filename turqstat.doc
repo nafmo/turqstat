@@ -28,10 +28,12 @@ GPL is encouraged.
 
 This program may also be linked against any GUI library that meets the
 criteria for Debian free software guidelines (DFSG), including, but not
-limited to, Troll Tech's Q Public License. Furthermore, the file mytime.cpp
-derives from the EMX library, which has this license: You are allowed to
-change and copy the emx library sources if you keep the copyright message
-intact.
+limited to, Troll Tech's Q Public License. You may also distribute binaries
+linked to commercial or non-free versions of Troll Tech's Qt GUI library, as
+long as you also distribute any changes you do to these sources. Furthermore,
+the file mytime.cpp derives from the EMX library, which has this license: You
+are allowed to change and copy the emx library sources if you keep the
+copyright message intact.
 
 
 OTHER COPYRIGHTS
