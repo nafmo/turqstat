@@ -44,7 +44,7 @@ public:
     enum basetype_e { squish, sdm, opus, fdapx, jam, mypoint };
 
     StatRetr(char **areapath, int numpaths, char *outputfilepath,
-             unsigned areanum,
+             char *basepath,
              unsigned days,
              basetype_e basetype, unsigned maxnumber,
              bool quoters, bool topwritten, bool topreceived,
@@ -58,7 +58,7 @@ int main(int argc, char *argv[])
 {
     unsigned days = 0;
     unsigned maxnum = 15;
-    unsigned areanum = 0;
+    char *basepath = NULL;
     StatRetr::basetype_e basetype = StatRetr::squish;
     bool quoters = true, topwritten = true, topreceived = true,
          topsubjects = true, topprograms = true, weekstats = true,
@@ -90,7 +90,7 @@ int main(int argc, char *argv[])
         {
             case 'd':   days = strtoul(optarg, NULL, 10);           break;
             case 'n':   maxnum = strtoul(optarg, NULL, 10);         break;
-            case 'a':   areanum = strtoul(optarg, NULL, 10);        break;
+            case 'a':   basepath = optarg;                          break;
 
             case 's':   basetype = StatRetr::squish;                break;
             case 'm':   basetype = StatRetr::sdm;                   break;
@@ -113,13 +113,13 @@ int main(int argc, char *argv[])
 
             case '?':
             default:
-                cout << "Usage: turqstat [options] outputfile areapath(s)" << endl;
+                cout << "Usage: turqstat [options] outputfile areadef(s)" << endl;
                 cout << endl;
                 cout << "Available options:" << endl;
                 cout << "  -d days        Days back to count messages from"
                      << endl;
                 cout << "  -n num         Maximum entries in toplists" << endl;
-                cout << "  -a num         Area number (for FDAPX/w and MyPoint)" << endl;
+                cout << "  -a path        Base path (for FDAPX/w and MyPoint)" << endl;
                 cout << endl;
                 cout << "  -s             Squish style message area (default)"
                      << endl;
@@ -157,7 +157,7 @@ int main(int argc, char *argv[])
     }
 
     StatRetr s(&argv[optind + 1], argc - optind - 1, argv[optind],
-               areanum, days, basetype, maxnum, quoters, topwritten,
+               basepath, days, basetype, maxnum, quoters, topwritten,
                topreceived, topsubjects, topprograms, weekstats, daystats,
                versions, allnums, toporiginal);
 
@@ -165,7 +165,7 @@ int main(int argc, char *argv[])
 }
 
 StatRetr::StatRetr(char **areapath, int numpaths, char *outputfilepath,
-                   unsigned areanum,
+                   char *basepath,
                    unsigned days,
                    basetype_e basetype, unsigned maxnumber,
                    bool quoters, bool topwritten, bool topreceived,
@@ -173,6 +173,8 @@ StatRetr::StatRetr(char **areapath, int numpaths, char *outputfilepath,
                    bool weekstats, bool daystats, bool showversions,
                    bool showallnums, bool toporiginal)
 {
+    unsigned areanum;
+
     // Compute starting time
     time_t from;
     if (0 == days)
@@ -204,7 +206,8 @@ StatRetr::StatRetr(char **areapath, int numpaths, char *outputfilepath,
                 break;
 
             case fdapx:
-                area = new FdApxRead(areapath[counter], areanum);
+                areanum = strtoul(areapath[counter], NULL, 10); 
+                area = new FdApxRead(basepath, areanum);
                 break;
 
             case jam:
@@ -212,7 +215,8 @@ StatRetr::StatRetr(char **areapath, int numpaths, char *outputfilepath,
                 break;
 
             case mypoint:
-                area = new MyPointRead(areapath[counter], areanum);
+                areanum = strtoul(areapath[counter], NULL, 10); 
+                area = new MyPointRead(basepath, areanum);
                 break;
 
             default:
