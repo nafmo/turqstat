@@ -463,9 +463,9 @@ void TopListWindow::saveToFile()
 #define PLAINTEXT 0
         tr("Plain text (*.txt)"),
 #define COMMA 1
-        tr("Comma-separated file (*.csf)"),
+        tr("Comma-separated file (*.csv)"),
 #define SEMICOLON 2
-        tr("Semi-colon separated file (*.csf)")
+        tr("Semi-colon separated file (*.csv)")
     };
 
     QFileDialog filedialog(QString::null,
