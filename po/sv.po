@@ -107,7 +107,7 @@ msgstr "&Citerarsvartlista"
 
 #: qtgui.cpp:99
 msgid "InfoWindow::&Receiver toplist"
-msgstr "&Mottagartopplitsa"
+msgstr "&Mottagartopplista"
 
 #: qtgui.cpp:78
 msgid "InfoWindow::&Save report"
