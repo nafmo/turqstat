@@ -1,3 +1,20 @@
+2001-02-19 - peter karlsson <peter@softwolves.pp.se>
+  configure.in
+  acconfig.h
+  statview.cpp
+  statview.h
+  turqstat.cpp
+  utility.cpp
+  utility.h
+    Added tests for OS/2 and Win32 locale API functions.
+
+  debian/changelog
+  turqstat.1
+  turqstat-sv.1
+  turqstat.doc
+  turqstat.dok
+    Documentation updates.
+
 2001-02-11 - peter karlsson <peter@softwolves.pp.se>
   acconfig.h
   configure.in
