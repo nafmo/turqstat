@@ -73,7 +73,7 @@ private:
 public slots:
     void open();
     void save() {};
-    void quotelist() {};
+    void quotelist();
     void senderlist() {};
     void contentlist() {};
     void fidonetlist() {};

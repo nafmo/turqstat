@@ -38,6 +38,7 @@
 #include <qprogressdialog.h>
 
 #include "qtgui.h"
+#include "qtlist.h"
 
 #include "statengine.h"
 #include "arearead.h"
@@ -405,6 +406,17 @@ void InfoWindow::update()
     struct tm *p2 = localtime(&latest);
     strftime(timebuf, 64, "%x", p2);
     latestwritten->setText(timebuf);
+}
+
+void InfoWindow::quotelist()
+{
+    TopListWindow *quotedialog =
+        new TopListWindow(this, "quotelist", TopListWindow::Quoters);
+    if (quotedialog)
+    {
+        quotedialog->fillOut(engine);
+        quotedialog->show();
+    }
 }
 
 // Program entry
