@@ -10,7 +10,11 @@
 
   turqstat.1
   turqstat-sv.1
-    Croess-reference to X version's manual page.
+    Cross-reference to X version's manual page.
+
+  turqstat.doc
+  turqstat.dok
+    Updated documentation.
 
 2000-11-12 - peter karlsson <peter@softwolves.pp.se>
   Merged branch dealing with Qt GUI:

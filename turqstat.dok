@@ -233,6 +233,8 @@ HISTORIK
   Egna tidsfunktioner f”r att motverka tidszonsproblem i C-biblioteket.
   Gjorde hj„lpsk„rmen mer l„ttl„slig.
   F”rtydligade dokumentationen.
+  Lade till grafisk X-version (anv„nder Qt).
+  Diverse felr„ttelser.
 
 
 BIFOGADE FILER
@@ -315,6 +317,6 @@ dpkg-buildpackage.
 
 KONTAKT
 
-F”rfattaren, Peter Karlsson, kan n†s via n„tpost p† 2:210/45.0, eller via
+F”rfattaren, Peter Karlsson, kan n†s via n„tpost p† 2:204/254.222, eller via
 Internet-e-post p† peter@softwolves.pp.se. Information om detta program finns
 p† webben p† http://www.softwolves.pp.se/wolves/
