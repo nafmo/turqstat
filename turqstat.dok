@@ -1,0 +1,173 @@
+Turquoise SuperStat 1.0 - Ett m”tesstatistikprogram f”r Fidonet
+(c) Copyright 1998-1999 Peter Karlsson.
+A Softwolves Software Release in 1999
+
+http://www.softwolves.pp.se/wolves/
+
+
+LICENS
+
+Denna programvara distribueras i enlighet med GNU General Public License
+version 2, vilken finns i den bifogade filen COPYING, med f”ljande till„gg:
+
+Detta program kan l„nkas mot k„llkod eller bin„ra bibliotek f”r att komma
+†t Fidonetmeddelandebaser vilka inte „r f”renliga med GNU GPL, s† l„nge som
+inkluderingen av denna inte f”rhindrar den fria distributionen av
+huvudk„llkoden. Det m†ste ocks† vara m”jligt att kompilera huvudk„llkoden
+utan att anv„nda denna kod eller bin„ra bibliotek (t.ex med villkorliga
+preprocessordirektiv) och fortfarande f† en anv„ndbar bin„r.
+
+Bin„rer som skapas genom att l„nka mot dylik meddelandebaskod m†ste vara
+fritt distribuerbar och anv„ndbar av vem som helst (dvs. det „r inte nog
+att till†ta "enbart ickekommersiell anv„ndning"). Om detta inte kan g”ras
+f†r inga s†dana bin„rer spridas.
+
+Žven med dessa undantag f”respr†kas licensiering av ny meddelandebaskod
+under GNU GPL.
+
+
+™VRIGA UPPHOVSRŽTTER
+
+JAM(mbp) - Copyright 1993 Joaquim Homrighausen, Andrew Milner, Mats Birch,
+Mats Wallin. ALL RIGHTS RESERVED.
+
+Squish MSGAPI0 is copyright 1991 by Scott J. Dudley. All rights reserved.
+Squish, SquishMail and Maximus are trademarks of Scott J. Dudley.
+
+
+ANVŽNDNING
+
+Turquoise SuperStat l„ser inneh†llet i en Fidonetmeddelandebas i n†got av
+de st”dda formaten, och skapar statistik inom f”ljande omr†den:
+
+ * Svartlista ”ver citatvolym.
+ * Topplista ”ver avs„ndare.
+ * Topplista ”ver mottagare.
+ * Topplista ”ver „renderader.
+ * Topplista ”ver programvara.
+ * Postningar per veckodag.
+ * Postningar per tid p† dygnet.
+
+Alla statistikomr†den kan st„ngas av. Statistiken lagras i en textfil.
+
+Turquoise SuperStat „r helt kommandoradsstyrd, och formatet „r som f”ljer:
+
+  turqstat [v„xlar] areas”kv„g utdatafil
+
+d„r areas”kv„g „r s”kv„gen till meddelandebasfilen eller -katalogen (beror
+p† valt meddelandebasformat), och utdatafil „r s”kv„gen till den textfil
+som statistiken skall skrivas till.
+
+Dessa extra kommandoradsv„xlar „r tillg„ngliga:
+
+-d <dagar>
+   V„ljer det antal dagar tillbaka som meddelanden skall r„knas fr†n. Det
+   f”rinst„llda v„rdet „r 0, vilket betyder att r„kna alla meddelanden.
+   Mottagningsdatumet anv„nds, inte skapandedatumet.
+
+-n <antal>
+   V„ljer maximalt antal poster i topplistorna. F”rinst„llt v„rde „r 15.
+
+-a <nummer>
+   V„ljer meddelandebasnummer f”r FXAPX/w-meddelandebasen, vilken har alla
+   meddelanden i samma filer.
+
+-s V„ljer meddelandebaser av Squishtyp (f”rinst„llt v„rde). Kan endast
+   anv„ndas om programmet l„nkades med SMAPI-biblioteket. Areas”kv„gen
+   skall vara basnamnet p† Squishfilerna.
+
+-m V„ljer meddelandebaser av *.MSG-typ. Kan endast anv„ndas om programmet
+   l„nkades med SMAPI-biblioteket. Areas”kv„gen skall vara katalogen i
+   vilken meddelandebasen ligger.
+
+-j V„ljer meddelandebaser av JAM-typ. Areas”kv„gen skall vara basnamnet p†
+   JAM-filerna.
+
+-f V„ljer meddelandebaser av FDAPX/w-typ. Kr„ver att parametern -a anv„nds
+   f”r att v„lja m”tesnummer (1-1999). Areas”kv„gen skall vara den katalog
+   i vilken meddelandebasen ligger.
+
+-p V„ljer meddelandebaser av MyPoint-typ. Areas”kv„gen skall vara det
+   kompletta namnet hos antingen .A??- eller .F??-filen i MyPoints
+   AREAS-katalog.
+
+-Q St„nger av citatvolymsvartlistan (f”rinst„llt v„rde „r p†).
+
+-W St„nger av avs„ndartopplista (f”rinst„llt v„rde „r p†).
+
+-R St„nger av mottagartopplista (f”rinst„llt v„rde „r p†).
+
+-S St„nger av „renderadstopplista (f”rinst„llt v„rde „r p†).
+
+-P St„nger av programtopplista (f”rinst„llt v„rde „r p†).
+
+-H St„nger av postningsstatistik per timme (f”rinst„llt v„rde „r p†).
+
+-D St„nger av postningsstatistik per dag (f”rinst„llt v„rde „r p†).
+
+-V St„nger av visning av versioenr i programtopplista (f”rinst„llt v„rde „r
+   p†).
+
+-N Visar alla siffror i topplistorna (f”rinst„llt v„rde „r av).
+
+V„xlarna kan kombineras p† kommandoraden, till exempel:
+
+  turqstat -mWRSPHD d:\msgbase\thisarea d:\text\output.txt
+
+kommer att skapa (enbart) en citatvolymsvartlista f”r *.MSG-meddelandebasen
+i katalogen d:\msgbase\thisarea. V„xlarna „r skiftl„gesk„nsliga.
+
+  turqstat -?
+
+visar en snabbhj„lpsk„rm med en ”versikt ”ver tillg„ngliga v„xlar.
+
+
+HISTORIK
+
+1999-06-06 - v1.0 - F”rsta sl„ppta version
+
+
+BIFOGADE FILER
+
+turqstat.exe - K”rbar fil (OS/2)
+turqstat.doc - Dokumentation p† engelska
+turqstat.dok - Denna dokumentation
+copying      - GNU General Public License, version 2
+source.rar   - Arkiv inneh†llandes k„llkoden:
+  Makefile        - Makefil f”r EMX (nmake)
+  Makefile.nosmapi- Makefil f”r EMX utan SMAPI (nmake)
+  Makefile.CygWin - Makefil f”r CygWin32 (GNU make) (ej st”dd)
+  turqstat.cpp    - Huvudk„llkod f”r Turquoise
+  arearead.h      - Headerfil som beskriver den abstrakta ”verklassen f”r
+                    meddelandebasl„sarna
+  fdapxread.cpp   - K„llkod f”r l„sning av FDAPX/w-meddelandebaser
+  fdapxread.h     - Headerfil f”r ovanst†ende
+  jamread.cpp     - K„llkod f”r l„sning av JAM-meddelandebaser
+  jamread.h       - Headerfil f”r ovanst†ende
+  mypointread.cpp - K„llkod f”r l„sning av MyPoint-meddelandebaser
+  mypointread.h   - Headerfil f”r ovanst†ende
+  squishread.cpp  - K„llkod f”r l„sning av Squish/*.MSG-meddelandebaser
+                    (kr„ver SMAPI)
+  squishread.h    - Headerfil f”r ovanst†ende
+  statengine.cpp  - Statistiksinl„sningsmotorn
+  statengine.h    - Headerfil f”r ovanst†ende
+  statview.cpp    - "Vyn", skapar utdatafilen
+  statview.h      - Headerfil f”r ovanst†ende
+  utility.cpp     - Diverse verktygsfunktioner
+  utility.h       - Headerfil f”r ovanst†ende
+  datatypes.h     - Kompilatoroberoende datatypdeklarationer
+
+
+KRAV F™R KOMPILERING
+
+Programmet utvecklades under OS/2 med EMX 0.9c/GNU C/C++ 2.7.2.1, men b”r
+kompilera under valfri standard-C++-kompilator. F”r att f† st”d f”r Squish-
+och *.MSG-meddelandebase kr„vs SMAPI-biblioteket, vilket finns p†
+ftp://ftp.sar-gmbh.com/pub/freeware/husky/smapi-latest.tar.gz p† Internet.
+
+
+KONTAKT
+
+F”rfattaren, Peter Karlsson, kan n†s via n„tpost p† 2:206/221.0, eller via
+Internet-e-post p† peter@softwolves.pp.se. Information om detta program
+finns p† webben p† http://www.softwolves.pp.se/wolves/

@@ -1,0 +1,47 @@
+# Makefile for Windows 95, CygWin and GNU make
+# without SMAPI
+#
+# $Id$
+
+CFLAGS=-Wall -O3
+
+all: turqstat.exe
+
+turqstat.exe: turqstat.o statengine.o statview.o turqstat.def squishread.o fdapxread.o jamread.o mypointread.o utility.o
+	gcc $(CFLAGS) -o turqstat.exe *.o -lstdc++
+
+turqstat.o: turqstat.cpp statengine.h statview.h arearead.h squishread.h fdapxread.h jamread.h mypointread.h
+	gcc $(CFLAGS) -c turqstat.cpp
+
+statengine.o: statengine.cpp statengine.h
+	gcc $(CFLAGS) -c statengine.cpp
+
+statview.o: statview.cpp statview.h statengine.h
+	gcc $(CFLAGS) -c statview.cpp
+
+squishread.o: squishread.cpp squishread.h arearead.h statengine.h
+	gcc $(CFLAGS) -c squishread.cpp
+
+utility.o: utility.cpp utility.h
+	gcc $(CFLAGS) -c utility.cpp
+
+fdapxread.o: fdapxread.cpp fdapxread.h datatypes.h statengine.h arearead.h
+	gcc $(CFLAGS) -c fdapxread.cpp
+
+jamread.o: jamread.cpp jamread.h datatypes.h statengine.h arearead.h
+	gcc $(CFLAGS) -c jamread.cpp
+
+mypointread.o: mypointread.cpp mypointread.h datatypes.h statengine.h arearead.h
+	gcc $(CFLAGS) -c mypointread.cpp
+
+dist: turqstat.exe source.rar
+	rar -av a turqstat.rar turqstat.exe turqstat.doc turqstat.dok source.rar COPYING
+	del source.rar
+
+source.rar:
+	rar -s -av a source.rar *.def *.cpp *.h Makefile
+#	rar -s -av a source.rar *.def *.cpp *.h Makefile smapi\*.c smapi\*.h smapi\*.asm smapi\*.txt smapi\*.diz smapi\makefile.*
+
+clean:
+	-del *.o
+	-del *.exe

@@ -1,0 +1,45 @@
+# Makefile for OS/2, EMX and IBM nmake, without SMAPI support
+#
+# $Id$
+
+CFLAGS=-Wall -Zcrtdll -Zomf -O3
+
+all: turqstat.exe
+
+turqstat.exe: turqstat.obj statengine.obj statview.obj turqstat.def squishread.obj fdapxread.obj jamread.obj mypointread.obj utility.obj
+        gcc $(CFLAGS) -o turqstat.exe *.obj *.def -lstdcpp
+
+turqstat.obj: turqstat.cpp statengine.h statview.h arearead.h squishread.h fdapxread.h jamread.h mypointread.h
+        gcc $(CFLAGS) -c turqstat.cpp
+
+statengine.obj: statengine.cpp statengine.h
+        gcc $(CFLAGS) -c statengine.cpp
+
+statview.obj: statview.cpp statview.h statengine.h
+        gcc $(CFLAGS) -c statview.cpp
+
+squishread.obj: squishread.cpp squishread.h arearead.h statengine.h
+        gcc $(CFLAGS) -c squishread.cpp
+
+utility.obj: utility.cpp utility.h
+        gcc $(CFLAGS) -c utility.cpp
+
+fdapxread.obj: fdapxread.cpp fdapxread.h datatypes.h statengine.h arearead.h
+        gcc $(CFLAGS) -c fdapxread.cpp
+
+jamread.obj: jamread.cpp jamread.h datatypes.h statengine.h arearead.h
+        gcc $(CFLAGS) -c jamread.cpp
+
+mypointread.obj: mypointread.cpp mypointread.h datatypes.h statengine.h arearead.h
+        gcc $(CFLAGS) -c mypointread.cpp
+
+dist: turqstat.exe source.rar
+        rar -av a turqstat.rar turqstat.exe turqstat.doc turqstat.dok source.rar COPYING
+        del source.rar
+
+source.rar:
+        rar -s -av a source.rar *.def *.cpp *.h Makefile
+
+clean:
+        -del *.obj
+        -del *.exe
