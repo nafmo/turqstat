@@ -28,30 +28,17 @@ public:
     // Constructor and destructor
     ProgressDisplay() : maximum(-1) {};
 
-    virtual void SetMessagesTotal(int number);
-    virtual void UpdateProgress(int messages) = 0;
-    virtual void ErrorMessage(string errormessage) = 0;
-    virtual void ErrorMessage(string errormessage, int number) = 0;
-    virtual void WarningMessage(string errormessage) = 0;
-    virtual void WarningMessage(string errormessage, int number) = 0;
+    void SetMessagesTotal(int number);
+    void UpdateProgress(int messages);
+    void ErrorMessage(string errormessage);
+    void ErrorMessage(string errormessage, int number);
+    void WarningMessage(string errormessage);
+    void WarningMessage(string errormessage, int number);
 
     static ProgressDisplay *GetOutputObject();
 
 protected:
     ProgressDisplay *outputobject;
     int             maximum;
-};
-
-class TtyProgressDisplay : public ProgressDisplay
-{
-public:
-    // Constructor and destructor
-    TtyProgressDisplay() : ProgressDisplay() {};
-
-    virtual void UpdateProgress(int message);
-    virtual void ErrorMessage(string errormessage);
-    virtual void ErrorMessage(string errormessage, int number);
-    virtual void WarningMessage(string errormessage);
-    virtual void WarningMessage(string errormessage, int number);
 };
 #endif

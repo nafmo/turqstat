@@ -1,6 +1,6 @@
-// Copyright (c) 1998-2000 Peter Karlsson
+// Copyright (c) 2000 Peter Karlsson
 //
-// $Id: statengine.cpp,v 1.27 2000/06/16 21:00:18 peter Exp $
+// $Id: output.cpp,v 1.1 2000/06/19 20:01:09 peter Exp $
 //
 // This program is free software; you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -25,7 +25,7 @@ ProgressDisplay *ProgressDisplay::GetOutputObject()
 
     if (!outputobject)
     {
-        outputobject = new TtyProgressDisplay();
+        outputobject = new ProgressDisplay();
     }
 
     return outputobject;
@@ -36,7 +36,7 @@ void ProgressDisplay::SetMessagesTotal(int number)
     maximum = number;
 }
 
-void TtyProgressDisplay::UpdateProgress(int message)
+void ProgressDisplay::UpdateProgress(int message)
 {
     if (maximum <= 0)
     {
@@ -48,22 +48,22 @@ void TtyProgressDisplay::UpdateProgress(int message)
     }
 }
 
-void TtyProgressDisplay::ErrorMessage(string errormessage)
+void ProgressDisplay::ErrorMessage(string errormessage)
 {
     cerr << "Error: " << errormessage << endl;
 }
 
-void TtyProgressDisplay::ErrorMessage(string errormessage, int number)
+void ProgressDisplay::ErrorMessage(string errormessage, int number)
 {
     cerr << "Error: " << errormessage << number << endl;
 }
 
-void TtyProgressDisplay::WarningMessage(string errormessage)
+void ProgressDisplay::WarningMessage(string errormessage)
 {
     cerr << "Warning: " << errormessage << endl;
 }
 
-void TtyProgressDisplay::WarningMessage(string errormessage, int number)
+void ProgressDisplay::WarningMessage(string errormessage, int number)
 {
     cerr << "Warning: " << errormessage << number << endl;
 }

@@ -2,6 +2,10 @@
   debian/
     Updated to use latest debhelper.
 
+  output.cpp
+  output.h
+    Change implementation of output device slightly.
+
   turqstat-sv.1
     Updated translation after consulting with sv@li.org.
 
