@@ -389,9 +389,8 @@ binary package.
 REQUIREMENTS FOR COMPILATION
 
 The program was developed under OS/2 using EMX 0.9d/GNU C/C++ 2.8.1, Debian
-2.2 with gcc 2.95.2 and Win32 with Mingw32 (gcc 2.95.2). It should compile
-using any standard C++ compiler. The program must probably be rewritten to
-support "big endian" processors.
+2.2 with gcc 2.95.2 and Win32 with Mingw32 (gcc 2.95.2). The program must
+probably be rewritten to support "big endian" processors.
 
 The GUI version requires Qt version 2.1 or later to be installed.
 
