@@ -77,14 +77,14 @@ protected:
 
     struct msgstatapx_s /* MSGSTAT.APX */
     {
-        UINT16  msgbaseversion; /* 2 */
+        UINT16  msgbaseversion;
         UINT8   reserved[254];
         UINT16  totalmsgs[2000];
         UINT16  highestmsg[2000];
         UINT16  lastreadptrs[2000];
     };
 
-    const Fdapx_msgbaseversion = 2;
+    const Fdapx_msgbaseversion = 3;
 };
 
 #endif
