@@ -9,6 +9,7 @@
 
   Makefile.in
   debian/dirs
+  debian/rules
   makedist.sh
     Added rules for Swedish manual page.
 
