@@ -156,7 +156,7 @@ fi
 
 if test "$ac_cv_header_sys_socket_h" = "no"; then
   AC_CHECK_HEADERS(winsock.h)
-  if text "$ac_cv_header_winsock.h" = "yes"; then
+  if test "$ac_cv_header_winsock.h" = "yes"; then
     LIBS="-lwsock32 $LIBS"
   fi
 fi

@@ -4,6 +4,9 @@
     fdopen() on sockets is broken on Win32 and OS/2, so instead use own
     buffering on these platforms.
 
+  configure.in
+    Fixed a typo.
+
 2001-11-04 - peter karlsson <peter@softwolves.pp.se>
   config.h.in
   configure.in
