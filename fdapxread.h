@@ -71,7 +71,7 @@ protected:
     };
 
     static const UINT32 Fdapx_local   = 0x01;
-    static const UINT32 Fdaxx_sent    = 0x10;
+    static const UINT32 Fdapx_sent    = 0x10;
     static const UINT32 Fdapx_deleted = 0x80000000;
 
     struct msgstatapx_s /* MSGSTAT.APX */
