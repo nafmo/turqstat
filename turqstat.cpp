@@ -23,7 +23,9 @@
 #include <config.h>
 #include <iostream.h>
 #include <string>
-#include <unistd.h>
+#ifdef HAS_GETOPT_IN_UNISTD
+# include <unistd.h>
+#endif
 #include <stdlib.h>
 #ifdef HAS_GETOPT_IN_GETOPT
 # include <getopt.h>
