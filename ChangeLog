@@ -1,3 +1,7 @@
+2000-03-30 - peter karlsson <peter@softwolves.pp.se>
+  turqstat.1
+    Corrected errors in manual page.
+
 2000-03-25 - peter karlsson <peter@softwolves.pp.se>
   statview.cpp
     Does not say "senders and recipients" for news areas.

@@ -10,7 +10,7 @@ turqstat \- Statistics tool for Fidonet message bases
 .SH DESCRIPTION
 .B Turquoise SuperStat
 reads the contents of a Fidonet message area in one of its supported
-formats, and creates statistics about this:
+formats, or a standard Usenet news spool, and creates statistics about this:
 .RS
 .PP
 .I Quoter blacklist.
@@ -20,7 +20,7 @@ formats, and creates statistics about this:
 .PP
 .I Toplist of original content per message.
 .PP
-.I Toplist of receivers.
+.I Toplist of receivers (Fidonet only).
 .PP
 .I Toplist of subjects.
 .PP
@@ -62,8 +62,14 @@ JAM message bases.
 .I \-f
 FDAPX/w message bases.
 .TP
-.I \-p
+.I \-t
 Tanstaafl message bases.
+.TP
+.I \-p
+MyPoint message bases.
+.TP
+.I \-u
+Usenet news spool.
 .SS "TOPLIST SELECTION"
 These options are used to turn toplists off.
 By default, all toplists are enabled.
