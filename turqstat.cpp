@@ -64,10 +64,19 @@ int main(int argc, char *argv[])
          daystats = true, versions = true, allnums = false;
 
     // We don't want timezones here
-#ifdef __EMX__
+#if defined(__GNUC__) || defined(__EMX__)
     timezone = 0;
     daylight = 0;
 #endif
+
+    // Display banner
+    cout << "Turquoise " << version
+         << " - Statistics tool for Fidonet message bases"
+         << endl;
+    cout << "(c) Copyright 1998-1999 Peter Karlsson. "
+            "GNU GPL 2 licensed." << endl;
+    cout << "A Softwolves Software Release in 1999." << endl;
+    cout << endl;
 
     // Handle arguments
     int c;
@@ -99,13 +108,6 @@ int main(int argc, char *argv[])
 
             case '?':
             default:
-                cout << "Turquoise " << version
-                     << " - Statistics tool for Fidonet message bases"
-                     << endl;
-                cout << "(c) Copyright 1998-1999 Peter Karlsson. "
-                        "GNU GPL 2 licensed." << endl;
-                cout << "A Softwolves Software Release in 1999." << endl;
-                cout << endl;
                 cout << "Usage: turqstat [options] areapath outputfile" << endl;
                 cout << endl;
                 cout << "Available options:" << endl;
@@ -162,10 +164,6 @@ StatRetr::StatRetr(char *areapath, char *outputfilepath, unsigned areanum,
                    bool weekstats, bool daystats, bool showversions,
                    bool showallnums)
 {
-    cout << "Turquoise SuperStat " << version
-         << " (c) Copyright 1998-1999 Peter Karlsson."
-         << endl;
-
     // Compute starting time
     time_t from;
     if (0 == days)
