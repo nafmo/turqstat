@@ -19,6 +19,10 @@
 #include <fstream.h>
 #include <limits.h>
 #include <time.h>
+#if !defined(HAVE_FSTREAM_FORM_METHOD)
+# include <iomanip>
+#endif
+
 
 #include "statview.h"
 #include "statengine.h"
@@ -191,7 +195,11 @@ bool StatView::CreateReport(StatEngine *engine, string filename)
                 }
                 else
                 {
+#if defined(HAVE_FSTREAM_FORM_METHOD)
                     report.form("%4u. ", place);
+#else
+                    report << setw(4) << place << ". ";
+#endif
                 }
 
                 unsigned integ = percentquotes / 1000;
@@ -209,9 +217,13 @@ bool StatView::CreateReport(StatEngine *engine, string filename)
                 else
                     tmp = name;
 
+#if defined(HAVE_FSTREAM_FORM_METHOD)
                 report.form("%-58.58s%5u %3u.%02u%%",
                             tmp.c_str(), data.messageswritten,
                             integ, fract);
+#else
+# error FIXME
+#endif
 
                 report << endl;
 
@@ -241,8 +253,13 @@ bool StatView::CreateReport(StatEngine *engine, string filename)
                 fract = 0;
                 integ ++;
             }
+#if defined(HAVE_FSTREAM_FORM_METHOD)
             report.form("%u.%02u%%,", integ, fract)
                    << " were quotes." << endl;
+#else
+            report << integ << "." << setfill('0') << setw(2) << fract
+                   << "%, were quotes" << endl;
+#endif
 
             report << endl;
         }
@@ -277,7 +294,11 @@ bool StatView::CreateReport(StatEngine *engine, string filename)
             }
             else
             {
+#if defined(HAVE_FSTREAM_FORM_METHOD)
                 report.form("%4u. ", place);
+#else
+                report << setw(4) << place << ". ";
+#endif
             }
 
             unsigned long long percentquotes =
@@ -299,14 +320,23 @@ bool StatView::CreateReport(StatEngine *engine, string filename)
             else
                 tmp = name;
 
+#if defined(HAVE_FSTREAM_FORM_METHOD)
             report.form("%-50.50s%5u %8u",
                         tmp.c_str(), data.messageswritten,
                         data.byteswritten);
+#else
+# error FIXME
+#endif
 
             if (data.bytesquoted > 0)
             {
+#if defined(HAVE_FSTREAM_FORM_METHOD)
                 report.form(" %3u.%1u%%",
                              integ, fract);
+#else
+                report << " " << setw(3) << integ
+                       << "." << setw(1) << fract << "%";
+#endif
             }
             else if (showallnums)
             {
@@ -370,7 +400,11 @@ bool StatView::CreateReport(StatEngine *engine, string filename)
             }
             else
             {
+#if defined(HAVE_FSTREAM_FORM_METHOD)
                 report.form("%4u. ", place);
+#else
+                report << setw(4) << place << ". ";
+#endif
             }
 
             unsigned long long percentquotes =
@@ -392,15 +426,24 @@ bool StatView::CreateReport(StatEngine *engine, string filename)
             else
                 tmp = name;
 
+#if defined(HAVE_FSTREAM_FORM_METHOD)
             report.form("%-43.43s%6u /%5u = %5u",
                         tmp.c_str(),
                         data.byteswritten - data.bytesquoted,
                         data.messageswritten, originalpermsg);
+#else
+# error FIXME
+#endif
 
             if (data.bytesquoted > 0)
             {
+#if defined(HAVE_FSTREAM_FORM_METHOD)
                 report.form(" %3u.%1u%%",
                              integ, fract);
+#else
+                report << " " << setw(3) << integ
+                       << "." << setw(1) << fract << "%";
+#endif
             }
             else if (showallnums)
             {
@@ -443,11 +486,22 @@ bool StatView::CreateReport(StatEngine *engine, string filename)
             }
             else
             {
+#if defined(HAVE_FSTREAM_FORM_METHOD)
                 report.form("%4u. ", place);
+#else
+                report << setw(4) << place << ". ";
+#endif
             }
 
+#if defined(HAVE_FSTREAM_FORM_METHOD)
             report.form("%5u:%-5u %8u %8u",
                         data.zone, data.net, data.messages, data.bytes);
+#else
+            report << setw(5) << data.zone << ':'
+                   << left << setw(5) << data.net << ' '
+                   << right << setw(8) << data.messages << ' '
+                   << right << setw(8) << data.bytes << endl;
+#endif
 
             report << endl;
 
@@ -490,11 +544,19 @@ bool StatView::CreateReport(StatEngine *engine, string filename)
             }
             else
             {
+#if defined(HAVE_FSTREAM_FORM_METHOD)
                 report.form("%4u. ", place);
+#else
+                report << setw(4) << place << ". ";
+#endif
             }
 
+#if defined(HAVE_FSTREAM_FORM_METHOD)
             report.form("%-7.7s%8u %8u",
                         data.topdomain.c_str(), data.messages, data.bytes);
+#else
+# error FIXME
+#endif
 
             report << endl;
 
@@ -539,7 +601,11 @@ bool StatView::CreateReport(StatEngine *engine, string filename)
             }
             else
             {
+#if defined(HAVE_FSTREAM_FORM_METHOD)
                 report.form("%4u. ", place);
+#else
+                report << setw(4) << place << ". ";
+#endif
             }
 
             string name = encoder_p->Encode(data.name);
@@ -548,15 +614,26 @@ bool StatView::CreateReport(StatEngine *engine, string filename)
             else
                 tmp = "(none)";
 
+#if defined(HAVE_FSTREAM_FORM_METHOD)
             report.form("%-35.35s%5u %5u",
                         tmp.c_str(),
                         data.messagesreceived,
                         data.messageswritten);
+#else
+# error FIXME
+#endif
 
             if (data.messageswritten)
             {
+#if defined(HAVE_FSTREAM_FORM_METHOD)
                 report.form(" %6u%%", (100 * data.messagesreceived) /
-                                     data.messageswritten);
+                                       data.messageswritten);
+#else
+                report << " " << setw(6)
+                       << (100 * data.messagesreceived) /
+                           data.messageswritten
+                       << "%";
+#endif
             }
             else if (showallnums)
             {
@@ -607,7 +684,11 @@ bool StatView::CreateReport(StatEngine *engine, string filename)
             }
             else
             {
+#if defined(HAVE_FSTREAM_FORM_METHOD)
                 report.form("%4u. ", place);
+#else
+                report << setw(4) << place << ". ";
+#endif
             }
 
             string subject = encoder_p->Encode(data.subject);
@@ -616,8 +697,12 @@ bool StatView::CreateReport(StatEngine *engine, string filename)
             else
                 tmp = "(none)";
 
+#if defined(HAVE_FSTREAM_FORM_METHOD)
             report.form("%-57.57s%6u %7u",
                         tmp.c_str(), data.count, data.bytes);
+#else
+# error FIXME
+#endif
 
             report << endl;
 
@@ -660,11 +745,19 @@ bool StatView::CreateReport(StatEngine *engine, string filename)
             }
             else
             {
+#if defined(HAVE_FSTREAM_FORM_METHOD)
                 report.form("%4u. ", place);
+#else
+                report << setw(4) << place << ". ";
+#endif
             }
 
             string program = encoder_p->Encode(data.program);
+#if defined(HAVE_FSTREAM_FORM_METHOD)
             report.form("%-35.35s%6u", program.c_str(), data.count);
+#else
+# error FIXME
+#endif
             report << endl;
 
             if (showversions)
@@ -720,7 +813,11 @@ bool StatView::CreateReport(StatEngine *engine, string filename)
             if (day[d] || showallnums)
             {
                 report << days[i];
+#if defined(HAVE_FSTREAM_FORM_METHOD)
                 report.form("%6u ", day[d]);
+#else
+                report << setw(6) << day[d] << ' ';
+#endif
                 int len = (60 * day[d]) / max;
                 for (int j = 0; j < len; j ++) report << '*';
                 report << endl;
@@ -751,7 +848,14 @@ bool StatView::CreateReport(StatEngine *engine, string filename)
         {
             if (hour[i] || showallnums)
             {
+#if defined(HAVE_FSTREAM_FORM_METHOD)
                 report.form("%02d00-%02d59%6u ", i, i, hour[i]);
+#else
+// ### FIXME: Krävs det en setfill(' ') före sista?
+                report << setfill('0') << setw(2) << i << "00-"
+                       << setfill('0') << setw(2) << i << "59"
+                       << setw(6) << hour[i];
+#endif
                 int len = (60 * hour[i]) / max;
                 for (int j = 0; j < len; j ++) report << '*';
                 report << endl;
