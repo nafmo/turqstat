@@ -691,8 +691,6 @@ void StatEngine::AddData(string fromname, string toname, string subject,
                 int firstperiod = program.find('.', 18);
                 if (firstperiod != -1) program[firstperiod] = ' ';
                 space2 = program.find('.', 24);
-cerr << "PINE: program='" << program << "' space1=" << space1 << " space2="
-<< space2 << endl;
             }
         }
     }
