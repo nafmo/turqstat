@@ -100,11 +100,12 @@ LIBS="-l$standardcpplib $LIBS"
 dnl Does not work with gcc 3:
 dnl AC_LANG_CPLUSPLUS
 dnl AC_CHECK_LIB($standardcpplib, std::cout)
-dnl if test "$ac_cv_mingw32" = "yes"; then
-dnl   AC_CHECK_LIB(crtdll, _findfirst)
-dnl   findfirst=yes
-dnl fi
 dnl AC_LANG_C
+
+if test "$ac_cv_mingw32" = "yes"; then
+  AC_CHECK_LIB(crtdll, _findfirst)
+  findfirst=yes
+fi
 
 dnl Check for header files -------------------------------------------------
 AC_CHECK_HEADERS(limits.h)
