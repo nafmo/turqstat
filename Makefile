@@ -4,13 +4,13 @@
 
 CFLAGS=-Wall -Zcrtdll -Zomf -Ismapi -Lsmapi -O3 -DHAS_SMAPI
 
-all: turqoise.exe
+all: turqstat.exe
 
-turqoise.exe: turqoise.obj statengine.obj statview.obj turqoise.def squishread.obj fdapxread.obj jamread.obj mypointread.obj utility.obj smapi/smapiemo.lib
-        gcc $(CFLAGS) -o turqoise.exe *.obj *.def -lsmapiemo -lstdcpp
+turqstat.exe: turqstat.obj statengine.obj statview.obj turqstat.def squishread.obj fdapxread.obj jamread.obj mypointread.obj utility.obj smapi/smapiemo.lib
+        gcc $(CFLAGS) -o turqstat.exe *.obj *.def -lsmapiemo -lstdcpp
 
-turqoise.obj: turqoise.cpp statengine.h statview.h arearead.h squishread.h fdapxread.h jamread.h mypointread.h
-        gcc $(CFLAGS) -c turqoise.cpp
+turqstat.obj: turqstat.cpp statengine.h statview.h arearead.h squishread.h fdapxread.h jamread.h mypointread.h
+        gcc $(CFLAGS) -c turqstat.cpp
 
 statengine.obj: statengine.cpp statengine.h
         gcc $(CFLAGS) -c statengine.cpp
@@ -38,12 +38,13 @@ smapi/smapiemo.lib:
         nmake -f makefile.emo
         cd ..
 
-dist: turqoise.exe source.rar
-        rar -av a turqoise.rar turqoise.exe turqoise.doc turqoise.dok source.rar COPYING
+dist: turqstat.exe source.rar
+        rar -av a turqstat.rar turqstat.exe turqstat.doc turqstat.dok source.rar COPYING
         del source.rar
 
 source.rar:
-        rar -s -av a source.rar *.def *.cpp *.h Makefile smapi\*.c smapi\*.h smapi\*.asm smapi\*.txt smapi\*.diz smapi\makefile.*
+        rar -s -av a source.rar *.def *.cpp *.h Makefile
+#       rar -s -av a source.rar *.def *.cpp *.h Makefile smapi\*.c smapi\*.h smapi\*.asm smapi\*.txt smapi\*.diz smapi\makefile.*
 
 clean: almostclean
         -del smapi\*.obj
