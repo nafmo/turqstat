@@ -22,7 +22,11 @@
 // Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 
 #include <iostream.h>
-#include <String.h>
+#ifdef __EMX__
+# include <Strng.h>
+#else
+# include <String.h>
+#endif
 #include <unistd.h>
 #include <stdlib.h>
 
@@ -34,13 +38,24 @@
 class StatRetr
 {
 public:
-    StatRetr(char *areapath, char *outputfilepath, unsigned days);
+    enum basetype_e { squish };
+
+    StatRetr(char *areapath, char *outputfilepath, unsigned days,
+             basetype_e basetype, unsigned maxnumber,
+             bool quoters, bool topwritten, bool topreceived,
+             bool topsubjects, bool topprograms,
+             bool weekstats, bool daystats);
     ~StatRetr();
 };
 
 int main(int argc, char *argv[])
 {
     unsigned days = 0;
+    unsigned maxnum = 15;
+    StatRetr::basetype_e basetype = StatRetr::squish;
+    bool quoters = true, topwritten = true, topreceived = true,
+         topsubjects = true, topprograms = true, weekstats = true,
+         daystats = true;
 
     // We don't want timezones here
     timezone = 0;
@@ -48,28 +63,65 @@ int main(int argc, char *argv[])
 
     // Handle arguments
     int c;
-    while (EOF != (c = getopt(argc, argv, "d:?")))
+    while (EOF != (c = getopt(argc, argv, "d:n:sQWRSPHD?")))
     {
         switch (c)
         {
-            case 'd':
-                days = strtoul(optarg, NULL, 10);
-                break;
+            case 'd':   days = strtoul(optarg, NULL, 10);           break;
+            case 'n':   maxnum = strtoul(optarg, NULL, 10);         break;
+
+            case 's':   basetype = StatRetr::squish;                break;
+
+            case 'Q':   quoters = false;                            break;
+            case 'W':   topwritten = false;                         break;
+            case 'R':   topreceived = false;                        break;
+            case 'S':   topsubjects = false;                        break;
+            case 'P':   topprograms = false;                        break;
+            case 'H':   daystats = false;                           break;
+            case 'D':   weekstats = false;                          break;
 
             case '?':
             default:
-                cout << "Usage: " << argv[0]
-                     << " [-d days] squisharea outputfile" << endl;
+                cout << "Turqoise - Statistics tool for Fidonet message bases"
+                     << endl;
+                cout << endl;
+                cout << "Usage: turqoise [options] areapath outputfile" << endl;
+                cout << endl;
+                cout << "Available options:" << endl;
+                cout << "  -d days        Days back to count messages from"
+                     << endl;
+                cout << "  -n num         Maximum entries in toplists" << endl;
+                cout << endl;
+                cout << "  -s             Squish style message area (default)"
+                     << endl;
+                cout << endl;
+                cout << "  -Q -W -R -S -P Turn quoters/written/received/"
+                                         "subjects/programs toplist off"
+                     << endl;
+                cout << "  -H -D          Turn hour/day statistics off"
+                     << endl;
                 return 1;
         }
     }
 
-    StatRetr s(argv[optind], argv[optind + 1], days);
+    if (argc - optind != 2)
+    {
+        cerr << "Illegal number of arguments (-? for help)." << endl;
+        return 1;
+    }
+
+    StatRetr s(argv[optind], argv[optind + 1], days,
+               basetype, maxnum, quoters, topwritten, topreceived, topsubjects,
+               topprograms, weekstats, daystats);
 
     return 0;
 }
 
-StatRetr::StatRetr(char *areapath, char *outputfilepath, unsigned days)
+StatRetr::StatRetr(char *areapath, char *outputfilepath, unsigned days,
+                   basetype_e basetype, unsigned maxnumber,
+                   bool quoters, bool topwritten, bool topreceived,
+                   bool topsubjects, bool topprograms,
+                   bool weekstats, bool daystats)
 {
     cout << "Turqoise SuperStat 0.1 (c) Copyright 1998-1999 Peter Karlsson." << endl;
 
@@ -86,17 +138,26 @@ StatRetr::StatRetr(char *areapath, char *outputfilepath, unsigned days)
     from = mktime(fromtm);
 
     // Transfer from area to engine
-    AreaRead *area = new SquishRead(areapath);
+    AreaRead *area;
+    if (squish == basetype)
+        area = new SquishRead(areapath);
+    else
+    {
+        cerr << "Internal error." << endl;
+        exit(-1);
+    }
+
     StatEngine engine;
     area->Transfer(from, engine);
 
     // Create output
     StatView view;
-    view.CreateReport(&engine, outputfilepath, 15,
-                      true, true, true, true, true, true, true);
+    view.CreateReport(&engine, outputfilepath, maxnumber,
+                      quoters, topwritten, topreceived, topsubjects,
+                      topprograms, weekstats, daystats);
 }
 
-StatRetr::~StatRetr(String areapath, String outputfilepath)
+StatRetr::~StatRetr()
 {
     cout << "Turqoise finished." << endl;
 }
