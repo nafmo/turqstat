@@ -14,7 +14,7 @@ OBJS=turqstat.o statengine.o statview.o squishread.o fdapxread.o jamread.o mypoi
 
 # turqstat.def
 turqstat: $(OBJS)
-	@CXX@ $(CXXFLAGS) -o turqstat $(OBJS) $(LIBS)
+	@CXX@ $(CXXFLAGS) $(LDFLAGS) -o turqstat $(OBJS) $(LIBS)
 
 turqstat.o: turqstat.cpp statengine.h statview.h arearead.h squishread.h fdapxread.h jamread.h mypointread.h version.h tanstaaflread.h
 	@CXX@ $(CXXFLAGS) -c $(srcdir)/turqstat.cpp
@@ -71,7 +71,9 @@ debian-install: turqstat
 VER ?= x.x
 dist:
 	-mkdir -p turqstat-$(VER)/debian
-	cp -p *.1 *.def *.cpp *.h Makefile* ChangeLog COPYING turqstat-$(VER)/
+	autoconf
+	autoheader
+	cp -p *.1 *.def *.cpp *.h Makefile.in config.h.in configure configure.in ChangeLog COPYING turqstat-$(VER)/
 	iso2dos -i turqstat.doc turqstat-$(VER)/turqstat.doc
 	iso2dos -i turqstat.dok turqstat-$(VER)/turqstat.dok
 	-cp -p debian/* turqstat-$(VER)/debian
