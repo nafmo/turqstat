@@ -1,4 +1,4 @@
-// Copyright (c) 1998-2000 Peter Karlsson
+// Copyright (c) 1998-2001 Peter Karlsson
 //
 // $Id$
 //
@@ -20,6 +20,9 @@
 
 #include <string>
 #include <time.h>
+
+#include "utility.h"
+#include "convert.h"
 
 /**
  * The class doing the real work. This is the class that collects (or,
@@ -75,7 +78,7 @@ public:
      */
     struct persstat_s
     {
-        string      name;               ///< Name of person.
+        wstring     name;               ///< Name of person.
         string      address;            ///< Network address of person.
         unsigned    byteswritten,       ///< Bytes written by person.
                     lineswritten,       ///< Lines/paragraphs written by person.
@@ -144,7 +147,7 @@ public:
      */
     struct subjstat_s
     {
-        string      subject;    ///< Subject line.
+        wstring     subject;    ///< Subject line.
         unsigned    count,      ///< Number of messages with subject.
                     bytes;      ///< Number of bytes under subject.
     };
@@ -168,7 +171,7 @@ public:
     {
         friend class StatEngine;
 
-        string      program;        ///< Name of program.
+        wstring     program;        ///< Name of program.
         unsigned    count;          ///< Number of uses of program.
     private:
         void        *versions;      ///< Pointer to private data.
@@ -192,7 +195,7 @@ public:
      */
     struct verstat_s
     {
-        string      version;    ///< Version of program.
+        wstring     version;    ///< Version of program.
         unsigned    count;      ///< Number of uses of version.
     };
 
@@ -315,7 +318,7 @@ protected:
      */
     struct persondata_s
     {
-        string      name;               ///< Name of person.
+        wstring     name;               ///< Name of person.
         string      address;            ///< Network address of person.
         unsigned    byteswritten,       ///< Bytes written by person.
                     lineswritten,       ///< Lines written by person.
@@ -344,7 +347,7 @@ protected:
      */
     struct programversion_s
     {
-        string      version;        ///< Name of version.
+        wstring     version;        ///< Name of version.
         unsigned    count;          ///< Number of uses of this version.
 
         programversion_s    *next;  ///< Next version in linked list.
@@ -362,7 +365,7 @@ protected:
      */
     struct programdata_s
     {
-        string              programname;    ///< Name of program.
+        wstring             programname;    ///< Name of program.
         programversion_s    *versions_p;    ///< Pointer to software versions.
         unsigned            count;          ///< Number of uses of this program.
 
@@ -385,7 +388,7 @@ protected:
      */
     struct subjectdata_s
     {
-        string      subject;    ///< Subject line.
+        wstring     subject;    ///< Subject line.
         unsigned    count,      ///< Number of messages bearing this subject.
                     bytes;      ///< Number of bytes bearing this subject.
 
@@ -477,7 +480,7 @@ protected:
      */
     string ParseAddress(string, string) const;
     /** Decode a Quoted-Printable encoded string. */
-    string DeQP(string) const;
+    wstring DeQP(const string &, Decoder *) const;
     /** Internal helper for the people toplists. */
     void FlattenPeople(persstat_s *, persondata_s *);
     /** Internal helper for the subjects toplist. */

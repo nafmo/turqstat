@@ -1,4 +1,4 @@
-// Copyright (c) 1998-2000 Peter Karlsson
+// Copyright (c) 1998-2001 Peter Karlsson
 //
 // $Id$
 //
@@ -15,13 +15,14 @@
 // along with this program; if not, write to the Free Software
 // Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 
+#include <config.h>
+
 #include <limits.h>
 #include <iostream.h>
 #include <stdlib.h>
 #include <stdio.h>
 
 #include "statengine.h"
-#include "utility.h"
 #include "output.h"
 
 StatEngine::StatEngine(void)
@@ -66,12 +67,28 @@ StatEngine::~StatEngine(void)
     if (domaintoplist_p) delete[] domaintoplist_p;
 }
 
-void StatEngine::AddData(string fromname, string toname, string subject,
+void StatEngine::AddData(string in_fromname, string in_toname, string in_subject,
                          string controldata, string msgbody,
                          time_t timewritten, time_t timereceived)
 {
     enum { None, Left, Right } direction;
-    string internetaddress = "";
+    string internetaddress;
+#ifdef HAVE_WORKING_WSTRING
+    wstring fromname, toname, subject;
+#else
+    wstring fromname(32), toname(32), subject(32);
+#endif
+
+    // Create a decoder for input data
+    Decoder *decoder_p = NULL;
+    if (newsarea)
+    {
+        decoder_p = Decoder::GetDecoderByMIMEHeaders(controldata.c_str());
+    }
+    else
+    {
+        decoder_p = Decoder::GetDecoderByKludges(controldata.c_str());
+    }
 
     // In news areas, we search the control information for From and
     // subject lines.
@@ -142,9 +159,11 @@ void StatEngine::AddData(string fromname, string toname, string subject,
                 int nextpos = controldata.find((char) 1, pos);
 
                 if (nextpos == -1)
-                    subject = controldata.substr(pos);
+                    subject = decoder_p->Decode(controldata.substr(pos));
                 else
-                    subject = controldata.substr(pos, nextpos - pos);
+                    subject =
+                        decoder_p->Decode(controldata.substr(pos,
+                                                             nextpos - pos));
 
                 pos = nextpos;
             }
@@ -185,13 +204,16 @@ void StatEngine::AddData(string fromname, string toname, string subject,
                 if (-1 == left || -1 == right)
                 {
                     // "email@domain.com"
-                    if (fromname.empty()) fromname = fromstring;
+                    if (in_fromname.empty())
+                    {
+                        in_fromname = fromstring;
+                    }
                     internetaddress = fromstring;
                 }
                 else
                 {
                     // "name <email@domain.com>"
-                    fromname        = fromstring.substr(0, left - 1);
+                    in_fromname = fromstring.substr(0, left - 1);
                     internetaddress = fromstring.substr(left + 1,
                                                         right - left - 1);
                 }
@@ -199,23 +221,31 @@ void StatEngine::AddData(string fromname, string toname, string subject,
             else
             {
                 // "email@domain.com (name)"
-                fromname        = fromstring.substr(left + 1, right - left - 1);
+                in_fromname = fromstring.substr(left + 1, right - left - 1);
                 internetaddress = fromstring.substr(0, left - 1);
             }
 
             // Fixup name
             // remove quotes
-            if ('\"' == fromname[0] && '\"' == fromname[fromname.length() - 1])
-                fromname = fromname.substr(1, fromname.length() - 2);
+            if ('"' == in_fromname[0] &&
+                '"' == in_fromname[fromname.length() - 1])
+                in_fromname = in_fromname.substr(1, in_fromname.length() - 2);
         }
 
         // kill QP
-        if (foundfrom && newsarea) fromname = DeQP(fromname);
-        if (newsarea) subject = DeQP(subject);
+        if (foundfrom && newsarea) fromname = DeQP(in_fromname, decoder_p);
+        if (newsarea) subject = DeQP(in_subject, decoder_p);
 
         if (0 == timewritten)
             timewritten = timereceived;
     }
+    else
+    {
+        subject = decoder_p->Decode(in_subject);
+        fromname = decoder_p->Decode(in_fromname);
+    }
+
+    toname = decoder_p->Decode(in_toname);
 
     // Locate sender's name in database, and update statistics
     persondata_s *perstrav_p = people_p, *persfound_p = perstrav_p;
@@ -585,15 +615,23 @@ void StatEngine::AddData(string fromname, string toname, string subject,
 
     if (subject.length() > 3)
     {
-        while (fcompare(subject, "re:", 3) == 0)
+        while (fcompare(subject, wstring(L"re:"), 3) == 0)
         {
             if (' ' == subject[3])
             {
+#ifdef HAVE_WORKING_WSTRING
                 subject = subject.substr(4, subject.length() - 4);
+#else
+                subject.skip(4);
+#endif
             }
             else
             {
+#ifdef HAVE_WORKING_WSTRING
                 subject = subject.substr(3, subject.length() - 3);
+#else
+                subject.skip(3);
+#endif
             }
         }
     }
@@ -659,7 +697,7 @@ void StatEngine::AddData(string fromname, string toname, string subject,
 
     // Locate program name and version in database, and update statistics
     string program = "";
-    string programname;
+    string in_programname;
     int space1, space2;
 
     if (newsarea)
@@ -710,11 +748,11 @@ void StatEngine::AddData(string fromname, string toname, string subject,
             else
                 space2 = paren;
 
-        programname = program.substr(0, space1);
+        in_programname = program.substr(0, space1);
 
         // Special case: Pine (only identifies in Message-ID)
         where = controldata.find("\x1""Message-ID:");
-        if (programname.empty() && where != -1)
+        if (in_programname.empty() && where != -1)
         {
             where ++;
             int howfar = controldata.find((char) 1, where);
@@ -722,7 +760,7 @@ void StatEngine::AddData(string fromname, string toname, string subject,
             {
                 program =
                     controldata.substr(where, howfar - where);
-                programname = "Pine";
+                in_programname = "Pine";
                 space1 = 17;
                 int firstperiod = program.find('.', 18);
                 if (firstperiod != -1) program[firstperiod] = ' ';
@@ -761,13 +799,14 @@ void StatEngine::AddData(string fromname, string toname, string subject,
         if (-1 == space2) space2 = program.length();
 
         if (space1 && '+' == program[space1 - 1])
-            programname = program.substr(0, space1 - 1);
+            in_programname = program.substr(0, space1 - 1);
         else
-            programname = program.substr(0, space1);
+            in_programname = program.substr(0, space1);
     }
 
-    if (!programname.empty())
+    if (!in_programname.empty())
     {
+        wstring programname = decoder_p->Decode(in_programname);
         programdata_s *progtrav_p = programs_p, *progfound_p = progtrav_p;
         if (NULL == programs_p)
         {
@@ -830,12 +869,16 @@ void StatEngine::AddData(string fromname, string toname, string subject,
         {
             // Locate version number in the linked list, if we do not
             // find it, add it to it.
-            string programvers;
+            wstring programvers;
 
             if (space2 && '+' == program[space2 - 1] && space2 - space1 > 2)
-                programvers = program.substr(space1 + 1, space2 - space1 - 2);
+                programvers =
+                    decoder_p->Decode(program.substr(space1 + 1,
+                                                     space2 - space1 - 2));
             else
-                programvers = program.substr(space1 + 1, space2 - space1 - 1);
+                programvers =
+                    decoder_p->Decode(program.substr(space1 + 1,
+                                                     space2 - space1 - 1));
 
             programversion_s **vertrav_pp = &(progfound_p->versions_p);
             while (*vertrav_pp != NULL &&
@@ -892,6 +935,8 @@ void StatEngine::AddData(string fromname, string toname, string subject,
             latestreceived   = timereceived;
         rdatevalid = true;
     }
+
+    delete decoder_p;
 }
 
 void StatEngine::AreaDone(void)
@@ -967,42 +1012,63 @@ string StatEngine::ParseAddress(string controldata, string msgbody) const
     return string("N/A");
 }
 
-string StatEngine::DeQP(string qp) const
+wstring StatEngine::DeQP(const string &qp, Decoder *maindecoder_p) const
 {
-    string rc = "", hex = "";
+#ifdef HAVE_WORKING_WSTRING
+    wstring rc;
+#else
+    wstring rc(qp.length() + 1);
+#endif
+    string hex;
     int qpchar, pos, endpos, current = 0;
 
     pos = qp.find("=?");
     while (pos >= 0)
     {
-        if (0 == fcompare(qp.substr(pos, 15), string("=?iso-8859-1?Q?")))
+        int pos2 = qp.find("?Q?", pos + 3);
+        if (pos2)
         {
-            rc += qp.substr(current, pos - current);
-            endpos = qp.find("?=", pos + 15);
+            // Copy data up to start of QP string
+            rc.append(maindecoder_p->Decode(qp.substr(current, pos - current)));
+
+            // Locate end of QP string
+            endpos = qp.find("?=", pos2 + 3);
             current = endpos + 2;
-            for (int i = pos + 15; i < endpos; i ++)
+
+            // Convert QP code to bytestream
+            string tmpstr;
+            for (int i = pos2 + 3; i < endpos; i ++)
             {
                 if ('=' == qp[i])
                 {
                     hex = qp.substr(i + 1, 2);
                     sscanf(hex.c_str(), "%x", &qpchar);
-                    rc += (char) qpchar;
+                    tmpstr += (char) qpchar;
                     i += 2;
                 }
                 else if ('_' == qp[i])
-                    rc += ' ';
+                    tmpstr += ' ';
                 else
-                    rc += qp[i];
+                    tmpstr += qp[i];
             }
+
+            // Convert bytestream to string
+            string charset = qp.substr(pos + 2, pos2 - pos - 2);
+            Decoder *qp_decoder_p = Decoder::GetDecoderByName(charset.c_str());
+            rc.append(qp_decoder_p->Decode(tmpstr));
+            delete qp_decoder_p;
+
+            // Continue searching
             pos = current;
+            pos = qp.find("=?", pos);
         }
         else
-            pos ++;
-
-        pos = qp.find("=?", pos);
+        {
+            pos = 0;
+        }
     }
 
-    rc += qp.substr(current);
+    rc.append(maindecoder_p->Decode(qp.substr(current)));
 
     return rc;
 }
