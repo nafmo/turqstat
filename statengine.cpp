@@ -29,15 +29,17 @@ StatEngine::StatEngine(void)
     msgcount = 0;
     for (int i = 0; i < 7; i ++) daycount[i] = 0;
     for (int i = 0; i < 24; i ++) hourcount[i] = 0;
-    numpeople = numsubjects = numprograms = numareas = 0;
+    numpeople = numsubjects = numprograms = numareas = numnets = 0;
     totallines = totalqlines = totalbytes = totalqbytes = 0;
     people_p = NULL;
     programs_p = NULL;
     subjects_p = NULL;
+    nets_p = NULL;
     persontoplist_p = NULL;
     subjecttoplist_p = NULL;
     programtoplist_p = NULL;
     currversion = NULL;
+    nettoplist_p = NULL;
     wdatevalid = false;
     rdatevalid = false;
     earliestwritten = latestwritten = earliestreceived = latestreceived = 0;
@@ -52,6 +54,7 @@ StatEngine::~StatEngine(void)
     if (people_p) delete people_p;
     if (programs_p) delete programs_p;
     if (subjects_p) delete subjects_p;
+    if (nets_p) delete nets_p;
 
     if (persontoplist_p) delete[] persontoplist_p;
     if (subjecttoplist_p) delete[] subjecttoplist_p;
@@ -64,9 +67,6 @@ void StatEngine::AddData(string fromname, string toname, string subject,
 {
     enum { None, Left, Right } direction;
     string internetaddress;
-
-    // Locate sender's name in database, and update statistics
-    persondata_s *perstrav_p = people_p, *persfound_p = perstrav_p;
 
     // In news areas, we search the control information for From and
     // subject lines.
@@ -181,6 +181,8 @@ void StatEngine::AddData(string fromname, string toname, string subject,
             timewritten = timereceived;
     }
 
+    // Locate sender's name in database, and update statistics
+    persondata_s *perstrav_p = people_p, *persfound_p = perstrav_p;
     if (NULL == perstrav_p)
     {
         people_p = new persondata_s;
@@ -319,6 +321,88 @@ void StatEngine::AddData(string fromname, string toname, string subject,
     totalqbytes += qbytes;
     totalqlines += qlines;
     msgcount ++;
+
+    // Locate sender's net in database and update
+    if (!newsarea && persfound_p->address != "N/A")
+    {
+        string myaddress = ParseAddress(controldata, msgbody);
+        int colon = myaddress.find(':');
+        int slash = myaddress.find('/', colon);
+        if (colon != -1 && slash != -1)
+        {
+            const char *address = myaddress.c_str();
+            unsigned zone = strtoul(address, NULL, 10);
+            unsigned net  = strtoul(address + colon + 1, NULL, 10);
+
+            netdata_s *nettrav_p = nets_p, *netfound_p = nettrav_p;
+
+            if (NULL == nets_p)
+            {
+                nets_p = new netdata_s;
+                if (!nets_p) errorquit(out_of_memory, 2);
+                nets_p->zone = zone;
+                nets_p->net  = net;
+
+                netfound_p = nets_p;
+                numnets ++;
+            }
+            else
+            {
+                direction = None;
+                do
+                {
+                    // trav_p points to leaf abovie
+                    if (Left == direction) nettrav_p = nettrav_p->left;
+                    if (Right == direction) nettrav_p = nettrav_p->right;
+
+                    // found_p points to the leaf (NULL at the end, which is
+                    // where we need the leaf above to add the leaf to)
+                    if (net == nettrav_p->net)
+                    {
+                        if (zone < nettrav_p->zone)
+                        {
+                            direction = Left;
+                            netfound_p = nettrav_p->left;
+                        }
+                        else if (zone > nettrav_p->zone)
+                        {
+                            direction = Right;
+                            netfound_p = nettrav_p->right;
+                        }
+                    }
+                    else if (net < nettrav_p->net)
+                    {
+                        direction = Left;
+                        netfound_p = nettrav_p->left;
+                    }
+                    else // net > nettrav_p->net
+                    {
+                        direction = Right;
+                        netfound_p = nettrav_p->right;
+                    }
+
+                } while (NULL != netfound_p &&
+                         (zone != netfound_p->zone || net != netfound_p->net));
+
+                if (NULL == netfound_p)
+                {
+                    // No net was found
+                    netfound_p = new netdata_s;
+                    if (!netfound_p) errorquit(out_of_memory, 2);
+                    if (Left == direction) nettrav_p->left = netfound_p;
+                    if (Right == direction) nettrav_p->right = netfound_p;
+
+                    netfound_p->zone = zone;
+                    netfound_p->net  = net;
+
+                    numnets ++;
+                }
+            }
+
+            netfound_p->count ++;
+            netfound_p->bytes += bytes;
+        }
+    }
 
     // Locate recipient's name in database, and update statistics
     if (!newsarea)
@@ -608,7 +692,7 @@ void StatEngine::AddData(string fromname, string toname, string subject,
     }
 
     // Check writing and reception date and add to statistics
-    if (timewritten >= 0) // zero or negative date indicates error
+    if (timewritten > 0) // zero or negative date indicates error
     {
         if (!wdatevalid || timewritten  < earliestwritten)
             earliestwritten  = timewritten;
@@ -624,7 +708,7 @@ void StatEngine::AddData(string fromname, string toname, string subject,
         }
     }
 
-    if (timereceived >= 0)
+    if (timereceived > 0)
     {
         if (!rdatevalid || timereceived < earliestreceived)
             earliestreceived = timereceived;
@@ -758,6 +842,7 @@ bool StatEngine::GetTop(bool restart, persstat_s &result,
 
         persontoplist_p = new persstat_s[numpeople];
         if (!persontoplist_p) errorquit(out_of_memory, 2);
+        flattenindex = 0;
         FlattenPeople(persontoplist_p, people_p);
 
         // 2. Sort the list according to number of written texts
@@ -770,7 +855,11 @@ bool StatEngine::GetTop(bool restart, persstat_s &result,
         currperson ++;
 
     if (currperson >= numpeople)
+    {
+        delete[] persontoplist_p;
+        persontoplist_p = NULL;
         return false;
+    }
 
     result = persontoplist_p[currperson];
 
@@ -779,21 +868,18 @@ bool StatEngine::GetTop(bool restart, persstat_s &result,
 
 void StatEngine::FlattenPeople(persstat_s *array, persondata_s *p)
 {
-    static unsigned index;
-
     if (!p) return;
-    if (p == people_p) index = 0;
 
-    array[index].name             = p->name;
-    array[index].address          = p->address;
-    array[index].byteswritten     = p->byteswritten;
-    array[index].lineswritten     = p->lineswritten;
-    array[index].bytesquoted      = p->bytesquoted;
-    array[index].linesquoted      = p->linesquoted;
-    array[index].messageswritten  = p->messageswritten;
-    array[index].messagesreceived = p->messagesreceived;
+    array[flattenindex].name             = p->name;
+    array[flattenindex].address          = p->address;
+    array[flattenindex].byteswritten     = p->byteswritten;
+    array[flattenindex].lineswritten     = p->lineswritten;
+    array[flattenindex].bytesquoted      = p->bytesquoted;
+    array[flattenindex].linesquoted      = p->linesquoted;
+    array[flattenindex].messageswritten  = p->messageswritten;
+    array[flattenindex].messagesreceived = p->messagesreceived;
 
-    index ++;
+    flattenindex ++;
 
     FlattenPeople(array, p->left);
     FlattenPeople(array, p->right);
@@ -809,6 +895,7 @@ bool StatEngine::GetTopSubjects(bool restart, subjstat_s &result)
 
         subjecttoplist_p = new subjstat_s[numsubjects];
         if (!subjecttoplist_p) errorquit(out_of_memory, 2);
+        flattenindex = 0;
         FlattenSubjects(subjecttoplist_p, subjects_p);
 
         // 2. Sort the list according to number of written texts
@@ -820,7 +907,11 @@ bool StatEngine::GetTopSubjects(bool restart, subjstat_s &result)
         currsubject ++;
 
     if (currsubject >= numsubjects)
+    {
+        delete[] subjecttoplist_p;
+        subjecttoplist_p = NULL;
         return false;
+    }
 
     result = subjecttoplist_p[currsubject];
 
@@ -829,16 +920,13 @@ bool StatEngine::GetTopSubjects(bool restart, subjstat_s &result)
 
 void StatEngine::FlattenSubjects(subjstat_s *array, subjectdata_s *p)
 {
-    static unsigned index;
-
     if (!p) return;
-    if (p == subjects_p) index = 0;
 
-    array[index].subject = p->subject;
-    array[index].bytes   = p->bytes;
-    array[index].count   = p->count;
+    array[flattenindex].subject = p->subject;
+    array[flattenindex].bytes   = p->bytes;
+    array[flattenindex].count   = p->count;
 
-    index ++;
+    flattenindex ++;
 
     FlattenSubjects(array, p->left);
     FlattenSubjects(array, p->right);
@@ -854,6 +942,7 @@ bool StatEngine::GetTopPrograms(bool restart, progstat_s &result)
 
         programtoplist_p = new progstat_s[numprograms];
         if (!programtoplist_p) errorquit(out_of_memory, 2);
+        flattenindex = 0;
         FlattenPrograms(programtoplist_p, programs_p);
 
         // 2. Sort the list according to number of written texts
@@ -865,7 +954,11 @@ bool StatEngine::GetTopPrograms(bool restart, progstat_s &result)
         currprogram ++;
 
     if (currprogram >= numprograms)
+    {
+        delete[] programtoplist_p;
+        programtoplist_p = NULL;
         return false;
+    }
 
     result = programtoplist_p[currprogram];
 
@@ -874,16 +967,13 @@ bool StatEngine::GetTopPrograms(bool restart, progstat_s &result)
 
 void StatEngine::FlattenPrograms(progstat_s *array, programdata_s *p)
 {
-    static unsigned index;
-
     if (!p) return;
-    if (p == programs_p) index = 0;
 
-    array[index].program  = p->programname;
-    array[index].versions = p->versions_p;
-    array[index].count    = p->count;
+    array[flattenindex].program  = p->programname;
+    array[flattenindex].versions = p->versions_p;
+    array[flattenindex].count    = p->count;
 
-    index ++;
+    flattenindex ++;
 
     FlattenPrograms(array, p->left);
     FlattenPrograms(array, p->right);
@@ -908,6 +998,54 @@ bool StatEngine::GetProgramVersions(bool restart, verstat_s &result)
     return true;
 }
 
+bool StatEngine::GetTopNets(bool restart, netstat_s &result)
+{
+    if (restart || NULL == nettoplist_p)
+    {
+        // Generate a top list
+        // 1. Flatten the binary tree into the array
+        if (NULL != nettoplist_p) delete[] nettoplist_p;
+
+        nettoplist_p = new netstat_s[numnets];
+        if (!nettoplist_p) errorquit(out_of_memory, 2);
+        flattenindex = 0;
+        FlattenNets(nettoplist_p, nets_p);
+
+        // 2. Sort the list according to number of occurances
+        qsort(nettoplist_p, numnets, sizeof(netstat_s),
+              comparenets);
+        currnet = 0;
+    }
+    else
+        currnet ++;
+
+    if (currnet >= numnets)
+    {
+        delete[] nettoplist_p;
+        nettoplist_p = NULL;
+        return false;
+    }
+
+    result = nettoplist_p[currnet];
+
+    return true;
+}
+
+void StatEngine::FlattenNets(netstat_s *array, netdata_s *p)
+{
+    if (!p) return;
+
+    array[flattenindex].zone     = p->zone;
+    array[flattenindex].net      = p->net;
+    array[flattenindex].messages = p->count;
+    array[flattenindex].bytes    = p->bytes;
+
+    flattenindex ++;
+
+    FlattenNets(array, p->left);
+    FlattenNets(array, p->right);
+}
+
 int comparenumwritten(const void *p1, const void *p2)
 {
     unsigned d1 = (((StatEngine::persstat_s *) p2)->messageswritten);
@@ -920,7 +1058,6 @@ int comparenumwritten(const void *p1, const void *p2)
     if (d1 < d2) return -1;
     return 1;
 }
-
 
 int comparenumreceived(const void *p1, const void *p2)
 {
@@ -1020,4 +1157,10 @@ int compareprogram(const void *p1, const void *p2)
 {
     return ((int) (((StatEngine::progstat_s *) p2)->count)) -
            ((int) (((StatEngine::progstat_s *) p1)->count));
+}
+
+int comparenets(const void *p1, const void *p2)
+{
+    return ((int) (((StatEngine::netstat_s *) p2)->messages)) -
+           ((int) (((StatEngine::netstat_s *) p1)->messages));
 }
