@@ -212,7 +212,7 @@ HISTORY
   Can give file names for JAM and Squish bases, instead of only base name.
   Corrected errors on manual page and added a Swedish one.
   Use Mingw32 instead of CygWin for Win32 version.
-  Improved news support, and detects gated Usenet posts in Fidonet.
+  Improved news support.
   Various bugfixes.
 
 
