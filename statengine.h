@@ -29,6 +29,7 @@ int compareoriginalpermsg(const void *, const void *);
 int comparesubject(const void *, const void *);
 int compareprogram(const void *, const void *);
 int comparenets(const void *, const void *);
+int comparedomains(const void *, const void *);
 
 class StatEngine
 {
@@ -102,6 +103,14 @@ public:
 
     bool GetTopNets(bool restart, netstat_s &result);
 
+    struct domainstat_s
+    {
+        string      topdomain;
+        unsigned    messages, bytes;
+    };
+
+    bool GetTopDomains(bool restart, domainstat_s &result);
+
     inline time_t GetEarliestReceived(void) { return earliestreceived; };
     inline time_t GetLastReceived(void)     { return latestreceived;   };
     inline time_t GetEarliestWritten(void)  { return earliestwritten;  };
@@ -120,6 +129,7 @@ public:
     inline unsigned GetTotalPrograms(void)  { return numprograms;      };
     inline unsigned GetTotalAreas(void)     { return numareas;         };
     inline unsigned GetTotalNets(void)      { return numnets;          };
+    inline unsigned GetTotalDomains(void)   { return numdomains;       };
 
     inline void NoArrivalTime(void)         { hasarrivaltime = false;  };
     inline bool HasArrivalTime(void)        { return hasarrivaltime;   };
@@ -195,10 +205,23 @@ protected:
                            if (right) delete right; };
     };
 
+    struct domaindata_s
+    {
+        string      topdomain;
+        unsigned    count, bytes;
+
+        domaindata_s    *left, *right;
+
+        domaindata_s(void) { left = right = NULL; count = bytes = 0; };
+        ~domaindata_s(void) { if (left) delete left;
+                              if (right) delete right; };
+    };
+
     // Variables used by the statistics engine
     unsigned        msgcount, totallines, totalqlines, totalbytes, totalqbytes;
     unsigned        daycount[7], hourcount[24];
-    unsigned        numpeople, numsubjects, numprograms, numareas, numnets;
+    unsigned        numpeople, numsubjects, numprograms, numareas, numnets,
+                    numdomains;
     time_t          earliestwritten, latestwritten;
     time_t          earliestreceived, latestreceived;
     bool            wdatevalid, rdatevalid;
@@ -206,13 +229,16 @@ protected:
     programdata_s   *programs_p;
     subjectdata_s   *subjects_p;
     netdata_s       *nets_p;
+    domaindata_s    *domains_p;
 
     // Variables used by the statistics retreival
     persstat_s          *persontoplist_p;
     subjstat_s          *subjecttoplist_p;
     progstat_s          *programtoplist_p;
     netstat_s           *nettoplist_p;
-    unsigned            currperson, currsubject, currprogram, currnet;
+    domainstat_s        *domaintoplist_p;
+    unsigned            currperson, currsubject, currprogram, currnet,
+                        currdomain;
     list_t              currpersontype;
     programversion_s    *currversion;
     bool                hasarrivaltime, newsarea;
@@ -224,6 +250,7 @@ protected:
     void FlattenSubjects(subjstat_s *, subjectdata_s *);
     void FlattenPrograms(progstat_s *, programdata_s *);
     void FlattenNets(netstat_s *, netdata_s *);
+    void FlattenDomains(domainstat_s *, domaindata_s *);
     bool GetTop(bool, persstat_s &, int (*)(const void *, const void *), list_t);
 
 private:

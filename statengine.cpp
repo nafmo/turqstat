@@ -29,17 +29,19 @@ StatEngine::StatEngine(void)
     msgcount = 0;
     for (int i = 0; i < 7; i ++) daycount[i] = 0;
     for (int i = 0; i < 24; i ++) hourcount[i] = 0;
-    numpeople = numsubjects = numprograms = numareas = numnets = 0;
+    numpeople = numsubjects = numprograms = numareas = numnets = numdomains = 0;
     totallines = totalqlines = totalbytes = totalqbytes = 0;
     people_p = NULL;
     programs_p = NULL;
     subjects_p = NULL;
     nets_p = NULL;
+    domains_p = NULL;
     persontoplist_p = NULL;
     subjecttoplist_p = NULL;
     programtoplist_p = NULL;
     currversion = NULL;
     nettoplist_p = NULL;
+    domaintoplist_p = NULL;
     wdatevalid = false;
     rdatevalid = false;
     earliestwritten = latestwritten = earliestreceived = latestreceived = 0;
@@ -55,10 +57,12 @@ StatEngine::~StatEngine(void)
     if (programs_p) delete programs_p;
     if (subjects_p) delete subjects_p;
     if (nets_p) delete nets_p;
+    if (domains_p) delete domains_p;
 
     if (persontoplist_p) delete[] persontoplist_p;
     if (subjecttoplist_p) delete[] subjecttoplist_p;
     if (programtoplist_p) delete[] programtoplist_p;
+    if (domaintoplist_p) delete[] domaintoplist_p;
 }
 
 void StatEngine::AddData(string fromname, string toname, string subject,
@@ -242,7 +246,7 @@ void StatEngine::AddData(string fromname, string toname, string subject,
                 direction = Left;
                 persfound_p = perstrav_p->left;
             }
-            if (fcompare(fromname, perstrav_p->name) > 0)
+            else if (fcompare(fromname, perstrav_p->name) > 0)
             {
                 direction = Right;
                 persfound_p = perstrav_p->right;
@@ -269,7 +273,10 @@ void StatEngine::AddData(string fromname, string toname, string subject,
 
         if ("N/A" == persfound_p->address)
         {
-            persfound_p->address = ParseAddress(controldata, msgbody);
+            if (newsarea || !internetaddress.empty())
+                persfound_p->address = internetaddress;
+            else
+                persfound_p->address = ParseAddress(controldata, msgbody);
         }
     }
 
@@ -406,7 +413,7 @@ void StatEngine::AddData(string fromname, string toname, string subject,
                         direction = Left;
                         netfound_p = nettrav_p->left;
                     }
-                    else // net > nettrav_p->net
+                    else if (net > nettrav_p->net)
                     {
                         direction = Right;
                         netfound_p = nettrav_p->right;
@@ -435,6 +442,75 @@ void StatEngine::AddData(string fromname, string toname, string subject,
         }
     }
 
+    // Locate sender's domain in database and update
+    if (!internetaddress.empty())
+    {
+        int lastperiod = internetaddress.rfind('.');
+        if (lastperiod != -1)
+        {
+            string topdomain = internetaddress.substr(lastperiod + 1);
+
+            // Make sure top domain is in lowercase
+            for (unsigned i = 0; i < topdomain.length(); i ++)
+                if (isupper(topdomain[i]))
+                    topdomain[i] = tolower(topdomain[i]);
+
+            domaindata_s *domaintrav_p = domains_p,
+                         *domainfound_p = domaintrav_p;
+
+            if (NULL == domains_p)
+            {
+                domains_p = new domaindata_s;
+                if (!domains_p) errorquit(out_of_memory, 2);
+                domains_p->topdomain = topdomain;
+
+                domainfound_p = domains_p;
+                numdomains ++;
+            }
+            else
+            {
+                direction = None;
+                do
+                {
+                    // trav_p points to leaf above
+                    if (Left == direction) domaintrav_p = domaintrav_p->left;
+                    if (Right == direction) domaintrav_p = domaintrav_p->right;
+
+                    // found_p points to the leaf (NULL at the end, which is
+                    // where we need the leaf above to add the leaf to)
+                    if (topdomain < domaintrav_p->topdomain)
+                    {
+                        direction = Left;
+                        domainfound_p = domaintrav_p->left;
+                    }
+                    else if (topdomain > domaintrav_p->topdomain)
+                    {
+                        direction = Right;
+                        domainfound_p = domaintrav_p->right;
+                    }
+
+                } while (NULL != domainfound_p &&
+                         topdomain != domainfound_p->topdomain);
+
+                if (NULL == domainfound_p)
+                {
+                    // No net was found
+                    domainfound_p = new domaindata_s;
+                    if (!domainfound_p) errorquit(out_of_memory, 2);
+                    if (Left == direction) domaintrav_p->left = domainfound_p;
+                    if (Right == direction) domaintrav_p->right = domainfound_p;
+
+                    domainfound_p->topdomain = topdomain;
+
+                    numdomains ++;
+                }
+            }
+
+            domainfound_p->count ++;
+            domainfound_p->bytes += bytes;
+        }
+    }
+
     // Locate recipient's name in database, and update statistics
     if (!newsarea)
     {
@@ -453,7 +529,7 @@ void StatEngine::AddData(string fromname, string toname, string subject,
                 direction = Left;
                 persfound_p = perstrav_p->left;
             }
-            if (fcompare(toname, perstrav_p->name) > 0)
+            else if (fcompare(toname, perstrav_p->name) > 0)
             {
                 direction = Right;
                 persfound_p = perstrav_p->right;
@@ -520,7 +596,7 @@ void StatEngine::AddData(string fromname, string toname, string subject,
                 direction = Left;
                 subfound_p = subtrav_p->left;
             }
-            if (fcompare(subject, subtrav_p->subject) > 0)
+            else if (fcompare(subject, subtrav_p->subject) > 0)
             {
                 direction = Right;
                 subfound_p = subtrav_p->right;
@@ -1077,6 +1153,55 @@ void StatEngine::FlattenNets(netstat_s *array, netdata_s *p)
     FlattenNets(array, p->right);
 }
 
+bool StatEngine::GetTopDomains(bool restart, domainstat_s &result)
+{
+    if (restart || NULL == domaintoplist_p)
+    {
+        // Generate a top list
+        // 1. Flatten the binary tree into the array
+        if (NULL != domaintoplist_p) delete[] domaintoplist_p;
+
+        domaintoplist_p = new domainstat_s[numdomains];
+        if (!domaintoplist_p) errorquit(out_of_memory, 2);
+        flattenindex = 0;
+        FlattenDomains(domaintoplist_p, domains_p);
+
+        // 2. Sort the list according to number of occurances
+        qsort(domaintoplist_p, numdomains, sizeof(domainstat_s),
+              comparedomains);
+        currdomain = 0;
+    }
+    else
+        currdomain ++;
+
+    if (currdomain >= numdomains)
+    {
+        delete[] domaintoplist_p;
+        domaintoplist_p = NULL;
+        return false;
+    }
+
+    result = domaintoplist_p[currdomain];
+
+    return true;
+}
+
+void StatEngine::FlattenDomains(domainstat_s *array, domaindata_s *p)
+{
+    if (!p) return;
+
+    array[flattenindex].topdomain = p->topdomain;
+    array[flattenindex].messages  = p->count;
+    array[flattenindex].bytes     = p->bytes;
+
+    flattenindex ++;
+
+    FlattenDomains(array, p->left);
+    FlattenDomains(array, p->right);
+}
+
+// Comparison functions for QSort
+
 int comparenumwritten(const void *p1, const void *p2)
 {
     unsigned d1 = (((StatEngine::persstat_s *) p2)->messageswritten);
@@ -1194,4 +1319,10 @@ int comparenets(const void *p1, const void *p2)
 {
     return ((int) (((StatEngine::netstat_s *) p2)->messages)) -
            ((int) (((StatEngine::netstat_s *) p1)->messages));
+}
+
+int comparedomains(const void *p1, const void *p2)
+{
+    return ((int) (((StatEngine::domainstat_s *) p2)->messages)) -
+           ((int) (((StatEngine::domainstat_s *) p1)->messages));
 }

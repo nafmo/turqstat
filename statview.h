@@ -35,8 +35,11 @@ public:
     inline void EnableTopReceived(bool yes) { topreceived = yes;  };
     inline void EnableTopSubjects(bool yes) { topsubjects = yes;  };
     inline void EnableTopPrograms(bool yes) { topprograms = yes;  };
+    inline void EnableTopDomains(bool yes)  { topdomains = yes;   };
     inline void EnableWeekStats(bool yes)   { weekstats = yes;    };
     inline void EnableDayStats(bool yes)    { daystats = yes;     };
+
+    // Output format
 #ifdef HAVE_LOCALE_H
     inline void UseLocale(bool yes)         { uselocale = yes;    };
 #endif
@@ -52,7 +55,7 @@ public:
 
 protected:
     bool        quoters, topwritten, toporiginal, topnets, topreceived,
-                topsubjects, topprograms, weekstats, daystats;
+                topsubjects, topprograms, topdomains, weekstats, daystats;
 
     bool        showversions, showallnums;
 

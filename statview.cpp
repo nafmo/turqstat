@@ -43,6 +43,7 @@ StatView::StatView()
     topnets = false;
     topsubjects = false;
     topprograms = false;
+    topdomains = false;
     weekstats = false;
     daystats = false;
 
@@ -300,6 +301,16 @@ bool StatView::CreateReport(StatEngine *engine, string filename)
         }
 
         report << endl;
+
+        if (news || !topreceived)
+        {
+            report << "A total of " << engine->GetTotalPeople()
+                   << " people were identified";
+            if (!news)
+                report << " (senders and recipients)";
+            report << '.' << endl;
+            report << endl;
+        }
     }
 
     if (toporiginal)
@@ -430,6 +441,52 @@ bool StatView::CreateReport(StatEngine *engine, string filename)
         report << endl;
     }
 
+    if (topdomains && (news || engine->GetTotalDomains()))
+    {
+        report << "-------------------------------------------"
+                  "----------------------------------" << endl;
+
+        report << "Toplist of topdomains" << endl;
+        report << endl;
+
+        unsigned place = 1;
+        bool restart = true;
+        StatEngine::domainstat_s data;
+        unsigned oldcount = 0;
+        while (place <= maxnumber && engine->GetTopDomains(restart, data))
+        {
+            if (restart)
+            {
+                restart = false;
+
+                report << "Place Domain Messages    Bytes" << endl;
+            }
+
+            if (!showallnums && data.messages == oldcount)
+            {
+                report << "      ";
+            }
+            else
+            {
+                report.form("%4u. ", place);
+            }
+
+            report.form("%-6s %8u %8u",
+                        data.topdomain.c_str(), data.messages, data.bytes);
+
+            report << endl;
+
+            place ++;
+            oldcount = data.messages;
+        }
+
+        report << endl;
+
+        report << "Messages from " << engine->GetTotalDomains()
+               << " different top domains were found." << endl;
+        report << endl;
+    }
+
     if (topreceived && !news)
     {
         report << "-------------------------------------------"
@@ -491,13 +548,10 @@ bool StatView::CreateReport(StatEngine *engine, string filename)
         report << endl;
     }
 
-    if (topreceived || topwritten)
+    if (!news && topreceived)
     {
         report << "A total of " << engine->GetTotalPeople()
-               << " people were identified";
-        if (!news)
-            report << " (senders and recipients)";
-        report << '.' << endl;
+               << " people were identified (senders and recipients)." << endl;
         report << endl;
     }
 

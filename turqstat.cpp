@@ -71,7 +71,7 @@ int main(int argc, char *argv[])
     bool quoters = true, topwritten = true, topreceived = true,
          topsubjects = true, topprograms = true, weekstats = true,
          daystats = true, versions = true, allnums = false,
-         toporiginal = true, topnets = true;
+         toporiginal = true, topnets = true, topdomains = true;
 #ifdef HAVE_LOCALE_H
     bool uselocale = false;
 #endif
@@ -110,9 +110,9 @@ int main(int argc, char *argv[])
     // Handle arguments
     int c;
 #ifdef HAVE_LOCALE_H
-    while (EOF != (c = getopt(argc, argv, "d:n:a:smofjptuQWRSPOHDVNAL?")))
+    while (EOF != (c = getopt(argc, argv, "d:n:a:smofjptuQWRSPOHDVNTAL?")))
 #else
-    while (EOF != (c = getopt(argc, argv, "d:n:a:smofjptuQWRSPOHDVNA?")))
+    while (EOF != (c = getopt(argc, argv, "d:n:a:smofjptuQWRSPOHDVNTA?")))
 #endif
     {
         switch (c)
@@ -137,6 +137,7 @@ int main(int argc, char *argv[])
             case 'P':   topprograms = false;                        break;
             case 'O':   toporiginal = false;                        break;
             case 'N':   topnets = false;                            break;
+            case 'T':   topdomains = false;                         break;
             case 'H':   daystats = false;                           break;
             case 'D':   weekstats = false;                          break;
 
@@ -179,6 +180,9 @@ int main(int argc, char *argv[])
                 cout << "  -O -N          Turn original per msg/Fidonet nets "
                                          "toplist off"
                      << endl;
+                cout << "  -T             Topdomains toplist off (Usenet)/"
+                                         "on (Fidonet)"
+                     << endl;
                 cout << "  -H -D          Turn hour/day statistics off"
                      << endl;
                 cout << "  -V             Don't provide version info for "
@@ -213,6 +217,10 @@ int main(int argc, char *argv[])
     view.EnableTopWritten(topwritten);
     view.EnableTopOriginal(toporiginal);
     view.EnableTopNets(topnets);
+    if (StatRetr::newsspool == basetype)
+        view.EnableTopDomains(topdomains);
+    else
+        view.EnableTopDomains(!topdomains);
     view.EnableTopReceived(topreceived);
     view.EnableTopSubjects(topsubjects);
     view.EnableTopPrograms(topprograms);
