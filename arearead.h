@@ -31,7 +31,7 @@ class AreaRead
 {
 public:
     // Transfer function
-    virtual bool Transfer(StatEngine &destination) = 0;
+    virtual bool Transfer(time_t starttime, StatEngine &destination) = 0;
 };
 
 #endif
