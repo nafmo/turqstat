@@ -25,6 +25,16 @@
   utility.h
     Move my getopt replacement to utility.* instead of mygetopt.*
 
+  README.Win32
+    Documented switch to Mingw32 as default compiler.
+
+  README.os2
+    Added OS/2 release notes.
+
+  turqstat.doc
+  turqstat.dok
+    Documented recent changes.
+
 2000-04-15 - peter karlsson <peter@softwolves.pp.se>
   statengine.cpp
   statengine.h
