@@ -1,3 +1,11 @@
+2002-05-27 - peter karlsson <peter@softwolves.pp.se>
+  mappings/
+  mappings.cpp
+    Added iso-8859-16.
+
+  convert.cpp
+    Added iso-8859-16 and missing entries for some other 8859s.
+
 2002-03-10 - peter karlsson <peter@softwolves.pp.se>
   Makefile.in
   outputqt.cpp
