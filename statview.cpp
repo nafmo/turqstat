@@ -417,6 +417,10 @@ bool StatView::CreateReport(StatEngine *engine, string filename)
         }
 
         report << endl;
+
+        report << "Messages from " << engine->GetTotalNets()
+               << " different nets were found." << endl;
+        report << endl;
     }
 
     if (topreceived && !news)
@@ -485,7 +489,7 @@ bool StatView::CreateReport(StatEngine *engine, string filename)
         report << "A total of " << engine->GetTotalPeople()
                << " people were identified";
         if (!news)
-            report << "(senders and recipients)";
+            report << " (senders and recipients)";
         report << '.' << endl;
         report << endl;
     }
