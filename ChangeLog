@@ -1,3 +1,15 @@
+2000-03-14 - peter karlsson <peter@softwolves.pp.se>
+  statengine.cpp
+    Bugfixed CR/LF detection.
+    Better approach to decoding Quoted-Printable.
+
+  statview.cpp
+    More adjustments for Usenet.
+
+  sdmread.cpp
+  newsspoolread.cpp
+    Bugfix.
+
 2000-03-13 - peter karlsson <peter@softwolves.pp.se>
   turqstat.doc
   turqstat.dok
