@@ -69,10 +69,11 @@ private:
 
     // Internal methods
     void incompatible();
+    void zeroFill();
     
 public slots:
     void open();
-    void save() {};
+    void clear();
     void quotelist();
     void senderlist();
     void contentlist();
