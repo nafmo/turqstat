@@ -25,9 +25,13 @@ all: $(EXE)
 debian:
 	fakeroot debian/rules binary
 
-clean:
-	-rm $(OBJS) moc*
-	-rm $(EXE)
+@NOQT@clean:
+@NOQT@	-rm $(OBJS)
+@NOQT@	-rm $(EXE)
+
+@QT@clean:
+@QT@	-rm $(OBJS) $(QTOBJS) moc*
+@QT@	-rm $(EXE)
 
 distclean: clean
 	-rm config.status config.log config.cache config.h Makefile
