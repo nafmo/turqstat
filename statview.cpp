@@ -16,6 +16,7 @@
 // Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 
 #include <fstream.h>
+#include <limit.h>
 #include "statview.h"
 
 static const char *days[] =
@@ -33,6 +34,9 @@ bool StatView::CreateReport(StatEngine *engine, string filename,
     bool topsubjects = true, bool topprograms = true, bool weekstats = true,
     bool daystats = true, bool showversions = true, bool showallnums = false)
 {
+    // If we give 0 as maximum entries, we want unlimited (=UINT_MAX...)
+    if (0 == maxnumber) maxnumber = UINT_MAX;
+
     // Create a report file
     fstream report(filename.c_str(), ios::out);
     if (!(report.is_open())) return false;
