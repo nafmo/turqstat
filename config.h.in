@@ -46,6 +46,12 @@
 /* Define if C library includes stristr */
 #undef HAVE_STRISTR
 
+/* Define if C library includes strcasecmp */
+#undef HAVE_STRCASECMP
+
+/* Define if C library includes stricmp */
+#undef HAVE_STRICMP
+
 /* Define if C library includes strlwr */
 #undef HAVE_STRLWR
 
