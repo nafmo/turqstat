@@ -7,7 +7,7 @@
 /* Define if getopt is found in getopt.h */
 #undef HAS_GETOPT_IN_GETOPT
 
-/* Define if struct tm has gmt_off */
+/* Define if struct tm has tm_gmtoff */
 #undef HAS_TM_GMTOFF
 
 /* Define if time.h defines daylight variable */
