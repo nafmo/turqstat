@@ -116,7 +116,7 @@ time_t asciiToTimeT(const char *datetime)
 
 // Convert RFC stype time-stamp to time_t (local time, ignores time zone
 // identifier)
-time_t rfcToTimeT(const string &datetime)
+time_t rfcToTimeT(string datetime)
 {
     // "[Www, ]Dd Mmm [Yy]yy HH:MM:SS[ +ZZZZ]"
     time_t tt;
@@ -154,7 +154,7 @@ time_t rfcToTimeT(const string &datetime)
 // Convert standard timespecs to time_t (in local time)
 time_t timespecToTimeT(const string &datetime)
 {
-    time_tt tt;
+    time_t tt;
     struct tm tms;
     int rc;
 
