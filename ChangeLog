@@ -1,3 +1,7 @@
+2002-08-16 - peter karlsson <peter@softwolves.pp.se>
+  nntpread.cpp
+    Some news servers do not accept LISTGROUPS without an argument.
+
 2002-06-01 - peter karlsson <peter@softwolves.pp.se>
   templates/default.tpl
   lexer.cpp

@@ -1,4 +1,4 @@
-// Copyright (c) 2001 Peter Karlsson
+// Copyright (c) 2001-2002 Peter Karlsson
 //
 // $Id$
 //
@@ -188,7 +188,8 @@ bool NntpRead::Transfer(time_t starttime, time_t endtime,
     // Retrieve list of all available articles (RFC 2980 extension, might
     // not be understood)
     bool havearticlelist = false;
-    response = SendCommand("LISTGROUP\r\n");
+    snprintf4(command, 512, "LISTGROUP %s\r\n", group);
+    response = SendCommand(command);
     if (-1 == response)
     {
         display->ErrorMessage(TDisplay::nntp_communication_problem);
