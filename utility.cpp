@@ -55,6 +55,9 @@ time_t stampToTimeT(struct stamp_s *st)
     tms.tm_mon = st->date.mo - 1;
     tms.tm_year = st->date.yr + 80;
     tms.tm_isdst = -1;
+#if defined(__GNUC__)
+    tms.tm_gmtoff = 0;
+#endif
     tt = mktime(&tms);
     return tt;
 }
@@ -93,6 +96,10 @@ time_t asciiToTimeT(const char *datetime)
     // FIXME: This need to be corrected to handle dates >2080
     //        better use some sliding-window technique
     if (tms.tm_year < 80) tms.tm_year += 100;
+
+#if defined(__GNUC__)
+    tms.tm_gmtoff = 0;
+#endif
 
     tt = mktime(&tms);
     return tt;
