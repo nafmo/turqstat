@@ -1,6 +1,12 @@
+turqstat (2.1.4) unstable; urgency=low
+
+  * Now compiles with GCC 3.0.
+
+ -- peter karlsson <peterk@debian.org>  Wed, 10 Oct 2001 22:00:00 +0200
+
 turqstat (2.1.3) unstable; urgency=low
 
-  * Preliminary fixes for compilation with GCC 3.0.0.
+  * Preliminary fixes for compilation with GCC 3.0.
   * Added Build-Depends on libstdc++ before 3.0, since 3.0 seems to
     remove required functionality.
 

@@ -25,7 +25,7 @@ using namespace std;
 #endif
 
 /** String describing the current version number. */
-const string version = "2.1.3";
+const string version = "2.1.4";
 
 /** String describing the copyright information. */
 const string copyright = "(c) Copyright 1998-2001 Peter Karlsson";

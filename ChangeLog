@@ -1,7 +1,7 @@
 2001-10-10 - peter karlsson <peter@softwolves.pp.se>
   configure.in
   acconfig.h
-    Added tests for changes introduced in GCC 3.0.0.
+    Added tests for changes introduced in GCC 3.0.
 
   convert.h
   output.h
@@ -10,10 +10,18 @@
   statview.h
   utility.h
   version.h
-    Use configure based tests for GCC 3.0.0 compatibility.
+    Use configure based tests for GCC 3.0 compatibility.
 
+  convert.cpp
+  qtlist.h
   statview.cpp
-    Began GCC 3.0.0 fixing.
+    Fixed to work with GCC 3.0.
+
+  turqstat.doc
+  turqstat.dok
+  version.h
+  debian/
+    Updates for version 2.1.4.
 
 2001-10-04 - peter karlsson <peter@softwolves.pp.se>
   configure.in
@@ -24,7 +32,7 @@
   statview.h
   utility.h
   version.h
-    Preliminary fixes for compilation with GCC 3.0.0.
+    Preliminary fixes for compilation with GCC 3.0.
 
   version.h
     Version 2.1.3.
