@@ -256,6 +256,8 @@ void InfoWindow::open()
     }
     if (-1 == filternum)
     {
+        QMessageBox::warning(this, "Turquoise SuperStat",
+                             tr("I don't understand your selection"));
         return;
     }
 
@@ -330,12 +332,6 @@ void InfoWindow::open()
             area = new NewsSpoolRead(path);
             isnews = true;
             break;
-
-        default:
-            // Huh?
-            QMessageBox::warning(this, "Turquoise SuperStat",
-                                 tr("I don't understand your selection"));
-            return;
     }
 
     // Transfer data
