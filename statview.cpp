@@ -743,4 +743,6 @@ bool StatView::CreateReport(StatEngine *engine, string filename)
               "----------------------------------" << endl;
 
     report.close();
+
+    return true;
 }
