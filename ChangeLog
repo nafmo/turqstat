@@ -1,3 +1,7 @@
+2001-02-09 - peter karlsson <peter@softwolves.pp.se>
+  debian/control
+    Changed Debian priority to extra
+
 2001-02-08 - peter karlsson <peter@softwolves.pp.se>
   Released 2.0.2, branching from 2.0 release:
 
