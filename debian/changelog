@@ -5,7 +5,7 @@ turqstat (2.1) unstable; urgency=low
   * Added character re-encoding for most single-byte character sets used in
     Fidonet and Usenet today.
 
- -- peter karlsson <peterk@debian.org>  UNRELEASED
+ -- peter karlsson <peterk@debian.org>  Tue, 17 Jul 2001 22:45:00 +0200
 
 turqstat (2.0.3) unstable; urgency=low
 

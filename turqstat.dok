@@ -292,7 +292,7 @@ HISTORIK
   Korrigeringar i Debianpaketering.
 2001-07-04 - v2.0.3 -
   Fixade big-endian-arkitekturer.
-2001-  -   - v2.1 -
+2001-07-17 - v2.1 -
   Använd OS/2- och Win32-API-funktioner för att hämta lokalt datumformat.
   Implementerade datumintervall.
   Lade in stöd för teckenomkodning.
@@ -391,8 +391,7 @@ binärpaket för Debian.
 KRAV FÖR KOMPILERING
 
 Programmet utvecklades under OS/2 med EMX 0.9d/GNU C/C++ 2.8.1, Debian 2.2
-med gcc 2.95.2 och Win32 med Mingw32 (gcc 2.95.2). Programmet måste troligen
-göras om för att stöda processorer av typen "big endian".
+med gcc 2.95.2 och Win32 med Mingw32 (gcc 2.95.2).
 
 Den grafiska versionen kräver att Qt version 2.1 eller senare finns
 installerat.
