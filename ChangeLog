@@ -1,3 +1,7 @@
+2001-11-16 - peter karlsson <peter@softwolves.pp.se>
+  statengine.cpp
+    Support news reader version strings of the kind Sylpheed use.
+
 2001-11-15 - peter karlsson <peter@softwolves.pp.se>
   configure.in
   Makefile.in

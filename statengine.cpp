@@ -724,12 +724,14 @@ void StatEngine::AddData(string in_fromname, string in_toname, string in_subject
         // "Program<space>Version<space>(extra)<eol>" or
         // "Program/Version<space>rest" or
         // "Program/Version<space>rest<space>(extra)<eol>" or
-        // "Program<space>(version)<eol>"
+        // "Program<space>(version)<eol>" or
+        // "Program<space>VERSION<space>version<eol>" (literal "VERSION")
 
         space1 = program.rfind(' ');
         string::size_type firstspace = program.find(' ');
         string::size_type slash = program.find('/');
         string::size_type paren = program.find('(');
+        string::size_type versionstring = program.find("version");
         if (string::npos == space1) firstspace = space1 = program.length();
         if (slash != string::npos && slash < firstspace) space1 = slash;
         if (paren != string::npos && paren < space1) space1 = paren;
@@ -738,6 +740,11 @@ void StatEngine::AddData(string in_fromname, string in_toname, string in_subject
         if ('v' == program[firstspace + 1] &&
             isdigit(program[firstspace + 2]))
             space1 = firstspace;
+
+        if (versionstring > firstspace && ' ' == program[versionstring + 7])
+            space1 = versionstring + 7;
+        else
+            versionstring = string::npos;
 
         paren = program.find('(', space1 + 1);
         space2 = program.find(' ', space1 + 1);
@@ -749,7 +756,10 @@ void StatEngine::AddData(string in_fromname, string in_toname, string in_subject
                 space2 = paren;
         }
 
-        in_programname = program.substr(0, space1);
+        if (versionstring != string::npos)
+            in_programname = program.substr(0, versionstring);
+        else
+            in_programname = program.substr(0, space1);
 
         // Special case: Pine (only identifies in Message-ID)
         where = controldata.find("\x1""Message-ID:");
