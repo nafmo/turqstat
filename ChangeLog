@@ -1,3 +1,16 @@
+1999-07-18 - peter karlsson <pk@mds.mdh.se>
+  fdapxread.cpp
+  mypointread.cpp
+    For Unix systems, we don't use backslashes in paths
+
+  turqstat.cpp
+  utility.cpp
+    Tries to turn off timezone handling in C library (by setting
+    GMT offset to 0)
+
+  turqstat.cpp
+    Changed the way it displays the copyright banner
+
 1999-07-16 - peter karlsson <pk@mds.mdh.se>
   sdmread.cpp
     New routines adapter for OS/2
