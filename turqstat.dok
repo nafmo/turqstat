@@ -25,6 +25,13 @@ s†dana bin„rer spridas.
 Žven med dessa undantag f”respr†kas licensiering av ny meddelandebaskod under
 GNU GPL.
 
+Detta program f†r „ven l„nkas mot alla GUI-bibliotek som m”ter kriteriet f”r
+Open Source, inklusive, men inte begr„nsat till, Troll Techs Q Public License.
+Dessutom bygger filen mytime.cpp p† EMX-biblioteket, vars licens „r som f”ljer
+(”versatt, se den engelska dokumentationen f”r originalordalydelsen): Du har
+r„tt att „ndra och kopiera emx-biblioteket om du beh†ller upphovsr„ttstexten
+intakt.
+
 
 ™VRIGA UPPHOVSRŽTTER
 
@@ -32,6 +39,8 @@ JAM(mbp) - Copyright 1993 Joaquim Homrighausen, Andrew Milner, Mats Birch,
 Mats Wallin. ALL RIGHTS RESERVED.
 
 Squish, SquishMail and Maximus are trademarks of Scott J. Dudley.
+
+mktime.c (emx+gcc) -- Copyright (c) 1990-1996 by Eberhard Mattes
 
 
 ANVŽNDNING
@@ -214,6 +223,8 @@ HISTORIK
   Anv„nder Mingw32 i st„llet f”r CygWin f”r Win32-versionen.
   F”rb„ttrat st”d f”r news.
   Diverse felr„ttelser.
+2000-  -   - v1.5 -
+  Egna tidsfunktioner f”r att motverka tidszonsproblem i C-biblioteket.
 
 
 BIFOGADE FILER

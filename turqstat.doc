@@ -25,6 +25,12 @@ binaries must be distributed.
 Even with this exception, licensing new message base access sources under GNU
 GPL is encouraged.
 
+This program may also be linked against any GUI library that means the Open
+Source criteria, including, but not limited to, Troll Tech's Q Public License.
+Furthermore, the file mytime.cpp derives from the EMX library, which has this
+license: You are allowed to change and copy the emx library sources if you
+keep the copyright message intact.
+
 
 OTHER COPYRIGHTS
 
@@ -32,6 +38,8 @@ JAM(mbp) - Copyright 1993 Joaquim Homrighausen, Andrew Milner, Mats Birch,
 Mats Wallin. ALL RIGHTS RESERVED.
 
 Squish, SquishMail and Maximus are trademarks of Scott J. Dudley.
+
+mktime.c (emx+gcc) -- Copyright (c) 1990-1996 by Eberhard Mattes
 
 
 USEAGE
@@ -214,6 +222,8 @@ HISTORY
   Use Mingw32 instead of CygWin for Win32 version.
   Improved news support.
   Various bugfixes.
+2000-  -   - v1.5 -
+  Uses own time functions to work around timezone problems in C library.
 
 
 INCLUDED FILES
