@@ -1,3 +1,26 @@
+2000-04-15 - peter karlsson <peter@softwolves.pp.se>
+  statengine.cpp
+  statengine.h
+    Moved state variables into class definition to make "thread safe".
+    Implemented toplist over distribution over Fidonet nets.
+    Remove temporary arrays when the end of toplists are reached (will not
+    remove them if toplists aren't completely read through, though).
+
+  statview.cpp
+  statview.h
+    Toplist of Fidonet nets.
+    Moved toggles for which lists to enable out of CreateReport method so
+    its interface doesn't have to change each time a new toplist is added.
+
+  turqstat.cpp
+    New StatView parameter order.
+    New parameter for disabling net toplist. NB! Show all numbers switch
+    changed.
+    Move knowledge of view and engine out of StatRetr.
+
+  turqstat.1
+    Documented new parameters.
+
 2000-04-14 - peter karlsson <peter@softwolves.pp.se>
   Released 1.3.1, branching from 1.3 release:
 
