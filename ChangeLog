@@ -1,3 +1,7 @@
+2001-03-23 - peter karlsson <peter@softwolves.pp.se>
+  debian/
+    Updated build dependencies.
+
 2001-03-17 - peter karlsson <peter@softwolves.pp.se>
   qtlist.cpp
   po/sv.po
