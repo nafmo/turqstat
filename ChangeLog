@@ -1,3 +1,14 @@
+2000-04-28 - peter karlsson <peter@softwolves.pp.se>
+  statengine.cpp
+    Finds gated Internet/Usenet addresses in Fidonet areas.
+
+  utility.cpp
+  utility.h
+    Length-limitation in fcompare (strncasecmp look-a-like).
+
+  turqstat.def
+    Corrected spelling.
+
 2000-04-26 - peter karlsson <peter@softwolves.pp.se>
   statview.cpp
     Cosmetic fix for an error introduced with the locale date format.
