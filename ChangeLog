@@ -4,6 +4,14 @@
   output.cpp
     Adjusted for compilers lacking snprintf.
 
+  xturqstat.1
+  xturqstat-sv.1
+    Added manual pages for the X version.
+
+  turqstat.1
+  turqstat-sv.1
+    Croess-reference to X version's manual page.
+
 2000-11-12 - peter karlsson <peter@softwolves.pp.se>
   Merged branch dealing with Qt GUI:
 
