@@ -1,3 +1,17 @@
+1999-09-08 - peter karlsson <pk@mds.mdh.se>
+  statengine.cpp
+  statview.cpp
+    Fixed "original content per message" top list bugs
+
+1999-09-08 - peter karlsson <pk@mds.mdh.se>
+  statengine.cpp
+  statengine.h
+  statview.cpp
+  statview.h
+  turqstat.cpp
+    Added support for "original content per message" top list
+    (nonfunctional at the moment)
+
 1999-08-21 - peter karlsson <pk@mds.mdh.se>
   Makefile.CygWin
   turqstat.cpp

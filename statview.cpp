@@ -261,7 +261,7 @@ bool StatView::CreateReport(StatEngine *engine, string filename,
         report << "-------------------------------------------"
                   "----------------------------------" << endl;
 
-        report << "Toplist of original contents per message" << endl;
+        report << "Toplist of original content per message" << endl;
         report << endl;
 
         unsigned place = 1;
@@ -271,16 +271,20 @@ bool StatView::CreateReport(StatEngine *engine, string filename,
         while (place <= maxnumber &&
                engine->GetTopOriginalPerMsg(restart, data))
         {
-            if (data.byteswritten <= data.bytesquoted ||
-                !data.messageswritten) break;
+            if (0 == data.messageswritten)
+            {
+                restart = false;
+                continue;
+            }
 
             if (restart)
             {
                 restart = false;
                 report << "Place Name                        "
-                          "Address         Orig. / Msgs = PerMsg Quoted"
+                          "Address         Orig. / Msgs = PrMsg Quoted"
                        << endl;
             }
+
             unsigned originalpermsg =
                 (data.byteswritten - data.bytesquoted) / data.messageswritten;
 
@@ -316,18 +320,18 @@ bool StatView::CreateReport(StatEngine *engine, string filename,
             if (tmp.length() > 28)
                 tmp = tmp.substr(0, 28);
 
-            report.form("%-28%-16s%6u /%5u = %6u",
+            report.form("%-28s%-15s%6u /%5u = %5u",
                         tmp.c_str(), data.address.c_str(),
                         data.byteswritten - data.bytesquoted,
                         data.messageswritten, originalpermsg);
             if (data.bytesquoted > 0)
             {
-                report.form("%3u.%1u%%",
+                report.form(" %3u.%1u%%",
                              integ, fract);
             }
             else if (showallnums)
             {
-                report << "   N/A";
+                report << "    N/A";
             }
             report << endl;
 

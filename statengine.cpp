@@ -721,17 +721,28 @@ int comparebytepermsg(const void *p1, const void *p2)
 
 int compareoriginalpermsg(const void *p1, const void *p2)
 {
+    // Special handling of the case with no messages written (recipient only)
+    if (0 == (((StatEngine::persstat_s *) p1)->messageswritten))
+    {
+        if (0 == (((StatEngine::persstat_s *) p2)->messageswritten))
+            return 0;
+        else
+            return 1;
+    }
+    else if (0 == (((StatEngine::persstat_s *) p2)->messageswritten))
+        return -1;
+
     unsigned long d1 =
         ((unsigned long) (((StatEngine::persstat_s *) p1)->byteswritten -
                           ((StatEngine::persstat_s *) p1)->bytesquoted)) *
-        ((unsigned long) (((StatEngine::persstat_s *) p2)->messageswritten));
+        ((unsigned long) ((StatEngine::persstat_s *) p2)->messageswritten);
     unsigned long d2 =
         ((unsigned long) (((StatEngine::persstat_s *) p2)->byteswritten -
                           ((StatEngine::persstat_s *) p2)->bytesquoted)) *
-        ((unsigned long) (((StatEngine::persstat_s *) p1)->messageswritten));
+        ((unsigned long) ((StatEngine::persstat_s *) p1)->messageswritten);
 
-    if (d1 < d2) return -1;
-    if (d1 > d2) return 1;
+    if (d1 > d2) return -1;
+    if (d1 < d2) return 1;
     return 0;
 }
 
