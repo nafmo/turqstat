@@ -1,4 +1,4 @@
-// Copyright (c) 1998-1999 Peter Karlsson
+// Copyright (c) 1998-2000 Peter Karlsson
 //
 // $Id$
 //
@@ -53,6 +53,8 @@ int fcompare(const string &s1, const string &s2);
 time_t stampToTimeT(struct stamp_s *st);
 // Convert FTSC style time-stamp to time_t
 time_t asciiToTimeT(const char *datetime);
+// Convert RFC stype time-stamp to time_t
+time_t rfcToTimeT(string datetime);
 // Separate kludges and body
 void fixupctrlbuffer(char *body_p, char *ctrl_p);
 // Print error message and quit

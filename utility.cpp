@@ -1,4 +1,4 @@
-// Copyright (c) 1998-1999 Peter Karlsson
+// Copyright (c) 1998-2000 Peter Karlsson
 //
 // $Id$
 //
@@ -97,6 +97,40 @@ time_t asciiToTimeT(const char *datetime)
     // FIXME: This need to be corrected to handle dates >2080
     //        better use some sliding-window technique
     if (tms.tm_year < 80) tms.tm_year += 100;
+
+#if defined(__GNUC__) && !defined(__EMX__) && !defined(__CYGWIN__)
+    tms.tm_gmtoff = 0;
+#endif
+
+    tt = mktime(&tms);
+    return tt;
+}
+
+// Convert RFC stype time-stamp to time_t
+time_t rfcToTimeT(string datetime)
+{
+    // "[Www, ]Dd Mmm [Yy]yy HH:MM:SS[ +ZZZZ]"
+    time_t tt;
+    struct tm tms;
+    char month[4] = { 0,0,0,0 };
+
+    // Chop weekday (if any)
+    int pos = datetime.find(',');
+    if (pos >= 0 && pos < 10) datetime = datetime.substr(pos + 1);
+
+    // "[ ]Dd Mmm [Yy]yy HH:MM:SS[ +ZZZZ]"
+    // Note: timezones are ignored!
+    sscanf(datetime.c_str(), "%d %s %d %d:%d:%d",
+           &tms.tm_mday, month, &tms.tm_year,
+           &tms.tm_hour, &tms.tm_min, &tms.tm_sec);
+
+    // RFC years should be four-digit
+    if (tms.tm_year >= 1900) tms.tm_year -= 1900;
+
+    // Check month
+    char *c_p = strstr(months, month);
+    if (!c_p) return 0;
+    tms.tm_mon = ((int) (c_p - months)) / 3;
 
 #if defined(__GNUC__) && !defined(__EMX__) && !defined(__CYGWIN__)
     tms.tm_gmtoff = 0;
