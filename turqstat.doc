@@ -37,12 +37,13 @@ Squish, SquishMail and Maximus are trademarks of Scott J. Dudley.
 USEAGE
 
 Turquoise SuperStat reads the contents of a Fidonet message area in one of its
-supported formats, and creates statistics about this:
+supported formats, or standard Usenet news spools, and creates statistics
+about this:
 
  * Quoter blacklist.
  * Toplist of senders.
  * Toplist of original content per message.
- * Toplist of receivers.
+ * Toplist of receivers (only Fidonet).
  * Toplist of subjects.
  * Toplist of used software.
  * Postings by weekday.
@@ -162,12 +163,13 @@ HISTORY
   Supports both FTSC and Opus style *.MSG bases.
   Various bugfixes.
   Windows and Linux versions work (better) now.
-2000-  -   - v1.3 -
+2000-03-25 - v1.3 -
   Supports combined statistics from more than one echo.
   NB! The order of the command line parameters has changed.
   Added toplist of average original content per message.
   Added support for tanstaafl message bases.
   Added support for Usenet news spools.
+  Linux distribution as .deb file.
   Various bugfixes.
 
 
@@ -216,7 +218,7 @@ creating a Debian binary package.
 REQUIREMENTS FOR COMPILATION
 
 The program was developed under OS/2 using EMX 0.9d/GNU C/C++ 2.8.1 and Debian
-pre-2.2 with gcc 2.95.2, and has also been tested under CygWin b20. It should
+2.2 with gcc 2.95.2, and has also been tested under CygWin b20. It should
 compile using any standard C++ compiler. The program must probably be
 rewritten to support "big endian" processors.
 

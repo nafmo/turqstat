@@ -2,6 +2,10 @@
   statview.cpp
     Does not say "senders and recipients" for news areas.
 
+  turqstat.doc
+  turqstat.dok
+    Last fixes before release.
+
 2000-03-22 - peter karlsson <peter@softwolves.pp.se>
   Makefile.CygWin
     Support for news spools.
