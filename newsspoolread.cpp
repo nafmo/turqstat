@@ -149,7 +149,7 @@ bool NewsSpoolRead::Transfer(time_t starttime, StatEngine &destination)
                 goto out2;
             }
 
-        msg = fopen(thisfile.c_str(), "rt");
+        msg = fopen(thisfile.c_str(), "r");
         if (!msg)
         {
             cerr << "Unable to open " << thisfile << endl;
