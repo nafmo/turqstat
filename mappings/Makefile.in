@@ -10,6 +10,7 @@ VPATH=@srcdir@
 
 # Magic targets
 all: $(OBJS)
+mappings: ../mappings.cpp ../mappings.h
 
 clean:
 #	-rm $(OBJS)
@@ -23,4 +24,4 @@ distclean: clean
 	./makemappings.pl
 
 # List phony targets
-.PHONY: all clean distclean
+.PHONY: all clean distclean mappings
