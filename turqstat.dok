@@ -8,7 +8,8 @@ http://www.softwolves.pp.se/wolves/
 LICENS
 
 Denna programvara distribueras i enlighet med GNU General Public License
-version 2, vilken finns i den bifogade filen COPYING, med f”ljande till„gg:
+version 2 (GNU GPL), vilken finns i den bifogade filen COPYING, med f”ljande
+till„gg:
 
 Detta program kan l„nkas mot k„llkod eller bin„ra bibliotek f”r att komma †t
 Fidonetmeddelandebaser vilka inte „r f”renliga med GNU GPL, s† l„nge som
@@ -71,7 +72,8 @@ d„r areas”kv„g(ar) „r s”kv„gen till meddelandebasfilen, eller m”tesnumret
 anges f”r att f† kombinerad statistik f”r flera m”ten. Utdatafil „r s”kv„gen
 till den textfil som statistiken skall skrivas till.
 
-Dessa extra kommandoradsflaggor „r tillg„ngliga:
+Dessa extra kommandoradsflaggor „r tillg„ngliga (notera att alla flaggor m†ste
+f”reg† filnamn och s”kv„gar till meddelandebaser):
 
 Dataurval:
 
@@ -117,6 +119,8 @@ Val av indata:
 
 -u V„ljer en Usenet news-"spool". Areas”kv„gen skall vara katalogen i vilken
    Usenetartiklarna ligger.
+
+Du kan bara skapa statistik fr†n ett databasformat per anrop.
 
 Val av topplistor:
 
@@ -181,6 +185,15 @@ skrivits ist„llet att anv„ndas. F”r Usenet news anses filskapandedatumet vara
 ankomsttiden.
 
 
+USENET I FIDONETFORMAT
+
+Turquoise har funktionalitet f”r att hantera Usenetmeddelanden i Fidonetformat
+om de f”ljer g„ngse (de facto-)standarder. Kontrolldata enligt FSC-0035
+(REPLYADDR) hanteras, och adressen d„ri anv„nds i st„llet f”r Fidonetadressen.
+Dessutom hanteras RFC-huvudrader som skrivs direkt som Fidonetkontrollrader,
+eller med prefixed "RFC-", vilka b†da „r vanligt f”rekommande.
+
+
 HISTORIK
 
 1999-06-06 - v1.0 - F”rsta sl„ppta version
@@ -218,6 +231,8 @@ HISTORIK
   Diverse felr„ttelser.
 2000-  -   - v1.5 -
   Egna tidsfunktioner f”r att motverka tidszonsproblem i C-biblioteket.
+  Gjorde hj„lpsk„rmen mer l„ttl„slig.
+  F”rtydligade dokumentationen.
 
 
 BIFOGADE FILER
@@ -238,32 +253,32 @@ src/-katalogen:
   config.h.in     - Indatafil f”r config.h (anv„nds av configure)
   acconfig.h      - Indatafil f”r config.h.in (anv„nds av autoconf)
   turqstat.cpp    - Huvudk„llkod f”r Turquoise
-  arearead.h      - Headerfil som beskriver den abstrakta ”verklassen f”r
+  arearead.h      - Prototypfil som beskriver den abstrakta ”verklassen f”r
                     meddelandebasl„sarna
   fdapxread.cpp   - K„llkod f”r l„sning av FDAPX/w-meddelandebaser
-  fdapxread.h     - Headerfil f”r ovanst†ende
+  fdapxread.h     - Prototypfil f”r ovanst†ende
   jamread.cpp     - K„llkod f”r l„sning av JAM-meddelandebaser
-  jamread.h       - Headerfil f”r ovanst†ende
+  jamread.h       - Prototypfil f”r ovanst†ende
   mypointread.cpp - K„llkod f”r l„sning av MyPoint-meddelandebaser
-  mypointread.h   - Headerfil f”r ovanst†ende
+  mypointread.h   - Prototypfil f”r ovanst†ende
   newsspoolread.cpp K„llkod f”r l„sning av Usenet news-"spool"
-  newsspoolread.h - Headerfil f”r ovanst†ende
+  newsspoolread.h - Prototypfil f”r ovanst†ende
   squishread.cpp  - K„llkod f”r l„sning av Squish-meddelandebaser
-  squishread.h    - Headerfil f”r ovanst†ende
+  squishread.h    - Prototypfil f”r ovanst†ende
   sdmread.cpp     - K„llkod f”r l„sning av *.MSG-meddelandebaser
-  sdmread.h       - Headerfil f”r ovanst†ende
+  sdmread.h       - Prototypfil f”r ovanst†ende
   tanstaaflread.cpp K„llkod f”r l„sning av tanstaafl-meddelandebaser
-  tanstaaflread.h - Headerfil f”r ovanst†ende
+  tanstaaflread.h - Prototypfil f”r ovanst†ende
   mytime.cpp      - K„llkod med tidsfunktioner
-  mytime.h        - Headerfil f”r ovanst†ende
+  mytime.h        - Prototypfil f”r ovanst†ende
   output.cpp      - Funktioner f”r att visa felmeddelanden
-  output.h        - Headerfil f”r ovanst†ende
+  output.h        - Prototypfil f”r ovanst†ende
   statengine.cpp  - Statistiksinl„sningsmotorn
-  statengine.h    - Headerfil f”r ovanst†ende
+  statengine.h    - Prototypfil f”r ovanst†ende
   statview.cpp    - "Vyn", skapar utdatafilen
-  statview.h      - Headerfil f”r ovanst†ende
+  statview.h      - Prototypfil f”r ovanst†ende
   utility.cpp     - Diverse verktygsfunktioner
-  utility.h       - Headerfil f”r ovanst†ende
+  utility.h       - Prototypfil f”r ovanst†ende
   datatypes.h     - Kompilatoroberoende datatypdeklarationer
   version.h       - Aktuellt versionnummer
   turqstat.def    - Applikationstitelfil f”r OS/2
@@ -290,6 +305,12 @@ Programmet utvecklades under OS/2 med EMX 0.9d/GNU C/C++ 2.8.1 och Debian 2.2
 med gcc 2.95.2, och har „ven testats under Mingw32 (gcc 2.95.2). Det b”r
 kompilera under valfri standard-C++-kompilator. Programmet m†ste troligen
 g”ras om f”r att st”da processorer av typen "big endian".
+
+Om du vill skapa ett Debianpaket m†ste du installera Debians utvecklingspaket,
+bland andra debhelper och fakeroot (om du inte vill kompilera som root).
+D„refter skriver du "fakeroot debian/rules binary" (utan citattecknen) vid
+kommandosymbolen. Om du „ven vill tillverka Debians arkivstyrfiler anv„nder du
+dpkg-buildpackage.
 
 
 KONTAKT

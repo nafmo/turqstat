@@ -7,8 +7,9 @@ http://www.softwolves.pp.se/wolves/
 
 LICENSE
 
-This software is distributed under the GNU General Public License version 2,
-as can be found in the accompanying file COPYING, with the following addition:
+This software is distributed under the GNU General Public License version 2
+(GNU GPL), as can be found in the accompanying file COPYING, with the
+following addition:
 
 This program may be linked against any Fidonet message base access sources or
 binary libraries that does not comply with the GNU GPL, as long as their
@@ -72,7 +73,8 @@ paths/message base numbers may be specified to do combined statistics for
 several areas. Outputfile is the path to the text file that the statistics are
 to be written to.
 
-These extra options are available:
+These extra options are available (please note that all options must precede
+file names and message base paths):
 
 Data selection:
 
@@ -118,6 +120,8 @@ Input selection:
 
 -u Select a Usenet news spool. The areapath parameter should be the path in
    which the news article files reside.
+
+You can only retrieve statistics from one kind of message area per invocation.
 
 Toplist selection:
 
@@ -180,6 +184,15 @@ will be used instead. For Usenet news spools, the file create date is
 considered to be the arrival time.
 
 
+USENET IN FIDONET FORMAT
+
+Turquoise contains functionality for handling Usenet messages in Fidonet
+format conforming to (de facto) standards in use. Control lines as specified
+in FSC-0035 (REPLYADDR) are handled, and the address in them are used instead
+of the Fidonet address. Furthermore, RFC headers written directly as Fidonet
+control lines, or prefixed with "RFC-", both commonly occuring, are handled.
+
+
 HISTORY
 
 1999-06-06 - v1.0 - First public release
@@ -217,6 +230,8 @@ HISTORY
   Various bugfixes.
 2000-  -   - v1.5 -
   Uses own time functions to work around timezone problems in C library.
+  Re-designed help screen for clarity.
+  Clarified documentation.
 
 
 INCLUDED FILES
@@ -289,6 +304,11 @@ The program was developed under OS/2 using EMX 0.9d/GNU C/C++ 2.8.1 and Debian
 2.2 with gcc 2.95.2, and has also been tested under Mingw32 (gcc 2.95.2). It
 should compile using any standard C++ compiler. The program must probably be
 rewritten to support "big endian" processors.
+
+To create a Debian package you need to install Debian's developer packages,
+including debhelper and fakeroot (if you do not want to compile as root). At
+the prompt, issue "fakeroot debian/rules binary" (without the quotes). If you
+also want to create Debian's archive control files, use dpkg-buildpackage.
 
 
 CONTACT
