@@ -13,11 +13,12 @@ QTLIBS=@QTLIB@
 DESTDIR=
 OBJS=turqstat.o statengine.o statview.o squishread.o fdapxread.o jamread.o mypointread.o utility.o sdmread.o tanstaaflread.o newsspoolread.o mytime.o output.o
 QTOBJS=qtgui.o moc_qtgui.o qtlist.o moc_qtlist.o statengine.o squishread.o fdapxread.o jamread.o mypointread.o utility.o sdmread.o tanstaaflread.o newsspoolread.o mytime.o outputqt.o
-@QT@EXE=turqstat@EXEEXT@ qturqstat@EXEEXT@
+@QT@EXE=turqstat@EXEEXT@ xturqstat@EXEEXT@
 @NOQT@EXE=turqstat@EXEEXT@
 DEF=@DEF@
 prefix=@prefix@
 exec_prefix=@exec_prefix@
+xbindir=@exec_prefix@/X11R6/bin
 
 # Magic targets
 all: $(EXE)
@@ -39,20 +40,28 @@ distclean: clean
 debianclean:
 	fakeroot debian/rules clean
 
-@NOINST@install: turqstat@EXEEXT@
+@NOINST@install: install-text @QT@install-qt
+@NOINST@
+@NOINST@install-text: turqstat@EXEEXT@
 @NOINST@	install -d $(DESTDIR)@bindir@ $(DESTDIR)@datadir@/doc/turqstat/ $(DESTDIR)@datadir@/doc/turqstat/sv/ $(DESTDIR)@mandir@/man1 $(DESTDIR)@mandir@/sv/man1/
 @NOINST@	install -s turqstat@EXEEXT@ $(DESTDIR)@bindir@
 @NOINST@	install -m 644 turqstat.doc $(DESTDIR)@datadir@/doc/turqstat/
 @NOINST@	install -m 644 turqstat.dok $(DESTDIR)@datadir@/doc/turqstat/sv/
 @NOINST@	install -m 644 turqstat.1   $(DESTDIR)@mandir@/man1/
 @NOINST@	install -m 644 turqstat-sv.1 $(DESTDIR)@mandir@/sv/man1/turqstat.1
+@NOINST@
+@NOINST@@QT@install-qt: xturqstat@EXEEXT@
+@NOINST@@QT@	install -d $(DESTDIR)$(xbindir) $(DESTDIR)@datadir@/doc/xturqstat/ $(DESTDIR)@datadir@/doc/xturqstat/sv/
+@NOINST@@QT@	install -s xturqstat@EXEEXT@ $(DESTDIR)$(xbindir)
+@NOINST@@QT@	install -m 644 turqstat.doc $(DESTDIR)@datadir@/doc/xturqstat/
+@NOINST@@QT@	install -m 644 turqstat.dok $(DESTDIR)@datadir@/doc/xturqstat/sv/
 
 # Binary
 turqstat@EXEEXT@: $(OBJS) $(DEF)
 	@CXX@ $(CXXFLAGS) $(LDFLAGS) -o turqstat@EXEEXT@ $(OBJS) $(DEF) $(LIBS)
 
-@QT@qturqstat@EXEEXT@: $(QTOBJS) $(DEF)
-@QT@	@CXX@ $(CXXFLAGS) $(QTFLAGS) $(LDFLAGS) -o qturqstat@EXEEXT@ $(QTOBJS) $(DEF) $(QTLIBS)
+@QT@xturqstat@EXEEXT@: $(QTOBJS) $(DEF)
+@QT@	@CXX@ $(CXXFLAGS) $(QTFLAGS) $(LDFLAGS) -o xturqstat@EXEEXT@ $(QTOBJS) $(DEF) $(QTLIBS)
 
 # Object files
 turqstat.o: turqstat.cpp statengine.h statview.h arearead.h squishread.h fdapxread.h jamread.h mypointread.h version.h tanstaaflread.h config.h mytime.h output.h
