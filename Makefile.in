@@ -39,7 +39,7 @@ install: turqstat@EXE@
 
 # Binary
 turqstat@EXE@: $(OBJS) $(DEF)
-	@CXX@ $(CXXFLAGS) $(LDFLAGS) -o turqstat $(OBJS) $(DEF) $(LIBS)
+	@CXX@ $(CXXFLAGS) $(LDFLAGS) -o turqstat@EXE@ $(OBJS) $(DEF) $(LIBS)
 
 # Object files
 turqstat.o: turqstat.cpp statengine.h statview.h arearead.h squishread.h fdapxread.h jamread.h mypointread.h version.h tanstaaflread.h config.h
