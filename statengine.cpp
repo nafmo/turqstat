@@ -848,7 +848,7 @@ void StatEngine::AreaDone(void)
     numareas ++;
 }
 
-string StatEngine::ParseAddress(string controldata, string msgbody)
+string StatEngine::ParseAddress(string controldata, string msgbody) const
 {
     // Locate Origin
     // Handles these formats:
@@ -916,7 +916,7 @@ string StatEngine::ParseAddress(string controldata, string msgbody)
     return string("N/A");
 }
 
-string StatEngine::DeQP(string qp)
+string StatEngine::DeQP(string qp) const
 {
     string rc = "", hex = "";
     int qpchar, pos, endpos, current = 0;
@@ -1220,7 +1220,7 @@ void StatEngine::FlattenDomains(domainstat_s *array, domaindata_s *p)
 
 // Comparison functions for QSort
 
-int comparenumwritten(const void *p1, const void *p2)
+int StatEngine::comparenumwritten(const void *p1, const void *p2)
 {
     unsigned d1 = (((StatEngine::persstat_s *) p2)->messageswritten);
     unsigned d2 = (((StatEngine::persstat_s *) p1)->messageswritten);
@@ -1233,7 +1233,7 @@ int comparenumwritten(const void *p1, const void *p2)
     return 1;
 }
 
-int comparenumreceived(const void *p1, const void *p2)
+int StatEngine::comparenumreceived(const void *p1, const void *p2)
 {
     unsigned d1 = (((StatEngine::persstat_s *) p2)->messagesreceived);
     unsigned d2 = (((StatEngine::persstat_s *) p1)->messagesreceived);
@@ -1246,7 +1246,7 @@ int comparenumreceived(const void *p1, const void *p2)
     return 1;
 }
 
-int comparenumquoted(const void *p1, const void *p2)
+int StatEngine::comparenumquoted(const void *p1, const void *p2)
 {
     // Special handling of the case with no bytes written (recipient only)
     if (0 == (((StatEngine::persstat_s *) p1)->byteswritten))
@@ -1275,7 +1275,7 @@ int comparenumquoted(const void *p1, const void *p2)
     return 0;
 }
 
-int comparebytepermsg(const void *p1, const void *p2)
+int StatEngine::comparebytepermsg(const void *p1, const void *p2)
 {
     unsigned long d1 =
         ((unsigned long) (((StatEngine::persstat_s *) p1)->byteswritten)) *
@@ -1289,7 +1289,7 @@ int comparebytepermsg(const void *p1, const void *p2)
     return 0;
 }
 
-int compareoriginalpermsg(const void *p1, const void *p2)
+int StatEngine::compareoriginalpermsg(const void *p1, const void *p2)
 {
     // Special handling of the case with no messages written (recipient only)
     if (0 == (((StatEngine::persstat_s *) p1)->messageswritten))
@@ -1316,7 +1316,7 @@ int compareoriginalpermsg(const void *p1, const void *p2)
     return 0;
 }
 
-int comparesubject(const void *p1, const void *p2)
+int StatEngine::comparesubject(const void *p1, const void *p2)
 {
     unsigned d1 = (((StatEngine::subjstat_s *) p2)->count);
     unsigned d2 = (((StatEngine::subjstat_s *) p1)->count);
@@ -1327,19 +1327,19 @@ int comparesubject(const void *p1, const void *p2)
     return 1;
 }
 
-int compareprogram(const void *p1, const void *p2)
+int StatEngine::compareprogram(const void *p1, const void *p2)
 {
     return ((int) (((StatEngine::progstat_s *) p2)->count)) -
            ((int) (((StatEngine::progstat_s *) p1)->count));
 }
 
-int comparenets(const void *p1, const void *p2)
+int StatEngine::comparenets(const void *p1, const void *p2)
 {
     return ((int) (((StatEngine::netstat_s *) p2)->messages)) -
            ((int) (((StatEngine::netstat_s *) p1)->messages));
 }
 
-int comparedomains(const void *p1, const void *p2)
+int StatEngine::comparedomains(const void *p1, const void *p2)
 {
     return ((int) (((StatEngine::domainstat_s *) p2)->messages)) -
            ((int) (((StatEngine::domainstat_s *) p1)->messages));

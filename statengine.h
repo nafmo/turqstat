@@ -21,16 +21,6 @@
 #include <string>
 #include <time.h>
 
-int comparenumwritten(const void *, const void *);
-int comparenumreceived(const void *, const void *);
-int comparenumquoted(const void *, const void *);
-int comparebytepermsg(const void *, const void *);
-int compareoriginalpermsg(const void *, const void *);
-int comparesubject(const void *, const void *);
-int compareprogram(const void *, const void *);
-int comparenets(const void *, const void *);
-int comparedomains(const void *, const void *);
-
 class StatEngine
 {
 public:
@@ -244,8 +234,8 @@ protected:
     bool                hasarrivaltime, newsarea;
 
     // Internal methods
-    string ParseAddress(string, string);
-    string DeQP(string);
+    string ParseAddress(string, string) const;
+    string DeQP(string) const;
     void FlattenPeople(persstat_s *, persondata_s *);
     void FlattenSubjects(subjstat_s *, subjectdata_s *);
     void FlattenPrograms(progstat_s *, programdata_s *);
@@ -256,6 +246,17 @@ protected:
 private:
     // State variables
     unsigned int flattenindex;
+
+    // Comparison functions for QSort
+    static int comparenumwritten(const void *, const void *);
+    static int comparenumreceived(const void *, const void *);
+    static int comparenumquoted(const void *, const void *);
+    static int comparebytepermsg(const void *, const void *);
+    static int compareoriginalpermsg(const void *, const void *);
+    static int comparesubject(const void *, const void *);
+    static int compareprogram(const void *, const void *);
+    static int comparenets(const void *, const void *);
+    static int comparedomains(const void *, const void *);
 };
 
 #endif

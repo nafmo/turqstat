@@ -22,6 +22,11 @@
   turqstat.cpp
     Prints message when output file has been created.
 
+  statengine.cpp
+  statengine.h
+    Moved qsort comparison functions into the StatEngine class as static
+    methods.
+
 2000-04-30 - peter karlsson <peter@softwolves.pp.se>
   jamread.cpp
   squishread.cpp
