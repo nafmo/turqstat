@@ -35,6 +35,7 @@ emxbind -s turqstat.exe
 copy turqstat.exe os2\
 copy Makefile     os2\
 copy config.h     os2\
+del  config.h
 copy README.os2   os2\
 
 copy README.Win32                    win32\
