@@ -61,6 +61,9 @@ debianclean:
 @NOINST@@QT@	install -m 644 xturqstat-sv.1 $(DESTDIR)$(xmandir)/sv/man1/xturqstat.1
 @NOINST@@QT@	make -C po install
 
+docs: doxygen.conf
+	doxygen doxygen.conf
+
 # Binary
 turqstat@EXEEXT@: $(OBJS) $(DEF)
 	@CXX@ $(CXXFLAGS) $(LDFLAGS) -o turqstat@EXEEXT@ $(OBJS) $(DEF) $(LIBS)
@@ -150,5 +153,10 @@ output.o: output.cpp output.h
 @QT@outputqt.o: outputqt.cpp output.h
 @QT@	@CXX@ $(CXXFLAGS) $(QTFLAGS) -c $(srcdir)/outputqt.cpp
 
+# Other files
+doxygen.conf: doxygen.conf.in config.status
+	$(srcdir)/config.status
+
 # List phony targets
-.PHONY: all debian clean distclean debianclean install
+.PHONY: all debian clean distclean debianclean install install-text \
+        install-qt docs
