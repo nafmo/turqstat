@@ -1,3 +1,34 @@
+2000-06-16 - peter karlsson <peter@softwolves.pp.se>
+  acconfig.h
+  configure.in
+    Remove some time zone junk.
+
+  Makefile.in
+  mytime.cpp
+  mytime.h
+    Added a modified mktime (derived from EMX sources) that does not use
+    time zones.
+
+  newsspoolread.cpp
+    Adjust arrival times for time zone.
+
+  statengine.cpp
+  statview.cpp
+    Changed localtime to gmtime to ignore time zones.
+
+  turqstat.cpp
+    Change mktime to my_mktime to ignore time zones.
+
+  turqstat.doc
+  turqstat.dok
+    Documented license for newly added code.
+
+  utility.cpp
+    Adjusted time functions to return localtime time_t.
+
+  version.h
+    Updated to version 1.5.
+
 2000-06-12 - peter karlsson <peter@softwolves.pp.se>
   turqstat.doc
   turqstat.dok
