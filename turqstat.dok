@@ -310,6 +310,8 @@ HISTORIK
   Komplett stöd för GCC 3.0.
 2001-12-09 - v2.2 -
   Stöd för Usenet News över NNTP.
+2001-12-27 - v2.2.1 -
+  Rättade kompileringsfel.
 
 
 BIFOGADE FILER

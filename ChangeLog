@@ -1,10 +1,18 @@
+2001-12-27 - peter karlsson <peter@softwolves.pp.se>
+  version.h
+  debian/
+    2.2.1 release.
+
+  nntpread.cpp
+    Added missing include (compile fix for hppa).
+
 2001-12-09 - peter karlsson <peter@softwolves.pp.se>
   nntpread.cpp
     Win32 compile fixes.
 
   turqstat.doc
   turqstat.dok
-    2.2 release
+    2.2 release.
 
 2001-11-27 - peter karlsson <peter@softwolves.pp.se>
   nntpread.cpp

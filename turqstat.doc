@@ -310,6 +310,8 @@ HISTORY
   Complete support for GCC 3.0.
 2001-12-09 - v2.2 -
   Support for Usenet news via NNTP.
+2001-12-27 - v2.2.1 -
+  Fix compile error.
 
 
 INCLUDED FILES
