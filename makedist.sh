@@ -11,6 +11,7 @@ fi
 
 echo '* Makedist: Turquoise SuperStat version '$ver
 
+rm -rf turqstat-$ver/
 mkdir -p turqstat-$ver/debian
 autoconf
 autoheader
