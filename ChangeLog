@@ -1,3 +1,11 @@
+1999-10-20 - peter karlsson <pk@mds.mdh.se>
+  sdmread.cpp
+  statengine.cpp
+  statengine.h
+  statview.cpp
+  tanstaaflread.cpp
+    Added special provisions for formats lacking arrival times.
+
 1999-10-18 - peter karlsson <pk@mds.mdh.se>
   tanstaaflread.cpp
   tanstaaflread.h
