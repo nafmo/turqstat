@@ -144,6 +144,16 @@ int main(int argc, char *argv[])
         return 1;
     }
 
+    // Check parameters for integrity
+    if ((StatRetr::tanstaafl == basetype ||
+         StatRetr::fdapx == basetype ||
+         StatRetr::mypoint == basetype) &&
+        !basepath)
+    {
+        cerr << "Base message path missing (-? for help)." << endl;
+        return 1;
+    }
+
     // Create engine object
     StatEngine engine;
 
