@@ -282,7 +282,7 @@ void StatEngine::AddData(string fromname, string toname, string subject,
         if (newsarea && !isquoted)
         {
             int pipe = thisline.find('|');
- 
+
             if (0 == pipe) isquoted = true;
         }
 
@@ -495,7 +495,9 @@ void StatEngine::AddData(string fromname, string toname, string subject,
         else if ((where = msgbody.rfind("--- ")) != -1)
         {
             int howfar = msgbody.find('\n', where);
-            if (-1 == howfar) howfar = msgbody.find('\r', where);
+            int nextcr = msgbody.find('\r', where);
+            if (-1 == howfar || (nextcr != -1 && nextcr < howfar))
+                howfar = nextcr;
             if (-1 == howfar) howfar = msgbody.length();
             program = msgbody.substr(where + 4, howfar - where - 4);
         }
