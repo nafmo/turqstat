@@ -1,3 +1,23 @@
+2000-11-26 - peter karlsson <peter@softwolves.pp.se>
+  qtlist.cpp
+    Comma-separated files are *.csv, not *.csf.
+
+  configure.in
+  po/Makefile.in
+  po/sv.po
+  po/xturqstat.po
+  po/update-po.sh
+    Added translation files.
+
+  Makefile.in
+    Install X manual pages.
+    Install translation files.
+
+  turqstat.doc
+  turqstat.dok
+  debian/
+    Updated for version 2.0.
+
 2000-11-21 - peter karlsson <peter@softwolves.pp.se>
   outputqt.cpp
     Changed argument detection for messages slightly.
