@@ -12,7 +12,7 @@ LIBS=@LIBS@
 QTLIBS=-lqt
 DESTDIR=
 OBJS=turqstat.o statengine.o statview.o squishread.o fdapxread.o jamread.o mypointread.o utility.o sdmread.o tanstaaflread.o newsspoolread.o mytime.o output.o
-QTOBJS=qtgui.o qtgui.moc.o statengine.o squishread.o fdapxread.o jamread.o mypointread.o utility.o sdmread.o tanstaaflread.o newsspoolread.o mytime.o outputqt.o
+QTOBJS=qtgui.o moc_qtgui.o qtlist.o moc_qtlist.o statengine.o squishread.o fdapxread.o jamread.o mypointread.o utility.o sdmread.o tanstaaflread.o newsspoolread.o mytime.o outputqt.o
 EXE=turqstat@EXEEXT@ qturqstat@EXEEXT@
 DEF=@DEF@
 prefix=@prefix@
@@ -25,7 +25,7 @@ debian:
 	fakeroot debian/rules binary
 
 clean:
-	-rm $(OBJS)
+	-rm $(OBJS) moc*
 	-rm $(EXE)
 
 distclean: clean
@@ -83,7 +83,7 @@ sdmread.o: sdmread.cpp sdmread.h arearead.h statengine.h datatypes.h utility.h c
 newsspoolread.o: newsspoolread.cpp newsspoolread.h arearead.h utility.h config.h output.h
 	@CXX@ $(CXXFLAGS) -c $(srcdir)/newsspoolread.cpp
 
-qtgui.o: qtgui.cpp qtgui.h statengine.h
+qtgui.o: qtgui.cpp qtgui.h qtlist.h statengine.h
 	@CXX@ $(CXXFLAGS) $(QTFLAGS) -c $(srcdir)/qtgui.cpp
 
 mytime.o: mytime.cpp mytime.h
@@ -92,11 +92,20 @@ mytime.o: mytime.cpp mytime.h
 output.o: output.cpp output.h
 	@CXX@ $(CXXFLAGS) -c $(srcdir)/output.cpp
 
-qtgui.moc.o: qtgui.moc.cpp
-	@CXX@ $(CXXFLAGS) $(QTFLAGS) -c -o qtgui.moc.o qtgui.moc.cpp
+moc_qtgui.o: moc_qtgui.cpp
+	@CXX@ $(CXXFLAGS) $(QTFLAGS) -c moc_qtgui.cpp
 
-qtgui.moc.cpp: qtgui.h
-	moc -o qtgui.moc.cpp qtgui.h
+moc_qtgui.cpp: qtgui.h
+	moc -o moc_qtgui.cpp qtgui.h
+
+qtlist.o: qtlist.cpp qtlist.h statengine.h
+	@CXX@ $(CXXFLAGS) $(QTFLAGS) -c $(srcdir)/qtlist.cpp
+
+moc_qtlist.cpp: qtlist.h
+	moc -o moc_qtlist.cpp qtlist.h
+
+moc_qtlist.o: moc_qtlist.cpp
+	@CXX@ $(CXXFLAGS) $(QTFLAGS) -c moc_qtlist.cpp
 
 outputqt.o: outputqt.cpp output.h
 	@CXX@ $(CXXFLAGS) $(QTFLAGS) -c $(srcdir)/outputqt.cpp
