@@ -2,6 +2,8 @@ turqstat (2.1) unstable; urgency=low
 
   * Cleaned up Debianization slightly.
   * Made it possible to select date ranges for input.
+  * Added character re-encoding for most single-byte character sets used in
+    Fidonet and Usenet today.
 
  -- peter karlsson <peterk@debian.org>  UNRELEASED
 
