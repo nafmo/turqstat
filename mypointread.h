@@ -42,7 +42,7 @@ public:
 protected:
     char        *areapath;
 
-    /* Header of area file */
+    // Header of area file (.A??)
 
     struct header_s
     {
@@ -66,12 +66,12 @@ protected:
         UINT8       ro;
         UINT8       arenum;
         UINT16      delnum;
-        char        spare[14];      /* 192 */
-        char        fill[256-192-2];
+        char        spare[14];      /* Total size: 192 */
+        char        fill[256-192-2];/* Fill to 256 bytes */
         UINT32      null;
     };
 
-    /* Letter structure */
+    // Letter structure in area file
 
     struct ltrhdr_s
     {
@@ -98,7 +98,7 @@ protected:
         UINT16      textp;
         UINT16      originp;
         UINT16      lflags;
-        UINT32      flags1;
+        UINT16      flags1;
         UINT8       flags2;
         UINT8       split;
         UINT16      spare;
@@ -110,8 +110,17 @@ protected:
         UINT16      ltrnum;
     };
 
+    // Flag files (.F??)
+    struct flags_s
+    {
+        UINT8       bits;
+        UINT8       number;
+        UINT8       rdrpy;
+    };
+
     const Mypoint_msgbaseversion    = 2;
     const UINT32 Mypoint_delimeter  = 0xfeffffff;
+    const Mypoint_delete            = 0x40;
 };
 
 #endif
