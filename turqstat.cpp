@@ -32,11 +32,12 @@
 #include "squishread.h"
 #include "fdapxread.h"
 #include "jamread.h"
+#include "mypointread.h"
 
 class StatRetr
 {
 public:
-    enum basetype_e { unspecified, squish, sdm, fdapx, jam };
+    enum basetype_e { unspecified, squish, sdm, fdapx, jam, mypoint };
 
     StatRetr(char *areapath, char *outputfilepath, unsigned areanum,
              unsigned days,
@@ -67,7 +68,7 @@ int main(int argc, char *argv[])
 
     // Handle arguments
     int c;
-    while (EOF != (c = getopt(argc, argv, "d:n:a:smfjQWRSPHD?")))
+    while (EOF != (c = getopt(argc, argv, "d:n:a:smfjpQWRSPHD?")))
     {
         switch (c)
         {
@@ -86,6 +87,7 @@ int main(int argc, char *argv[])
 #endif
             case 'f':   basetype = StatRetr::fdapx;                 break;
             case 'j':   basetype = StatRetr::jam;                   break;
+            case 'p':   basetype = StatRetr::mypoint;               break;
 
             case 'Q':   quoters = false;                            break;
             case 'W':   topwritten = false;                         break;
@@ -116,6 +118,7 @@ int main(int argc, char *argv[])
                 cout << "  -j             JAM style message base" << endl;
                 cout << "  -f             FDAPX/w style message base (needs -a)"
                      << endl;
+                cout << "  -j             MyPoint style message base" << endl;
                 cout << endl;
                 cout << "  -Q -W -R -S -P Turn quoters/written/received/"
                                          "subjects/programs toplist off"
@@ -186,6 +189,10 @@ StatRetr::StatRetr(char *areapath, char *outputfilepath, unsigned areanum,
 
         case jam:
             area = new JamRead(areapath);
+            break;
+
+        case mypoint:
+            area = new MyPointRead(areapath);
             break;
 
         default:
