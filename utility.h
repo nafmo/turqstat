@@ -20,6 +20,7 @@
 
 #include <string>
 #include <time.h>
+#include <limits.h>
 
 // MS-DOS style time stamp
 #if defined(__GNUC__) || defined(__EMX__)
@@ -48,7 +49,7 @@ struct stamp_s
 #endif
 
 // Compare two strings case in-sensitively
-int fcompare(const string &s1, const string &s2);
+int fcompare(const string &s1, const string &s2, unsigned int max = UINT_MAX);
 // Convert DOS style time-stamp to time_t
 time_t stampToTimeT(struct stamp_s *st);
 // Convert FTSC style time-stamp to time_t

@@ -28,9 +28,9 @@
 
 // Compare two strings case in-sensitively
 // Why isn't this functionality available in ANSI C++? *sigh*
-int fcompare(const string &s1, const string &s2)
+int fcompare(const string &s1, const string &s2, unsigned int max)
 {
-    int ls1 = s1.length(), ls2 = s2.length();
+    int ls1 = s1.length() <? max, ls2 = s2.length() <? max;
 
     for (int i = 0; i < ls1 && i < ls2; i ++)
     {
@@ -40,6 +40,8 @@ int fcompare(const string &s1, const string &s2)
         }
     }
 
+    // If we fall out, the shortest one is smallest. If we have counted to
+    // max, ls1 == ls2, which gives 0.
     return ls1 - ls2;
 }
 
