@@ -1,3 +1,16 @@
+2000-11-21 - peter karlsson <peter@softwolves.pp.se>
+  outputqt.cpp
+    Changed argument detection for messages slightly.
+
+  version.h
+  debian/
+  turqstat.cpp
+    Changed version number to 2.0.
+
+  gtqui.cpp
+    Added support for translations.
+    Changed version number to 2.0.
+
 2000-11-12 - peter karlsson <peter@softwolves.pp.se>
   acconfig.h
   configure.in
