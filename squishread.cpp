@@ -17,15 +17,17 @@
 // Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 
 #include <time.h>
-#include <msgapi.h>
 #include <string.h>
+extern "C" {
+#include <msgapi.h>
+}
 #include "squishread.h"
 
 static time_t stampToTimeT(struct _stamp *st);
 
-SquishRead::SquishRead(String areapath)
+SquishRead::SquishRead(const char *path)
 {
-    areapath = strdup((const char *) areapath);
+    areapath = strdup(path);
 }
 
 SquishRead::~SquishRead()
@@ -33,7 +35,7 @@ SquishRead::~SquishRead()
     if (areapath) delete areapath;
 }
 
-bool SquishRead::Transfer(StatEngine &destination)
+bool SquishRead::Transfer(time_t starttime, StatEngine &destination)
 {
     // Check that we got the path correctly in initialization
     if (!areapath)
@@ -50,7 +52,8 @@ bool SquishRead::Transfer(StatEngine &destination)
 
     // Open the area
     HAREA areahandle;
-    areahandle = MsgOpenArea((unsigned char *) areapath, MSGAREA_NORMAL, MSGTYPE_SQUISH);
+    areahandle = MsgOpenArea((unsigned char *) areapath, MSGAREA_NORMAL,
+                             MSGTYPE_SQUISH);
     if (!areahandle)
     {
         cerr << "Cannot open area " << areapath << endl;
@@ -94,12 +97,15 @@ bool SquishRead::Transfer(StatEngine &destination)
                        ctrllen, (unsigned char *) ctrlbuf);
 
             // Add to statistics
-            destination.AddData(String((char *) msg.from),
-                                String((char *) msg.to),
-                                String((char *) msg.subj),
-                                String(ctrlbuf), String(msgbuf),
-                                stampToTimeT(&msg.date_written),
-                                stampToTimeT(&msg.date_arrived));
+            if (stampToTimeT(&msg.date_arrived) >= starttime)
+            {
+                destination.AddData(String((char *) msg.from),
+                                    String((char *) msg.to),
+                                    String((char *) msg.subj),
+                                    String(ctrlbuf), String(msgbuf),
+                                    stampToTimeT(&msg.date_written),
+                                    stampToTimeT(&msg.date_arrived));
+            }
 
             // Clean up our mess
 
@@ -110,7 +116,7 @@ out1:;
             MsgCloseMsg(msghandle);
         }
 
-        cout << msgn / high << "% done\r";
+        cout << 100 * msgn / high << "% done\r";
     }
 
     // Close area and API
@@ -127,6 +133,10 @@ static time_t stampToTimeT(struct _stamp *st)
 {
     time_t tt;
     struct tm tms;
+    if (0 == st->date.da || 0 == st->date.mo)
+    {
+        return 0;
+    }
     tms.tm_sec = st->time.ss << 1;
     tms.tm_min = st->time.mm;
     tms.tm_hour = st->time.hh;
