@@ -41,6 +41,7 @@
 #include <qregexp.h>
 #include <qmessagebox.h>
 #include <qprogressdialog.h>
+#include <qinputdialog.h>
 
 #include "qtgui.h"
 #include "qtlist.h"
@@ -58,13 +59,15 @@
 #include "utility.h"
 
 InfoWindow::InfoWindow()
+    : hasnews(false), hasany(false)
 {
     // Construct menu
     menu = new QMenuBar(this);
     QPopupMenu *filemenu = new QPopupMenu(menu);
     filemenu->insertItem(tr("&Open message base"), this, SLOT(open()),
                          CTRL+Key_O);
-    filemenu->insertItem(tr("&Save text file"), this, SLOT(save()), CTRL+Key_S);
+    filemenu->insertItem(tr("&Clear data"), this, SLOT(clear()), CTRL+Key_L);
+    filemenu->insertSeparator();
     filemenu->insertItem(tr("&Exit"), qApp, SLOT(quit()), CTRL+Key_Q);
     menu->insertItem(tr("&File"), filemenu);
 
@@ -99,97 +102,84 @@ InfoWindow::InfoWindow()
     numareas = new QLineEdit(grid, "numareas");
     numareas->setReadOnly(true);
     numareas->setAlignment(AlignRight);
-    numareas->setText("0");
     labelAreas->setBuddy(numareas);
 
     QLabel *labelTexts = new QLabel(tr("&Texts examined"), grid);
     numtexts = new QLineEdit(grid, "numtexts");
     numtexts->setReadOnly(true);
     numtexts->setAlignment(AlignRight);
-    numtexts->setText("0");
     labelTexts->setBuddy(numtexts);
 
     QLabel *labelBytes = new QLabel(tr("&Bytes written"), grid);
     numbytes = new QLineEdit(grid, "numbytes");
     numbytes->setReadOnly(true);
     numbytes->setAlignment(AlignRight);
-    numbytes->setText("0");
     labelBytes->setBuddy(numbytes);
 
     QLabel *labelLines = new QLabel(tr("&Lines examined"), grid);
     numlines = new QLineEdit(grid, "numlines");
     numlines->setReadOnly(true);
     numlines->setAlignment(AlignRight);
-    numlines->setText("0");
     labelLines->setBuddy(numlines);
 
     QLabel *labelQBytes = new QLabel(tr("Bytes &quoted"), grid);
     numqbytes = new QLineEdit(grid, "numqbytes");
     numqbytes->setReadOnly(true);
     numqbytes->setAlignment(AlignRight);
-    numqbytes->setText("0");
     labelQBytes->setBuddy(numqbytes);
 
     QLabel *labelQLines = new QLabel(tr("L&ines quoted"), grid);
     numqlines = new QLineEdit(grid, "numqlines");
     numqlines->setReadOnly(true);
     numqlines->setAlignment(AlignRight);
-    numqlines->setText("0");
     labelQLines->setBuddy(numqlines);
 
     QLabel *labelPeople = new QLabel(tr("&People identified"), grid);
     numpeople = new QLineEdit(grid, "numpeople");
     numpeople->setReadOnly(true);
     numpeople->setAlignment(AlignRight);
-    numpeople->setText("0");
     labelPeople->setBuddy(numpeople);
 
     QLabel *labelSubjects = new QLabel(tr("S&ubjects found"), grid);
     numsubjects = new QLineEdit(grid, "subjects");
     numsubjects->setReadOnly(true);
     numsubjects->setAlignment(AlignRight);
-    numsubjects->setText("0");
     labelSubjects->setBuddy(numsubjects);
 
     QLabel *labelPrograms = new QLabel(tr("P&rograms used"), grid);
     numprograms = new QLineEdit(grid, "numprograms");
     numprograms->setReadOnly(true);
     numprograms->setAlignment(AlignRight);
-    numprograms->setText("0");
     labelPrograms->setBuddy(numprograms);
 
     QLabel *labelNets = new QLabel(tr("Fidonet &nets represented"), grid);
     numnets = new QLineEdit(grid, "numnets");
     numnets->setReadOnly(true);
     numnets->setAlignment(AlignRight);
-    numnets->setText("0");
     labelNets->setBuddy(numnets);
 
     QLabel *labelDomains = new QLabel(tr("Top &domains represented"), grid);
     numdomains = new QLineEdit(grid, "numdomains");
     numdomains->setReadOnly(true);
     numdomains->setAlignment(AlignRight);
-    numdomains->setText("0");
     labelDomains->setBuddy(numdomains);
 
     QLabel *labelEarliest = new QLabel(tr("&Earliest text written"), grid);
     earliestwritten = new QLineEdit(grid, "earliestwritten");
     earliestwritten->setReadOnly(true);
     earliestwritten->setAlignment(AlignRight);
-    earliestwritten->setText("None loaded");
     labelEarliest->setBuddy(earliestwritten);
 
     QLabel *labelLatest = new QLabel(tr("Latest text &written"), grid);
     latestwritten = new QLineEdit(grid, "latestwritten");
     latestwritten->setReadOnly(true);
     latestwritten->setAlignment(AlignRight);
-    latestwritten->setText("None loaded");
     labelLatest->setBuddy(latestwritten);
 
-    setCentralWidget(grid);
+    // Fill data fields with zeroes
+    zeroFill();
 
-    hasnews = false;
-    hasany = false;
+    setCentralWidget(grid);
 
     connect(this, SIGNAL(newdata()), SLOT(update()));
 
@@ -217,15 +207,33 @@ InfoWindow *InfoWindow::getMainWindow()
 // Open a message base
 void InfoWindow::open()
 {
+#define NUMFILTERS 8
+    const QString filter[NUMFILTERS] =
+    {
+#define FTSCSDM 0
+        tr("FTSC SDM (*.msg)"),
+#define OPUSSDM 1
+        tr("Opus SDM (*.msg)"),
+#define SQUISH 2
+        tr("Squish (*.sqd)"),
+#define FDAPXW 3
+        tr("FDAPX/w (msgstat.apx)"),
+#define JAM 4
+        tr("JAM (*.jdt)"),
+#define MYPOINT 5
+        tr("MyPoint (mypoint.*)"),
+#define TANSTAAFL 6
+        tr("Tanstaafl (msgstat.tfl)"),
+#define USENET 7
+        tr("News (.overview)")
+    };
+
     QFileDialog filedialog(QString::null,
-                           "FTSC SDM (*.msg);;"
-                           "Opus SDM (*.msg);;"
-                           "Squish (*.sqd);;"
-                           "FDAPX/w (msgstat.apx);;"
-                           "JAM (*.jdt);;"
-                           "MyPoint (mypoint.*);;"
-                           "Tanstaafl (msgstat.tfl);;"
-                           "News (.overview)", this, "fileselect", true);
+                           filter[0] + ";;" + filter[1] + ";;" +
+                           filter[2] + ";;" + filter[3] + ";;" +
+                           filter[4] + ";;" + filter[5] + ";;" +
+                           filter[6] + ";;" + filter[7],
+                           this, "fileselect", true);
     filedialog.setMode(QFileDialog::ExistingFile);
     filedialog.setCaption(tr("Open message base"));
     filedialog.setShowHiddenFiles(true);
@@ -237,139 +245,103 @@ void InfoWindow::open()
     QString fileselect = filedialog.selectedFile();
     if (fileselect.isEmpty()) return;
 
-    QString filter = filedialog.selectedFilter();
+    // Determine what type we selected
+    int filternum = -1;
+    for (int i = 0; i < NUMFILTERS; i ++)
+    {
+        if (filedialog.selectedFilter() == filter[i])
+        {
+            filternum = i;
+        }
+    }
+    if (-1 == filternum)
+    {
+        return;
+    }
 
+    // Make sure we do not try to mix incompatible area types
+    if ((hasany &&  hasnews && USENET != filternum) ||
+        (hasany && !hasnews && USENET == filternum))
+    {
+        incompatible();
+        return;
+    }
+
+    // Setup
     AreaRead *area = NULL;
+    // Remove file name if we only want the path
+    if (FTSCSDM == filternum || OPUSSDM == filternum || FDAPXW == filternum ||
+        MYPOINT == filternum || TANSTAAFL == filternum || USENET == filternum)
+    {
+#ifdef BACKSLASH_PATHS
+        fileselect.truncate(fileselect.findRev(QRegExp("[/\\]"));
+#else
+        fileselect.truncate(fileselect.findRev('/'));
+#endif
+    }
     const char *path = fileselect.latin1();
+
+    // Select area number
+    int areanum = 0;
+    if (FDAPXW == filternum || MYPOINT == filternum || TANSTAAFL == filternum)
+    {
+        bool ok;
+        areanum = QInputDialog::getInteger(path,
+                                           tr("Select area number"),
+                                           0, 0, INT_MAX, 1, &ok, this);
+        if (!ok)
+        {
+            // User pressed cancel
+            return;
+        }
+    }
+
     bool isnews = false;
 
-    if (filter == "FTSC SDM (*.msg)")
+    // Do the magic selection
+    switch (filternum)
     {
-        // "*.msg" - Determine FTSC/Opus style
-        if (hasany && hasnews)
-        {
-            incompatible();
+        case FTSCSDM:
+        case OPUSSDM:
+            area = new SdmRead(path, OPUSSDM == filternum);
+            break;
+
+        case SQUISH:
+            area = new SquishRead(path);
+            break;
+
+        case FDAPXW:
+            area = new FdApxRead(path, areanum);
+            break;
+
+        case JAM:
+            area = new JamRead(path);
+            break;
+
+        case MYPOINT:
+            area = new MyPointRead(path, areanum);
+            break;
+
+        case TANSTAAFL:
+            area = new TanstaaflRead(path, areanum);
+            break;
+
+        case USENET:
+            area = new NewsSpoolRead(path);
+            isnews = true;
+            break;
+
+        default:
+            // Huh?
+            QMessageBox::warning(this, "Turquoise SuperStat",
+                                 tr("I don't understand your selection"));
             return;
-        }
-
-        QMessageBox::information(this, "Turquoise SuperStat",
-                                tr("FTSC style message base"));
-#warning Implement
-    }
-    else if (filter == "Opus SDM (*.msg)")
-    {
-        // "*.msg" - Determine FTSC/Opus style
-        if (hasany && hasnews)
-        {
-            incompatible();
-            return;
-        }
-
-        QMessageBox::information(this, "Turquoise SuperStat",
-                                tr("Opus style message base"));
-#warning Implement
-    }
-    else if (filter == "Squish (*.sqd)")
-    {
-        // Squish
-        if (hasany && hasnews)
-        {
-            incompatible();
-            return;
-        }
-
-        QMessageBox::information(this, "Turquoise SuperStat",
-                                tr("Squish message base"));
-
-        area = new SquishRead(path);
-    }
-    else if (filter == "FDAPX/w (msgstat.apx)")
-    {
-        // FDAPX/w
-        if (hasany && hasnews)
-        {
-            incompatible();
-            return;
-        }
-
-        QMessageBox::information(this, "Turquoise SuperStat",
-                                tr("FDAPX/w message base"));
-
-#warning Ask for area number
-//        area = new FdApxRead(path, 1);
-    }
-    else if (filter == "JAM (*.jdt)")
-    {
-        // JAM
-        if (hasany && hasnews)
-        {
-            incompatible();
-            return;
-        }
-
-        QMessageBox::information(this, "Turquoise SuperStat",
-                                tr("JAM message base"));
-
-        area = new JamRead(path);
-    }
-    else if (filter == "Tanstaafl (msgstat.tfl)")
-    {
-        // Taanstafl
-        if (hasany && hasnews)
-        {
-            incompatible();
-            return;
-        }
-
-        QMessageBox::information(this, "Turquoise SuperStat",
-                                tr("Tanstaafl message base"));
-
-#warning Ask for area number
-//        area = new TanstaaflRead(path, 1);
-    }
-    else if (filter == "MyPoint (mypoint.*)")
-    {
-        // MyPoint
-        if (hasany && hasnews)
-        {
-            incompatible();
-            return;
-        }
-
-        QMessageBox::information(this, "Turquoise SuperStat",
-                                tr("MyPoint message base"));
-
-#warning Ask for area number
-//        area = new MyPointRead(path, 1);
-    }
-    else if (filter == "News (.overview)")
-    {
-        // News spool
-        if (hasany && !hasnews)
-        {
-            incompatible();
-            return;
-        }
-
-        QMessageBox::information(this, "Turquoise SuperStat",
-                                tr("Usenet News Spool"));
-
-        fileselect.truncate(fileselect.findRev('/'));
-        path = fileselect.latin1();
-        area = new NewsSpoolRead(path);
-        isnews = true;
-    }
-    else
-    {
-        // Huh?
-        QMessageBox::warning(this, "Turquoise SuperStat",
-                             tr("I don't understand your selection"));
-        return;
     }
 
     // Transfer data
     if (area)
     {
+#warning Implement starting time    
 time_t from = 0;
         progress =
             new QProgressDialog(tr("Reading message base"), 0, 100, this,
@@ -526,6 +498,34 @@ void InfoWindow::timelist()
 {
 }
 
+void InfoWindow::clear()
+{
+    // Remove the old statistics engine and create a new one
+    if (engine) delete engine;
+    engine = new StatEngine;
+
+    hasnews = false;
+    hasany = false;
+
+    zeroFill();  
+}
+
+void InfoWindow::zeroFill()
+{
+    numareas->setText("0");
+    numtexts->setText("0");
+    numbytes->setText("0");
+    numlines->setText("0");
+    numqbytes->setText("0");
+    numqlines->setText("0");
+    numpeople->setText("0");
+    numsubjects->setText("0");
+    numprograms->setText("0");
+    numnets->setText("0");
+    numdomains->setText("0");
+    earliestwritten->setText(tr("None loaded"));
+    latestwritten->setText(tr("None loaded"));
+}
 
 // Program entry
 int main(int argc, char *argv[])
