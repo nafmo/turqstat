@@ -82,12 +82,13 @@ public:
      * @param outputfilepath Path to output file to create.
      * @param basepath       Base path of message base (if required).
      * @param basetype       Message base type for input.
-     * @param days           Number of days back to save data for.
+     * @param rangestart     First date to save data for.
+     * @param rangeend       Last date to save data for.
      */
     StatRetr(StatEngine &, StatView &,
              char **areapath, int numpaths, char *outputfilepath,
              char *basepath, basetype_e basetype,
-             unsigned days);
+             time_t rangestart, time_t rangeend);
 
     /** Standard destructor. */
     ~StatRetr();
@@ -95,6 +96,14 @@ public:
 
 /** Display the program's help screen. */
 void helpscreen(void);
+
+/** Evaluate a date-time range as given on the command line.
+ * @param rangespec      Range specification string.
+ * @param range_start_pp Where to create the range start time.
+ * @param range_end_pp   Where to create the range end time.
+ */
+void evaluaterange(const char *rangespec,
+                   time_t **range_start_pp, time_t **range_end_pp);
 
 int main(int argc, char *argv[])
 {
@@ -106,6 +115,7 @@ int main(int argc, char *argv[])
          topsubjects = true, topprograms = true, weekstats = true,
          daystats = true, versions = true, allnums = false,
          toporiginal = true, topnets = true, topdomains = true;
+    time_t *range_start_p = NULL, *range_end_p = NULL;
 #if defined(HAVE_LOCALE_H) || defined(__EMX__) || defined(__WIN32__)
     bool uselocale = false;
 #endif
@@ -126,9 +136,9 @@ int main(int argc, char *argv[])
     // Handle arguments
     int c;
 #if defined(HAVE_LOCALE_H) || defined(__EMX__) || defined(__WIN32__)
-    while (EOF != (c = getopt(argc, argv, "d:n:a:smofjptuQWRSPOHDVNTAL?")))
+    while (EOF != (c = getopt(argc, argv, "d:n:a:r:smofjptuQWRSPOHDVNTAL?")))
 #else
-    while (EOF != (c = getopt(argc, argv, "d:n:a:smofjptuQWRSPOHDVNTA?")))
+    while (EOF != (c = getopt(argc, argv, "d:n:a:r:smofjptuQWRSPOHDVNTA?")))
 #endif
     {
         switch (c)
@@ -136,6 +146,8 @@ int main(int argc, char *argv[])
             case 'd':   days = strtoul(optarg, NULL, 10);           break;
             case 'n':   maxnum = strtoul(optarg, NULL, 10);         break;
             case 'a':   basepath = optarg;                          break;
+            case 'r':   evaluaterange(optarg, &range_start_p, &range_end_p);
+                                                                    break;
 
             case 's':   basetype = StatRetr::squish;                break;
             case 'm':   basetype = StatRetr::sdm;                   break;
@@ -216,10 +228,24 @@ int main(int argc, char *argv[])
     view.ShowAllNums(allnums);
     view.SetMaxEntries(maxnum);
 
+    // Compute starting time if days parameter is given
+    if (days != 0 && !range_start_p)
+    {
+        range_start_p = new time_t(time(NULL) - days * 86400L);
+        struct tm *fromtm = localtime(range_start_p);
+        fromtm->tm_hour = 0;
+        fromtm->tm_min  = 0;
+        fromtm->tm_sec  = 0;
+        *range_start_p = my_mktime(fromtm);
+    }
+
     // Create retrieval object, and do the work
     StatRetr s(engine, view,
                &argv[optind + 1], argc - optind - 1, argv[optind],
-               basepath, basetype, days);
+               basepath, basetype, range_start_p ? *range_start_p : time_t(0),
+               range_end_p ? *range_end_p : time_t(INFINITY));
+
+    delete range_start_p, range_end_p;
 
     return 0;
 }
@@ -227,21 +253,9 @@ int main(int argc, char *argv[])
 StatRetr::StatRetr(StatEngine &engine, StatView &view,
                    char **areapath, int numpaths, char *outputfilepath,
                    char *basepath, basetype_e basetype,
-                   unsigned days)
+                   time_t rangestart, time_t rangeend)
 {
     unsigned areanum;
-
-    // Compute starting time
-    time_t from;
-    if (0 == days)
-        from = 0;
-    else
-        from = time(NULL) - days * 86400L;
-    struct tm *fromtm = localtime(&from);
-    fromtm->tm_hour = 0;
-    fromtm->tm_min  = 0;
-    fromtm->tm_sec  = 0;
-    from = my_mktime(fromtm);
 
     // Transfer from area(s) to engine
     AreaRead *area;
@@ -294,7 +308,7 @@ StatRetr::StatRetr(StatEngine &engine, StatView &view,
             TDisplay::GetOutputObject()->ErrorQuit(TDisplay::out_of_memory_area,
                                                    1);
         }
-        if (!(area->Transfer(from, engine))) return;
+        if (!(area->Transfer(rangestart, rangeend, engine))) return;
 
         engine.AreaDone();
         cout << "Finished reading " << areapath[counter] << endl;
@@ -319,9 +333,10 @@ void helpscreen(void)
     cout << "Usage: turqstat [options] outputfile areadef(s)" << endl;
     cout << endl;
     cout << "Data selection options:" << endl;
-    cout << "  -d days  Days back to count   -a path  Base path (see below)"
+    cout << "  -a path  Base path (see below)    -d days   Days back to count"
          << endl;
-    cout << "  -n num   Maximum entries" << endl;
+    cout << "  -n num   Maximum entries          -r range  Date range"
+         << endl;
     cout << endl;
     cout << "Input selection options:" << endl;
     cout << "  -s  Squish       -j  JAM          -p  MyPoint*" << endl;
@@ -341,4 +356,55 @@ void helpscreen(void)
     cout << "  -L  Use locale's date format" << endl;
 #endif
     cout << "    * = turn off for Usenet, turn on for Fidonet" << endl;
+}
+
+void evaluaterange(const char *rangespec,
+                   time_t **range_start_pp, time_t **range_end_pp)
+{
+    // Allocate times if not already
+    if (!*range_start_pp) *range_start_pp = new time_t;
+    if (!*range_end_pp)   *range_end_pp = new time_t;
+
+    // Evaluate range as given. It is on the form
+    // "[yyyymmdd[Thhmmss]]-[yyyymmdd[Thhmmss]]"
+    bool valid = false;
+    const char *separator = strchr(rangespec, '-');
+    if (separator)
+    {
+        if (0 == separator - rangespec)
+        {
+            **range_start_pp = time_t(0);
+        }
+        else
+        {
+            **range_start_pp =
+                timespecToTimeT(string(rangespec, separator - rangespec));
+        }
+
+        if (time_t(-1) != **range_start_pp)
+        {
+            const char *rangespec2 = separator + 1;
+            int charsleft = strlen(rangespec2);
+            if (0 == charsleft)
+            {
+                **range_end_pp = time_t(INFINITY);
+            }
+            else
+            {
+                **range_end_pp =
+                    timespecToTimeT(string(rangespec2, charsleft));
+            }
+
+            if (time_t(-1) != **range_end_pp)
+            {
+                valid = true;
+            }
+        }
+    }
+
+    if (!valid)
+    {
+        cerr << "Invalid range specification: " << rangespec << endl;
+        exit(1);
+    }
 }
