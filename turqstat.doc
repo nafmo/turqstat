@@ -1,4 +1,4 @@
-Turquoise SuperStat 1.1 - An area statistics program for Fidonet
+Turquoise SuperStat 1.2 - An area statistics program for Fidonet
 (c) Copyright 1998-1999 Peter Karlsson.
 A Softwolves Software Release in 1999
 
@@ -32,7 +32,6 @@ OTHER COPYRIGHTS
 JAM(mbp) - Copyright 1993 Joaquim Homrighausen, Andrew Milner, Mats Birch,
 Mats Wallin. ALL RIGHTS RESERVED.
 
-Squish MSGAPI0 is copyright 1991 by Scott J. Dudley. All rights reserved.
 Squish, SquishMail and Maximus are trademarks of Scott J. Dudley.
 
 
@@ -75,13 +74,16 @@ These extra options are available:
    Selects the area number for the FDAPX/w and MyPoint message bases, which
    has all messages in the same files.
 
--s Selects Squish style message base (default). Can only be used if the
-   program was linked with the SMAPI library. The areapath parameter should
+-s Selects Squish style message base (default). The areapath parameter should
    be the base name of the Squish files.
 
--m Selects *.MSG style message base. Can only be used if the program was
-   linked with the SMAPI library. The areapath parameter should be be the
-   directory in which the messagebase resides.
+-m Selects FTSC *.MSG style message base. The areapath parameter should be the
+   directory in which the messagebase resides. This message base type lacks
+   arrival dates, so the -d parameter will work on write dates.
+
+-o Selects Opus *.MSG style message base. The areapath parameter should be the
+   directory in which the messagebase resides. Opus *.MSG does have arrival
+   dates.
 
 -j Select JAM style message base. The areapath parameter should be the base
    name of the JAM files.
@@ -134,7 +136,11 @@ HISTORY
   MyPoint uses area numbers, just like FDAPX/w.
   The version list is sorted.
   Bug fixes.
-
+1999-07-21 - v1.2 -
+  No longer uses SMAPI, but has its own routines for Squish/*.MSG.
+  Supports both FTSC and Opus style *.MSG bases.
+  Various bugfixes.
+  Windows and Linux versions work (better) now.
 
 INCLUDED FILES
 
@@ -144,8 +150,8 @@ turqstat.dok - Documentation in Swedish
 copying      - The GNU General Public License, version 2
 source.rar   - Archive containing the source code:
   Makefile        - Makefile for EMX (nmake)
-  Makefile.nosmapi- Makefile for EMX without SMAPI (nmake)
   Makefile.CygWin - Makefile for CygWin32 (GNU make) (unsupported)
+  Makefile.linux  - Makefile for GNU C++ on Linux (GNU make)
   turqstat.cpp    - Main Turquoise source
   arearead.h      - Header defining the abstract superclass for the message
                     base readers
@@ -155,9 +161,10 @@ source.rar   - Archive containing the source code:
   jamread.h       - Header file for the above
   mypointread.cpp - Access sources for MyPoint message bases
   mypointread.h   - Header file for the above
-  squishread.cpp  - Access sources for Squish/*.MSG message bases (needs
-                    SMAPI)
+  squishread.cpp  - Access sources for Squish message bases
   squishread.h    - Header file for the above
+  sdmread.cpp     - Access sources for *.MSG message bases
+  sdmread.h       - Header file for the above
   statengine.cpp  - The statistics gathering engine
   statengine.h    - Header file for the above
   statview.cpp    - The "view", creates the output file
@@ -165,15 +172,15 @@ source.rar   - Archive containing the source code:
   utility.cpp     - Misc. utility functions
   utility.h       - Header file for the above
   datatypes.h     - Compiler-independent datatype declarations
+  version.h       - Current version number
 
 
 REQUIREMENTS FOR COMPILATION
 
-The program was developed under OS/2 using EMX 0.9c/GNU C/C++ 2.7.2.1, but
-should compile using any standard C++ compiler. To get support for Squish
-and *.MSG bases, you will need the SMAPI library, which can be found at
-ftp://ftp.sar-gmbh.com/pub/freeware/husky/smapi-latest.tar.gz on the
-Internet.
+The program was developed under OS/2 using EMX 0.9c/GNU C/C++ 2.7.2.1 and
+Debian 2.1 with egcs 2.91.66, and has also been tested under CygWin b20. It
+should compile using any standard C++ compiler. The program must probably be
+rewritten to support "big endian" processors.
 
 
 CONTACT
