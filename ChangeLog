@@ -1,3 +1,11 @@
+2001-04-06 - peter karlsson <peter@softwolves.pp.se>
+  utility.cpp
+  mappings/makemappings.pl
+    Don't do conversion on ASCII.
+
+  doxygen.conf.in
+    Added character set conversion files.
+
 2001-04-05 - peter karlsson <peter@softwolves.pp.se>
   mappings/
   Makefile.in
