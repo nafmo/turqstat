@@ -6,10 +6,10 @@ CFLAGS=-Wall -O3
 
 all: turqstat.exe
 
-turqstat.exe: turqstat.o statengine.o statview.o turqstat.def squishread.o fdapxread.o jamread.o mypointread.o utility.o sdmread.o
+turqstat.exe: turqstat.o statengine.o statview.o turqstat.def squishread.o fdapxread.o jamread.o mypointread.o utility.o sdmread.o tanstaaflread.o
 	gcc $(CFLAGS) -o turqstat.exe *.o -lstdc++
 
-turqstat.o: turqstat.cpp statengine.h statview.h arearead.h squishread.h fdapxread.h jamread.h mypointread.h version.h
+turqstat.o: turqstat.cpp statengine.h statview.h arearead.h squishread.h fdapxread.h jamread.h mypointread.h version.h tanstaaflread.h
 	gcc $(CFLAGS) -c turqstat.cpp
 
 statengine.o: statengine.cpp statengine.h
@@ -26,6 +26,9 @@ utility.o: utility.cpp utility.h
 
 fdapxread.o: fdapxread.cpp fdapxread.h datatypes.h statengine.h arearead.h
 	gcc $(CFLAGS) -c fdapxread.cpp
+
+tanstaaflread.o: tanstaaflread.cpp tanstaaflread.h datatypes.h statengine.h arearead.h
+	gcc $(CFLAGS) -c tanstaaflread.cpp
 
 jamread.o: jamread.cpp jamread.h datatypes.h statengine.h arearead.h
 	gcc $(CFLAGS) -c jamread.cpp

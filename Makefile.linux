@@ -6,10 +6,10 @@ CFLAGS=-Wall -O3 -g -DUNIX
 
 all: turqstat
 
-turqstat: turqstat.o statengine.o statview.o turqstat.def squishread.o fdapxread.o jamread.o mypointread.o utility.o sdmread.o
+turqstat: turqstat.o statengine.o statview.o turqstat.def squishread.o fdapxread.o jamread.o mypointread.o utility.o sdmread.o tanstaaflread.o
 	g++ $(CFLAGS) -o turqstat *.o -lstdc++
 
-turqstat.o: turqstat.cpp statengine.h statview.h arearead.h squishread.h fdapxread.h jamread.h mypointread.h version.h
+turqstat.o: turqstat.cpp statengine.h statview.h arearead.h squishread.h fdapxread.h jamread.h mypointread.h version.h tanstaaflread.h
 	g++ $(CFLAGS) -c turqstat.cpp
 
 statengine.o: statengine.cpp statengine.h
@@ -27,6 +27,9 @@ utility.o: utility.cpp utility.h
 fdapxread.o: fdapxread.cpp fdapxread.h datatypes.h statengine.h arearead.h
 	g++ $(CFLAGS) -c fdapxread.cpp
 
+tanstaaflread.o: tanstaaflread.cpp tanstaaflread.h datatypes.h statengine.h arearead.h
+	g++ $(CFLAGS) -c tanstaaflread.cpp
+
 jamread.o: jamread.cpp jamread.h datatypes.h statengine.h arearead.h
 	g++ $(CFLAGS) -c jamread.cpp
 
@@ -36,16 +39,27 @@ mypointread.o: mypointread.cpp mypointread.h datatypes.h statengine.h arearead.h
 sdmread.o: sdmread.cpp sdmread.h arearead.h statengine.h datatypes.h utility.h
 	g++ $(CFLAGS) -c sdmread.cpp
 
-dist: turqstat source.tar.gz
-	strip turqstat
-	iso2dos -i turqstat.doc doc/turqstat.doc
-	iso2dos -i turqstat.dok doc/turqstat.dok
-	zip -j turqstat-linux.zip turqstat source.tar.gz COPYING doc/*
-	rm source.tar.gz
-
-source.tar.gz:
-	tar cvfz source.tar.gz *.def *.cpp *.h Makefile*
-
 clean:
 	-rm *.o
 	-rm turqstat
+
+# Debian stuff
+DESTDIR =
+
+debian-install: turqstat
+	install -d $(DESTDIR)/usr/bin $(DESTDIR)/usr/share/doc/turqstat/
+	install -s turqstat $(DESTDIR)/usr/bin/
+	install -m 644 turqstat.doc $(DESTDIR)/usr/share/doc/turqstat/
+	install -m 644 turqstat.dok $(DESTDIR)/usr/share/doc/turqstat/
+
+# Used to make a Debian distro from my local CVS tree files
+# do not use for distributed archives
+VER ?= x.x
+dist:
+	-mkdir -p turqstat-$(VER)/debian
+	cp -p *.def *.cpp *.h Makefile* ChangeLog COPYING turqstat-$(VER)/
+	iso2dos -i turqstat.doc turqstat-$(VER)/turqstat.doc
+	iso2dos -i turqstat.dok turqstat-$(VER)/turqstat.dok
+	-cp -p debian/* turqstat-$(VER)/debian
+	tar cvfz turqstat-$(VER).tar.gz turqstat-$(VER)/*
+	rm -rf turqstat-$(VER)/
