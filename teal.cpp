@@ -43,10 +43,11 @@ int main(int argc, char *argv[])
                *inset = "ibm850", *outset = "iso-8859-1";
 #endif
     int verbose = 1;
+    bool listsets = false;
 
     // Handle arguments
     int c;
-    while (EOF != (c = getopt(argc, argv, "i:o:f:t:")))
+    while (EOF != (c = getopt(argc, argv, "i:o:f:t:ql")))
     {
         switch (c)
         {
@@ -55,13 +56,33 @@ int main(int argc, char *argv[])
             case 'q': verbose --;      break;
             case 'f': inset  = optarg; break;
             case 't': outset = optarg; break;
+            case 'l': listsets = true; break;
             default:
                 cout << "Usage: " << argv[0] <<
                         " [-q] [-f from-charset] [-t to-charset]"
                         " [-i infile] [-o outfile]"
                      << endl;
+                cout << "       " << argv[0] << " -l" << endl;
                 return 0;
         }
+    }
+
+    if (listsets)
+    {
+        cout << "Known Fidonet character set names: " << endl;
+        CharsetEnumerator fidonames(CharsetEnumerator::Fidonet);
+        const char *name_p;
+        while ((name_p = fidonames.Next())) cout << name_p << ' ';
+        cout << endl;
+        cout << endl;
+
+        cout << "Known MIME character set names: " << endl;
+        CharsetEnumerator mimenames(CharsetEnumerator::Usenet);
+        while ((name_p = mimenames.Next())) cout << name_p << ' ';
+        cout << endl;
+        cout << endl;
+
+        return 0;
     }
 
     if (argc > optind)
