@@ -108,6 +108,7 @@ if test "$ac_cv_mingw32" = "yes"; then
 fi
 
 AC_CHECK_LIB(socket, socket)
+AC_CHECK_LIB(wsock32, socket)
 AC_CHECK_LIB(nsl, gethostbyname)
 
 dnl Check for header files -------------------------------------------------
