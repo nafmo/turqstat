@@ -15,7 +15,12 @@ autoconf
 autoheader
 cp -p *.1 *.def *.cpp *.h Makefile.in config.h.in configure configure.in ChangeLog COPYING turqstat-$ver/
 iso2dos -i turqstat.doc turqstat-$ver/turqstat.doc
+touch -r   turqstat.doc turqstat-$ver/turqstat.doc
 iso2dos -i turqstat.dok turqstat-$ver/turqstat.dok
+touch -r   turqstat.dok turqstat-$ver/turqstat.dok
 cp -p debian/* turqstat-$ver/debian
 fakeroot tar cvfz turqstat-$ver.tar.gz turqstat-$ver/*
+cd turqstat-$ver
+fakeroot debian/rules binary
+cd ..
 rm -rf turqstat-$ver/
