@@ -1,0 +1,95 @@
+/* config.h.in.  Generated automatically from configure.in by autoheader.  */
+
+/* Define to empty if the keyword does not work.  */
+#undef const
+
+/* Define if you have the strftime function.  */
+#undef HAVE_STRFTIME
+
+/* Define if your processor stores words with the most significant
+   byte first (like Motorola and SPARC, unlike Intel and VAX).  */
+#undef WORDS_BIGENDIAN
+
+/* Define if we are using EMX's implementation of findfirst/findnext */
+#undef HAVE_EMX_FINDFIRST
+
+/* Define if getopt is found in unistd.h */
+#undef HAVE_GETOPT_IN_UNISTD
+
+/* Define if getopt is found in getopt.h */
+#undef HAVE_GETOPT_IN_GETOPT
+
+/* Define if no system getopt is available */
+#undef USE_OWN_GETOPT
+
+/* Define if struct tm has tm_gmtoff */
+#undef HAVE_TM_GMTOFF
+
+/* Define if time.h defines timezone variable */
+#undef HAVE_TIMEZONE
+
+/* Define if time.h defines _timezone variable */
+#undef HAVE_UTIMEZONE
+
+/* Define if platform primarily uses backslash as path separators */
+#undef BACKSLASH_PATHS
+
+/* Define if C library includes snprintf */
+#undef HAVE_SNPRINTF
+
+/* Define if C library includes _snprintf instead of snprint */
+#undef HAVE_USNPRINTF
+
+/* Define if C library includes strcasestr */
+#undef HAVE_STRCASESTR
+
+/* Define if C library includes stristr */
+#undef HAVE_STRISTR
+
+/* Define if C library includes strlwr */
+#undef HAVE_STRLWR
+
+/* Define to size of time_t, in bytes */
+#undef SIZEOF_TIME_T
+
+/* Define if limits.h includes CHAR_BIT */
+#undef HAVE_CHAR_BIT
+
+/* Define if you have OS/2 DosQueryCtryInfo API */
+#undef HAVE_OS2_COUNTRYINFO
+
+/* Define if you have Win32 GetDateFormat API */
+#undef HAVE_WIN32_LOCALEINFO
+
+/* Define if you have a working wstring implementation */
+#undef HAVE_WORKING_WSTRING
+
+/* Define if ctype.h defines towupper */
+#undef HAVE_TOWUPPER_IN_CTYPE_H
+
+/* Define if you have the <dirent.h> header file.  */
+#undef HAVE_DIRENT_H
+
+/* Define if you have the <limits.h> header file.  */
+#undef HAVE_LIMITS_H
+
+/* Define if you have the <locale.h> header file.  */
+#undef HAVE_LOCALE_H
+
+/* Define if you have the <ndir.h> header file.  */
+#undef HAVE_NDIR_H
+
+/* Define if you have the <stdint.h> header file.  */
+#undef HAVE_STDINT_H
+
+/* Define if you have the <sys/dir.h> header file.  */
+#undef HAVE_SYS_DIR_H
+
+/* Define if you have the <sys/ndir.h> header file.  */
+#undef HAVE_SYS_NDIR_H
+
+/* Define if you have the <wctype.h> header file.  */
+#undef HAVE_WCTYPE_H
+
+/* Define if you have the crtdll library (-lcrtdll).  */
+#undef HAVE_LIBCRTDLL
