@@ -36,12 +36,13 @@
 #include "jamread.h"
 #include "mypointread.h"
 #include "sdmread.h"
+#include "tanstaaflread.h"
 #include "version.h"
 
 class StatRetr
 {
 public:
-    enum basetype_e { squish, sdm, opus, fdapx, jam, mypoint };
+    enum basetype_e { squish, sdm, opus, fdapx, jam, mypoint, tanstaafl };
 
     StatRetr(char **areapath, int numpaths, char *outputfilepath,
              char *basepath,
@@ -84,7 +85,7 @@ int main(int argc, char *argv[])
 
     // Handle arguments
     int c;
-    while (EOF != (c = getopt(argc, argv, "d:n:a:smofjpQWRSPOHDVN?")))
+    while (EOF != (c = getopt(argc, argv, "d:n:a:smofjptQWRSPOHDVN?")))
     {
         switch (c)
         {
@@ -98,6 +99,7 @@ int main(int argc, char *argv[])
             case 'f':   basetype = StatRetr::fdapx;                 break;
             case 'j':   basetype = StatRetr::jam;                   break;
             case 'p':   basetype = StatRetr::mypoint;               break;
+            case 't':   basetype = StatRetr::tanstaafl;             break;
 
             case 'Q':   quoters = false;                            break;
             case 'W':   topwritten = false;                         break;
@@ -129,6 +131,8 @@ int main(int argc, char *argv[])
                      << endl;
                 cout << "  -j             JAM style message base" << endl;
                 cout << "  -f             FDAPX/w style message base (needs -a)"
+                     << endl;
+                cout << "  -f             Tanstaafl style message base (needs -a)"
                      << endl;
                 cout << "  -p             MyPoint style message base (needs -a)"
                      << endl;
@@ -206,7 +210,7 @@ StatRetr::StatRetr(char **areapath, int numpaths, char *outputfilepath,
                 break;
 
             case fdapx:
-                areanum = strtoul(areapath[counter], NULL, 10); 
+                areanum = strtoul(areapath[counter], NULL, 10);
                 area = new FdApxRead(basepath, areanum);
                 break;
 
@@ -215,8 +219,13 @@ StatRetr::StatRetr(char **areapath, int numpaths, char *outputfilepath,
                 break;
 
             case mypoint:
-                areanum = strtoul(areapath[counter], NULL, 10); 
+                areanum = strtoul(areapath[counter], NULL, 10);
                 area = new MyPointRead(basepath, areanum);
+                break;
+
+            case tanstaafl:
+                areanum = strtoul(areapath[counter], NULL, 10);
+                area = new TanstaaflRead(basepath, areanum);
                 break;
 
             default:
