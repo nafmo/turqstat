@@ -1,3 +1,20 @@
+2001-10-10 - peter karlsson <peter@softwolves.pp.se>
+  configure.in
+  acconfig.h
+    Added tests for changes introduced in GCC 3.0.0.
+
+  convert.h
+  output.h
+  qtlist.h
+  statengine.h
+  statview.h
+  utility.h
+  version.h
+    Use configure based tests for GCC 3.0.0 compatibility.
+
+  statview.cpp
+    Began GCC 3.0.0 fixing.
+
 2001-10-04 - peter karlsson <peter@softwolves.pp.se>
   configure.in
   convert.h
