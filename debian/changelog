@@ -1,16 +1,26 @@
+turqstat (1.5) unstable; urgency=low
+
+  * Now officially maintained in Debian by the original author.
+  * Works around timezone problems.
+  * Corrections in documentation.
+  * Merged this ChangeLog with the official Debian version of it.
+  * For more info, see the original ChangeLog.
+
+ -- peter karlsson <peter@softwolves.pp.se>  Fri, 16 Jun 2000 23:13:00 +0200
+
 turqstat (1.4) unstable; urgency=low
 
   * New version.
   * Uses autoconf.
   * Now actually includes the program ChangeLog.
 
- -- peter karlsson <peter@softwolves.pp.se>  Mon, 15 May 2000 18:27:00 +0200
+ -- Per Lundberg <plundis@debian.org>  Mon, 15 May 2000 18:27:00 +0200
 
 turqstat (1.3) unstable; urgency=low
 
   * New version (see ChangeLog).
 
- -- peter karlsson <peter@softwolves.pp.se>  Sat, 25 Mar 2000 15:02:59 +0100
+ -- Per Lundberg <plundis@debian.org>  Sat, 25 Mar 2000 15:02:59 +0100
 
 turqstat (1.2-1) unstable; urgency=low
 
@@ -18,4 +28,4 @@ turqstat (1.2-1) unstable; urgency=low
   * Took jamread.* from upcoming 1.3 version to be able to compile with
     GNU C++ 2.95.
 
- -- peter karlsson <peter@softwolves.pp.se>  Thu, 14 Oct 1999 20:43:27 +0200
+ -- Per Lundberg <plundis@debian.org>  Thu, 14 Oct 1999 20:43:27 +0200
