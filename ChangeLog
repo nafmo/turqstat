@@ -1,3 +1,15 @@
+2001-08-30 - peter karlsson <peter@softwolves.pp.se>
+  statengine.cpp
+    Fix problem with a hang on illegal QP.
+    Correct usage of string::size_type and string::npos when searching in
+    string objects.
+
+  turqstat.doc
+  turqstat.dok
+  version.h
+  debian/
+    Updates for 2.1.1.
+
 2001-07-19 - peter karlsson <peter@softwolves.pp.se>
   po/sv.po
     Corrected a spelling error.

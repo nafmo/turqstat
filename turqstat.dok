@@ -296,6 +296,8 @@ HISTORIK
   Använd OS/2- och Win32-API-funktioner för att hämta lokalt datumformat.
   Implementerade datumintervall.
   Lade in stöd för teckenomkodning.
+2001-08-30 - v2.1.1 -
+  Rättade ett fel som orsakade hängning när ogiltig QP-kodning påträffades.
 
 
 BIFOGADE FILER
