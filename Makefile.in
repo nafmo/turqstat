@@ -119,7 +119,7 @@ mappings.o: mappings.cpp mappings.h
 convert.o: convert.cpp convert.h mappings.h utility.h
 	@CXX@ $(CXXFLAGS) -c $(srcdir)/convert.cpp
 
-@QT@qtgui.o: qtgui.cpp qtgui.h qtlist.h qtreport.h statengine.h arearead.h squishread.h fdapxread.h jamread.h mypointread.h sdmread.h tanstaaflread.h newsspoolread.h utility.h qtbars.h mytime.h convert.h
+@QT@qtgui.o: qtgui.cpp qtgui.h qtlist.h qtreport.h statengine.h arearead.h squishread.h fdapxread.h jamread.h mypointread.h sdmread.h tanstaaflread.h newsspoolread.h utility.h qtbars.h mytime.h convert.h config.h
 @QT@	@CXX@ $(CXXFLAGS) $(QTFLAGS) -c $(srcdir)/qtgui.cpp
 
 @QT@moc_qtgui.o: moc_qtgui.cpp
@@ -128,7 +128,7 @@ convert.o: convert.cpp convert.h mappings.h utility.h
 @QT@moc_qtgui.cpp: qtgui.h
 @QT@	@QTMOC@ -o moc_qtgui.cpp qtgui.h
 
-@QT@qtlist.o: qtlist.cpp qtlist.h statengine.h convert.h utility.h
+@QT@qtlist.o: qtlist.cpp qtlist.h statengine.h convert.h utility.h config.h
 @QT@	@CXX@ $(CXXFLAGS) $(QTFLAGS) -c $(srcdir)/qtlist.cpp
 
 @QT@moc_qtlist.cpp: qtlist.h
@@ -137,7 +137,7 @@ convert.o: convert.cpp convert.h mappings.h utility.h
 @QT@moc_qtlist.o: moc_qtlist.cpp
 @QT@	@CXX@ $(CXXFLAGS) $(QTFLAGS) -c moc_qtlist.cpp
 
-@QT@qtreport.o: qtreport.cpp qtreport.h statview.h
+@QT@qtreport.o: qtreport.cpp qtreport.h statview.h convert.h config.h
 @QT@	@CXX@ $(CXXFLAGS) $(QTFLAGS) -c $(srcdir)/qtreport.cpp
 
 @QT@moc_qtreport.cpp: qtreport.h
@@ -146,7 +146,7 @@ convert.o: convert.cpp convert.h mappings.h utility.h
 @QT@moc_qtreport.o: moc_qtreport.cpp
 @QT@	@CXX@ $(CXXFLAGS) $(QTFLAGS) -c moc_qtreport.cpp
 
-@QT@qtbars.o: qtbars.cpp qtbars.h statengine.h convert.h utility.h qtbars.moc
+@QT@qtbars.o: qtbars.cpp qtbars.h statengine.h convert.h utility.h qtbars.moc config.h
 @QT@	@CXX@ $(CXXFLAGS) $(QTFLAGS) -c $(srcdir)/qtbars.cpp
 
 @QT@moc_qtbars.cpp: qtbars.h
@@ -158,7 +158,7 @@ convert.o: convert.cpp convert.h mappings.h utility.h
 @QT@qtbars.moc: qtbars.cpp
 @QT@	@QTMOC@ -o qtbars.moc qtbars.cpp
 
-@QT@outputqt.o: outputqt.cpp output.h
+@QT@outputqt.o: outputqt.cpp output.h config.h
 @QT@	@CXX@ $(CXXFLAGS) $(QTFLAGS) -c $(srcdir)/outputqt.cpp
 
 # Other files
