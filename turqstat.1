@@ -109,6 +109,11 @@ Display all numbers in toplists (default is off).
 .SH "SEE ALSO"
 .I turqstat.doc
 .SH BUGS
+Since the C library is timezone aware, there are several places where times
+can be mangled because of this.
+This is not a bug in this program, it is a bug in the C programmling
+language.
+.PP
 Report any bugs to the authors.
 .SH AUTHOR
 Turquoise SuperStat was written by Peter Karlsson.
