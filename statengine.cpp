@@ -28,7 +28,7 @@ StatEngine::StatEngine(void)
     msgcount = 0;
     for (int i = 0; i < 7; i ++) daycount[i] = 0;
     for (int i = 0; i < 24; i ++) hourcount[i] = 0;
-    numpeople = numsubjects = numprograms = 0;
+    numpeople = numsubjects = numprograms = numareas = 0;
     totallines = totalqlines = totalbytes = totalqbytes = 0;
     people_p = NULL;
     programs_p = NULL;
@@ -431,6 +431,11 @@ void StatEngine::AddData(string fromname, string toname, string subject,
     struct tm *tm_p = localtime(&timewritten);
     daycount[tm_p->tm_wday] ++;
     hourcount[tm_p->tm_hour] ++;
+}
+
+void StatEngine::AreaDone(void)
+{
+    numareas ++;
 }
 
 string StatEngine::ParseAddress(string controldata, string msgbody)

@@ -238,6 +238,7 @@ StatRetr::StatRetr(char **areapath, int numpaths, char *outputfilepath,
             errorquit("Out of memory allocating area object.", 1);
         if (!(area->Transfer(from, engine))) return;
 
+        engine.AreaDone();
         cout << "Finished reading " << areapath[counter] << endl;
 
         delete area;

@@ -56,8 +56,13 @@ bool StatView::CreateReport(StatEngine *engine, string filename,
         report.close();
     }
 
-    report.form("This report covers %u messages ",
-                engine->GetTotalNumber());
+    report << "This report covers " << engine->GetTotalNumber()
+           <<" messages ";
+
+    if (engine->GetTotalAreas() > 0)
+    {
+        report << "in " << engine->GetTotalAreas() << " areas, ";
+    }
 
     if (engine->HasArrivalTime())
     {

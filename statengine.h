@@ -36,10 +36,11 @@ public:
     StatEngine(void);
     ~StatEngine(void);
 
-    // Method to report data to the statistics engine
+    // Methods to report data to the statistics engine
     void AddData(string fromname, string toname, string subject,
                  string controldata, string msgbody,
                  time_t timewritten, time_t timereceived);
+    void AreaDone(void);
 
     // Structures and methods used to retrieve data from the
     // statistics engine
@@ -108,6 +109,7 @@ public:
     inline unsigned GetTotalPeople(void)    { return numpeople;        };
     inline unsigned GetTotalSubjects(void)  { return numsubjects;      };
     inline unsigned GetTotalPrograms(void)  { return numprograms;      };
+    inline unsigned GetTotalAreas(void)     { return numareas;         };
 
     inline void NoArrivalTime(void)         { hasarrivaltime = false;  };
     inline bool HasArrivalTime(void)        { return hasarrivaltime;   };
@@ -171,7 +173,7 @@ protected:
     // Variables used by the statistics engine
     unsigned        msgcount, totallines, totalqlines, totalbytes, totalqbytes;
     unsigned        daycount[7], hourcount[24];
-    unsigned        numpeople, numsubjects, numprograms;
+    unsigned        numpeople, numsubjects, numprograms, numareas;
     time_t          earliestwritten, latestwritten;
     time_t          earliestreceived, latestreceived;
     bool            wdatevalid, rdatevalid;
