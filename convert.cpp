@@ -292,7 +292,8 @@ Decoder *Decoder::GetDecoderByMIMEHeaders(const char *headers)
         }
 #endif
         char *find = strstr(lowercaseheaders, "charset=");
-        charset = headers + (find - lowercaseheaders);
+        if (find)
+            charset = headers + (find - lowercaseheaders);
         free(lowercaseheaders);
     }
 #endif

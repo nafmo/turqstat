@@ -25,6 +25,8 @@
 #include <string>
 #ifdef HAVE_GETOPT_IN_UNISTD
 # include <unistd.h>
+#elif defined(HAVE_GETOPT_IN_STDIO)
+# include <stdio.h>
 #elif defined(HAVE_GETOPT_IN_GETOPT)
 # include <getopt.h>
 #endif

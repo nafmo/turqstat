@@ -22,10 +22,19 @@
 #include <netdb.h>
 #include <sys/types.h>
 #include <sys/socket.h>
+#include <netinet/in.h>
 
 #include "nntpread.h"
 #include "statengine.h"
 #include "output.h"
+
+#if !defined(HAVE_SNPRINTF)
+# define snprintf4(a,b,c,d)   sprintf(a,c,d)
+# define snprintf5(a,b,c,d,e) sprintf(a,c,d,e)
+#else
+# define snprintf4 snprintf
+# define snprintf5 snprintf
+#endif
 
 NntpRead::NntpRead(const char *_server, const char *_newsgroup)
 {
@@ -96,7 +105,7 @@ bool NntpRead::Transfer(time_t starttime, time_t endtime,
 
     // Open group
     char command[512];
-    snprintf(command, 512, "GROUP %s\r\n", group);
+    snprintf4(command, 512, "GROUP %s\r\n", group);
     response = SendCommand(command);
     if (-1 == response)
     {
@@ -166,7 +175,7 @@ bool NntpRead::Transfer(time_t starttime, time_t endtime,
     // Use XPAT to retrieve the Date header of all active messages,
     // and filter out those not within range (RFC 2980 extension, might
     // not be understood)
-    snprintf(command, 512, "XPAT date %u-%u *\r\n", first, last);
+    snprintf5(command, 512, "XPAT date %u-%u *\r\n", first, last);
     response = SendCommand(command);
     if (-1 == response)
     {
@@ -224,7 +233,7 @@ bool NntpRead::Transfer(time_t starttime, time_t endtime,
         if (havearticlelist && !articles[article - first]) continue;
 
         // Retrieve article head
-        snprintf(command, 512, "HEAD %u\r\n", article);
+        snprintf4(command, 512, "HEAD %u\r\n", article);
         response = SendCommand(command);
         if (-1 == response)
         {
@@ -288,7 +297,7 @@ bool NntpRead::Transfer(time_t starttime, time_t endtime,
         }
 
         // Retrieve article body
-        snprintf(command, 512, "BODY %u\r\n", article);
+        snprintf4(command, 512, "BODY %u\r\n", article);
         response = SendCommand(command);
         if (-1 == response)
         {
