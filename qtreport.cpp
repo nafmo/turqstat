@@ -43,7 +43,7 @@ int ReportSelectWindow::defaultmaxnum = 15;
 
 ReportSelectWindow::ReportSelectWindow(QWidget *parent, const char *name,
                                        StatEngine *engine_p)
-    : QDialog(parent, name), engine(engine_p)
+    : QDialog(parent, name, true), engine(engine_p)
 {
     // Create layout
     QVBoxLayout *layout = new QVBoxLayout(this);
@@ -105,9 +105,10 @@ ReportSelectWindow::ReportSelectWindow(QWidget *parent, const char *name,
 #endif
 
     // Input boxes
-    maxnum = new QSpinBox(1, UINT_MAX, 1, this);
+    maxnum = new QSpinBox(1, INT_MAX, 1, this);
     maxnum->setValue(defaultmaxnum);
     maxnum->setSuffix(tr(" entries"));
+    layout->addWidget(maxnum);
 
     // Add buttons
     QHBoxLayout *buttonlayout = new QHBoxLayout(layout);
@@ -121,6 +122,9 @@ ReportSelectWindow::ReportSelectWindow(QWidget *parent, const char *name,
     connect(ok, SIGNAL(clicked()), SLOT(accept()));
 }
 
+ReportSelectWindow::~ReportSelectWindow()
+{
+}
 
 void ReportSelectWindow::saveToFile()
 {
