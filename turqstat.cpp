@@ -1,7 +1,7 @@
 // Turquoise SuperStat
 //
 // A statistic collection program for Fidonet systems
-// Version 1.0
+// Version 1.1
 //
 // Copyright (c) 1998-1999 Peter Karlsson
 //
@@ -107,7 +107,7 @@ int main(int argc, char *argv[])
 
             case '?':
             default:
-                cout << "Turquoise 1.0 - Statistics tool for Fidonet message bases"
+                cout << "Turquoise 1.1 - Statistics tool for Fidonet message bases"
                      << endl;
                 cout << endl;
                 cout << "Usage: turqstat [options] areapath outputfile" << endl;
@@ -116,7 +116,7 @@ int main(int argc, char *argv[])
                 cout << "  -d days        Days back to count messages from"
                      << endl;
                 cout << "  -n num         Maximum entries in toplists" << endl;
-                cout << "  -a num         Area number (for FDAPX/w)" << endl;
+                cout << "  -a num         Area number (for FDAPX/w and MyPoint)" << endl;
                 cout << endl;
 #ifdef HAS_SMAPI
                 cout << "  -s             Squish style message area (default)"
@@ -172,7 +172,7 @@ StatRetr::StatRetr(char *areapath, char *outputfilepath, unsigned areanum,
                    bool weekstats, bool daystats, bool showversions,
                    bool showallnums)
 {
-    cout << "Turquoise SuperStat 1.0 (c) Copyright 1998-1999 Peter Karlsson."
+    cout << "Turquoise SuperStat 1.1 (c) Copyright 1998-1999 Peter Karlsson."
          << endl;
 
     // Compute starting time
@@ -188,7 +188,7 @@ StatRetr::StatRetr(char *areapath, char *outputfilepath, unsigned areanum,
     from = mktime(fromtm);
 
     // Transfer from area to engine
-    AreaRead *area;
+    AreaRead *area = NULL;
     switch (basetype)
     {
 #ifdef HAS_SMAPI
@@ -207,7 +207,7 @@ StatRetr::StatRetr(char *areapath, char *outputfilepath, unsigned areanum,
             break;
 
         case mypoint:
-            area = new MyPointRead(areapath);
+            area = new MyPointRead(areapath, areanum);
             break;
 
         default:
