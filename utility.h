@@ -66,6 +66,20 @@ struct stamp_s
  */
 int fcompare(const string &s1, const string &s2, unsigned int max = UINT_MAX);
 
+#ifndef HAVE_WORKING_WSTRING
+class wstring;
+#endif
+
+/**
+ * Compare two wide strings case in-sensitively.
+ * @param s1  First string to compare.
+ * @param s2  Second string to compare.
+ * @param max Maximum number of characters to compare.
+ * @return Less than zero if s1 < s2, zero if equal,
+ *         greater than zero if s2 > s1.
+ */
+int fcompare(const wstring &s1, const wstring &s2, unsigned int max = UINT_MAX);
+
 /**
  * Convert DOS style time-stamp to time_t.
  * @param st Pointer to DOS style time-stamp.
@@ -148,7 +162,7 @@ public:
      * @param n Number of characters to allocate space for. Include room
      *          for a terminating null character.
      */
-    wstring(size_t n);
+    wstring(size_t n = 32);
 
     /**
      * Create a wide string object by copying an existing one.
@@ -158,9 +172,11 @@ public:
     wstring(const wstring &s);
 
     /**
-     * Create a wide string object.
+     * Create a wide string object by copying a wide character C string.
+     * Growing can be done, but it is not very efficient.
+     * @param s String to copy.
      */
-    wstring() { wstring::wstring(32); }
+    wstring(const wchar_t *s);
 
     /**
      * Standard destructor.
@@ -171,7 +187,13 @@ public:
      * Append characters to the end of the string.
      * @param s String to append.
      */
-    wstring &operator+=(const wstring &s);
+    void append(const wstring &s);
+
+    /**
+     * Append a character to the end of the string.
+     * @param c Character to append.
+     */
+    void append(wchar_t c);
 
     /**
      * Retrieve string as a C wide string pointer.
@@ -191,6 +213,12 @@ public:
      * @return Number of characters (not bytes) in string.
      */
     inline size_t length() const { return wcslen(data_p); };
+
+    /**
+     * Remove the first characters of the string.
+     * @param n Number of characters to skip
+     */
+    void skip(size_t n);
 
 private:
     /** Contained string. */

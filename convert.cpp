@@ -15,6 +15,8 @@
 // along with this program; if not, write to the Free Software
 // Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 
+#include <config.h>
+
 #define _GNU_SOURCE
 #include <string.h>
 
@@ -257,7 +259,7 @@ wstring Decoder::Decode(const string &input)
 #ifdef HAVE_WORKING_WSTRING
     wstring s;
 #else
-    wstring s(strlen(input.c_str()) + 1);
+    wstring s(input.length() + 1);
 #endif
 
     const unsigned char *i = (const unsigned char *) input.c_str();
@@ -268,7 +270,7 @@ wstring Decoder::Decode(const string &input)
 
         if (ucs)
         {
-            s += ucs;
+            s.append(ucs);
         }
 
         i ++;

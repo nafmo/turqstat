@@ -18,8 +18,10 @@
 #include <config.h>
 #include <string>
 #include <ctype.h>
+#include <wctype.h>
 #include <stdio.h>
 #include <stdlib.h>
+#include <wchar.h>
 #if defined(USE_OWN_GETOPT)
 # include <string.h>
 #endif
@@ -45,6 +47,25 @@ int fcompare(const string &s1, const string &s2, unsigned int max)
         if (toupper(s1[i]) != toupper(s2[i]))
         {
             return toupper(s1[i]) - toupper(s2[i]);
+        }
+    }
+
+    // If we fall out, the shortest one is smallest. If we have counted to
+    // max, ls1 == ls2, which gives 0.
+    return ls1 - ls2;
+}
+
+// Compare two wide strings case in-sensitively
+// Why isn't this functionality available in ANSI C++? *sigh*
+int fcompare(const wstring &s1, const wstring &s2, unsigned int max)
+{
+    int ls1 = s1.length() <? max, ls2 = s2.length() <? max;
+
+    for (int i = 0; i < ls1 && i < ls2; i ++)
+    {
+        if (towupper(s1[i]) != towupper(s2[i]))
+        {
+            return towupper(s1[i]) - towupper(s2[i]);
         }
     }
 
@@ -474,9 +495,17 @@ wstring::wstring(size_t n)
 wstring::wstring(const wstring &s)
 {
     // Allocate at least 32 characters, less is a waste.
-    size = s.length() + 1 <? 32;
+    size = s.length() + 1 >? 32;
     data_p = new wchar_t[size];
     wcscpy(data_p, s.data_p);
+}
+
+wstring::wstring(const wchar_t *s)
+{
+    // Allocate at least 32 characters, less is a waste.
+    size = wcslen(s) + 1 >? 32;
+    data_p = new wchar_t[size];
+    wcscpy(data_p, s);
 }
 
 wstring::~wstring()
@@ -485,31 +514,66 @@ wstring::~wstring()
     delete[] data_p;
 }
 
-wstring &wstring::operator+=(const wstring &s)
+void wstring::append(const wstring &s)
 {
     // Calculate new size
     size_t newchars = wcslen(s.data_p);
-    size_t newsize = wcslen(data_p) + newchars;
+    size_t newsize = wcslen(data_p) + newchars + 1;
     if (newsize > size)
     {
         // Grow in increments of 32 characters.
-        size += ((newchars + newsize) / 32 + 1) * 32;
+        size += (newsize / 32 + 1) * 32;
         wchar_t *new_p = new wchar_t[size];
-        wcscpy(new_p, s.data_p);
+        wcscpy(new_p, data_p);
         delete[] data_p;
         data_p = new_p;
     }
 
     // Append
     wcscat(data_p, s.data_p);
+}
 
-    return *this;
+void wstring::append(wchar_t c)
+{
+    // Calculate new size
+    size_t newsize = wcslen(data_p) + 2;
+    if (newsize > size)
+    {
+        // Grow in increments of 32 characters.
+        size += (newsize / 32 + 1) * 32;
+        wchar_t *new_p = new wchar_t[size];
+        wcscpy(new_p, data_p);
+        delete[] data_p;
+        data_p = new_p;
+    }
+
+    // Append
+    data_p[newsize - 2] = c;
+    data_p[newsize - 1] = 0;
 }
 
 wchar_t wstring::operator[](size_t n) const
 {
     // Check argument for validity
     return (n >= 0 && n <= wcslen(data_p)) ? data_p[n] : 0;
+}
+
+void wstring::skip(size_t n)
+{
+    // Check argument for validity
+    if (n <= 0 || n >= wcslen(data_p))
+    {
+        *data_p = 0;
+    }
+    else
+    {
+        // Copy down data
+        wchar_t *src = data_p + n, *dest = data_p;
+        while (*src)
+        {
+            *(dest ++) = *(src ++);
+        }
+    }
 }
 
 #endif // !HAVE_WORKING_WSTRING
