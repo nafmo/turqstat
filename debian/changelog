@@ -1,3 +1,11 @@
+turqstat (2.1.2) unstable; urgency=low
+
+  * Cosmetic fix.
+  * Made sure it compiles with QT 3, and update Build-Depends to reflect
+    that.
+
+ -- peter karlsson <peterk@debian.org>  Sat, 15 Sep 2001 23:00:00 +0200
+
 turqstat (2.1.1) unstable; urgency=low
 
   * Fix a bug which caused hangs when illegal QP sequences were encountered.
