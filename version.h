@@ -1,4 +1,4 @@
-// Copyright (c) 1998-1999 Peter Karlsson
+// Copyright (c) 1998-2000 Peter Karlsson
 //
 // $Id$
 //
@@ -21,5 +21,7 @@
 #include <string>
 
 const string version = "1.3";
+const string copyright = "(c) Copyright 1998-2000 Peter Karlsson";
+const string releaseyear = "2000";
 
 #endif
