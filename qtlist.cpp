@@ -479,17 +479,14 @@ void TopListWindow::saveToFile()
         return;
     }
 
-    int filternum = -1;
+    int filternum = PLAINTEXT;
     for (int i = 0; i < NUMFILTERS; i ++)
     {
         if (filedialog.selectedFilter() == filter[i])
         {
             filternum = i;
+            break;
         }
-    }
-    if (-1 == filternum)
-    {
-        return;
     }
 
     // Create the file
@@ -503,24 +500,28 @@ void TopListWindow::saveToFile()
 
     // Select output format
     QString format;
-    unsigned defaultwidth = 1;
+    unsigned *columnwidth = NULL;
     if (PLAINTEXT == filternum)
     {
-        // Default: same width for all entries
-        defaultwidth = 80 / numcolumns;
-        if (!defaultwidth)
-        {
-            defaultwidth = 1;
-        }
-cout << numcolumns << endl;
-
         // TODO: Give the user some option to edit this...
-//      columnwidth = new unsigned[numcolumns];
-//      unsigned *columnwidth = NULL;
-//      for (i = 0; i < numcolumns; i ++)
-//      {
-//          columnwidth[i] = defaultwidth;
-//      }
+        columnwidth = new unsigned[numcolumns - 1];
+        for (int i = 0; i < numcolumns; i ++)
+        {
+            columnwidth[i] = 1;
+        }
+        // Traverse the list and find the widest element of each column
+        QListViewItem *current = listview->firstChild();
+        for (int i = 0; i < numentries; i ++)
+        {
+            for (int j = 0; j < numcolumns - 1; j ++)
+            {
+                if (current->text(j).length() >= columnwidth[j])
+                {
+                    columnwidth[j] = current->text(j).length() + 1;
+                }
+            }
+            current = current->nextSibling();
+        }
     }
 
     QTextStream out(&output);
@@ -534,7 +535,15 @@ cout << numcolumns << endl;
             switch (filternum)
             {
                 case PLAINTEXT:
-                    s = s.leftJustify(defaultwidth, ' ', true);
+                    if (s.length() > columnwidth[i])
+                    {
+                        s.truncate(columnwidth[i] - 1);
+                        s += '.';
+                    }
+                    else
+                    {
+                        s = s.leftJustify(columnwidth[i], ' ', true);
+                    }
                     break;
 
                 case COMMA:
@@ -563,7 +572,7 @@ cout << numcolumns << endl;
                 switch (filternum)
                 {
                     case PLAINTEXT:
-                        s = s.leftJustify(defaultwidth, ' ', true);
+                        s = s.leftJustify(columnwidth[j], ' ', true);
                         break;
 
                     case COMMA:
