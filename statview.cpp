@@ -30,7 +30,7 @@ static const char *days[] =
 
 bool StatView::CreateReport(StatEngine *engine, String filename,
     unsigned maxnumber,
-    bool quoters, bool topwritten, bool topread, bool topsubjects,
+    bool quoters, bool topwritten, bool topreceived, bool topsubjects,
     bool topprograms, bool weekstats, bool daystats)
 {
     // Create a report file
@@ -86,8 +86,8 @@ bool StatView::CreateReport(StatEngine *engine, String filename,
         report << "-------------------------------------------"
                   "----------------------------------" << endl;
 
-        report << "Toplist of quoters (excludes people who have written less "
-                  "than three messages) " << endl;
+        report << "Blacklist of quoters (of people who have written at least "
+                  "three messages)" << endl;
         report << endl;
 
         unsigned place = 1;
@@ -140,6 +140,30 @@ bool StatView::CreateReport(StatEngine *engine, String filename,
         }
 
         report << endl;
+
+        unsigned long long totalbytes = engine->GetTotalBytes();
+        if (totalbytes)
+        {
+            unsigned long long totalqbytes = engine->GetTotalQBytes();
+
+            report << "A total of " << totalbytes << " bytes were written "
+                      "(message bodies only), of which " << totalqbytes
+                   << ", or ";
+
+            unsigned percentquotes =
+                ((100000 * totalqbytes) / totalbytes);
+            unsigned integ = percentquotes / 1000;
+            unsigned fract = (percentquotes - integ * 1000 + 5) / 10;
+            if (100 == fract)
+            {
+                fract = 0;
+                integ ++;
+            }
+            report.form("%u.%02u%%,", integ, fract)
+                   << " were quotes." << endl;
+
+            report << endl;
+        }
     }
 
     if (topwritten)
@@ -202,7 +226,7 @@ bool StatView::CreateReport(StatEngine *engine, String filename,
         report << endl;
     }
 
-    if (topread)
+    if (topreceived)
     {
         report << "-------------------------------------------"
                   "----------------------------------" << endl;
@@ -257,6 +281,14 @@ bool StatView::CreateReport(StatEngine *engine, String filename,
         report << endl;
     }
 
+    if (topreceived || topwritten)
+    {
+        report << "A total of " << engine->GetTotalPeople()
+               << " people were identified (senders and recipients)"
+               << endl;
+        report << endl;
+    }
+
     if (topsubjects)
     {
         report << "-------------------------------------------"
@@ -301,6 +333,9 @@ bool StatView::CreateReport(StatEngine *engine, String filename,
             oldcount = data.count;
         }
 
+        report << endl;
+        report << "A total of " << engine->GetTotalSubjects()
+               << " subjects were identified." << endl;
         report << endl;
     }
 
@@ -357,6 +392,10 @@ bool StatView::CreateReport(StatEngine *engine, String filename,
             oldcount = data.count;
         }
 
+        report << endl;
+        report << "A total of " << engine->GetTotalPrograms()
+               << " different programs (not counting different versions) "
+                  "were identified." << endl;
         report << endl;
     }
 
@@ -423,6 +462,9 @@ bool StatView::CreateReport(StatEngine *engine, String filename,
 
         report << endl;
     }
+
+    report << "-------------------------------------------"
+              "----------------------------------" << endl;
 
     report.close();
 }
