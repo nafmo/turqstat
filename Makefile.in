@@ -121,6 +121,15 @@ output.o: output.cpp output.h
 @QT@moc_qtlist.o: moc_qtlist.cpp
 @QT@	@CXX@ $(CXXFLAGS) $(QTFLAGS) -c moc_qtlist.cpp
 
+@QT@qtreport.o: qtreport.cpp qtreport.h statview.h
+@QT@	@CXX@ $(CXXFLAGS) $(QTFLAGS) -c $(srcdir)/qtreport.cpp
+
+@QT@moc_qtreport.cpp: qtreport.h
+@QT@	@QTMOC@ -o moc_qtreport.cpp qtreport.h
+
+@QT@moc_qtreport.o: moc_qtreport.cpp
+@QT@	@CXX@ $(CXXFLAGS) $(QTFLAGS) -c moc_qtreport.cpp
+
 @QT@outputqt.o: outputqt.cpp output.h
 @QT@	@CXX@ $(CXXFLAGS) $(QTFLAGS) -c $(srcdir)/outputqt.cpp
 

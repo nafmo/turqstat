@@ -1,4 +1,9 @@
 2000-11-11 - peter karlsson <peter@softwolves.pp.se>
+  qtreport.cpp
+  qtreport.h
+  Makefile.in
+    Added code supporting creation of detailed report from the Qt version.
+
   output.h
   output.cpp
   outputqt.cpp
