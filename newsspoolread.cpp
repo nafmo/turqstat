@@ -162,6 +162,13 @@ bool NewsSpoolRead::Transfer(time_t starttime, StatEngine &destination)
         stat(thisfile.c_str(), &msgstat);
         arrived = msgstat.st_mtime;
 #endif
+
+#ifdef HAVE_TIMEZONE
+        arrived -= timezone * 60;
+#elif defined(HAVE_UTIMEZONE)
+        arrived -= _timezone * 60;
+#endif
+
         if (arrived < starttime) goto out2;
 
         // Read the message header
