@@ -223,7 +223,7 @@ dnl Locate Qt headers
   AC_MSG_CHECKING(for Qt include files)
   if test "$QTDIR" != ""; then
     if test -e $QTDIR'/include/qapp.h'; then
-      QTINCLUDE=$QTDIR'/include/qapp.h'
+      QTINCLUDE=$QTDIR'/include'
     fi
   fi
   if test "$QTINCLUDE" = ""; then
