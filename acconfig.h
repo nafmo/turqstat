@@ -7,6 +7,9 @@
 /* Define if getopt is found in getopt.h */
 #undef HAS_GETOPT_IN_GETOPT
 
+/* Define if no system getopt is available */
+#undef USE_OWN_GETOPT
+
 /* Define if struct tm has tm_gmtoff */
 #undef HAS_TM_GMTOFF
 

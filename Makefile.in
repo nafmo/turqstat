@@ -9,7 +9,7 @@ srcdir=@srcdir@
 VPATH=@scrdir@
 LIBS=@LIBS@
 DESTDIR=
-OBJS=turqstat.o statengine.o statview.o squishread.o fdapxread.o jamread.o mypointread.o utility.o sdmread.o tanstaaflread.o newsspoolread.o
+OBJS=turqstat.o statengine.o statview.o squishread.o fdapxread.o jamread.o mypointread.o utility.o sdmread.o tanstaaflread.o newsspoolread.o @GETOPT@
 DEF=@DEF@
 prefix=/usr
 exec_prefix=${prefix}
@@ -42,7 +42,7 @@ turqstat@EXEEXT@: $(OBJS) $(DEF)
 	@CXX@ $(CXXFLAGS) $(LDFLAGS) -o turqstat@EXEEXT@ $(OBJS) $(DEF) $(LIBS)
 
 # Object files
-turqstat.o: turqstat.cpp statengine.h statview.h arearead.h squishread.h fdapxread.h jamread.h mypointread.h version.h tanstaaflread.h config.h
+turqstat.o: turqstat.cpp statengine.h statview.h arearead.h squishread.h fdapxread.h jamread.h mypointread.h version.h tanstaaflread.h @GETOPTH@ config.h
 	@CXX@ $(CXXFLAGS) -c $(srcdir)/turqstat.cpp
 
 statengine.o: statengine.cpp statengine.h config.h
@@ -74,6 +74,9 @@ sdmread.o: sdmread.cpp sdmread.h arearead.h statengine.h datatypes.h utility.h c
 
 newsspoolread.o: newsspoolread.cpp newsspoolread.h arearead.h utility.h config.h
 	@CXX@ $(CXXFLAGS) -c $(srcdir)/newsspoolread.cpp
+
+mygetopt.o: mygetopt.cpp
+	@CXX@ $(CXXFLAGS) -c $(srcdir)/mygetopt.cpp
 
 # List phony targets
 .PHONY: all debian clean distclean debianclean install

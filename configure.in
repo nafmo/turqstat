@@ -66,7 +66,7 @@ AC_SUBST(DEF)
 
 dnl Checks for libraries ---------------------------------------------------
 AC_CHECK_LIB($standardcpplib, cout)
-if test "$ac_cv_cygwin" = "yes" || test "$ac_cv_mingw32" = "yes"; then
+if test "$ac_cv_mingw32" = "yes"; then
   AC_CHECK_LIB(crtdll, _findfirst)
   findfirst=yes
 fi
@@ -77,10 +77,6 @@ if test "$ac_cv_header_limits_h" = "no"; then
   AC_MSG_ERROR(limits.h is needed to compile)
 fi
 AC_CHECK_HEADERS(stdint.h)
-dnl AC_CHECK_HEADERS(mingw32/dir.h)
-if test "$findfirst" = "no"; then
-  AC_HEADER_DIRENT
-fi
 
 dnl Check for typedefs, structures, and compiler characteristics -----------
 AC_C_CONST
@@ -91,6 +87,8 @@ AC_TRY_COMPILE([ #include <time.h> ], [  struct tm t; t.tm_gmtoff = 0; ],
   AC_MSG_RESULT(no))
 
 dnl Check for library functions --------------------------------------------
+GETOPT=
+GETOPTH=
 AC_MSG_CHECKING(for getopt in unistd.h)
 AC_TRY_COMPILE([ #include <unistd.h> ],
   [ int argc; char **argv; int c = getopt(argc, argv, "x"); int d = optarg; ],
@@ -101,7 +99,12 @@ AC_TRY_COMPILE([ #include <unistd.h> ],
     [ int argc; char **argv; int c = getopt(argc, argv, "x"); int d = optarg; ],
     AC_DEFINE(HAS_GETOPT_IN_GETOPT) AC_MSG_RESULT(yes),
     AC_MSG_RESULT(no)
-    AC_MSG_ERROR(Unable to locate getopt)))
+    AC_DEFINE(USE_OWN_GETOPT)
+    GETOPT=mygetopt.o
+    GETOPTH=mygetopt.h))
+
+AC_SUBST(GETOPT)
+AC_SUBST(GETOPTH)
 
 dnl Check for variables ----------------------------------------------------
 
