@@ -31,7 +31,7 @@
 #if defined(HAVE_NETINET_IN_H)
 # include <netinet/in.h>
 #endif
-#if !defined(HAVE_WORKING_SOCKET_FDOPEN)
+#if !defined(HAVE_WORKING_SOCKET_FDOPEN) && !defined(HAVE_WINSOCK_H)
 # if defined(HAVE_ERRNO_H)
 #  include <errno.h>
 # elif defined(HAVE_SYS_ERRNO_H)
@@ -88,7 +88,11 @@ NntpRead::~NntpRead()
         fclose(sock);
 #endif
         shutdown(sockfd, 2);
+#if defined(HAVE_WINSOCK_H)
+        closesocket(sockfd);
+#else
         close(sockfd);
+#endif
     }
     delete[] articles;
 }
@@ -473,11 +477,17 @@ bool NntpRead::SendLine(const char *line)
         if (-1 == rc)
         {
             // Ignore "interrupted", "try again" and "would block" errors.
+# if defined(HAVE_WINSOCK_H)
+            int wsa_errno = WSAGetLastError();
+            if (WSAEINTR != wsa_errno && WSAEAGAIN != wsa_errno &&
+                WSAEWOULDBLOCK != wsa_errno)
+# else
             if (EINTR != errno && EAGAIN != errno
-# if defined(EWOULDBLOCK)
+#  if defined(EWOULDBLOCK)
                 && EWOULDBLOCK != errno
-# endif
+#  endif
                )
+# endif
             {
                 return false;
             }
@@ -552,7 +562,12 @@ bool NntpRead::GetLine(char *outbuffer, size_t maxlen)
             if (-1 == rc)
             {
                 // Ignore "interrupted" and "try again" errors.
+# if defined(HAVE_WINSOCK_H)
+                int wsa_errno = WSAGetLastError();
+                if (WSAEINTR != wsa_zerrno && WSAEAGAIN != wsa_errno)
+# else
                 if (EINTR != errno && EAGAIN != errno)
+# endif
                 {
                     return false;
                 }
