@@ -4,14 +4,21 @@
     Tries to figure out more ways to remove timezones.
     Includes more hacks to determine when we need to add .exe to the
     binaries (without it, it thought my OS/2 compiler was cross-compiling).
+    Support for locale defined dates.
 
   turqstat.cpp
     Tries to figure out more ways to remove timezones.
     This, however, has the unfortunate side-effect that file dates (news
     spools are interpreted wrongly).
+    Can use locale defined date format.
+
+  statview.cpp
+  statview.h
+    Can use locale defined date format (falls back to ISO-8601 format).
 
   turqstat.1
     Documented timezone bug.
+    Documented locale date parameter.
 
   Makefile.in
   utility.cpp

@@ -32,6 +32,9 @@
 #if defined(HAVE_TIMEZONE) || defined(HAVE_UTIMEZONE) || defined(HAVE_DAYLIGHT) || defined(HAVE_UDAYLIGHT)
 # include <time.h>
 #endif
+#ifdef HAVE_LOCALE_H
+# include <locale.h>
+#endif
 
 #include "statengine.h"
 #include "statview.h"
@@ -69,6 +72,9 @@ int main(int argc, char *argv[])
          topsubjects = true, topprograms = true, weekstats = true,
          daystats = true, versions = true, allnums = false,
          toporiginal = true, topnets = true;
+#ifdef HAVE_LOCALE_H
+    bool uselocale = false;
+#endif
 
     // We don't want timezones here
 #ifdef FOOL_TZSET
@@ -88,6 +94,11 @@ int main(int argc, char *argv[])
     _daylight = 0;
 #endif
 
+    // Setup locale
+#ifdef HAVE_LOCALE_H
+    setlocale(LC_TIME, "");
+#endif
+
     // Display banner
     cout << "Turquoise " << version
          << " - Statistics tool for Fidonet and Usenet message bases"
@@ -98,7 +109,11 @@ int main(int argc, char *argv[])
 
     // Handle arguments
     int c;
+#ifdef HAVE_LOCALE_H
+    while (EOF != (c = getopt(argc, argv, "d:n:a:smofjptuQWRSPOHDVNAL?")))
+#else
     while (EOF != (c = getopt(argc, argv, "d:n:a:smofjptuQWRSPOHDVNA?")))
+#endif
     {
         switch (c)
         {
@@ -127,6 +142,10 @@ int main(int argc, char *argv[])
 
             case 'V':   versions = false;                           break;
             case 'A':   allnums = true;                             break;
+
+#ifdef HAVE_LOCALE_H
+            case 'L':   uselocale = true;                           break;
+#endif
 
             case '?':
             default:
@@ -168,6 +187,11 @@ int main(int argc, char *argv[])
                 cout << "  -A             Show all numbers in toplists, even "
                                          "for same score"
                      << endl;
+#ifdef HAVE_LOCALE_H
+                cout << "  -L             Use locale's date format in output "
+                                         "instead of ISO format"
+                     << endl;
+#endif
                 return 1;
         }
     }
@@ -194,6 +218,9 @@ int main(int argc, char *argv[])
     view.EnableTopPrograms(topprograms);
     view.EnableWeekStats(weekstats);
     view.EnableDayStats(daystats);
+#ifdef HAVE_LOCALE_H
+    view.UseLocale(uselocale);
+#endif
 
     // Set toplist parameters
     view.ShowVersions(versions);

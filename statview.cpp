@@ -18,6 +18,7 @@
 #include <config.h>
 #include <fstream.h>
 #include <limits.h>
+#include <time.h>
 
 #include "statview.h"
 #include "statengine.h"
@@ -54,6 +55,14 @@ bool StatView::CreateReport(StatEngine *engine, string filename)
 {
     // If we give 0 as maximum entries, we want unlimited (=UINT_MAX...)
     if (0 == maxnumber) maxnumber = UINT_MAX;
+
+    // Select date format
+    const char *dateformat;
+#ifdef HAVE_LOCALE_H
+    if (uselocale) dateformat = "%x %X";
+    else
+#endif
+    dateformat = "%Y-%m-%d %H:%M:%S";
 
     // Create a report file
     fstream report(filename.c_str(), ios::out);
@@ -97,17 +106,16 @@ bool StatView::CreateReport(StatEngine *engine, string filename)
 
     time_t earliest = engine->GetEarliestReceived();
     struct tm *p1 = localtime(&earliest);
+    char date[64];
+    strftime(date, 64, dateformat, p1);
 
-    report.form("between %04d-%02d-%02d %02d.%02d.%02d and ",
-                p1->tm_year + 1900, p1->tm_mon + 1, p1->tm_mday,
-                p1->tm_hour, p1->tm_min, p1->tm_sec);
+    report << "between " << date << " and ";
 
     time_t latest = engine->GetLastReceived();
     struct tm *p2 = localtime(&latest);
+    strftime(date, 64, dateformat, p2);
 
-    report.form("%04d-%02d-%02d %02d.%02d.%02d",
-                p2->tm_year + 1900, p2->tm_mon + 1, p2->tm_mday,
-                p2->tm_hour, p2->tm_min, p2->tm_sec);
+    report << date;
 
     if (engine->HasArrivalTime())
     {
@@ -115,19 +123,18 @@ bool StatView::CreateReport(StatEngine *engine, string filename)
 
         time_t wearliest = engine->GetEarliestWritten();
         struct tm *p3 = localtime(&wearliest);
+        strftime(date, 64, dateformat, p3);
 
-        report.form("%04d-%02d-%02d %02d.%02d.%02d and ",
-                    p3->tm_year + 1900, p3->tm_mon + 1, p3->tm_mday,
-                    p3->tm_hour, p3->tm_min, p3->tm_sec);
+        report << date << " and ";
 
         time_t wlatest = engine->GetLastWritten();
         struct tm *p4 = localtime(&wlatest);
+        strftime(date, 64, dateformat, p4);
 
-        report.form("%04d-%02d-%02d %02d.%02d.%02d)",
-                    p4->tm_year + 1900, p4->tm_mon + 1, p4->tm_mday,
-                    p4->tm_hour, p4->tm_min, p4->tm_sec) << endl;
+        report << date;
     }
 
+    report << endl;
     report << endl;
 
     string tmp;

@@ -37,6 +37,9 @@ public:
     inline void EnableTopPrograms(bool yes) { topprograms = yes;  };
     inline void EnableWeekStats(bool yes)   { weekstats = yes;    };
     inline void EnableDayStats(bool yes)    { daystats = yes;     };
+#ifdef HAVE_LOCALE_H
+    inline void UseLocale(bool yes)         { uselocale = yes;    };
+#endif
 
     // Toplist flags
     inline void ShowVersions(bool yes)      { showversions = yes; };
@@ -52,6 +55,10 @@ protected:
                 topsubjects, topprograms, weekstats, daystats;
 
     bool        showversions, showallnums;
+
+#ifdef HAVE_LOCALE_H
+    bool        uselocale;
+#endif
 
     unsigned    maxnumber;
 };
