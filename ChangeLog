@@ -1,3 +1,7 @@
+1999-09-09 - peter karlsson <pk@mds.mdh.se>
+  turqstat.cpp
+    Combined statistics (multiple area paths can be specified)
+
 1999-09-08 - peter karlsson <pk@mds.mdh.se>
   statengine.cpp
   statview.cpp

@@ -43,7 +43,8 @@ class StatRetr
 public:
     enum basetype_e { squish, sdm, opus, fdapx, jam, mypoint };
 
-    StatRetr(char *areapath, char *outputfilepath, unsigned areanum,
+    StatRetr(char **areapath, int numpaths, char *outputfilepath,
+             unsigned areanum,
              unsigned days,
              basetype_e basetype, unsigned maxnumber,
              bool quoters, bool topwritten, bool topreceived,
@@ -112,7 +113,7 @@ int main(int argc, char *argv[])
 
             case '?':
             default:
-                cout << "Usage: turqstat [options] areapath outputfile" << endl;
+                cout << "Usage: turqstat [options] outputfile areapath(s)" << endl;
                 cout << endl;
                 cout << "Available options:" << endl;
                 cout << "  -d days        Days back to count messages from"
@@ -149,21 +150,22 @@ int main(int argc, char *argv[])
         }
     }
 
-    if (argc - optind != 2)
+    if (argc - optind < 2)
     {
         cerr << "Illegal number of arguments (-? for help)." << endl;
         return 1;
     }
 
-    StatRetr s(argv[optind], argv[optind + 1], areanum, days,
-               basetype, maxnum, quoters, topwritten, topreceived, topsubjects,
-               topprograms, weekstats, daystats, versions, allnums,
-               toporiginal);
+    StatRetr s(&argv[optind + 1], argc - optind - 1, argv[optind],
+               areanum, days, basetype, maxnum, quoters, topwritten,
+               topreceived, topsubjects, topprograms, weekstats, daystats,
+               versions, allnums, toporiginal);
 
     return 0;
 }
 
-StatRetr::StatRetr(char *areapath, char *outputfilepath, unsigned areanum,
+StatRetr::StatRetr(char **areapath, int numpaths, char *outputfilepath,
+                   unsigned areanum,
                    unsigned days,
                    basetype_e basetype, unsigned maxnumber,
                    bool quoters, bool topwritten, bool topreceived,
@@ -183,38 +185,51 @@ StatRetr::StatRetr(char *areapath, char *outputfilepath, unsigned areanum,
     fromtm->tm_sec  = 0;
     from = mktime(fromtm);
 
-    // Transfer from area to engine
-    AreaRead *area = NULL;
-    switch (basetype)
-    {
-        case squish:
-            area = new SquishRead(areapath);
-            break;
-
-        case sdm:
-        case opus:
-            area = new SdmRead(areapath, basetype == opus);
-            break;
-
-        case fdapx:
-            area = new FdApxRead(areapath, areanum);
-            break;
-
-        case jam:
-            area = new JamRead(areapath);
-            break;
-
-        case mypoint:
-            area = new MyPointRead(areapath, areanum);
-            break;
-
-        default:
-            cerr << "Internal error." << endl;
-            exit(1);
-    }
-
+    // Transfer from area(s) to engine
     StatEngine engine;
-    if (!(area->Transfer(from, engine))) return;
+    AreaRead *area;
+    int counter = 0;
+    while (numpaths)
+    {
+        area = NULL;
+        switch (basetype)
+        {
+            case squish:
+                area = new SquishRead(areapath[counter]);
+                break;
+
+            case sdm:
+            case opus:
+                area = new SdmRead(areapath[counter], basetype == opus);
+                break;
+
+            case fdapx:
+                area = new FdApxRead(areapath[counter], areanum);
+                break;
+
+            case jam:
+                area = new JamRead(areapath[counter]);
+                break;
+
+            case mypoint:
+                area = new MyPointRead(areapath[counter], areanum);
+                break;
+
+            default:
+                cerr << "Internal error." << endl;
+                exit(1);
+        }
+
+        if (!area)
+            cerr << "Internal error: Unable to allocate area object." << endl;
+        if (!(area->Transfer(from, engine))) return;
+
+        cout << "Finished reading " << areapath[counter] << endl;
+
+        delete area;
+        counter ++;
+        numpaths --;
+    }
 
     // Create output
     StatView view;

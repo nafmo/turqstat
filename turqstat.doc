@@ -1,4 +1,4 @@
-Turquoise SuperStat 1.2 - An area statistics program for Fidonet
+Turquoise SuperStat 1.3 - An area statistics program for Fidonet
 (c) Copyright 1998-1999 Peter Karlsson.
 A Softwolves Software Release in 1999
 
@@ -42,6 +42,7 @@ its supported formats, and creates statistics about this:
 
  * Quoter blacklist.
  * Toplist of senders.
+ * Toplist of original content per message.
  * Toplist of receivers.
  * Toplist of subjects.
  * Toplist of used software.
@@ -53,11 +54,13 @@ in a text file.
 
 Turquoise SuperStat is entirely command line driven, and the format is this:
 
-  turqstat [options] areapath outputfile
+  turqstat [options] outputfile areapath(s)
 
-where areapath is the path to the message area file or directory (depends
-on the message base format selected), and outputfile is the path to the
-text file that the statistics are to be written to.
+where areapath(s) is the path to the message area file or directory (depends
+on the message base format selected). Several area paths may be specified to
+do combined statistics for several areas (not very useful for FDAPX/w or
+MyPoint message base formats at the moment, though). Outputfile is the path to
+the text file that the statistics are to be written to.
 
 These extra options are available:
 
@@ -100,6 +103,8 @@ These extra options are available:
 
 -W Turns the writer toplist off (default is on).
 
+-O Turns the original content per message toplist off (default is on).
+
 -R Turns the recipient toplist off (default is on).
 
 -S Turns the subject toplist off (default is on).
@@ -117,7 +122,7 @@ These extra options are available:
 
 The options can be aggregated on the command line, for example:
 
-  turqstat -mWRSPHD d:\msgbase\thisarea d:\text\output.txt
+  turqstat -mWRSPHD d:\text\output.txt d:\msgbase\thisarea
 
 will create quoter blacklist (only) from the *.MSG message base in the
 d:\msgbase\thisarea directory. The options are case sensitive.
@@ -141,14 +146,20 @@ HISTORY
   Supports both FTSC and Opus style *.MSG bases.
   Various bugfixes.
   Windows and Linux versions work (better) now.
+1999-  -   - v1.3 -
+  Supports combined statistics from more than one echo.
+  NB! The order of the command line parameters has changed.
+  Added toplist of average original content per message.
+
 
 INCLUDED FILES
 
-turqstat.exe - Main executable file (OS/2)
+turqstat.exe - Main executable file (OS2 or Win32)
+turqstat     - Main executable file (Linux)
 turqstat.doc - This documentation
 turqstat.dok - Documentation in Swedish
 copying      - The GNU General Public License, version 2
-source.rar   - Archive containing the source code:
+source.rar   - Archive containing the source code (source.tar.gz for Unix):
   Makefile        - Makefile for EMX (nmake)
   Makefile.CygWin - Makefile for CygWin32 (GNU make) (unsupported)
   Makefile.linux  - Makefile for GNU C++ on Linux (GNU make)
@@ -178,9 +189,9 @@ source.rar   - Archive containing the source code:
 REQUIREMENTS FOR COMPILATION
 
 The program was developed under OS/2 using EMX 0.9c/GNU C/C++ 2.7.2.1 and
-Debian 2.1 with egcs 2.91.66, and has also been tested under CygWin b20. It
-should compile using any standard C++ compiler. The program must probably be
-rewritten to support "big endian" processors.
+Debian pre-2.2 with gcc 2.95.1, and has also been tested under CygWin b20.
+It should compile using any standard C++ compiler. The program must
+probably be rewritten to support "big endian" processors.
 
 
 CONTACT
