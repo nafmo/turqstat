@@ -107,7 +107,7 @@ void StatEngine::AddData(string fromname, string toname, string subject,
             }
             else
             {
-                int pos = controldata.find((char) 1, pos);
+                pos = controldata.find((char) 1, pos);
             }
         }
     }
