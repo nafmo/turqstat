@@ -514,6 +514,25 @@ wstring::~wstring()
     delete[] data_p;
 }
 
+wstring &wstring::operator=(const wstring &s)
+{
+    size_t otherlen = wcslen(s.data_p);
+    if (otherlen < size)
+    {
+        // Size for this string
+        wcscpy(data_p, s.data_p);
+    }
+    else
+    {
+        // Grow in increments of 32 characters.
+        size = (otherlen / 32 + 1) * 32;
+        wchar_t *new_p = new wchar_t[size];
+        wcscpy(new_p, s.data_p);
+        delete[] data_p;
+        data_p = new_p;
+    }
+}
+
 void wstring::append(const wstring &s)
 {
     // Calculate new size

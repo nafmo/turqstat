@@ -184,6 +184,13 @@ public:
     ~wstring();
 
     /**
+     * Assignment operator. Copies the data of another wstring into this
+     * string.
+     * @param s String to copy.
+     */
+    wstring &operator=(const wstring &s);
+
+    /**
      * Append characters to the end of the string.
      * @param s String to append.
      */
