@@ -1,7 +1,7 @@
 // Turquoise SuperStat
 //
 // A statistic collection program for Fidonet and Usenet systems
-// Version 2.1
+// Version 2.2
 //
 // Copyright (c) 1998-2001 Peter Karlsson
 //
@@ -44,6 +44,7 @@
 #include "sdmread.h"
 #include "tanstaaflread.h"
 #include "newsspoolread.h"
+#include "nntpread.h"
 #include "version.h"
 #include "utility.h"
 #include "mytime.h"
@@ -70,6 +71,7 @@ public:
         jam,        ///< JAM message base format.
         mypoint,    ///< MyPoint message base format.
         tanstaafl,  ///< Tanstaafl message base format.
+        nntp,       ///< Usenet news server (nntp).
         newsspool   ///< Usenet news spool.
     };
 
@@ -141,9 +143,9 @@ int main(int argc, char *argv[])
     // Handle arguments
     int c;
 #if defined(HAVE_LOCALE_H) || defined(HAVE_OS2_COUNTRYINFO) || defined(HAVE_WIN32_LOCALEINFO)
-    while (EOF != (c = getopt(argc, argv, "d:n:a:r:C:smofjptuQWRSPOHDVNTAL?")))
+    while (EOF != (c = getopt(argc, argv, "d:n:a:r:C:smofjptuQWRSPOHDVNTALU?")))
 #else
-    while (EOF != (c = getopt(argc, argv, "d:n:a:r:C:smofjptuQWRSPOHDVNTA?")))
+    while (EOF != (c = getopt(argc, argv, "d:n:a:r:C:smofjptuQWRSPOHDVNTAU?")))
 #endif
     {
         switch (c)
@@ -161,6 +163,7 @@ int main(int argc, char *argv[])
             case 'j':   basetype = StatRetr::jam;                   break;
             case 'p':   basetype = StatRetr::mypoint;               break;
             case 't':   basetype = StatRetr::tanstaafl;             break;
+            case 'U':   basetype = StatRetr::nntp;                  break;
             case 'u':   basetype = StatRetr::newsspool;             break;
 
             case 'Q':   quoters = false;                            break;
@@ -305,6 +308,10 @@ StatRetr::StatRetr(StatEngine &engine, StatView &view,
                 area = new NewsSpoolRead(areapath[counter]);
                 break;
 
+            case nntp:
+                area = new NntpRead(basepath, areapath[counter]);
+                break;
+
             default:
                 TDisplay::GetOutputObject()->
                     InternalErrorQuit(TDisplay::message_base_mismatch, 1);
@@ -348,9 +355,9 @@ void helpscreen(void)
     cout << endl;
     cout << "Input selection options:" << endl;
     cout << "  -s  Squish       -j  JAM          -p  MyPoint*" << endl;
-    cout << "  -m  FTSC *.MSG   -f  FDAPX/w*" << endl;
+    cout << "  -m  FTSC *.MSG   -f  FDAPX/w*     -U  Usenet nntp server**" << endl;
     cout << "  -o  Opus *.MSG   -t  Tanstaafl*   -u  Usenet news spool" << endl;
-    cout << "    * = requires -a parameter" << endl;
+    cout << "    * = requires -a parameter         ** = use -a for server" << endl;
     cout << endl;
     cout << "Output selection options (turns off respective list):" << endl;
     cout << "  -Q  Quoters     -S  Subjects   -N  Fidonet nets   -H Hour stats"

@@ -286,5 +286,14 @@ static QString GetMessage(TDisplay::errormessages_e errormessage)
                                 "Message area garbled (footer does not "
                                 "match header)!");
             break;
+
+        case TDisplay::nntp_unexpected_result:
+            s = qApp->translate("TDisplay",
+                                "Unexpected NNTP response code: %d");
+            break;
+
+        case TDisplay::nntp_communication_problem:
+            s = qApp->translate("TDisplay", "NNTP communication problem");
+            break;
     }
 }

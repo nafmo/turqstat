@@ -58,6 +58,7 @@ public:
         cannot_open_msg_directory, broken_msg,
         illegal_fdapx_version,
         illegal_mypoint_version, mypoint_area_garbled, mypoint_area_garbled_2,
+        nntp_unexpected_result, nntp_communication_problem,
 
         // Public warning messages
         abnormal_squish_frame,

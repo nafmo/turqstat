@@ -18,6 +18,8 @@
 #ifndef __NNTPREAD_H
 #define __NNTPREAD_H
 
+#include <stdio.h>
+
 #include "arearead.h"
 
 class StatEngine;
@@ -56,18 +58,26 @@ public:
 protected:
     /**
      * Connect to the NNTP server.
-     * @return Whether the operation succeeded. It succeeds if the sevrer
-     *         could be reached AND it allowed the connection.
+     * @return Whether the operation succeeded. Returns the numeric response
+     *         code given, or fails with -1 if the sevrer could not be reached
+     *         or it did not allow the connection.
      */
-    bool ConnectServer();
+    int ConnectServer();
 
     /**
      * Send command over NNTP connection.
      * @param command Command to send, must be CRLF terminated.
-     * @return Numeric response code returned, rest of line is stored in
+     * @return Numeric response code returned, the entire line is stored in
      *         the line buffer. Returns -1 if communiction errors occur.
      */
     int SendCommand(const char *command);
+
+    /**
+     * Get NNTP response code.
+     * @return Numeric response code return, the entire line is stored in
+     *         the line buffer. Returns -1 if communication errors occur.
+     */
+    int GetResponse();
 
     /** Name of server. */
     char    *server;
@@ -75,8 +85,11 @@ protected:
     char    *group;
     /** Communications socket. */
     int     sockfd;
+    FILE    *sock;
     /** Line buffer for NNTP response code. */
     char    buffer[512];
+    /** Active articles in group. */
+    bool    *articles;
 };
 
 #endif

@@ -1,6 +1,6 @@
 // Copyright (c) 2000-2001 Peter Karlsson
 //
-// $Id: output.cpp,v 1.5 2001/02/11 16:40:11 peter Exp $
+// $Id: output.cpp,v 1.6 2001/05/16 20:18:26 peter Exp $
 //
 // This program is free software; you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -245,6 +245,14 @@ static string GetMessage(TDisplay::errormessages_e errormessage)
 
         case TDisplay::mypoint_area_garbled_2:
             s = "Message area garbled (footer does not match header)!";
+            break;
+
+        case TDisplay::nntp_unexpected_result:
+            s = "Unexpected NNTP response code: %d";
+            break;
+
+        case TDisplay::nntp_communication_problem:
+            s = "NNTP communication problem";
             break;
     }
 }
