@@ -13,6 +13,11 @@
   turqstat.1
     Documented timezone bug.
 
+  Makefile.in
+  utility.cpp
+  utility.h
+    Move my getopt replacement to utility.* instead of mygetopt.*
+
 2000-04-15 - peter karlsson <peter@softwolves.pp.se>
   statengine.cpp
   statengine.h
