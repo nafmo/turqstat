@@ -1,6 +1,8 @@
-turqstat (1.3-0) unstable; urgency=low
+turqstat (1.3) unstable; urgency=low
 
   * New version (see ChangeLog).
+
+ -- peter karlsson <peter@softwolves.pp.se>  UNRELEASED
 
 turqstat (1.2-1) unstable; urgency=low
 
