@@ -1,6 +1,7 @@
 # Makefile.in for Turquoise SuperStat
 #
 # $Id$
+# $Id$
 
 # Variables
 CXXFLAGS=@CXXFLAGS@ -I. -Wall
@@ -53,7 +54,7 @@ debianclean:
 @NOINST@	install -m 644 turqstat-sv.1 $(DESTDIR)@mandir@/sv/man1/turqstat.1
 @NOINST@
 @NOINST@@QT@install-qt: xturqstat@EXEEXT@
-@NOINST@@QT@	install -d $(DESTDIR)$(xbindir) $(DESTDIR)@datadir@/doc/xturqstat/ $(DESTDIR)@datadir@/doc/xturqstat/sv/ $(DESTDIR)$(xmandir) $(DESTDIR)$(xmandir)/sv/man1/
+@NOINST@@QT@	install -d $(DESTDIR)$(xbindir) $(DESTDIR)@datadir@/doc/xturqstat/ $(DESTDIR)@datadir@/doc/xturqstat/sv/ $(DESTDIR)$(xmandir)/man1/ $(DESTDIR)$(xmandir)/sv/man1/
 @NOINST@@QT@	install -s xturqstat@EXEEXT@ $(DESTDIR)$(xbindir)
 @NOINST@@QT@	install -m 644 turqstat.doc $(DESTDIR)@datadir@/doc/xturqstat/
 @NOINST@@QT@	install -m 644 turqstat.dok $(DESTDIR)@datadir@/doc/xturqstat/sv/
