@@ -56,7 +56,7 @@ time_t stampToTimeT(struct stamp_s *st)
     tms.tm_mday = st->date.da;
     tms.tm_mon = st->date.mo - 1;
     tms.tm_year = st->date.yr + 80;
-    tms.tm_isdst = -1;
+    tms.tm_isdst = 0;
 #ifdef HAS_TM_GMTOFF
     tms.tm_gmtoff = 0;
 #endif
@@ -99,6 +99,7 @@ time_t asciiToTimeT(const char *datetime)
     //        better use some sliding-window technique
     if (tms.tm_year < 80) tms.tm_year += 100;
 
+    tms.tm_isdst = 0;
 #ifdef HAS_TM_GMTOFF
     tms.tm_gmtoff = 0;
 #endif
@@ -133,6 +134,7 @@ time_t rfcToTimeT(string datetime)
     if (!c_p) return 0;
     tms.tm_mon = ((int) (c_p - months)) / 3;
 
+    tms.tm_isdst = 0;
 #ifdef HAS_TM_GMTOFF
     tms.tm_gmtoff = 0;
 #endif

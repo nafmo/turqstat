@@ -31,7 +31,7 @@
 # include "mygetopt.h"
 #endif
 #include <stdlib.h>
-#if defined(HAVE_TIMEZONE) || defined(HAVE_DAYLIGHT)
+#if defined(HAVE_TIMEZONE) || defined(HAVE_UTIMEZONE) || defined(HAVE_DAYLIGHT) || defined(HAVE_UDAYLIGHT)
 # include <time.h>
 #endif
 
@@ -80,8 +80,14 @@ int main(int argc, char *argv[])
 #ifdef HAVE_TIMEZONE
     timezone = 0;
 #endif
+#ifdef HAVE_UTIMEZONE
+    _timezone = 0;
+#endif
 #ifdef HAVE_DAYLIGHT
     daylight = 0;
+#endif
+#ifdef HAVE_UDAYLIGHT
+    _daylight = 0;
 #endif
 
     // Display banner
