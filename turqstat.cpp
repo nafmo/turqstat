@@ -321,6 +321,7 @@ StatRetr::StatRetr(StatEngine &engine, StatView &view,
 
     // Write output
     view.CreateReport(&engine, outputfilepath);
+    cout << "Wrote " << outputfilepath << endl;
 }
 
 StatRetr::~StatRetr()
