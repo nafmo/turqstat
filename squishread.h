@@ -27,17 +27,16 @@
 
 #include "arearead.h"
 #include "statengine.h"
-#include "msgapi.h"
 
 class SquishRead : public AreaRead
 {
 public:
     // Constructor and destructor
-    SquishRead(String areapath);
-    ~SquishRead();
+    SquishRead(const char *path);
+    virtual ~SquishRead();
 
     // Transfer function
-    virtual bool Transfer(StatEngine &destination);
+    virtual bool Transfer(time_t starttime, StatEngine &destination);
 
 protected:
     char    *areapath;
