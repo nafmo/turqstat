@@ -9,7 +9,7 @@ srcdir=@srcdir@
 VPATH=@scrdir@
 LIBS=@LIBS@
 DESTDIR=
-OBJS=turqstat.o statengine.o statview.o squishread.o fdapxread.o jamread.o mypointread.o utility.o sdmread.o tanstaaflread.o newsspoolread.o mytime.o
+OBJS=turqstat.o statengine.o statview.o squishread.o fdapxread.o jamread.o mypointread.o utility.o sdmread.o tanstaaflread.o newsspoolread.o mytime.o output.o
 DEF=@DEF@
 prefix=@prefix@
 exec_prefix=@exec_prefix@
@@ -52,32 +52,35 @@ statengine.o: statengine.cpp statengine.h config.h
 statview.o: statview.cpp statview.h statengine.h version.h config.h
 	@CXX@ $(CXXFLAGS) -c $(srcdir)/statview.cpp
 
-squishread.o: squishread.cpp squishread.h arearead.h statengine.h datatypes.h utility.h config.h
+squishread.o: squishread.cpp squishread.h arearead.h statengine.h datatypes.h utility.h config.h output.h
 	@CXX@ $(CXXFLAGS) -c $(srcdir)/squishread.cpp
 
 utility.o: utility.cpp utility.h config.h mytime.h
 	@CXX@ $(CXXFLAGS) -c $(srcdir)/utility.cpp
 
-fdapxread.o: fdapxread.cpp fdapxread.h datatypes.h statengine.h arearead.h config.h
+fdapxread.o: fdapxread.cpp fdapxread.h datatypes.h statengine.h arearead.h config.h output.h
 	@CXX@ $(CXXFLAGS) -c $(srcdir)/fdapxread.cpp
 
-tanstaaflread.o: tanstaaflread.cpp tanstaaflread.h datatypes.h statengine.h arearead.h config.h
+tanstaaflread.o: tanstaaflread.cpp tanstaaflread.h datatypes.h statengine.h arearead.h config.h output.h
 	@CXX@ $(CXXFLAGS) -c $(srcdir)/tanstaaflread.cpp
 
-jamread.o: jamread.cpp jamread.h datatypes.h statengine.h arearead.h config.h
+jamread.o: jamread.cpp jamread.h datatypes.h statengine.h arearead.h config.h output.h
 	@CXX@ $(CXXFLAGS) -c $(srcdir)/jamread.cpp
 
-mypointread.o: mypointread.cpp mypointread.h datatypes.h statengine.h arearead.h config.h
+mypointread.o: mypointread.cpp mypointread.h datatypes.h statengine.h arearead.h config.h output.h
 	@CXX@ $(CXXFLAGS) -c $(srcdir)/mypointread.cpp
 
-sdmread.o: sdmread.cpp sdmread.h arearead.h statengine.h datatypes.h utility.h config.h
+sdmread.o: sdmread.cpp sdmread.h arearead.h statengine.h datatypes.h utility.h config.h output.h
 	@CXX@ $(CXXFLAGS) -c $(srcdir)/sdmread.cpp
 
-newsspoolread.o: newsspoolread.cpp newsspoolread.h arearead.h utility.h config.h
+newsspoolread.o: newsspoolread.cpp newsspoolread.h arearead.h utility.h config.h output.h
 	@CXX@ $(CXXFLAGS) -c $(srcdir)/newsspoolread.cpp
 
-mytime.o: mytime.cpp
+mytime.o: mytime.cpp mytime.h
 	@CXX@ $(CXXFLAGS) -c $(srcdir)/mytime.cpp
+
+output.o: output.cpp output.h
+	@CXX@ $(CXXFLAGS) -c $(srcdir)/output.cpp
 
 # List phony targets
 .PHONY: all debian clean distclean debianclean install
