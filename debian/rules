@@ -1,12 +1,11 @@
 #!/usr/bin/make -f
-# Sample debian/rules that uses debhelper.
 # GNU copyright 1997 to 1999 by Joey Hess.
 
 # Uncomment this to turn on verbose mode.
 #export DH_VERBOSE=1
 
 # This is the debhelper compatability version to use.
-export DH_COMPAT=1
+export DH_COMPAT=2
 
 build: build-stamp
 build-stamp:
@@ -34,14 +33,14 @@ install: build
 	dh_clean -k
 	dh_installdirs
 
-	# Add here commands to install the package into debian/tmp.
-	$(MAKE) install-text prefix=`pwd`/debian/tmp/usr
-	cp -a ChangeLog debian/tmp/usr/share/doc/turqstat/changelog
-	cp -a debian/changelog debian/tmp/usr/share/doc/turqstat/changelog.Debian
+	# Add here commands to install the package into debian/turqstat.
+	$(MAKE) install-text prefix=`pwd`/debian/turqstat/usr
+	cp -a ChangeLog debian/turqstat/usr/share/doc/turqstat/changelog
+	cp -a debian/changelog debian/turqstat/usr/share/doc/turqstat/changelog.Debian
 
 	$(MAKE) install-qt prefix=`pwd`/debian/xturqstat/usr
 	cp -a ChangeLog debian/xturqstat/usr/share/doc/xturqstat/changelog
-	cp -a debian/xturqstat.changelog debian/xturqstat/usr/share/doc/xturqstat/changelog.Debian
+	cp -a debian/changelog debian/xturqstat/usr/share/doc/xturqstat/changelog.Debian
 
 # Build architecture-independent files here.
 binary-indep: build install
@@ -49,28 +48,13 @@ binary-indep: build install
 
 # Build architecture-dependent files here.
 binary-arch: build install
-#	dh_testversion
 	dh_testdir
 	dh_testroot
-#	dh_installdebconf	
 	dh_installdocs
-#	dh_installexamples
-#	dh_installmenu
-#	dh_installemacsen
-#	dh_installpam
-#	dh_installinit
-#	dh_installcron
-#	dh_installmanpages
-#	dh_installinfo
-#	dh_undocumented
-#	dh_installchangelogs
 	dh_link
 	dh_strip
 	dh_compress
 	dh_fixperms
-# You may want to make some executables suid here.
-#	dh_suidregister
-#	dh_makeshlibs
 	dh_installdeb
 #	dh_perl
 	dh_shlibdeps
