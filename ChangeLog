@@ -4,6 +4,10 @@
   Makefile.in
     Added code supporting creation of detailed report from the Qt version.
 
+  qtgui.cpp
+  qtgui.h
+    Added File|Create report menu option.
+
   output.h
   output.cpp
   outputqt.cpp

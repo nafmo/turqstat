@@ -74,6 +74,7 @@ private:
 public slots:
     void open();
     void clear();
+    void report();
     void quotelist();
     void senderlist();
     void contentlist();

@@ -45,6 +45,7 @@
 
 #include "qtgui.h"
 #include "qtlist.h"
+#include "qtreport.h"
 
 #include "statengine.h"
 #include "arearead.h"
@@ -69,6 +70,7 @@ InfoWindow::InfoWindow()
     filemenu->insertItem(tr("&Open message base"), this, SLOT(open()),
                          CTRL+Key_O);
     filemenu->insertItem(tr("&Clear data"), this, SLOT(clear()), CTRL+Key_L);
+    filemenu->insertItem(tr("&Save report"), this, SLOT(report()), CTRL+Key_S);
     filemenu->insertSeparator();
     filemenu->insertItem(tr("&Exit"), qApp, SLOT(quit()), CTRL+Key_Q);
     menu->insertItem(tr("&File"), filemenu);
@@ -509,6 +511,13 @@ void InfoWindow::clear()
     hasany = false;
 
     zeroFill();  
+}
+
+void InfoWindow::report()
+{
+    ReportSelectWindow *reportwindow =
+        new ReportSelectWindow(this, "reportselect", engine);
+    reportwindow->exec();
 }
 
 void InfoWindow::zeroFill()
