@@ -1,12 +1,16 @@
 2000-11-11 - peter karlsson <peter@softwolves.pp.se>
   qtreport.cpp
   qtreport.h
-  Makefile.in
     Added code supporting creation of detailed report from the Qt version.
+
+  qtbars.cpp
+  qtbars.h
+    Added code for daily and hourly posting breakdown.
 
   qtgui.cpp
   qtgui.h
-    Added File|Create report menu option.
+    Added menu items for creating reports and showing the posting
+    breakdowns.
 
   output.h
   output.cpp
@@ -20,6 +24,8 @@
   tanstaaflread.cpp
     Removed all hardcoded error and warning messages.
 
+  Makefile.in
+    Additions and dependency fixes.
 
 2000-10-07 - peter karlsson <peter@softwolves.pp.se>
   qtgui.cpp

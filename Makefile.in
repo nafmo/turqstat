@@ -12,7 +12,7 @@ LIBS=@LIBS@
 QTLIBS=@QTLIB@
 DESTDIR=
 OBJS=turqstat.o statengine.o statview.o squishread.o fdapxread.o jamread.o mypointread.o utility.o sdmread.o tanstaaflread.o newsspoolread.o mytime.o output.o
-QTOBJS=qtgui.o moc_qtgui.o qtlist.o moc_qtlist.o qtreport.o moc_qtreport.o statengine.o statview.o squishread.o fdapxread.o jamread.o mypointread.o utility.o sdmread.o tanstaaflread.o newsspoolread.o mytime.o outputqt.o
+QTOBJS=qtgui.o moc_qtgui.o qtlist.o moc_qtlist.o qtreport.o moc_qtreport.o qtbars.o moc_qtbars.o statengine.o statview.o squishread.o fdapxread.o jamread.o mypointread.o utility.o sdmread.o tanstaaflread.o newsspoolread.o mytime.o outputqt.o
 @QT@EXE=turqstat@EXEEXT@ xturqstat@EXEEXT@
 @NOQT@EXE=turqstat@EXEEXT@
 DEF=@DEF@
@@ -31,7 +31,7 @@ debian:
 @NOQT@	-rm $(EXE)
 
 @QT@clean:
-@QT@	-rm $(OBJS) $(QTOBJS) moc*
+@QT@	-rm $(OBJS) $(QTOBJS) moc_* *.moc
 @QT@	-rm $(EXE)
 
 distclean: clean
@@ -103,7 +103,7 @@ mytime.o: mytime.cpp mytime.h
 output.o: output.cpp output.h
 	@CXX@ $(CXXFLAGS) -c $(srcdir)/output.cpp
 
-@QT@qtgui.o: qtgui.cpp qtgui.h qtlist.h qtreport.h statengine.h arearead.h squishread.h fdapxread.h jamread.h mypointread.h sdmread.h tanstaaflread.h newsspoolread.h utility.h
+@QT@qtgui.o: qtgui.cpp qtgui.h qtlist.h qtreport.h statengine.h arearead.h squishread.h fdapxread.h jamread.h mypointread.h sdmread.h tanstaaflread.h newsspoolread.h utility.h qtbars.h
 @QT@	@CXX@ $(CXXFLAGS) $(QTFLAGS) -c $(srcdir)/qtgui.cpp
 
 @QT@moc_qtgui.o: moc_qtgui.cpp
@@ -129,6 +129,18 @@ output.o: output.cpp output.h
 
 @QT@moc_qtreport.o: moc_qtreport.cpp
 @QT@	@CXX@ $(CXXFLAGS) $(QTFLAGS) -c moc_qtreport.cpp
+
+@QT@qtbars.o: qtbars.cpp qtbars.h statengine.h qtbars.moc
+@QT@	@CXX@ $(CXXFLAGS) $(QTFLAGS) -c $(srcdir)/qtbars.cpp
+
+@QT@moc_qtbars.cpp: qtbars.h
+@QT@	@QTMOC@ -o moc_qtbars.cpp qtbars.h
+
+@QT@moc_qtbars.o: moc_qtbars.cpp
+@QT@	@CXX@ $(CXXFLAGS) $(QTFLAGS) -c moc_qtbars.cpp
+
+@QT@qtbars.moc: qtbars.cpp
+@QT@	@QTMOC@ -o qtbars.moc qtbars.cpp
 
 @QT@outputqt.o: outputqt.cpp output.h
 @QT@	@CXX@ $(CXXFLAGS) $(QTFLAGS) -c $(srcdir)/outputqt.cpp
