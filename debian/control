@@ -6,7 +6,7 @@ Standards-Version: 3.2.1
 Build-Depends: debhelper, libqt-dev (>= 2:2.1.0)
 
 Package: turqstat
-Architecture: i386 ia64 alpha arm mipsel hurd-i386
+Architecture: any
 Depends: ${shlibs:Depends}
 Suggests: crashmail | news-transport-system
 Description: Fidonet and Usenet message base statistics program
@@ -18,7 +18,7 @@ Description: Fidonet and Usenet message base statistics program
  This is the command line based version.
 
 Package: xturqstat
-Architecture: i386 ia64 alpha arm mipsel hurd-i386
+Architecture: any
 Depends: ${shlibs:Depends}
 Suggests: crashmail | news-transport-system, turqstat
 Description: Fidonet and Usenet message base statistics program for X

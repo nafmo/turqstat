@@ -19,12 +19,8 @@
 #define __FDAPXREAD_H
 
 #include <config.h>
-#ifdef HAVE_STDINT_H
-# include <stdint.h>
-#else
-# include "datatypes.h"
-#endif
 
+#include "datatypes.h"
 #include "arearead.h"
 
 #if defined(__GNUC__) || defined(__EMX__)
@@ -78,25 +74,25 @@ protected:
     /** Structure of header for each message (msghdr.apx). */
     struct msghdrapx_s
     {
-        uint8_t   recipientname[36];
-        uint8_t   sendername[36];
-        uint8_t   subject[72];
-        uint32_t  msgidcrc;
-        uint32_t  replycrc;
-        uint16_t  replyto;
-        uint16_t  replynext;
-        uint16_t  reply1st;
-        uint32_t  timewritten;
-        uint32_t  timesentrcvd;
-        addr_s    recipientaddress;
-        addr_s    senderaddress;
-        uint32_t  statusflags;
-        uint32_t  txtpos;
-        uint16_t  txtsize;
-        uint16_t  foldernumber;
-        uint16_t  foldernumberreplyto;
-        uint16_t  foldernumberreplynext;
-        uint16_t  foldernumberreply1st;
+        uint8_t     recipientname[36];
+        uint8_t     sendername[36];
+        uint8_t     subject[72];
+        le_uint32_t msgidcrc;
+        le_uint32_t replycrc;
+        le_uint16_t replyto;
+        le_uint16_t replynext;
+        le_uint16_t reply1st;
+        le_uint32_t timewritten;
+        le_uint32_t timesentrcvd;
+        addr_s      recipientaddress;
+        addr_s      senderaddress;
+        le_uint32_t statusflags;
+        le_uint32_t txtpos;
+        le_uint16_t txtsize;
+        le_uint16_t foldernumber;
+        le_uint16_t foldernumberreplyto;
+        le_uint16_t foldernumberreplynext;
+        le_uint16_t foldernumberreply1st;
     };
 
     static const uint32_t Fdapx_local   = 0x01;
@@ -106,11 +102,11 @@ protected:
     /** Structure for the area data file (msgstat.apx). */
     struct msgstatapx_s
     {
-        uint16_t  msgbaseversion;
-        uint8_t   reserved[254];
-        uint16_t  totalmsgs[2000];
-        uint16_t  highestmsg[2000];
-        uint16_t  lastreadptrs[2000];
+        le_uint16_t msgbaseversion;
+        uint8_t     reserved[254];
+        le_uint16_t totalmsgs[2000];
+        le_uint16_t highestmsg[2000];
+        le_uint16_t lastreadptrs[2000];
     };
 
     /** Version of FDAPX/w message bases supported. */

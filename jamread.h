@@ -19,12 +19,8 @@
 #define __JAMREAD_H
 
 #include <config.h>
-#ifdef HAVE_STDINT_H
-# include <stdint.h>
-#else
-# include "datatypes.h"
-#endif
 
+#include "datatypes.h"
 #include "arearead.h"
 
 #if defined(__GNUC__) || defined(__EMX__)
@@ -69,38 +65,38 @@ protected:
     /** Structure of the header in the JHR file. */
     struct jamhdr_header_s
     {
-        uint8_t   signature[4];   // 'JAM\0'
-        uint32_t  datecreated;
-        uint32_t  modcounter;
-        uint32_t  activemsgs;
-        uint32_t  passwordcrc;
-        uint32_t  basemsgnum;
-        uint8_t   _reserved[1000];
+        uint8_t     signature[4];   // 'JAM\0'
+        le_uint32_t datecreated;
+        le_uint32_t modcounter;
+        le_uint32_t activemsgs;
+        le_uint32_t passwordcrc;
+        le_uint32_t basemsgnum;
+        uint8_t     _reserved[1000];
     };
 
     /** Structure of the JHR entry for individual messages. */
     struct jamhdr_msg_s
     {
-        uint8_t   signature[4];   // 'JAM\0'
-        uint16_t  revision;
-        uint16_t  _reserved;
-        uint32_t  subfieldlen;
-        uint32_t  timesread;
-        uint32_t  msgidcrc;
-        uint32_t  replycrc;
-        uint32_t  replyto;
-        uint32_t  reply1st;
-        uint32_t  replynext;
-        uint32_t  datewritten;
-        uint32_t  datereceived;
-        uint32_t  dateprocessed;
-        uint32_t  messagenumber;
-        uint32_t  attribute;
-        uint32_t  _attribute2;
-        uint32_t  offset;
-        uint32_t  txtlen;
-        uint32_t  passwordcrc;
-        uint32_t  cost;
+        uint8_t     signature[4];   // 'JAM\0'
+        le_uint16_t revision;
+        le_uint16_t _reserved;
+        le_uint32_t subfieldlen;
+        le_uint32_t timesread;
+        le_uint32_t msgidcrc;
+        le_uint32_t replycrc;
+        le_uint32_t replyto;
+        le_uint32_t reply1st;
+        le_uint32_t replynext;
+        le_uint32_t datewritten;
+        le_uint32_t datereceived;
+        le_uint32_t dateprocessed;
+        le_uint32_t messagenumber;
+        le_uint32_t attribute;
+        le_uint32_t _attribute2;
+        le_uint32_t offset;
+        le_uint32_t txtlen;
+        le_uint32_t passwordcrc;
+        le_uint32_t cost;
     };
 
     /** JAM attribute denoting a deleted message. */
@@ -109,10 +105,10 @@ protected:
     /** Common data fields for the JHR message subheaders. */
     struct jamhdr_subhdr_s
     {
-        uint16_t  loid;
-        uint16_t  _hiid;
-        uint32_t  datlen;
-     /* uint8_t   buffer[datlen]; */
+        le_uint16_t loid;
+        le_uint16_t _hiid;
+        le_uint32_t datlen;
+     /* uint8_t     buffer[datlen]; */
     };
 
     static const uint16_t Jam_oaddress    = 0;      // Ignored
@@ -139,8 +135,8 @@ protected:
     /** Structure of the JDX entry JDX for individual messages. */
     struct jamjdx_s
     {
-        uint32_t  recipientcrc;
-        uint32_t  jhroffset;
+        le_uint32_t recipientcrc;
+        le_uint32_t jhroffset;
     };
 
     /** Version of JAM message bases supported. */

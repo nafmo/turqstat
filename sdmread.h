@@ -19,12 +19,8 @@
 #define __SDMREAD_H
 
 #include <config.h>
-#ifdef HAVE_STDINT_H
-# include <stdint.h>
-#else
-# include "datatypes.h"
-#endif
 
+#include "datatypes.h"
 #include "arearead.h"
 #include "utility.h"
 
@@ -73,26 +69,26 @@ protected:
     /** Structure of the header of the MSG file. */
     struct sdmhead_s
     {
-        uint8_t   fromusername[36];
-        uint8_t   tousername[36];
-        uint8_t   subject[72];
-        uint8_t   datetime[20];       // "Dd Mmm Yy  HH:MM:SS"
-                                      // "Www Dd Mmm Yy HH:MM"
-        uint16_t  timesread;
-        uint16_t  destnode;
-        uint16_t  orignode;
-        uint16_t  cost;
-        uint16_t  orignet;
-        uint16_t  destnet;
+        uint8_t     fromusername[36];
+        uint8_t     tousername[36];
+        uint8_t     subject[72];
+        uint8_t     datetime[20];   // "Dd Mmm Yy  HH:MM:SS"
+                                    // "Www Dd Mmm Yy HH:MM"
+        le_uint16_t timesread;
+        le_uint16_t destnode;
+        le_uint16_t orignode;
+        le_uint16_t cost;
+        le_uint16_t orignet;
+        le_uint16_t destnet;
         union
         {
             /** FTSC style MSG structure. */
             struct
             {
-                uint16_t  destzone;
-                uint16_t  origzone;
-                uint16_t  destpoint;
-                uint16_t  origpoint;
+                le_uint16_t  destzone;
+                le_uint16_t  origzone;
+                le_uint16_t  destpoint;
+                le_uint16_t  origpoint;
             } ftsc;
             /** Opus style MSG structure. */
             struct
@@ -101,9 +97,9 @@ protected:
                 stamp_s arrived;
             } opus;
         };
-        uint16_t  replyto;
-        uint16_t  attribute;
-        uint16_t  nextreply;
+        le_uint16_t  replyto;
+        le_uint16_t  attribute;
+        le_uint16_t  nextreply;
     };
 };
 

@@ -1,3 +1,25 @@
+2001-07-04 - peter karlsson <peter@softwolves.pp.se>
+  Released 2.0.3, branching from 2.0 release:
+
+  2001-07-04 - peter karlsson <peter@softwolves.pp.se>
+    Makefile.in
+    configure.in
+    datatypes.cpp
+    datatypes.h
+    fdapxread.h
+    jamread.h
+    mypointread.h
+    sdmread.h
+    squishread.h
+    tanstaaflread.h
+    debian/
+      Made it work on big-endian architectures.
+
+    turqstat.doc
+    turqstat.dok
+    version.h
+      Updates for 2.0.3.
+
 2001-06-11 - peter karlsson <peter@softwolves.pp.se>
   Makefile.in
     Corrected target for teal.
