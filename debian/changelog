@@ -1,6 +1,7 @@
 turqstat (1.5) unstable; urgency=low
 
   * Now officially maintained in Debian by the original author.
+  * Added an X Window System version (in package xturqstat) based on Qt.
   * Works around timezone problems by trying to avoid the C library
     functions.
   * Corrections in documentation.
@@ -9,7 +10,7 @@ turqstat (1.5) unstable; urgency=low
     update to Standards-Version 3.0.1.
   * For more info, see the original ChangeLog.
 
- -- peter karlsson <peterk@debian.org>  Thu, 22 Jun 2000 16:45:42 +0200
+ -- peter karlsson <peterk@debian.org>  Thu, 21 Sep 2000 20:09:00 +0200
 
 turqstat (1.4) unstable; urgency=low
 

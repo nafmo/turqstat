@@ -35,9 +35,13 @@ install: build
 	dh_installdirs
 
 	# Add here commands to install the package into debian/tmp.
-	$(MAKE) install prefix=`pwd`/debian/tmp/usr
+	$(MAKE) install-text prefix=`pwd`/debian/tmp/usr
 	cp -a ChangeLog debian/tmp/usr/share/doc/turqstat/changelog
 	cp -a debian/changelog debian/tmp/usr/share/doc/turqstat/changelog.Debian
+
+	$(MAKE) install-qt prefix=`pwd`/debian/xturqstat/usr
+	cp -a ChangeLog debian/xturqstat/usr/share/doc/xturqstat/changelog
+	cp -a debian/changelog debian/xturqstat/usr/share/doc/xturqstat/changelog.Debian
 
 # Build architecture-independent files here.
 binary-indep: build install
