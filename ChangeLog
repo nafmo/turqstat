@@ -1,3 +1,8 @@
+2000-11-04 - peter karlsson <peter@softwolves.pp.se>
+  jamread.cpp
+    Check JAM header for each message to make sure we don't read invalid
+    data.
+
 2000-10-17 - peter karlsson <peter@softwolves.pp.se>
   turqstat.cpp
     Do not crash if we do not specify a base path for formats that need it.
