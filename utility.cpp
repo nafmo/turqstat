@@ -595,6 +595,7 @@ void wstring::skip(size_t n)
         {
             *(dest ++) = *(src ++);
         }
+        *dest = 0;
     }
 }
 
