@@ -464,7 +464,7 @@ Encoder *Encoder::GetEncoderByName(const string &charset)
     for (int i = 0; usenetcharsets[i].charset; i ++)
     {
 #if defined(HAVE_STRCASECMP)
-        if (0 == strcasecmp(charset,c_str(), usenetcharsets[i].charset))
+        if (0 == strcasecmp(charset.c_str(), usenetcharsets[i].charset))
 #elif defined(HAVE_STRICMP)
         if (0 == stricmp(charset.c_str(), usenetcharsets[i].charset))
 #else
