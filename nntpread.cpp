@@ -500,12 +500,12 @@ bool NntpRead::GetLine(char *outbuffer, size_t maxlen)
         if (datainbuffer)
         {
             // Find LF or end-of-buffer
-            size_t endidx = datainbuffer;
+            size_t bytes = datainbuffer;
             for (size_t i = 0; i < datainbuffer && !foundlf; i ++)
             {
                 if ('\n' == socketbuffer[i])
                 {
-                    endidx = i;
+                    bytes = i + 1;
                     foundlf = true;
                 }
             }
@@ -514,22 +514,22 @@ bool NntpRead::GetLine(char *outbuffer, size_t maxlen)
             if (maxlen)
             {
                 copiedanything = true;
-                size_t copylen = endidx <? maxlen;
+                size_t copylen = bytes <? maxlen;
                 memcpy(outbuffer, socketbuffer, copylen);
                 outbuffer += copylen;
                 maxlen -= copylen;
             }
 
             // Move the rest of the buffer down
-            datainbuffer -= endidx;
+            datainbuffer -= bytes;
             if (datainbuffer)
             {
-                memmove(socketbuffer, socketbuffer + endidx, datainbuffer);
+                memmove(socketbuffer, socketbuffer + bytes, datainbuffer);
             }
         }
 
         // Read another chunk of data unless we found a LF already
-        if (0 == datainbuffer)
+        if (!foundlf)
         {
             ssize_t rc = read(sockfd, socketbuffer, BUFSIZ);
             if (-1 == rc)
