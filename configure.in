@@ -43,6 +43,15 @@ else
 fi],
 [locale=yes])
 
+AC_ARG_WITH(nntp,
+[  --without-nntp          do not build with locale support],
+[if test "$withval" = "yes"; then
+  nntp=yes
+else
+  nntp=no
+fi],
+[nntp=yes])
+
 dnl Checks for programs ----------------------------------------------------
 dnl Since PROG_CC and PROG_CXX seems to think we are cross-compiling under
 dnl OS/2, because we haven't detected EXEEXT yet, hack around it.
@@ -67,6 +76,12 @@ Syntax Error
 #endif ], have_emx=yes, have_emx=no)
   ac_cv_emx="$have_emx")
 
+AC_CACHE_CHECK([for DJGPP environemnt], ac_cv_djgpp,
+  AC_TRY_COMPILE(, [#ifndef __DJGPP__
+Syntax Error
+#endif ], have_djgpp=yes, have_djgpp=no)
+  ac_cv_djgpp="$have_djgpp")
+
 if test "$ac_cv_emx" = "yes"; then
   standardcpplib=stdcpp
   EXEEXT=.exe
@@ -82,6 +97,21 @@ if test "$ac_cv_emx" = "yes"; then
     AC_DEFINE(HAVE_EMX_FINDFIRST) AC_MSG_RESULT(yes),
     AC_MSG_RESULT(no))
 
+elif test "$ac_cv_djgpp" = "yes"; then
+  if test "$nntp" = "yes"; then
+    nntp=no
+    AC_MSG_WARN(Disabling NNTP support when compiling for MS-DOS)
+  fi
+  standardcpplib=stdcxx
+  DEF=
+
+  AC_MSG_CHECKING(for findfirst and findnext)
+  AC_TRY_COMPILE([ #include <dir.h> ],
+    [ struct ffblk f; int r = findfirst("*.*", &f, 0x2f);
+    r = findnext(&f) ],
+    findfirst=yes
+    AC_DEFINE(HAVE_DJGPP_FINDFIRST) AC_MSG_RESULT(yes),
+    AC_MSG_RESULT(no))
 else
   standardcpplib=stdc++
   DEF=
@@ -90,6 +120,10 @@ fi
 AC_SUBST(DEF)
 
 AC_EXEEXT
+
+if test "$nntp" = "yes"; then
+  AC_DEFINE(HAVE_NNTP)
+fi
 
 dnl We read binary data, so we need to know the endian ---------------------
 AC_C_BIGENDIAN
@@ -107,8 +141,10 @@ if test "$ac_cv_mingw32" = "yes"; then
   findfirst=yes
 fi
 
-AC_CHECK_LIB(socket, socket)
-AC_CHECK_LIB(nsl, gethostbyname)
+if test "$nntp" = "yes"; then
+  AC_CHECK_LIB(socket, socket)
+  AC_CHECK_LIB(nsl, gethostbyname)
+fi
 
 dnl Check for header files -------------------------------------------------
 AC_CHECK_HEADERS(limits.h)
@@ -133,20 +169,22 @@ if test "$ac_cv_header_wctype_h" = "no"; then
   fi
 fi
 
-AC_CHECK_HEADERS(netdb.h netinet/in.h)
-AC_CACHE_CHECK([for sys/socket.h], ac_cv_header_sys_socket_h,
-  AC_TRY_COMPILE([#include <sys/types.h>
-#include <sys/socket.h>], [],
-    ac_cv_header_sys_socket_h=yes,
-    ac_cv_header_sys_socket_h=no))
-if test "$ac_cv_header_sys_socket_h" = "yes"; then
-  AC_DEFINE(HAVE_SYS_SOCKET_H)
-fi
+if test "$nntp" = "yes"; then
+  AC_CHECK_HEADERS(netdb.h netinet/in.h)
+  AC_CACHE_CHECK([for sys/socket.h], ac_cv_header_sys_socket_h,
+    AC_TRY_COMPILE([#include <sys/types.h>
+  #include <sys/socket.h>], [],
+      ac_cv_header_sys_socket_h=yes,
+      ac_cv_header_sys_socket_h=no))
+  if test "$ac_cv_header_sys_socket_h" = "yes"; then
+    AC_DEFINE(HAVE_SYS_SOCKET_H)
+  fi
 
-if test "$ac_cv_header_sys_socket_h" = "no"; then
-  AC_CHECK_HEADERS(winsock.h)
-  if test "$ac_cv_header_winsock_h" = "yes"; then
-    LIBS="-lwsock32 $LIBS"
+  if test "$ac_cv_header_sys_socket_h" = "no"; then
+    AC_CHECK_HEADERS(winsock.h)
+    if test "$ac_cv_header_winsock_h" = "yes"; then
+      LIBS="-lwsock32 $LIBS"
+    fi
   fi
 fi
 
