@@ -16,6 +16,10 @@
 // along with this program; if not, write to the Free Software
 // Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 
+// JAM(mbp) - Copyright 1993 Joaquim Homrighausen, Andrew Milner,
+//                           Mats Birch, Mats Wallin.
+//                           ALL RIGHTS RESERVED.
+
 #include <string>
 #include <iostream.h>
 #include <time.h>
@@ -154,35 +158,30 @@ bool JamRead::Transfer(time_t starttime, StatEngine &destination)
                 {
                     subfieldtotal += sizeof (jamhdr_subhdr_s) +
                                      subheader.datlen;
-cout << "Subfield TAG:  " << subheader.loid << endl;
-cout << "Subfield SIZE: " << subheader.datlen << endl;
+
                     switch (subheader.loid)
                     {
                         case Jam_sender:
                             fread(&subtmp, subheader.datlen, 1, jhr);
                             subtmp[subheader.datlen] = 0;
-cout << " -> sender: " << subtmp << endl;
                             sender = subtmp;
                             break;
 
                         case Jam_recipient:
                             fread(&subtmp, subheader.datlen, 1, jhr);
                             subtmp[subheader.datlen] = 0;
-cout << " -> recipient: " << subtmp << endl;
                             recipient = subtmp;
                             break;
 
                         case Jam_subject:
                             fread(&subtmp, subheader.datlen, 1, jhr);
                             subtmp[subheader.datlen] = 0;
-cout << " -> subject: " << subtmp << endl;
                             subject = subtmp;
                             break;
 
                         case Jam_MSGID:
                             fread(&subtmp, subheader.datlen, 1, jhr);
                             subtmp[subheader.datlen] = 0;
-cout << " -> MSGID: " << subtmp << endl;
                             ctrlinfo += "\1MSGID: ";
                             ctrlinfo += subtmp;
                             break;
@@ -190,13 +189,11 @@ cout << " -> MSGID: " << subtmp << endl;
                         case Jam_PID:
                             fread(&subtmp, subheader.datlen, 1, jhr);
                             subtmp[subheader.datlen] = 0;
-cout << " -> PID: " << subtmp << endl;
                             ctrlinfo += "\1PID: ";
                             ctrlinfo += subtmp;
                             break;
 
                         default:
-cout << " -> Skipping " << subheader.datlen << " bytes" << endl;
                             fseek(jhr, subheader.datlen, SEEK_CUR);
                             break;
                     }
