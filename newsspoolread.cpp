@@ -51,6 +51,7 @@
 #include "newsspoolread.h"
 #include "utility.h"
 #include "statengine.h"
+#include "output.h"
 
 NewsSpoolRead::NewsSpoolRead(const char *path)
 {
@@ -69,6 +70,9 @@ bool NewsSpoolRead::Transfer(time_t starttime, StatEngine &destination)
     {
         internalerrorquit(area_not_allocated, 1);
     }
+
+    // Get the output object
+    ProgressDisplay *display = ProgressDisplay::GetOutputObject();
 
     // This is a news spool
     destination.NewsArea();
@@ -94,14 +98,14 @@ bool NewsSpoolRead::Transfer(time_t starttime, StatEngine &destination)
 
     if (-1 == rc)
     {
-        cerr << "Unable to open spool directory" << endl;
+        display->ErrorMessage("Unable to open spool directory");
         return false;
     }
 #else // no HAS_EMX_FINDFIRST or HAVE_LIBCRTDLL
     DIR *spooldir = opendir(areapath);
     if (!spooldir)
     {
-        cerr << "Unable to open spool directory" << endl;
+        display->ErrorMessage("Unable to open spool directory");
         return false;
     }
 
@@ -122,6 +126,8 @@ bool NewsSpoolRead::Transfer(time_t starttime, StatEngine &destination)
 #ifndef HAVE_LIBCRTDLL
     struct stat msgstat;
 #endif
+
+    display->SetMessagesTotal(-1);
 
 #ifdef HAS_EMX_FINDFIRST
 # define FILENAME spooldir.name
@@ -152,7 +158,8 @@ bool NewsSpoolRead::Transfer(time_t starttime, StatEngine &destination)
         msg = fopen(thisfile.c_str(), "r");
         if (!msg)
         {
-            cerr << "Unable to open " << thisfile << endl;
+            string msg = string("Cannot open ") + thisfile;
+            display->WarningMessage(msg);
             goto out2;
         }
 
@@ -176,8 +183,9 @@ bool NewsSpoolRead::Transfer(time_t starttime, StatEngine &destination)
         ctrlbuf = new char[length + 1];
         if (!ctrlbuf)
         {
-            cerr << "Unable to allocate memory for control data ("
-                 << thisfile.c_str() << ')' << endl;
+            string msg = string("Unable to allocate memory for control "
+                                "data for ") + thisfile;
+            display->WarningMessage(msg);
             goto out2;
         }
 
@@ -206,13 +214,13 @@ bool NewsSpoolRead::Transfer(time_t starttime, StatEngine &destination)
         msgbuf = new char[msglen];
         if (!msgbuf)
         {
-            cerr << "Unable to allocate memory for message body ("
-                 << thisfile.c_str() << ')' << endl;
+            string msg = string("Unable to allocate memory for message "
+                                "body for ") + thisfile;
+            display->WarningMessage(msg);
             goto out;
         }
 
         fread(msgbuf, msglen, 1, msg);
-
 
         // Add to statistics
         destination.AddData(string(""), string(""), string(""),
@@ -225,7 +233,7 @@ out:;
         delete ctrlbuf;
 out2:;
 
-        cout << ++ msgn << " done\r";
+        display->UpdateProgress(++ msgn);
         if (msg) fclose(msg);
 
 #ifdef HAS_EMX_FINDFIRST

@@ -24,6 +24,7 @@
 #include "mypointread.h"
 #include "utility.h"
 #include "statengine.h"
+#include "output.h"
 
 MyPointRead::MyPointRead(const char *path, unsigned areanum)
 {
@@ -44,6 +45,9 @@ bool MyPointRead::Transfer(time_t starttime, StatEngine &destination)
         internalerrorquit(area_not_allocated, 1);
     }
 
+    // Get the output object
+    ProgressDisplay *display = ProgressDisplay::GetOutputObject();
+
     // Calculate area number ending
     char ending[4] = { 0, 0, 0, 0};
     ending[0] = 'A';
@@ -53,7 +57,7 @@ bool MyPointRead::Transfer(time_t starttime, StatEngine &destination)
     // Sanity check
     if (ending[1] > '9' || ending[2] > 'Z')
     {
-        cerr << "Illegal area number" << endl;
+        display->ErrorMessage("Illegal area number");
         return false;
     }
 
@@ -73,7 +77,8 @@ bool MyPointRead::Transfer(time_t starttime, StatEngine &destination)
     FILE *areaf = fopen(filepath.c_str(), "rb");
     if (!areaf)
     {
-        cerr << "Error: Cannot open " << areapath << endl;
+        string msg = string("Cannot open ") + filepath;
+        display->ErrorMessage(msg);
         return false;
     }
 
@@ -82,7 +87,8 @@ bool MyPointRead::Transfer(time_t starttime, StatEngine &destination)
     FILE *flagf = fopen(filepath.c_str(), "rb");
     if (!flagf)
     {
-        cerr << "Error: Cannot open " << areapath << endl;
+        string msg = string("Cannot open ") + filepath;
+        display->ErrorMessage(msg);
         return false;
     }
 
@@ -94,8 +100,8 @@ bool MyPointRead::Transfer(time_t starttime, StatEngine &destination)
     if (Mypoint_msgbaseversion2 != msgbaserevision &&
         Mypoint_msgbaseversion3 != msgbaserevision)
     {
-        cerr << "Error: Illegal MyPoint message base version: "
-             << msgbaserevision << endl;
+        display->ErrorMessage("Illegal MyPoint message base version: ",
+                              msgbaserevision);
         return false;
     }
 
@@ -128,6 +134,8 @@ bool MyPointRead::Transfer(time_t starttime, StatEngine &destination)
     uint16_t fromp, subjp, textp, ltrsiz, ltrtrl_ltrsiz;
     uint32_t delim, arrtim, ltrtim;
 
+    display->SetMessagesTotal(-1);
+
     while (stay)
     {
         if (1 != fread(&ltrhdr, sizeof_ltrhdr, 1, areaf))
@@ -139,8 +147,7 @@ bool MyPointRead::Transfer(time_t starttime, StatEngine &destination)
 
         fread(&flags,  sizeof (flags),  1, flagf);
 
-        cout << msgnum << " messages done\r";
-        msgnum ++;
+        display->UpdateProgress(msgnum ++);
 
         if (Mypoint_msgbaseversion2 == msgbaserevision)
         {
@@ -166,7 +173,7 @@ bool MyPointRead::Transfer(time_t starttime, StatEngine &destination)
         if (delim != Mypoint_delimeter)
         {
             // Something went wrong
-            cerr << "Message area garbled (illegal delimeter)!" << endl;
+            display->ErrorMessage("Message area garbled (illegal delimeter)!");
             fclose(areaf);
             return false;
         }
@@ -189,8 +196,8 @@ bool MyPointRead::Transfer(time_t starttime, StatEngine &destination)
 
             if (!buf || !ctrlbuf || !to_p || !from_p || !sub_p)
             {
-                cerr << "Unable to allocate memory for message body (msg #"
-                     << msgnum << ')' << endl;
+                display->WarningMessage("Unable to allocate memory for "
+                                        "message body #", msgnum);
 
                 if (to_p)       delete to_p;
                 if (from_p)     delete from_p;
@@ -218,8 +225,8 @@ bool MyPointRead::Transfer(time_t starttime, StatEngine &destination)
             // Check for inconsistencies
             if (ltrtrl_ltrsiz != ltrsiz)
             {
-                cerr << "Message area garbled (footer does not match header)!"
-                     << endl;
+                display->ErrorMessage("Message area garbled "
+                                      "(footer does not match header)!");
                 fclose(areaf);
                 return false;
             }

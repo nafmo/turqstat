@@ -24,6 +24,7 @@
 #include "tanstaaflread.h"
 #include "utility.h"
 #include "statengine.h"
+#include "output.h"
 
 TanstaaflRead::TanstaaflRead(const char *path, unsigned areanum)
 {
@@ -44,14 +45,17 @@ bool TanstaaflRead::Transfer(time_t starttime, StatEngine &destination)
         internalerrorquit(area_not_allocated, 1);
     }
 
+    // Get the output object
+    ProgressDisplay *display = ProgressDisplay::GetOutputObject();
+
     // Tanstaafl format lacks arrival times
     destination.NoArrivalTime();
 
     // Check that the folder number is valid
     if (areanumber < 1 || areanumber > 1999)
     {
-        cerr << "Error: Invalid area number choosen (must be between 1-1999)"
-             << endl;
+        display->ErrorMessage("Invalid area number chosen "
+                              "(must be between 1-1999)");
         return false;
     }
 
@@ -71,14 +75,16 @@ bool TanstaaflRead::Transfer(time_t starttime, StatEngine &destination)
     FILE *msgstat = fopen(filepath.c_str(), "rb");
     if (!msgstat)
     {
-        cerr << "Error: Cannot open " << filepath << endl;
+        string msg = string("Cannot open ") + filepath;
+        display->ErrorMessage(msg);
         return false;
     }
 
     msgstattfl_s msgstattfl;
     if (1 != fread(&msgstattfl, sizeof (msgstattfl_s), 1, msgstat))
     {
-        cerr << "Error: Couldn't read from " << filepath << endl;
+        string msg = string("Could not read from ") + filepath;
+        display->ErrorMessage(msg);
         return false;
     }
     fclose(msgstat);
@@ -87,30 +93,31 @@ bool TanstaaflRead::Transfer(time_t starttime, StatEngine &destination)
     // as 0 (or rather, never initialized) in 0.0.4.
     if (Tanstaafl_msgbaseversion < msgstattfl.msgbaseversion)
     {
-        cerr << "Error: Illegal tanstaafl message base version" << endl;
+        display->ErrorMessage("Illegal tanstaafl message base version");
         return false;
     }
 
     if (Tanstaafl_msgbaseversion == 0)
     {
-        cerr << "Warning: tanstaafl message base version is 0, assuming 1"
-             << endl;
+        display->WarningMessage("tanstaafl message base version is 0, "
+                                "assuming 1");
     }
 
     filepath = basepath + "msghdr.tfl";
     FILE *msghdr = fopen(filepath.c_str(), "rb");
     if (!msghdr)
     {
-        cerr << "Error: Cannot open " << filepath << endl;
+        string msg = string("Cannot open ") + filepath;
+        display->ErrorMessage(msg);
         return false;
     }
-
 
     filepath = basepath + "msgtxt.tfl";
     FILE *msgtxt = fopen(filepath.c_str(), "rb");
     if (!msgstat)
     {
-        cerr << "Error: Cannot open " << filepath << endl;
+        string msg = string("Cannot open ") + filepath;
+        display->ErrorMessage(msg);
         return false;
     }
 
@@ -119,6 +126,8 @@ bool TanstaaflRead::Transfer(time_t starttime, StatEngine &destination)
     msghdrtfl_s msghdrtfl;
     unsigned msgnum = 0, high = msgstattfl.totalmsgs[areanumber - 1];
     char *buf, *ctrlbuf;
+
+    display->SetMessagesTotal(high);
 
     if (0 == high) stay = false;
     while (stay)
@@ -135,7 +144,7 @@ bool TanstaaflRead::Transfer(time_t starttime, StatEngine &destination)
         {
             // This is message is in the correct folder
             msgnum ++;
-            cout << 100 * msgnum / high << "% done\r";
+            display->UpdateProgress(msgnum);
             if (high == msgnum) stay = false;
 
             // Check if message is too old
@@ -147,8 +156,8 @@ bool TanstaaflRead::Transfer(time_t starttime, StatEngine &destination)
             buf = new char[msghdrtfl.txtsize + 1];
             if (!buf)
             {
-                cerr << "Unable to allocate memory for message body (msg #"
-                     << msgnum << ')' << endl;
+                display->WarningMessage("Unable to allocate memory for "
+                                        "message body #", msgnum);
                 goto out;
             }
 
@@ -158,8 +167,8 @@ bool TanstaaflRead::Transfer(time_t starttime, StatEngine &destination)
             ctrlbuf = new char[msghdrtfl.txtsize + 1];
             if (!ctrlbuf)
             {
-                cerr << "Unable to allocate memory for control data (msg #"
-                     << msgnum << ')' << endl;
+                display->WarningMessage("Unable to allocate memory for "
+                                        "control data #", msgnum);
             }
 
             // Separate kludges from text

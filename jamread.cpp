@@ -28,6 +28,7 @@
 #include "jamread.h"
 #include "utility.h"
 #include "statengine.h"
+#include "output.h"
 
 const uint8_t JamRead::Jam_signature[4] = { 'J', 'A', 'M', 0 };
 
@@ -49,6 +50,9 @@ bool JamRead::Transfer(time_t starttime, StatEngine &destination)
         internalerrorquit(area_not_allocated, 1);
     }
 
+    // Get the output object
+    ProgressDisplay *display = ProgressDisplay::GetOutputObject();
+
     // Open the message area files
     // <name>.jdx - contains one record per message
     string filepath = string(areapath) + ".jdx";
@@ -64,7 +68,8 @@ bool JamRead::Transfer(time_t starttime, StatEngine &destination)
         }
         if (!jdx)
         {
-            cerr << "Error: Cannot open " << filepath << endl;
+            string msg = string("Cannot open ") + filepath;
+            display->ErrorMessage(msg);
             return false;
         }
     }
@@ -74,20 +79,22 @@ bool JamRead::Transfer(time_t starttime, StatEngine &destination)
     FILE *jhr = fopen(filepath.c_str(), "rb");
     if (!jhr)
     {
-        cerr << "Error: Cannot open " << filepath << endl;
+        string msg = string("Cannot open ") + filepath;
+        display->ErrorMessage(msg);
         return false;
     }
 
     jamhdr_header_s baseheader;
     if (1 != fread(&baseheader, sizeof (jamhdr_header_s), 1, jhr))
     {
-        cerr << "Error: Couldn't read from " << filepath << endl;
+        string msg = string("Cannot open ") + filepath;
+        display->ErrorMessage(msg);
         return false;
     }
 
     if (memcmp(baseheader.signature, Jam_signature, sizeof(Jam_signature)) != 0)
     {
-        cerr << "Error: Illegal JAM header" << endl;
+        display->ErrorMessage("Illegal JAM header");
         return false;
     }
 
@@ -96,7 +103,8 @@ bool JamRead::Transfer(time_t starttime, StatEngine &destination)
     FILE *jdt = fopen(filepath.c_str(), "rb");
     if (!jdt)
     {
-        cerr << "Error: Cannot open " << filepath << endl;
+        string msg = string("Cannot open ") + filepath;
+        display->ErrorMessage(msg);
         return false;
     }
 
@@ -109,6 +117,9 @@ bool JamRead::Transfer(time_t starttime, StatEngine &destination)
     jamhdr_subhdr_s subheader;
     string ctrlinfo, sender, recipient, subject;
     char *buf, subtmp[256];
+
+    display->SetMessagesTotal(total);
+
     while (stay)
     {
         if (1 != fread(&jdxinfo, sizeof (jamjdx_s), 1, jdx))
@@ -124,14 +135,16 @@ bool JamRead::Transfer(time_t starttime, StatEngine &destination)
         if (1 != fread(&hdrinfo, sizeof (jamhdr_msg_s), 1, jhr))
         {
             // Could not read message, quit
-            cerr << "Unable to read header #" << found + baseheader.basemsgnum;
+            display->ErrorMessage("Unable to read header #",
+                                  found + baseheader.basemsgnum);
+            return false;
         }
 
         if  (0 == (hdrinfo.attribute & Jam_deleted))
         {
             // This is message is active
             active ++;
-            cout << 100 * active / total << "% done\r";
+            display->UpdateProgress(active);
             if (active == total) stay = false;
 
             // Check if message is too old
@@ -149,8 +162,9 @@ bool JamRead::Transfer(time_t starttime, StatEngine &destination)
 
             if (!buf)
             {
-                cerr << "Unable to allocate memory for message body (msg #"
-                     << found + baseheader.basemsgnum << ')' << endl;
+                display->WarningMessage("Unable to allocate memory for "
+                                        "message body #",
+                                        found + baseheader.basemsgnum);
                 goto out;
             }
 

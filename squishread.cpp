@@ -16,14 +16,15 @@
 // Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 
 #include <config.h>
-#include <iostream.h>
 #include <time.h>
 #include <string.h>
 #include <stdio.h>
+#include <string>
 
 #include "squishread.h"
 #include "utility.h"
 #include "statengine.h"
+#include "output.h"
 
 SquishRead::SquishRead(const char *path)
 {
@@ -43,6 +44,9 @@ bool SquishRead::Transfer(time_t starttime, StatEngine &destination)
         internalerrorquit(area_not_allocated, 1);
     }
 
+    // Get the output object
+    ProgressDisplay *display = ProgressDisplay::GetOutputObject();
+
     // Open the message area files
     // <name>.sqd - contains everything we need
     string filepath = string(areapath) + ".sqd";
@@ -58,7 +62,8 @@ bool SquishRead::Transfer(time_t starttime, StatEngine &destination)
         }
         if (!sqd)
         {
-            cerr << "Error: Cannot open " << filepath << endl;
+            string msg = string("Cannot open ") + filepath;
+            display->ErrorMessage(msg);
             return false;
         }
     }
@@ -66,7 +71,8 @@ bool SquishRead::Transfer(time_t starttime, StatEngine &destination)
     sqbase_s baseheader;
     if (1 != fread(&baseheader, sizeof (sqbase_s), 1, sqd))
     {
-        cerr << "Error: Couldn't read from " << filepath << endl;
+        string msg = string("Could not read from ") + filepath;
+        display->ErrorMessage(msg);
         return false;
     }
 
@@ -77,7 +83,7 @@ bool SquishRead::Transfer(time_t starttime, StatEngine &destination)
     }
     else if (offset < 0)
     {
-        cerr << "Strange Squish header length" << endl;
+        display->ErrorMessage("Strange Squish header length");
         fclose(sqd);
         return false;
     }
@@ -88,16 +94,18 @@ bool SquishRead::Transfer(time_t starttime, StatEngine &destination)
     uint32_t current = baseheader.begin_frame;
     if (0 == current)
     {
-        cerr << "Message base is empty" << endl;
+        display->ErrorMessage("Message base is empty");
         fclose(sqd);
         return true;
     }
     else if (current < sizeof (sqbase_s))
     {
-        cerr << "Strange Squish header offset" << endl;
+        display->ErrorMessage("Strange Squish header offset");
         fclose(sqd);
         return false;
     }
+
+    display->SetMessagesTotal(baseheader.high_msg);
 
     uint32_t msgn, msglen;
     char *ctrlbuf = NULL, *msgbuf = NULL;
@@ -111,14 +119,14 @@ bool SquishRead::Transfer(time_t starttime, StatEngine &destination)
         // Read the SQHDR
         if (1 != fread(&sqhdr, sizeof (sqhdr_s), 1, sqd))
         {
-            cerr << "Premature end of Squish data" << endl;
+            display->ErrorMessage("Premature end of Squish data");
             fclose(sqd);
             return false;
         }
 
         if (sqhdr.id != Squish_id)
         {
-            cerr << "Illegal Squish header ID" << endl;
+            display->ErrorMessage("Illegal Squish header ID");
             fclose(sqd);
             return false;
         }
@@ -127,7 +135,7 @@ bool SquishRead::Transfer(time_t starttime, StatEngine &destination)
 
         if (Squish_type_normal != sqhdr.frame_type)
         {
-            cerr << "Not normal Squish frame: " << msgn << endl;
+            display->WarningMessage("Not normal Squish frame #", msgn);
             continue;
         }
 
@@ -136,7 +144,7 @@ bool SquishRead::Transfer(time_t starttime, StatEngine &destination)
         // Read the XMSG
         if (1 != fread(&xmsg, sizeof (xmsg_s), 1, sqd))
         {
-            cerr << "Premature end of Squish data" << endl;
+            display->ErrorMessage("Premature end of Squish data");
             fclose(sqd);
             return false;
         }
@@ -144,8 +152,8 @@ bool SquishRead::Transfer(time_t starttime, StatEngine &destination)
         ctrlbuf = new char[sqhdr.clen + 1];
         if (!ctrlbuf)
         {
-            cerr << "Unable to allocate memory for control data (msg #"
-                 << msgn << ')' << endl;
+            display->WarningMessage("Unable to allocate memory for "
+                                    "control data #", msgn);
             goto out;
         }
         fread(ctrlbuf, sqhdr.clen, 1, sqd);
@@ -155,8 +163,8 @@ bool SquishRead::Transfer(time_t starttime, StatEngine &destination)
         msgbuf = new char[msglen + 1];
         if (!msgbuf)
         {
-            cerr << "Unable to allocate memory for message body (msg #"
-                 << msgn << ')' << endl;
+            display->WarningMessage("Unable to allocate memory for "
+                                    "message body #", msgn);
             goto out2;
         }
 
@@ -182,7 +190,7 @@ out:;
 out2:;
         delete msgbuf;
 
-        cout << 100 * msgn / baseheader.high_msg << "% done\r";
+        display->UpdateProgress(msgn);
     }
 
     fclose(sqd);

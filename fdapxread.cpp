@@ -24,6 +24,7 @@
 #include "fdapxread.h"
 #include "utility.h"
 #include "statengine.h"
+#include "output.h"
 
 FdApxRead::FdApxRead(const char *path, unsigned areanum)
 {
@@ -44,11 +45,14 @@ bool FdApxRead::Transfer(time_t starttime, StatEngine &destination)
         internalerrorquit(area_not_allocated, 1);
     }
 
+    // Get the output object
+    ProgressDisplay *display = ProgressDisplay::GetOutputObject();
+
     // Check that the folder number is valid
     if (areanumber < 1 || areanumber > 1999)
     {
-        cerr << "Error: Invalid area number choosen (must be between 1-1999)"
-             << endl;
+        display->ErrorMessage("Invalid area number chosen "
+                              "(must be between 1-1999)");
         return false;
     }
 
@@ -68,21 +72,23 @@ bool FdApxRead::Transfer(time_t starttime, StatEngine &destination)
     FILE *msgstat = fopen(filepath.c_str(), "rb");
     if (!msgstat)
     {
-        cerr << "Error: Cannot open " << filepath << endl;
+        string msg = string("Cannot open ") + filepath;
+        display->ErrorMessage(msg);
         return false;
     }
 
     msgstatapx_s msgstatapx;
     if (1 != fread(&msgstatapx, sizeof (msgstatapx_s), 1, msgstat))
     {
-        cerr << "Error: Couldn't read from " << filepath << endl;
+        string msg = string("Could not read from ") + filepath;
+        display->ErrorMessage(msg);
         return false;
     }
     fclose(msgstat);
 
     if (Fdapx_msgbaseversion != msgstatapx.msgbaseversion)
     {
-        cerr << "Error: Illegal FDAPX/w message base version" << endl;
+        display->ErrorMessage("Illegal FDAPX/w message base version");
         return false;
     }
 
@@ -90,16 +96,17 @@ bool FdApxRead::Transfer(time_t starttime, StatEngine &destination)
     FILE *msghdr = fopen(filepath.c_str(), "rb");
     if (!msghdr)
     {
-        cerr << "Error: Cannot open " << filepath << endl;
+        string msg = string("Cannot open ") + filepath;
+        display->ErrorMessage(msg);
         return false;
     }
-
 
     filepath = basepath + "msgtxt.apx";
     FILE *msgtxt = fopen(filepath.c_str(), "rb");
     if (!msgstat)
     {
-        cerr << "Error: Cannot open " << filepath << endl;
+        string msg = string("Cannot open ") + filepath;
+        display->ErrorMessage(msg);
         return false;
     }
 
@@ -108,6 +115,8 @@ bool FdApxRead::Transfer(time_t starttime, StatEngine &destination)
     msghdrapx_s msghdrapx;
     unsigned msgnum = 0, high = msgstatapx.totalmsgs[areanumber - 1];
     char *buf, *ctrlbuf;
+
+    display->SetMessagesTotal(high);
 
     if (0 == high) stay = false;
     while (stay)
@@ -124,7 +133,7 @@ bool FdApxRead::Transfer(time_t starttime, StatEngine &destination)
         {
             // This is message is in the correct folder
             msgnum ++;
-            cout << 100 * msgnum / high << "% done\r";
+            display->UpdateProgress(msgnum);
             if (high == msgnum) stay = false;
 
             // Check if message is too old
@@ -141,8 +150,8 @@ bool FdApxRead::Transfer(time_t starttime, StatEngine &destination)
             buf = new char[msghdrapx.txtsize + 1];
             if (!buf)
             {
-                cerr << "Unable to allocate memory for message body (msg #"
-                     << msgnum << ')' << endl;
+                display->WarningMessage("Unable to allocate memory for "
+                                        "message body #", msgnum);
                 goto out;
             }
 
@@ -152,8 +161,8 @@ bool FdApxRead::Transfer(time_t starttime, StatEngine &destination)
             ctrlbuf = new char[msghdrapx.txtsize + 1];
             if (!ctrlbuf)
             {
-                cerr << "Unable to allocate memory for control data (msg #"
-                     << msgnum << ')' << endl;
+                display->WarningMessage("Unable to allocate memory for "
+                                        "control data #", msgnum);
             }
 
             // Separate kludges from text

@@ -49,6 +49,7 @@
 #include "sdmread.h"
 #include "utility.h"
 #include "statengine.h"
+#include "output.h"
 
 SdmRead::SdmRead(const char *path, bool hasarrivetime) : isopus(hasarrivetime)
 {
@@ -67,6 +68,9 @@ bool SdmRead::Transfer(time_t starttime, StatEngine &destination)
     {
         internalerrorquit(area_not_allocated, 1);
     }
+
+    // Get the output object
+    ProgressDisplay *display = ProgressDisplay::GetOutputObject();
 
     // Non-Opus SDM doesn't have arrival times
     if (!isopus)
@@ -95,14 +99,14 @@ bool SdmRead::Transfer(time_t starttime, StatEngine &destination)
 
     if (-1 == rc)
     {
-        cerr << "Unable to open *.MSG directory" << endl;
+        display->ErrorMessage("Unable to open *.MSG directory");
         return false;
     }
 #else // no HAS_EMX_FINDFIRST or HAVE_LIBCRTDLL
     DIR *sdmdir = opendir(areapath);
     if (!sdmdir)
     {
-        cerr << "Unable to open *.MSG directory" << endl;
+        display->ErrorMessage("Unable to open *.MSG directory");
         return false;
     }
 
@@ -119,6 +123,8 @@ bool SdmRead::Transfer(time_t starttime, StatEngine &destination)
     char *msgbuf = NULL, *ctrlbuf = NULL;
     time_t written, arrived;
     uint32_t msgn = 0;
+
+    display->SetMessagesTotal(-1);
 
 #ifdef HAS_EMX_FINDFIRST
 # define FILENAME sdmdir.name
@@ -149,7 +155,8 @@ bool SdmRead::Transfer(time_t starttime, StatEngine &destination)
         msg = fopen(thisfile.c_str(), "rb");
         if (!msg)
         {
-            cerr << "Unable to open " << thisfile << endl;
+            string msg = string("Cannot open ") + thisfile;
+            display->WarningMessage(msg);
             goto out;
         }
 
@@ -160,7 +167,8 @@ bool SdmRead::Transfer(time_t starttime, StatEngine &destination)
         // Read the message header
         if (1 != fread(&sdmhead, sizeof (sdmhead_s), 1, msg))
         {
-            cerr << "Broken MSG file " << thisfile << endl;
+            string msg = string("Broken MSG file ") + thisfile;
+            display->WarningMessage(msg);
             goto out;
         }
 
@@ -169,16 +177,18 @@ bool SdmRead::Transfer(time_t starttime, StatEngine &destination)
         msgbuf = new char[msglen];
         if (!msgbuf)
         {
-            cerr << "Unable to allocate memory for message body ("
-                 << thisfile.c_str() << ')' << endl;
+            string msg = string("Unable to allocate memory for message "
+                                "body for ") + thisfile;
+            display->WarningMessage(msg);
             goto out2;
         }
 
         ctrlbuf = new char[msglen];
         if (!ctrlbuf)
         {
-            cerr << "Unable to allocate memory for control data ("
-                 << thisfile.c_str() << ')' << endl;
+            string msg = string("Unable to allocate memory for control "
+                                "data for ") + thisfile;
+            display->WarningMessage(msg);
             goto out;
         }
 
@@ -213,7 +223,7 @@ out:;
 out2:;
         delete msgbuf;
 
-        cout << ++ msgn << " done\r";
+        display->UpdateProgress(++ msgn);
         if (msg) fclose(msg);
 
 #ifdef HAS_EMX_FINDFIRST
