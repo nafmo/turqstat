@@ -20,6 +20,7 @@
 
 #include <qobject.h>
 #include <qmainwindow.h>
+#include <time.h>
 
 class StatEngine;
 class QMenuBar;
@@ -70,7 +71,11 @@ private:
     // Internal methods
     void incompatible();
     void zeroFill();
-    
+
+    // Start date
+    time_t start;
+    int daysback;
+
 public slots:
     void open();
     void clear();
@@ -86,6 +91,7 @@ public slots:
     void timelist();
     void daylist();
     void update();
+    void startdate();
 
 signals:
     void newdata();

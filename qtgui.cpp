@@ -58,6 +58,7 @@
 #include "tanstaaflread.h"
 #include "newsspoolread.h"
 //#include "version.h"
+#include "mytime.h"
 #include "utility.h"
 
 #define MENU_FIDOTOPLIST 1000
@@ -75,6 +76,11 @@ InfoWindow::InfoWindow()
     filemenu->insertSeparator();
     filemenu->insertItem(tr("&Exit"), qApp, SLOT(quit()), CTRL+Key_Q);
     menu->insertItem(tr("&File"), filemenu);
+
+    QPopupMenu *editmenu = new QPopupMenu(menu);
+    editmenu->insertItem(tr("&Set start date"), this, SLOT(startdate()),
+                         CTRL+Key_Home);
+    menu->insertItem(tr("&Edit"), editmenu);
 
     QPopupMenu *showmenu = new QPopupMenu(menu);
     showmenu->insertItem(tr("&Quoter blacklist"), this, SLOT(quotelist()),
@@ -193,6 +199,10 @@ InfoWindow::InfoWindow()
     // Objects owned
     engine = new StatEngine;
     progress = NULL;
+
+    // Reset start date
+    start = (time_t) 0;
+    daysback = 0;
 };
 
 InfoWindow::~InfoWindow()
@@ -297,7 +307,8 @@ void InfoWindow::open()
         bool ok;
         areanum = QInputDialog::getInteger(path,
                                            tr("Select area number"),
-                                           0, 0, INT_MAX, 1, &ok, this);
+                                           0, 0, INT_MAX, 1, &ok, this,
+                                           "areaselect");
         if (!ok)
         {
             // User pressed cancel
@@ -344,14 +355,12 @@ void InfoWindow::open()
     // Transfer data
     if (area)
     {
-#warning Implement starting time    
-time_t from = 0;
         progress =
             new QProgressDialog(tr("Reading message base"), 0, 100, this,
                                 "progress", true);
         progress->setCaption("Turquoise SuperStat");
         progress->setMinimumDuration(1000);
-        area->Transfer(from, *engine);
+        area->Transfer(start, *engine);
         engine->AreaDone();
         hasnews = isnews;
         hasany = true;
@@ -559,6 +568,32 @@ void InfoWindow::zeroFill()
 
     numnets->setEnabled(true);
     menu->setItemEnabled(MENU_FIDOTOPLIST, true);
+}
+
+void InfoWindow::startdate()
+{
+    bool ok = false;
+    int days =
+        QInputDialog::getInteger(tr("Start date"),
+                                 tr("Enter number of days back to take "
+                                    "statistics for (0 = no restriction):"),
+                                 daysback, 0, INT_MAX, 1,
+                                 &ok, this, "timeselect");
+    if (ok)
+    {
+        // Compute starting time
+        if (0 == days)
+            start = 0;
+        else
+            start = time(NULL) - days * 86400L;
+        struct tm *fromtm = localtime(&start);
+        fromtm->tm_hour = 0;
+        fromtm->tm_min  = 0;
+        fromtm->tm_sec  = 0;
+        start = my_mktime(fromtm);
+
+        daysback = days;
+    }
 }
 
 // Program entry
