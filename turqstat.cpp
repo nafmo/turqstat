@@ -28,6 +28,9 @@
 #ifdef HAS_GETOPT_IN_GETOPT
 # include <getopt.h>
 #endif
+#if defined(HAVE_TIMEZONE) || defined(HAVE_DAYLIGHT)
+# include <time.h>
+#endif
 
 #include "statengine.h"
 #include "statview.h"

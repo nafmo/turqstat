@@ -1,8 +1,12 @@
+2000-03-20 - peter karlsson <peter@softwolves.pp.se>
+  turqstat.cpp
+    Explicitly in #include time.h for the variables that use it.
+
 2000-03-19 - peter karlsson <peter@softwolves.pp.se>
   configure.in
   Makefile.in
   acconfig.h
-    New files for autoconf support
+    New files for autoconf support.
 
   datatypes.h
     Uses stdint.h if autoconf detects it.
