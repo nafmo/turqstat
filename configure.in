@@ -125,6 +125,8 @@ if test "$ac_cv_have_char_bit" = "yes"; then
   AC_DEFINE(HAVE_CHAR_BIT)
 fi
 
+AC_CHECK_HEADERS(wchar.h)
+
 AC_CHECK_HEADERS(wctype.h)
 if test "$ac_cv_header_wctype_h" = "no"; then
   AC_CACHE_CHECK([for towupper in ctype.h], ac_cv_have_towupper_in_ctype_h,
