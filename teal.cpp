@@ -1,4 +1,4 @@
-// Teal
+// Teal - Text Encoder ALgorithm :-)
 //
 // A small utility that converts text files from one character set to another
 // using Turquoise SuperStat conversion routines
@@ -37,7 +37,12 @@
 int main(int argc, char *argv[])
 {
     const char *input = "-", *output = "-",
-               *inset = "ibm437", *outset = "iso-8859-1";
+#if defined(__EMX__) || defined(__CYGWIN__) || defined (__MINGW32__)
+               *inset = "iso-8859-1", *outset = "ibm850";
+#else
+               *inset = "ibm850", *outset = "iso-8859-1";
+#endif
+    int verbose = 1;
 
     // Handle arguments
     int c;
@@ -47,14 +52,24 @@ int main(int argc, char *argv[])
         {
             case 'i': input  = optarg; break;
             case 'o': output = optarg; break;
+            case 'q': verbose --;      break;
             case 'f': inset  = optarg; break;
             case 't': outset = optarg; break;
             default:
                 cout << "Usage: " << argv[0] <<
-                        " [-f from-charset] [-t to-charset]"
+                        " [-q] [-f from-charset] [-t to-charset]"
                         " [-i infile] [-o outfile]"
                      << endl;
                 return 0;
+        }
+    }
+
+    if (argc > optind)
+    {
+        input = argv[optind];
+        if (argc > optind + 1)
+        {
+            output = argv[optind + 1];
         }
     }
 
@@ -67,18 +82,44 @@ int main(int argc, char *argv[])
     if (strcmp(input, "-"))
     {
         in = fopen(input, "r");
+        if (!in)
+        {
+            perror("Cannot open input");
+            return 1;
+        }
+        if (verbose > 0)
+        {
+            fprintf(stderr, "Converting \"%s\"(%s)", input, inset);
+        }
     }
     else
     {
         in = stdin;
+        if (verbose > 0)
+        {
+            fprintf(stderr, "Converting standard input(%s)", inset);
+        }
     }
     if (strcmp(output, "-"))
     {
         out = fopen(output, "w");
+        if (!out)
+        {
+            perror("Cannot open output");
+            return 1;
+        }
+        if (verbose > 0)
+        {
+            fprintf(stderr, " to \"%s\"(%s)\n", output, outset);
+        }
     }
     else
     {
         out = stdout;
+        if (verbose > 0)
+        {
+            fprintf(stderr, " to standard output(%s)", outset);
+        }
     }
 
     // Convert
