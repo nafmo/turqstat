@@ -24,7 +24,7 @@
 #include "statengine.h"
 #include "datatypes.h"
 
-#ifdef __EMX__
+#if defined(__GNUC__) || defined(__EMX__)
 # pragma pack(1)
 #endif
 
@@ -103,5 +103,9 @@ protected:
     static const UINT16 Jam_msgbaseversion = 1;
     static const UINT8  Jam_signature[4]   = "JAM";
 };
+
+#if defined(__GNUC__) || defined(__EMX__)
+# pragma pack()
+#endif
 
 #endif

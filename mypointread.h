@@ -24,7 +24,7 @@
 #include "statengine.h"
 #include "datatypes.h"
 
-#ifdef __EMX__
+#if defined(__GNUC__) || defined(__EMX__)
 # pragma pack(1)
 #endif
 
@@ -163,5 +163,9 @@ protected:
     static const UINT32 Mypoint_delimeter       = 0xfeffffff;
     static const UINT8  Mypoint_delete          = 0x40;
 };
+
+#if defined(__GNUC__) || defined(__EMX__)
+# pragma pack()
+#endif
 
 #endif

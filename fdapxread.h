@@ -24,7 +24,7 @@
 #include "statengine.h"
 #include "datatypes.h"
 
-#ifdef __EMX__
+#if defined(__GNUC__) || defined(__EMX__)
 # pragma pack(1)
 #endif
 
@@ -85,5 +85,9 @@ protected:
 
     static const UINT32 Fdapx_msgbaseversion = 3;
 };
+
+#if defined(__GNUC__) || defined(__EMX__)
+# pragma pack()
+#endif
 
 #endif
