@@ -55,8 +55,18 @@ bool JamRead::Transfer(time_t starttime, StatEngine &destination)
     FILE *jdx = fopen(filepath.c_str(), "rb");
     if (!jdx)
     {
-        cerr << "Error: Cannot open " << filepath << endl;
-        return false;
+        char *p = strrchr(areapath, '.');
+        if (p)
+        {
+            *p = 0;
+            filepath = string(areapath) + ".jdx";
+            jdx = fopen(filepath.c_str(), "rb");
+        }
+        if (!jdx)
+        {
+            cerr << "Error: Cannot open " << filepath << endl;
+            return false;
+        }
     }
 
     // <name>.jhr - contains header information for messages

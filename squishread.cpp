@@ -49,8 +49,18 @@ bool SquishRead::Transfer(time_t starttime, StatEngine &destination)
     FILE *sqd = fopen(filepath.c_str(), "rb");
     if (!sqd)
     {
-        cerr << "Error: Cannot open " << filepath << endl;
-        return false;
+        char *p = strrchr(areapath, '.');
+        if (p)
+        {
+            *p = 0;
+            filepath = string(areapath) + ".sqd";
+            sqd = fopen(filepath.c_str(), "rb");
+        }
+        if (!sqd)
+        {
+            cerr << "Error: Cannot open " << filepath << endl;
+            return false;
+        }
     }
 
     sqbase_s baseheader;
