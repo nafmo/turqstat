@@ -1893,7 +1893,7 @@ else
 fi
 done
 
-  if test "$ac_cv_header_winsock.h" = "yes"; then
+  if test "$ac_cv_header_winsock_h" = "yes"; then
     LIBS="-lwsock32 $LIBS"
   fi
 fi
