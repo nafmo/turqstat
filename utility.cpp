@@ -150,6 +150,8 @@ void fixupctrlbuffer(char *body_p, char *ctrl_p)
     char *newbody_p = body_p;
     char *nextseenby_p = strstr(body_p, "SEEN-BY");
 
+    if (!body_p) return;
+
     bool iskludge = false;
     bool wascr = true;
     while (*body_p)
