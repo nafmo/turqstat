@@ -3,6 +3,9 @@
   turqstat.dok
     Updated documentation.
 
+  debian/control
+    Added Build-Depends as per Debian policy.
+
 2000-06-22 - peter karlsson <peter@softwolves.pp.se>
   debian/
     Updated to use latest debhelper.

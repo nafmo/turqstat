@@ -7,6 +7,8 @@ Standards-Version: 3.0.1
 Package: turqstat
 Architecture: any
 Depends: ${shlibs:Depends}
+Build-Depends: debhelper
+Suggests: crashmail | news-transport-system
 Description: Fidonet and Usenet message base statistics program
  Turquoise SuperStat is a simple but powerful Fidonet and Usenet
  message base statistics program that can read messages that are
