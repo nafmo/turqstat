@@ -22,9 +22,10 @@
 
 #include "mypointread.h"
 
-MyPointRead::MyPointRead(const char *path)
+MyPointRead::MyPointRead(const char *path, unsigned areanum)
 {
     areapath = strdup(path);
+    areanumber = areanum;
 }
 
 MyPointRead::~MyPointRead()
@@ -41,23 +42,36 @@ bool MyPointRead::Transfer(time_t starttime, StatEngine &destination)
         return false;
     }
 
-    if (!strchr(areapath, '.') || strlen(areapath) < 11)
+    // Calculate area number ending
+    char ending[4] = { 0, 0, 0, 0};
+    ending[0] = 'A';
+    ending[1] = '0' + areanumber / 26;
+    ending[2] = 'A' + areanumber % 26;
+
+    // Sanity check
+    if (ending[0] > '9' || ending[1] > 'Z')
     {
-        cerr << "Illegal area path (need to know the extension of .A?? "
-                "or .F?? file" << endl;
+        cerr << "Illegal area number" << endl;
         return false;
     }
 
-    areapath[strlen(areapath) - 3] = 'A'; // Area file
-    FILE *areaf = fopen(areapath, "rb");
+    // Open the message area files
+    string basepath = areapath;
+    if ('\\' != basepath[basepath.length() - 1])
+        basepath += '\\';
+    basepath += "MYPOINT.";
+
+    string filepath = basepath + ending;
+    FILE *areaf = fopen(filepath.c_str(), "rb");
     if (!areaf)
     {
         cerr << "Error: Cannot open " << areapath << endl;
         return false;
     }
 
-    areapath[strlen(areapath) - 3] = 'F'; // Flags file
-    FILE *flagf = fopen(areapath, "rb");
+    ending[0] = 'F';
+    filepath = basepath + ending;
+    FILE *flagf = fopen(filepath.c_str(), "rb");
     if (!flagf)
     {
         cerr << "Error: Cannot open " << areapath << endl;
@@ -67,17 +81,32 @@ bool MyPointRead::Transfer(time_t starttime, StatEngine &destination)
     header_s hdr;
     fread(&hdr, sizeof (hdr), 1, areaf);
 
-    if (Mypoint_msgbaseversion < hdr.areaprf[0])
+    // Check for valid message base versions
+    UINT8 msgbaserevision = hdr.areaprf[0];
+    if (Mypoint_msgbaseversion2 != msgbaserevision &&
+        Mypoint_msgbaseversion3 != msgbaserevision)
     {
-        cerr << "Error: Illegal MyPoint message base version" << endl;
+        cerr << "Error: Illegal MyPoint message base version: "
+             << msgbaserevision << endl;
         return false;
     }
 
     fseek(flagf, sizeof (flags_s), SEEK_SET);
 
+    // Check size of ltrhdr structure;
+    size_t sizeof_ltrhdr;
+    ltrhdr_u ltrhdr;
+    if (Mypoint_msgbaseversion2 == msgbaserevision)
+    {
+        sizeof_ltrhdr = sizeof (ltrhdr.version2);
+    }
+    else //if (Mypoint_msgbaseversion3 == msgbaserevision)
+    {
+        sizeof_ltrhdr = sizeof (ltrhdr.version3);
+    }
+
     // Read messages one by one
     bool stay = true;
-    ltrhdr_s ltrhdr;
     ltrtrl_s ltrtrl;
     flags_s flags;
     unsigned msgnum = 0;
@@ -85,9 +114,12 @@ bool MyPointRead::Transfer(time_t starttime, StatEngine &destination)
     unsigned tosize, fromsize, subjsize, bodysize;
     char *ctrlbuf, *buf, *to_p, *from_p, *sub_p,
          *ctrl_p, *body_p, *newbody_p;
+    UINT16 fromp, subjp, textp, ltrsiz;
+    UINT32 delim, arrtim, ltrtim;
+
     while (stay)
     {
-        if (1 != fread(&ltrhdr, sizeof (ltrhdr), 1, areaf))
+        if (1 != fread(&ltrhdr, sizeof_ltrhdr, 1, areaf))
         {
             // Nothing more to read, we are done
             stay = false;
@@ -99,7 +131,28 @@ bool MyPointRead::Transfer(time_t starttime, StatEngine &destination)
         cout << msgnum << " messages done\r";
         msgnum ++;
 
-        if (ltrhdr.delim != Mypoint_delimeter)
+        if (Mypoint_msgbaseversion2 == msgbaserevision)
+        {
+            delim = ltrhdr.version2.delim;
+            arrtim= ltrhdr.version2.arrtim;
+            ltrtim= ltrhdr.version2.ltrtim;
+            fromp = ltrhdr.version2.fromp;
+            subjp = ltrhdr.version2.subjp;
+            textp = ltrhdr.version2.textp;
+            ltrsiz= ltrhdr.version2.ltrsiz;
+        }
+        else //if (Mypoint_msgbaseversion3 == msgbaserevision)
+        {
+            delim = ltrhdr.version3.delim;
+            arrtim= ltrhdr.version3.arrtim;
+            ltrtim= ltrhdr.version3.ltrtim;
+            fromp = ltrhdr.version3.fromp;
+            subjp = ltrhdr.version3.subjp;
+            textp = ltrhdr.version3.textp;
+            ltrsiz= ltrhdr.version3.ltrsiz;
+        }
+
+        if (delim != Mypoint_delimeter)
         {
             // Something went wrong
             cerr << "Message area garbled (illegal delimeter)!" << endl;
@@ -108,14 +161,14 @@ bool MyPointRead::Transfer(time_t starttime, StatEngine &destination)
         }
 
         // Only proceed if message is inside interval and not deleted
-        if (ltrhdr.arrtim >= starttime &&
+        if ((time_t) arrtim >= starttime &&
             0 == (flags.bits & Mypoint_delete))
         {
             // Retrieve sender, recipient, subject
-            tosize   = ltrhdr.fromp - sizeof (ltrhdr_s);
-            fromsize = ltrhdr.subjp - ltrhdr.fromp;
-            subjsize = ltrhdr.textp - ltrhdr.subjp;
-            bodysize = ltrhdr.ltrsiz- ltrhdr.textp - sizeof (ltrtrl_s);
+            tosize   = fromp - sizeof_ltrhdr;
+            fromsize = subjp - fromp;
+            subjsize = textp - subjp;
+            bodysize = ltrsiz- textp - sizeof (ltrtrl_s);
 
             to_p    = new char[tosize  ];
             from_p  = new char[fromsize];
@@ -143,7 +196,7 @@ bool MyPointRead::Transfer(time_t starttime, StatEngine &destination)
             fread(&ltrtrl, sizeof (ltrtrl_s), 1, areaf);
 
             // Check for inconsistencies
-            if (ltrtrl.ltrsiz != ltrhdr.ltrsiz)
+            if (ltrtrl.ltrsiz != ltrsiz)
             {
                 cerr << "Message area garbled (footer does not match header)!"
                      << endl;
@@ -193,8 +246,8 @@ bool MyPointRead::Transfer(time_t starttime, StatEngine &destination)
                                 string(to_p),
                                 string(sub_p),
                                 string(ctrlbuf), string(buf),
-                                ltrhdr.ltrtim,
-                                ltrhdr.arrtim);
+                                ltrtim,
+                                arrtim);
 
             // Deallocate
             delete buf;
@@ -206,7 +259,7 @@ bool MyPointRead::Transfer(time_t starttime, StatEngine &destination)
         else
         {
             // Seek past letter structure
-            fseek(areaf, ltrhdr.ltrsiz - sizeof (ltrhdr_s), SEEK_CUR);
+            fseek(areaf, ltrsiz - sizeof_ltrhdr, SEEK_CUR);
         }
     out:;
     }
