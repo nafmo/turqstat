@@ -12,7 +12,7 @@ LIBS=@LIBS@
 QTLIBS=@QTLIB@
 DESTDIR=
 OBJS=turqstat.o statengine.o statview.o squishread.o fdapxread.o jamread.o mypointread.o utility.o sdmread.o tanstaaflread.o newsspoolread.o mytime.o output.o
-QTOBJS=qtgui.o moc_qtgui.o qtlist.o moc_qtlist.o statengine.o squishread.o fdapxread.o jamread.o mypointread.o utility.o sdmread.o tanstaaflread.o newsspoolread.o mytime.o outputqt.o
+QTOBJS=qtgui.o moc_qtgui.o qtlist.o moc_qtlist.o qtreport.o moc_qtreport.o statengine.o statview.o squishread.o fdapxread.o jamread.o mypointread.o utility.o sdmread.o tanstaaflread.o newsspoolread.o mytime.o outputqt.o
 @QT@EXE=turqstat@EXEEXT@ xturqstat@EXEEXT@
 @NOQT@EXE=turqstat@EXEEXT@
 DEF=@DEF@
@@ -61,7 +61,7 @@ turqstat@EXEEXT@: $(OBJS) $(DEF)
 	@CXX@ $(CXXFLAGS) $(LDFLAGS) -o turqstat@EXEEXT@ $(OBJS) $(DEF) $(LIBS)
 
 @QT@xturqstat@EXEEXT@: $(QTOBJS) $(DEF)
-@QT@	@CXX@ $(CXXFLAGS) $(QTFLAGS) $(LDFLAGS) -o xturqstat@EXEEXT@ $(QTOBJS) $(DEF) $(QTLIBS)
+@QT@	@CXX@ $(CXXFLAGS) $(QTFLAGS) $(LDFLAGS) -o xturqstat@EXEEXT@ $(QTOBJS) $(DEF) $(LIBS) $(QTLIBS)
 
 # Object files
 turqstat.o: turqstat.cpp statengine.h statview.h arearead.h squishread.h fdapxread.h jamread.h mypointread.h version.h tanstaaflread.h config.h mytime.h output.h
@@ -103,7 +103,7 @@ mytime.o: mytime.cpp mytime.h
 output.o: output.cpp output.h
 	@CXX@ $(CXXFLAGS) -c $(srcdir)/output.cpp
 
-@QT@qtgui.o: qtgui.cpp qtgui.h qtlist.h statengine.h
+@QT@qtgui.o: qtgui.cpp qtgui.h qtlist.h qtreport.h statengine.h arearead.h squishread.h fdapxread.h jamread.h mypointread.h sdmread.h tanstaaflread.h newsspoolread.h utility.h
 @QT@	@CXX@ $(CXXFLAGS) $(QTFLAGS) -c $(srcdir)/qtgui.cpp
 
 @QT@moc_qtgui.o: moc_qtgui.cpp
