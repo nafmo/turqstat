@@ -159,11 +159,9 @@ void StatEngine::AddData(string in_fromname, string in_toname, string in_subject
                 int nextpos = controldata.find((char) 1, pos);
 
                 if (nextpos == -1)
-                    subject = decoder_p->Decode(controldata.substr(pos));
+                    in_subject = controldata.substr(pos);
                 else
-                    subject =
-                        decoder_p->Decode(controldata.substr(pos,
-                                                             nextpos - pos));
+                    in_subject = controldata.substr(pos, nextpos - pos);
 
                 pos = nextpos;
             }
@@ -228,7 +226,7 @@ void StatEngine::AddData(string in_fromname, string in_toname, string in_subject
             // Fixup name
             // remove quotes
             if ('"' == in_fromname[0] &&
-                '"' == in_fromname[fromname.length() - 1])
+                '"' == in_fromname[in_fromname.length() - 1])
                 in_fromname = in_fromname.substr(1, in_fromname.length() - 2);
         }
 
@@ -1025,19 +1023,23 @@ wstring StatEngine::DeQP(const string &qp, Decoder *maindecoder_p) const
     pos = qp.find("=?");
     while (pos >= 0)
     {
-        int pos2 = qp.find("?Q?", pos + 3);
-        if (pos2)
+        int qpos = qp.find("?Q?", pos + 3);
+        if (-1 == qpos)
+        {
+            qpos = qp.find("?q?", pos + 3);
+        }
+        if (-1 != qpos)
         {
             // Copy data up to start of QP string
             rc.append(maindecoder_p->Decode(qp.substr(current, pos - current)));
 
             // Locate end of QP string
-            endpos = qp.find("?=", pos2 + 3);
+            endpos = qp.find("?=", qpos + 3);
             current = endpos + 2;
 
             // Convert QP code to bytestream
             string tmpstr;
-            for (int i = pos2 + 3; i < endpos; i ++)
+            for (int i = qpos + 3; i < endpos; i ++)
             {
                 if ('=' == qp[i])
                 {
@@ -1053,7 +1055,7 @@ wstring StatEngine::DeQP(const string &qp, Decoder *maindecoder_p) const
             }
 
             // Convert bytestream to string
-            string charset = qp.substr(pos + 2, pos2 - pos - 2);
+            string charset = qp.substr(pos + 2, qpos - pos - 2);
             Decoder *qp_decoder_p = Decoder::GetDecoderByName(charset.c_str());
             rc.append(qp_decoder_p->Decode(tmpstr));
             delete qp_decoder_p;
@@ -1064,7 +1066,7 @@ wstring StatEngine::DeQP(const string &qp, Decoder *maindecoder_p) const
         }
         else
         {
-            pos = 0;
+            pos = -1;
         }
     }
 
