@@ -19,10 +19,18 @@
 #include <time.h>
 #include <string.h>
 #include <unistd.h>
-#include <netdb.h>
 #include <sys/types.h>
-#include <sys/socket.h>
-#include <netinet/in.h>
+#if defined(HAVE_NETDB_H)
+# include <netdb.h>
+#endif
+#if defined(HAVE_SYS_SOCKET_H)
+# include <sys/socket.h>
+#elif defined(HAVE_WINSOCK_H)
+# include <winsock.h>
+#endif
+#if defined(HAVE_NETINET_IN_H)
+# include <netinet/in.h>
+#endif
 
 #include "nntpread.h"
 #include "statengine.h"

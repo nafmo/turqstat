@@ -94,6 +94,12 @@
 /* Define if you have the <ndir.h> header file.  */
 #undef HAVE_NDIR_H
 
+/* Define if you have the <netdb.h> header file.  */
+#undef HAVE_NETDB_H
+
+/* Define if you have the <netinet/in.h> header file.  */
+#undef HAVE_NETINET_IN_H
+
 /* Define if you have the <stdint.h> header file.  */
 #undef HAVE_STDINT_H
 
@@ -103,11 +109,17 @@
 /* Define if you have the <sys/ndir.h> header file.  */
 #undef HAVE_SYS_NDIR_H
 
+/* Define if you have the <sys/socket.h> header file.  */
+#undef HAVE_SYS_SOCKET_H
+
 /* Define if you have the <wchar.h> header file.  */
 #undef HAVE_WCHAR_H
 
 /* Define if you have the <wctype.h> header file.  */
 #undef HAVE_WCTYPE_H
+
+/* Define if you have the <winsock.h> header file.  */
+#undef HAVE_WINSOCK_H
 
 /* Define if you have the crtdll library (-lcrtdll).  */
 #undef HAVE_LIBCRTDLL

@@ -108,7 +108,6 @@ if test "$ac_cv_mingw32" = "yes"; then
 fi
 
 AC_CHECK_LIB(socket, socket)
-AC_CHECK_LIB(wsock32, socket)
 AC_CHECK_LIB(nsl, gethostbyname)
 
 dnl Check for header files -------------------------------------------------
@@ -146,6 +145,9 @@ if test "$ac_cv_header_wctype_h" = "no"; then
 fi
 
 AC_CHECK_HEADERS(netdb.h sys/socket.h netinet/in.h winsock.h)
+if test "$ac_cv_header_winsock_h" = "yes"; then
+  LIBS="-lwsock32 $LIBS"
+fi
 
 dnl Check for typedefs, structures, and compiler characteristics -----------
 AC_C_CONST
