@@ -89,16 +89,16 @@ bool NewsSpoolRead::Transfer(time_t starttime, StatEngine &destination)
     FILE *msg = NULL;
     unsigned long msglen;
     char *msgbuf = NULL, *ctrlbuf = NULL, *p;
-    time_t written, arrived;
+    time_t arrived;
     unsigned long msgn = 0;
     long length, thislength;
     string from, subject;
+    struct stat   msgstat;
 
 #if defined(UNIX)
 # define FILENAME spooldirent_p->d_name
 # define FILESIZE msgstat.st_size
     struct dirent *spooldirent_p;
-    struct stat   msgstat;
 
     while (NULL != (spooldirent_p = readdir(spooldir)))
 #elif defined(__EMX__)
@@ -107,8 +107,7 @@ bool NewsSpoolRead::Transfer(time_t starttime, StatEngine &destination)
     while (0 == rc)
 #endif
     {
-        // Check that we really have a news file
-        // Unix readdir gives us all files, and DOS findfirst is buggy
+        // Check that we really have a news file (all-digit name)
         string filename = FILENAME;
         string thisfile = dirname + filename;
         for (unsigned int i = 0; i < filename.length(); i ++)
@@ -122,9 +121,7 @@ bool NewsSpoolRead::Transfer(time_t starttime, StatEngine &destination)
             goto out2;
         }
 
-#ifdef UNIX
         stat(thisfile.c_str(), &msgstat);
-#endif
 
         // Read the message header
         length = FILESIZE;
@@ -168,27 +165,14 @@ bool NewsSpoolRead::Transfer(time_t starttime, StatEngine &destination)
 
         fread(msgbuf, msglen, 1, msg);
 
-/*
- * -TODO-Date
-        written = asciiToTimeT((char *) sdmhead.datetime);
-        if (isopus)
-        {
-            arrived = stampToTimeT(&sdmhead.opus.arrived);
-        }
-        else
-        {
-            arrived = written;
-        }
- */
+        arrived = msgstat.st_mtime;
 
         // Add to statistics
-/*
-        if (written >= starttime)
- */
+        if (arrived >= starttime)
         {
             destination.AddData(string(""), string(""), string(""),
                                 string(ctrlbuf), string(msgbuf),
-                                written, arrived);
+                                0, arrived);
         }
 
         // Clean up our mess
