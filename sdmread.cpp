@@ -15,22 +15,40 @@
 // along with this program; if not, write to the Free Software
 // Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 
+#include <config.h>
 #include <iostream.h>
 #include <time.h>
 #include <string.h>
 #include <stdio.h>
-#ifdef UNIX
+#ifdef HAS_EMX_FINDFIRST
+# include <emx/syscalls.h>
+#elif defined(HAVE_MINGW32_DIR_H)
+# include <mingw32/dir.h>
+#else
 # include <sys/types.h>
+# ifdef HAVE_DIRENT_H
 # include <dirent.h>
+#  define NAMLEN(dirent) strlen((dirent)->d_name)
+# else
+#  define dirent direct
+#  define NAMLEN(dirent) (dirent)->d_namlen
+#  ifdef HAVE_SYS_NDIR_H
+#   include <sys/ndir.h>
+#  endif
+#  ifdef HAVE_SYS_DIR_H
+#   include <sys/dir.h>
+#  endif
+#  ifdef HAVE_NDIR_H
+#   include <ndir.h>
+#  endif
+# endif
 # include <sys/stat.h>
 # include <unistd.h>
-#endif
-#ifdef __EMX__
-# include <emx/syscalls.h>
 #endif
 
 #include "sdmread.h"
 #include "utility.h"
+#include "statengine.h"
 
 SdmRead::SdmRead(const char *path, bool hasarrivetime) : isopus(hasarrivetime)
 {
@@ -57,7 +75,32 @@ bool SdmRead::Transfer(time_t starttime, StatEngine &destination)
     }
 
     // Open the message directory
-#if defined(UNIX)
+#if defined(HAS_EMX_FINDFIRST) || (HAVE_MINGW32_DIR_H)
+    string dirname = string(areapath);
+    if (dirname[dirname.length() - 1] != '\\')
+    {
+        dirname += '\\';
+    }
+
+    string searchpath = dirname + string("*.msg");
+
+# ifdef HAS_EMX_FINDFIRST
+    struct _find sdmdir;
+    int rc = __findfirst(searchpath.c_str(), 0x2f, &sdmdir);
+
+    if (!rc)
+# else
+    struct _finddata_t sdmdir;
+    int sdmhandle = _findfirst(searchpath.c_str(), &sdmdir);
+    int rc = sdmhandle;
+
+    if (-1 == rc)
+# endif
+    {
+        cerr << "Unable to open *.MSG directory" << endl;
+        return false;
+    }
+#else // no HAS_EMX_FINDFIRST or HAVE_MINGW32_DIR_H
     DIR *sdmdir = opendir(areapath);
     if (!sdmdir)
     {
@@ -70,24 +113,7 @@ bool SdmRead::Transfer(time_t starttime, StatEngine &destination)
     {
         dirname += '/';
     }
-#elif defined(__EMX__)
-    string dirname = string(areapath);
-    if (dirname[dirname.length() - 1] != '\\')
-    {
-        dirname += '\\';
-    }
-
-    string searchpath = dirname + string("*.msg");
-
-    struct _find sdmdir;
-    int rc = __findfirst(searchpath.c_str(), 0x2f, &sdmdir);
-
-    if (!rc)
-    {
-        cerr << "Unable to open *.MSG directory" << endl;
-        return false;
-    }
-#endif
+#endif // else no HAS_EMX_FINDFIRST
 
     sdmhead_s sdmhead;
     FILE *msg = NULL;
@@ -96,17 +122,21 @@ bool SdmRead::Transfer(time_t starttime, StatEngine &destination)
     time_t written, arrived;
     UINT32 msgn = 0;
 
-#if defined(UNIX)
+#ifdef HAS_EMX_FINDFIRST
+# define FILENAME sdmdir.name
+# define FILESIZE (sdmdir.size_lo | (sdmdir.size_hi << 16))
+    while (0 == rc)
+#elif defined(HAVE_MINGW32_DIR_H)
+# define FILENAME sdmdir.name
+# define FILESIZE sdmdir.size
+    while (0 == rc)
+#else // no HAS_EMX_FINDFIRST or HAVE_MINGW32_DIR_H
 # define FILENAME sdmdirent_p->d_name
 # define FILESIZE sdmstat.st_size
     struct dirent *sdmdirent_p;
     struct stat   sdmstat;
 
     while (NULL != (sdmdirent_p = readdir(sdmdir)))
-#elif defined(__EMX__)
-# define FILENAME sdmdir.name
-# define FILESIZE (sdmdir.size_lo | (sdmdir.size_hi << 16))
-    while (0 == rc)
 #endif
     {
         // Check that we really have a *.msg file
@@ -125,7 +155,7 @@ bool SdmRead::Transfer(time_t starttime, StatEngine &destination)
             goto out;
         }
 
-#ifdef UNIX
+#if !defined(HAS_EMX_FINDFIRST) && !defined(HAVE_MINGW32_DIR_H)
         stat(thisfile.c_str(), &sdmstat);
 #endif
 
@@ -188,12 +218,16 @@ out2:;
         cout << ++ msgn << " done\r";
         if (msg) fclose(msg);
 
-#if defined(__EMX__)
+#ifdef HAS_EMX_FINDFIRST
         rc = __findnext(&sdmdir);
+#elif defined(HAVE_MINGW32_DIR_H)
+        rc = _findnext(sdmhandle, &sdmdir);
 #endif
     }
 
-#if defined(UNIX)
+#ifdef HAVE_MINGW32_DIR_H
+    _findclose(sdmhandle);
+#elif !defined(HAS_EMX_FINDFIRST)
     closedir(sdmdir);
 #endif
 

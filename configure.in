@@ -1,0 +1,129 @@
+dnl Process this file with autoconf to produce a configure script.
+dnl
+dnl Copyright (c) 2000 Peter Karlsson
+dnl
+dnl $Id$
+dnl
+dnl This program is free software; you can redistribute it and/or modify
+dnl it under the terms of the GNU General Public License as published by
+dnl the Free Software Foundation, version 2
+dnl
+dnl This program is distributed in the hope that it will be useful,
+dnl but WITHOUT ANY WARRANTY; without even the implied warranty of
+dnl MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+dnl GNU General Public License for more details.
+dnl
+dnl You should have received a copy of the GNU General Public License
+dnl along with this program; if not, write to the Free Software
+dnl Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
+dnl
+
+dnl Initialization ---------------------------------------------------------
+AC_INIT(turqstat.cpp)
+AC_CONFIG_HEADER(config.h)
+
+findfirst=no
+
+dnl We do not (yet) support big-endian machines ----------------------------
+dnl AC_C_BIGENDIAN(Error)
+dnl   AC_MSG_ERROR(This program only supports little-endian architectures)
+
+dnl Checks for programs ----------------------------------------------------
+AC_PROG_CC
+AC_PROG_CXX
+
+dnl Figure out whether or not we need .exe suffix (EMX, CygWin (AC_EXEEXT
+dnl normally only catches CygWin)), -lstdcpp instead of -lstdc++ (EMX), and
+dnl turqstat.def to set the application title (EMX)
+
+AC_EXEEXT
+
+AC_MSG_CHECKING([for EMX])
+AC_TRY_COMPILE(, [#ifndef __EMX__
+Syntax Error
+#endif ], have_emx=yes, have_emx=no)
+AC_MSG_RESULT($have_emx)
+
+if test "$have_emx" = "yes"; then
+  standardcpplib=stdcpp
+  EXEEXT=.exe
+  DEF=turqstat.def
+
+  AC_MSG_CHECKING(for __findfirst and __findnext)
+  AC_TRY_COMPILE([ #include <emx/syscalls.h> ],
+    [ struct _find s; int r = __findfirst("*.*", 0x2f, &s);
+    r = __findnext(&s) ],
+    findfirst=yes
+    AC_DEFINE(HAS_EMX_FINDFIRST) AC_MSG_RESULT(yes),
+    AC_MSG_RESULT(no))
+
+else
+  standardcpplib=stdc++
+  DEF=
+fi
+
+AC_SUBST(DEF)
+
+dnl Checks for libraries ---------------------------------------------------
+AC_CHECK_LIB($standardcpplib, cout)
+if test "$ac_cv_cygwin" = "yes"; then
+  AC_CHECK_LIB(crtdll, _findfirst)
+  findfirst=yes
+fi
+
+dnl Check for header files -------------------------------------------------
+AC_CHECK_HEADERS(limits.h)
+if test "$ac_cv_header_limits_h" = "no"; then
+  AC_MSG_ERROR(limits.h is needed to compile)
+fi
+AC_CHECK_HEADERS(stdint.h)
+AC_CHECK_HEADERS(mingw32/dir.h)
+if test "$findfirst" = "no"; then
+  AC_HEADER_DIRENT
+fi
+
+dnl Check for typedefs, structures, and compiler characteristics -----------
+AC_C_CONST
+
+AC_MSG_CHECKING(for tm_gmtoff in struct tm)
+AC_TRY_COMPILE([ #include <time.h> ], [  struct tm t; t.gmt_off = 0; ],
+  AC_DEFINE(HAS_TM_GMTOFF) AC_MSG_RESULT(yes),
+  AC_MSG_RESULT(no))
+
+dnl Check for library functions --------------------------------------------
+AC_MSG_CHECKING(for getopt in unistd.h)
+AC_TRY_COMPILE([ #include <unistd.h> ],
+  [ int argc; char **argv; int c = getopt(argc, argv, "x"); int d = optarg; ],
+  AC_DEFINE(HAS_GETOPT_IN_UNISTD) AC_MSG_RESULT(yes),
+  AC_MSG_RESULT(no)
+  AC_MSG_CHECKING(for getopt in getopt.h)
+  AC_TRY_COMPILE([ #include <getopt.h> ],
+    [ int argc; char **argv; int c = getopt(argc, argv, "x"); int d = optarg; ],
+    AC_DEFINE(HAS_GETOPT_IN_GETOPT) AC_MSG_RESULT(yes),
+    AC_MSG_RESULT(no)
+    AC_MSG_ERROR(Unable to locate getopt)))
+
+dnl Check for variables ----------------------------------------------------
+
+AC_MSG_CHECKING(for timezone in time.h)
+AC_TRY_COMPILE([ #include <time.h> ], [ timezone = 0; ],
+  AC_DEFINE(HAVE_TIMEZONE) AC_MSG_RESULT(yes), AC_MSG_RESULT(no))
+
+AC_MSG_CHECKING(for daylight in time.h)
+AC_TRY_COMPILE([ #include <time.h> ], [ daylight = 0; ],
+  AC_DEFINE(HAVE_DAYLIGHT) AC_MSG_RESULT(yes), AC_MSG_RESULT(no))
+
+dnl Check for other stuff --------------------------------------------------
+AC_LANG_CPLUSPLUS
+AC_MSG_CHECKING(if we need -foperator-names)
+AC_TRY_COMPILE([], [int a = 1 bitor 2;],
+  AC_MSG_RESULT(no),
+  oCXXFLAGS="$CXXFLAGS"
+  export CXXFLAGS="$CXXFLAGS -foperator-names"
+  AC_TRY_COMPILE([],
+    [int a = 1 bitor 2;], AC_MSG_RESULT(yes),
+    export CXXFLAGS="$oCXXFLAGS"
+    AC_MSG_ERROR(cannot get operator names to work)))
+
+dnl Create output ----------------------------------------------------------
+AC_OUTPUT(Makefile)

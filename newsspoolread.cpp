@@ -15,23 +15,42 @@
 // along with this program; if not, write to the Free Software
 // Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 
+#include <config.h>
 #include <iostream.h>
 #include <time.h>
 #include <string.h>
 #include <stdio.h>
-#ifdef UNIX
-# include <dirent.h>
-# include <unistd.h>
-#endif
-#ifdef __EMX__
+#ifdef HAS_EMX_FINDFIRST
 # include <emx/syscalls.h>
 # include <io.h>
+#elif defined(HAVE_MINGW32_DIR_H)
+# include <mingw32/dir.h>
+#else
+# ifdef HAVE_DIRENT_H
+# include <dirent.h>
+#  define NAMLEN(dirent) strlen((dirent)->d_name)
+# else
+#  define dirent direct
+#  define NAMLEN(dirent) (dirent)->d_namlen
+#  ifdef HAVE_SYS_NDIR_H
+#   include <sys/ndir.h>
+#  endif
+#  ifdef HAVE_SYS_DIR_H
+#   include <sys/dir.h>
+#  endif
+#  ifdef HAVE_NDIR_H
+#   include <ndir.h>
+#  endif
+# endif
 #endif
-#include <sys/types.h>
-#include <sys/stat.h>
+#ifndef HAVE_MINGW32_DIR_H
+# include <sys/types.h>
+# include <sys/stat.h>
+#endif
 
 #include "newsspoolread.h"
 #include "utility.h"
+#include "statengine.h"
 
 NewsSpoolRead::NewsSpoolRead(const char *path)
 {
@@ -55,7 +74,32 @@ bool NewsSpoolRead::Transfer(time_t starttime, StatEngine &destination)
     destination.NewsArea();
 
     // Open the message directory
-#if defined(UNIX)
+#if defined(HAS_EMX_FINDFIRST) || (HAVE_MINGW32_DIR_H)
+    string dirname = string(areapath);
+    if (dirname[dirname.length() - 1] != '\\')
+    {
+        dirname += '\\';
+    }
+
+    string searchpath = dirname + string("*");
+
+# ifdef HAS_EMX_FINDFIRST
+    struct _find spooldir;
+    int rc = __findfirst(searchpath.c_str(), 0x2f, &spooldir);
+
+    if (!rc)
+# else
+    struct _finddata_t spooldir;
+    int spoolhandle = _findfirst(searchpath.c_str(), &spooldir);
+    int rc = spoolhandle;
+
+    if (-1 == rc)
+# endif
+    {
+        cerr << "Unable to open spool directory" << endl;
+        return false;
+    }
+#else // no HAS_EMX_FINDFIRST or HAVE_MINGW32_DIR_H
     DIR *spooldir = opendir(areapath);
     if (!spooldir)
     {
@@ -68,23 +112,6 @@ bool NewsSpoolRead::Transfer(time_t starttime, StatEngine &destination)
     {
         dirname += '/';
     }
-#elif defined(__EMX__)
-    string dirname = string(areapath);
-    if (dirname[dirname.length() - 1] != '\\')
-    {
-        dirname += '\\';
-    }
-
-    string searchpath = dirname + string("*");
-
-    struct _find spooldir;
-    int rc = __findfirst(searchpath.c_str(), 0x2f, &spooldir);
-
-    if (!rc)
-    {
-        cerr << "Unable to open spool directory" << endl;
-        return false;
-    }
 #endif
 
     FILE *msg = NULL;
@@ -94,18 +121,24 @@ bool NewsSpoolRead::Transfer(time_t starttime, StatEngine &destination)
     unsigned long msgn = 0;
     long length, thislength;
     string from, subject;
-    struct stat   msgstat;
+#ifndef HAVE_MINGW32_DIR_H
+    struct stat msgstat;
+#endif
 
-#if defined(UNIX)
+#ifdef HAS_EMX_FINDFIRST
+# define FILENAME spooldir.name
+# define FILESIZE (spooldir.size_lo | (spooldir.size_hi << 16))
+    while (0 == rc)
+#elif defined(HAVE_MINGW32_DIR_H)
+# define FILENAME spooldir.name
+# define FILESIZE spooldir.size
+    while (0 == rc)
+#else // no HAS_EMX_FINDFIRST or HAVE_MINGW32_DIR_H
 # define FILENAME spooldirent_p->d_name
 # define FILESIZE msgstat.st_size
     struct dirent *spooldirent_p;
 
     while (NULL != (spooldirent_p = readdir(spooldir)))
-#elif defined(__EMX__)
-# define FILENAME spooldir.name
-# define FILESIZE (spooldir.size_lo | (spooldir.size_hi << 16))
-    while (0 == rc)
 #endif
     {
         // Check that we really have a news file (all-digit name)
@@ -125,9 +158,12 @@ bool NewsSpoolRead::Transfer(time_t starttime, StatEngine &destination)
             goto out2;
         }
 
+#ifdef HAVE_MINGW32_DIR_H
+        arrived = spooldir.time_create;
+#else
         stat(thisfile.c_str(), &msgstat);
-
         arrived = msgstat.st_mtime;
+#endif
         if (arrived < starttime) goto out2;
 
         // Read the message header
@@ -187,12 +223,16 @@ out2:;
         cout << ++ msgn << " done\r";
         if (msg) fclose(msg);
 
-#if defined(__EMX__)
+#ifdef HAS_EMX_FINDFIRST
         rc = __findnext(&spooldir);
+#elif defined(HAVE_MINGW32_DIR_H)
+        rc = _findnext(spoolhandle, &spooldir);
 #endif
     }
 
-#if defined(UNIX)
+#ifdef HAVE_MINGW32_DIR_H
+    _findclose(spoolhandle);
+#elif !defined(HAS_EMX_FINDFIRST)
     closedir(spooldir);
 #endif
 

@@ -1,4 +1,4 @@
-// Copyright © 1998 Peter Karlsson
+// Copyright © 1998-2000 Peter Karlsson
 //
 // $Id$
 //
@@ -19,7 +19,8 @@
 #define __STATVIEW_H
 
 #include <string>
-#include "statengine.h"
+
+class StatEngine;
 
 class StatView
 {

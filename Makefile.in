@@ -1,0 +1,79 @@
+# Makefile.in for Turquoise SuperStat
+#
+# $Id$
+
+# Variables
+CXXFLAGS=@CXXFLAGS@ -I. -Wall
+LDFLAGS=@LDFLAGS@
+srcdir=@srcdir@
+VPATH=@scrdir@
+LIBS=@LIBS@
+DESTDIR=
+OBJS=turqstat.o statengine.o statview.o squishread.o fdapxread.o jamread.o mypointread.o utility.o sdmread.o tanstaaflread.o newsspoolread.o
+DEF=@DEF@
+prefix=/usr
+exec_prefix=${prefix}
+
+# Magic targets
+all: turqstat@EXEEXT@
+
+debian:
+	fakeroot debian/rules binary
+
+clean:
+	-rm $(OBJS)
+	-rm turqstat@EXEEXT@
+
+distclean: clean
+	-rm config.status config.log config.h Makefile
+
+debianclean:
+	fakeroot debian/rules clean
+
+install: turqstat@EXEEXT@
+	install -d $(DESTDIR)@bindir@ $(DESTDIR)@datadir@/doc/turqstat/ $(DESTDIR)@mandir@/man1
+	install -s turqstat@EXEEXT@ $(DESTDIR)@bindir@
+	install -m 644 turqstat.doc $(DESTDIR)@datadir@/doc/turqstat/
+	install -m 644 turqstat.dok $(DESTDIR)@datadir@/doc/turqstat/
+	install -m 644 turqstat.1   $(DESTDIR)@mandir@/man1/
+
+# Binary
+turqstat@EXEEXT@: $(OBJS) $(DEF)
+	@CXX@ $(CXXFLAGS) $(LDFLAGS) -o turqstat@EXEEXT@ $(OBJS) $(DEF) $(LIBS)
+
+# Object files
+turqstat.o: turqstat.cpp statengine.h statview.h arearead.h squishread.h fdapxread.h jamread.h mypointread.h version.h tanstaaflread.h config.h
+	@CXX@ $(CXXFLAGS) -c $(srcdir)/turqstat.cpp
+
+statengine.o: statengine.cpp statengine.h config.h
+	@CXX@ $(CXXFLAGS) -c $(srcdir)/statengine.cpp
+
+statview.o: statview.cpp statview.h statengine.h version.h config.h
+	@CXX@ $(CXXFLAGS) -c $(srcdir)/statview.cpp
+
+squishread.o: squishread.cpp squishread.h arearead.h statengine.h datatypes.h utility.h config.h
+	@CXX@ $(CXXFLAGS) -c $(srcdir)/squishread.cpp
+
+utility.o: utility.cpp utility.h config.h
+	@CXX@ $(CXXFLAGS) -c $(srcdir)/utility.cpp
+
+fdapxread.o: fdapxread.cpp fdapxread.h datatypes.h statengine.h arearead.h config.h
+	@CXX@ $(CXXFLAGS) -c $(srcdir)/fdapxread.cpp
+
+tanstaaflread.o: tanstaaflread.cpp tanstaaflread.h datatypes.h statengine.h arearead.h config.h
+	@CXX@ $(CXXFLAGS) -c $(srcdir)/tanstaaflread.cpp
+
+jamread.o: jamread.cpp jamread.h datatypes.h statengine.h arearead.h config.h
+	@CXX@ $(CXXFLAGS) -c $(srcdir)/jamread.cpp
+
+mypointread.o: mypointread.cpp mypointread.h datatypes.h statengine.h arearead.h config.h
+	@CXX@ $(CXXFLAGS) -c $(srcdir)/mypointread.cpp
+
+sdmread.o: sdmread.cpp sdmread.h arearead.h statengine.h datatypes.h utility.h config.h
+	@CXX@ $(CXXFLAGS) -c $(srcdir)/sdmread.cpp
+
+newsspoolread.o: newsspoolread.cpp newsspoolread.h arearead.h utility.h config.h
+	@CXX@ $(CXXFLAGS) -c $(srcdir)/newsspoolread.cpp
+
+# List phony targets
+.PHONY: all debian clean distclean debianclean install
