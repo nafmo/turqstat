@@ -12,7 +12,7 @@ LIBS=@LIBS@
 QTLIBS=@QTLIB@
 DESTDIR=
 OBJS=turqstat.o statengine.o statview.o squishread.o fdapxread.o jamread.o mypointread.o utility.o sdmread.o tanstaaflread.o newsspoolread.o mytime.o output.o mappings.o convert.o
-QTOBJS=qtgui.o moc_qtgui.o qtlist.o moc_qtlist.o qtreport.o moc_qtreport.o qtbars.o moc_qtbars.o statengine.o statview.o squishread.o fdapxread.o jamread.o mypointread.o utility.o sdmread.o tanstaaflread.o newsspoolread.o mytime.o outputqt.o
+QTOBJS=qtgui.o moc_qtgui.o qtlist.o moc_qtlist.o qtreport.o moc_qtreport.o qtbars.o moc_qtbars.o statengine.o statview.o squishread.o fdapxread.o jamread.o mypointread.o utility.o sdmread.o tanstaaflread.o newsspoolread.o mytime.o outputqt.o mappings.o convert.o
 @QT@EXE=turqstat@EXEEXT@ xturqstat@EXEEXT@
 @NOQT@EXE=turqstat@EXEEXT@
 DEF=@DEF@
@@ -74,34 +74,34 @@ turqstat@EXEEXT@: $(OBJS) $(SUBOBJS) $(DEF)
 @QT@	@CXX@ $(CXXFLAGS) $(QTFLAGS) $(LDFLAGS) -o xturqstat@EXEEXT@ $(QTOBJS) $(SUBOBJS) $(DEF) $(LIBS) $(QTLIBS)
 
 # Object files
-turqstat.o: turqstat.cpp statengine.h statview.h arearead.h squishread.h fdapxread.h jamread.h mypointread.h version.h tanstaaflread.h config.h mytime.h output.h utility.h
+turqstat.o: turqstat.cpp statengine.h statview.h arearead.h squishread.h fdapxread.h jamread.h mypointread.h version.h tanstaaflread.h config.h mytime.h output.h utility.h convert.h
 	@CXX@ $(CXXFLAGS) -c $(srcdir)/turqstat.cpp
 
-statengine.o: statengine.cpp statengine.h config.h output.h utility.h
+statengine.o: statengine.cpp statengine.h config.h output.h utility.h convert.h
 	@CXX@ $(CXXFLAGS) -c $(srcdir)/statengine.cpp
 
-statview.o: statview.cpp statview.h statengine.h version.h config.h utility.h
+statview.o: statview.cpp statview.h statengine.h version.h config.h utility.h convert.h
 	@CXX@ $(CXXFLAGS) -c $(srcdir)/statview.cpp
 
-squishread.o: squishread.cpp squishread.h arearead.h statengine.h datatypes.h utility.h config.h output.h
+squishread.o: squishread.cpp squishread.h arearead.h statengine.h datatypes.h utility.h config.h output.h convert.h
 	@CXX@ $(CXXFLAGS) -c $(srcdir)/squishread.cpp
 
 utility.o: utility.cpp utility.h config.h mytime.h
 	@CXX@ $(CXXFLAGS) -c $(srcdir)/utility.cpp
 
-fdapxread.o: fdapxread.cpp fdapxread.h datatypes.h statengine.h arearead.h config.h output.h
+fdapxread.o: fdapxread.cpp fdapxread.h datatypes.h statengine.h arearead.h config.h output.h convert.h utility.h
 	@CXX@ $(CXXFLAGS) -c $(srcdir)/fdapxread.cpp
 
-tanstaaflread.o: tanstaaflread.cpp tanstaaflread.h datatypes.h statengine.h arearead.h config.h output.h
+tanstaaflread.o: tanstaaflread.cpp tanstaaflread.h datatypes.h statengine.h arearead.h config.h output.h convert.h utility.h
 	@CXX@ $(CXXFLAGS) -c $(srcdir)/tanstaaflread.cpp
 
-jamread.o: jamread.cpp jamread.h datatypes.h statengine.h arearead.h config.h output.h
+jamread.o: jamread.cpp jamread.h datatypes.h statengine.h arearead.h config.h output.h convert.h utility.h
 	@CXX@ $(CXXFLAGS) -c $(srcdir)/jamread.cpp
 
-mypointread.o: mypointread.cpp mypointread.h datatypes.h statengine.h arearead.h config.h output.h
+mypointread.o: mypointread.cpp mypointread.h datatypes.h statengine.h arearead.h config.h output.h convert.h utility.h
 	@CXX@ $(CXXFLAGS) -c $(srcdir)/mypointread.cpp
 
-sdmread.o: sdmread.cpp sdmread.h arearead.h statengine.h datatypes.h utility.h config.h output.h
+sdmread.o: sdmread.cpp sdmread.h arearead.h statengine.h datatypes.h utility.h config.h output.h convert.h
 	@CXX@ $(CXXFLAGS) -c $(srcdir)/sdmread.cpp
 
 newsspoolread.o: newsspoolread.cpp newsspoolread.h arearead.h utility.h config.h output.h
@@ -119,7 +119,7 @@ mappings.o: mappings.cpp mappings.h
 convert.o: convert.cpp convert.h mappings.h utility.h
 	@CXX@ $(CXXFLAGS) -c $(srcdir)/convert.cpp
 
-@QT@qtgui.o: qtgui.cpp qtgui.h qtlist.h qtreport.h statengine.h arearead.h squishread.h fdapxread.h jamread.h mypointread.h sdmread.h tanstaaflread.h newsspoolread.h utility.h qtbars.h mytime.h
+@QT@qtgui.o: qtgui.cpp qtgui.h qtlist.h qtreport.h statengine.h arearead.h squishread.h fdapxread.h jamread.h mypointread.h sdmread.h tanstaaflread.h newsspoolread.h utility.h qtbars.h mytime.h convert.h
 @QT@	@CXX@ $(CXXFLAGS) $(QTFLAGS) -c $(srcdir)/qtgui.cpp
 
 @QT@moc_qtgui.o: moc_qtgui.cpp
@@ -128,7 +128,7 @@ convert.o: convert.cpp convert.h mappings.h utility.h
 @QT@moc_qtgui.cpp: qtgui.h
 @QT@	@QTMOC@ -o moc_qtgui.cpp qtgui.h
 
-@QT@qtlist.o: qtlist.cpp qtlist.h statengine.h
+@QT@qtlist.o: qtlist.cpp qtlist.h statengine.h convert.h utility.h
 @QT@	@CXX@ $(CXXFLAGS) $(QTFLAGS) -c $(srcdir)/qtlist.cpp
 
 @QT@moc_qtlist.cpp: qtlist.h
@@ -146,7 +146,7 @@ convert.o: convert.cpp convert.h mappings.h utility.h
 @QT@moc_qtreport.o: moc_qtreport.cpp
 @QT@	@CXX@ $(CXXFLAGS) $(QTFLAGS) -c moc_qtreport.cpp
 
-@QT@qtbars.o: qtbars.cpp qtbars.h statengine.h qtbars.moc
+@QT@qtbars.o: qtbars.cpp qtbars.h statengine.h convert.h utility.h qtbars.moc
 @QT@	@CXX@ $(CXXFLAGS) $(QTFLAGS) -c $(srcdir)/qtbars.cpp
 
 @QT@moc_qtbars.cpp: qtbars.h
