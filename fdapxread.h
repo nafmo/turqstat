@@ -70,9 +70,9 @@ protected:
         UINT16  foldernumberreply1st;
     };
 
-    const Fdapx_local   = 0x01;
-    const Fdaxx_sent    = 0x10;
-    const Fdapx_deleted = 0x80000000;
+    static const UINT32 Fdapx_local   = 0x01;
+    static const UINT32 Fdaxx_sent    = 0x10;
+    static const UINT32 Fdapx_deleted = 0x80000000;
 
     struct msgstatapx_s /* MSGSTAT.APX */
     {
@@ -83,7 +83,7 @@ protected:
         UINT16  lastreadptrs[2000];
     };
 
-    const Fdapx_msgbaseversion = 3;
+    static const UINT32 Fdapx_msgbaseversion = 3;
 };
 
 #endif
