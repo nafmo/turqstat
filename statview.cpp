@@ -4,8 +4,7 @@
 //
 // This program is free software; you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
-// the Free Software Foundation; either version 2 of the License, or
-// (at your option) any later version.
+// the Free Software Foundation, version 2
 //
 // This program is distributed in the hope that it will be useful,
 // but WITHOUT ANY WARRANTY; without even the implied warranty of
@@ -38,11 +37,10 @@ bool StatView::CreateReport(StatEngine *engine, string filename,
     if (!(report.is_open())) return false;
 
     // Include data as given from the statistics engine
-    report << "Turqoise * Message area statistics" << endl;
-    report << "==================================" << endl;
+    report << "Turqoise SuperStat 1.0 * Message area statistics" << endl;
+    report << "================================================" << endl;
     report << endl;
     report << "(c) Copyright 1998-1999 Peter Karlsson" << endl;
-    report << "This is a BETA version" << endl;
     report << endl;
 
     if (0 == engine->GetTotalNumber())

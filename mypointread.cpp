@@ -4,8 +4,7 @@
 //
 // This program is free software; you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
-// the Free Software Foundation; either version 2 of the License, or
-// (at your option) any later version.
+// the Free Software Foundation, version 2
 //
 // This program is distributed in the hope that it will be useful,
 // but WITHOUT ANY WARRANTY; without even the implied warranty of
@@ -67,6 +66,12 @@ bool MyPointRead::Transfer(time_t starttime, StatEngine &destination)
 
     header_s hdr;
     fread(&hdr, sizeof (hdr), 1, areaf);
+
+    if (Mypoint_msgbaseversion < hdr.areaprf[0])
+    {
+        cerr << "Error: Illegal MyPoint message base version" << endl;
+        return false;
+    }
 
     fseek(flagf, sizeof (flags_s), SEEK_SET);
 

@@ -9,8 +9,7 @@
 //
 // This program is free software; you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
-// the Free Software Foundation; either version 2 of the License, or
-// (at your option) any later version.
+// the Free Software Foundation, version 2
 //
 // This program is distributed in the hope that it will be useful,
 // but WITHOUT ANY WARRANTY; without even the implied warranty of
@@ -25,6 +24,9 @@
 #include <string>
 #include <unistd.h>
 #include <stdlib.h>
+#ifdef __CYGWIN__
+# include <getopt.h>
+#endif
 
 #include "statengine.h"
 #include "statview.h"
@@ -63,8 +65,10 @@ int main(int argc, char *argv[])
          daystats = true;
 
     // We don't want timezones here
+#ifdef __EMX__
     timezone = 0;
     daylight = 0;
+#endif
 
     // Handle arguments
     int c;
@@ -99,7 +103,7 @@ int main(int argc, char *argv[])
 
             case '?':
             default:
-                cout << "Turqoise - Statistics tool for Fidonet message bases"
+                cout << "Turqoise 1.0 - Statistics tool for Fidonet message bases"
                      << endl;
                 cout << endl;
                 cout << "Usage: turqoise [options] areapath outputfile" << endl;
@@ -118,7 +122,7 @@ int main(int argc, char *argv[])
                 cout << "  -j             JAM style message base" << endl;
                 cout << "  -f             FDAPX/w style message base (needs -a)"
                      << endl;
-                cout << "  -j             MyPoint style message base" << endl;
+                cout << "  -p             MyPoint style message base" << endl;
                 cout << endl;
                 cout << "  -Q -W -R -S -P Turn quoters/written/received/"
                                          "subjects/programs toplist off"
@@ -157,7 +161,7 @@ StatRetr::StatRetr(char *areapath, char *outputfilepath, unsigned areanum,
                    bool topsubjects, bool topprograms,
                    bool weekstats, bool daystats)
 {
-    cout << "Turqoise SuperStat 0.1 (c) Copyright 1998-1999 Peter Karlsson."
+    cout << "Turqoise SuperStat 1.0 (c) Copyright 1998-1999 Peter Karlsson."
          << endl;
 
     // Compute starting time
