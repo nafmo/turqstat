@@ -49,7 +49,7 @@ bool MyPointRead::Transfer(time_t starttime, StatEngine &destination)
     ending[2] = 'A' + areanumber % 26;
 
     // Sanity check
-    if (ending[0] > '9' || ending[1] > 'Z')
+    if (ending[1] > '9' || ending[2] > 'Z')
     {
         cerr << "Illegal area number" << endl;
         return false;
