@@ -84,6 +84,7 @@ public slots:
     void subjectlist();
     void softwarelist();
     void timelist();
+    void daylist();
     void update();
 
 signals:

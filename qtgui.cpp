@@ -46,6 +46,7 @@
 #include "qtgui.h"
 #include "qtlist.h"
 #include "qtreport.h"
+#include "qtbars.h"
 
 #include "statengine.h"
 #include "arearead.h"
@@ -88,13 +89,15 @@ InfoWindow::InfoWindow()
                          SLOT(domainlist()), CTRL+Key_5);
     showmenu->insertItem(tr("&Receiver toplist"), this, SLOT(receiverlist()),
                          CTRL+Key_6);
-    showmenu->insertItem(tr("&Subject toplist"), this, SLOT(subjectlist()),
+    showmenu->insertItem(tr("S&ubject toplist"), this, SLOT(subjectlist()),
                          CTRL+Key_7);
     showmenu->insertItem(tr("Soft&ware toplist"), this, SLOT(softwarelist()),
                          CTRL+Key_8);
     showmenu->insertSeparator();
-    showmenu->insertItem(tr("&Posting times"), this, SLOT(timelist()),
+    showmenu->insertItem(tr("Postings per &hour"), this, SLOT(timelist()),
                          CTRL+Key_T);
+    showmenu->insertItem(tr("Postings per &day"), this, SLOT(daylist()),
+                         CTRL+Key_D);
     menu->insertItem(tr("&Show"), showmenu);
 
     // Add information boxes
@@ -194,7 +197,7 @@ InfoWindow::InfoWindow()
 
 InfoWindow::~InfoWindow()
 {
-#warning Destroy
+    delete engine;
 }
 
 InfoWindow *InfoWindow::getMainWindow()
@@ -499,6 +502,24 @@ void InfoWindow::softwarelist()
 
 void InfoWindow::timelist()
 {
+    BarWindow *timedialog =
+        new BarWindow(this, "timedialog", BarWindow::Hours);
+    if (timedialog)
+    {
+        timedialog->fillOut(engine);
+        timedialog->show();
+    }
+}
+
+void InfoWindow::daylist()
+{
+    BarWindow *daydialog =
+        new BarWindow(this, "daydialog", BarWindow::Days);
+    if (daydialog)
+    {
+        daydialog->fillOut(engine);
+        daydialog->show();
+    }
 }
 
 void InfoWindow::clear()
