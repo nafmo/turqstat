@@ -6,9 +6,35 @@
   turqstat.dok
     Documented changes in distribution file structure.
 
-  turqstat.cpp
   version.h
     Preparations for 1.4.
+
+  turqstat.cpp
+  configure.in
+  acconfig.h
+    Able to use my own getopt if none is found on system.
+    More timezone/daylight stuff.
+
+  Makefile.in
+  mygetopt.h
+  mygetopt.cpp
+    Added my own getopt to use if no getopt is found (like for Mingw32).
+
+  statengine.cpp
+    Ignore tear and Origin lines in news.
+
+  newsspoolread.cpp
+  sdmread.cpp
+    Works with findfirst/findnext in Mingw32 now.
+
+  statengine.cpp
+    Makes sure dates are valid before adding them.
+
+  datatypes.h
+    CygWin fixes.
+
+  utility.cpp
+    More timezone/daylight stuff.
 
 2000-04-12 - peter karlsson <peter@softwolves.pp.se>
   acconfig.h
