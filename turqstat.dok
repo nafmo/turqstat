@@ -393,6 +393,12 @@ en underkatalog debian, vilken innehåller kontrollfiler för att skapa ett
 binärpaket för Debian.
 
 
+CREDITS
+
+Tack till Dan Gohman <gohmandj@mrs.umn.edu> för hjälp med anpassning till
+GNU C++ 3.0.0.
+
+
 KRAV FÖR KOMPILERING
 
 Programmet utvecklades under OS/2 med EMX 0.9d/GNU C/C++ 2.8.1, Debian 2.2

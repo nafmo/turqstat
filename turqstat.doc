@@ -393,6 +393,12 @@ contains a debian subdirectory which has control files for creating a Debian
 binary package.
 
 
+CREDITS
+
+Thanks to Dan Gohman <gohmandj@mrs.umn.edu> for help with porting to GNU C++
+3.0.0.
+
+
 REQUIREMENTS FOR COMPILATION
 
 The program was developed under OS/2 using EMX 0.9d/GNU C/C++ 2.8.1, Debian
