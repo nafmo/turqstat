@@ -1,6 +1,5 @@
-turqstat (2.1) unstable; urgency=low
+xturqstat (2.1) unstable; urgency=low
 
-  * Made it possible to select date ranges for input.
   * Added character re-encoding for most single-byte character sets used in
     Fidonet and Usenet today.
   * Cleaned up Debianization slightly.
@@ -42,25 +41,3 @@ turqstat (2.0) unstable; urgency=low
   * For more info, see the original ChangeLog.
 
  -- peter karlsson <peterk@debian.org>  Sun, 26 Nov 2000 14:21:00 +0100
-
-turqstat (1.4) unstable; urgency=low
-
-  * New version.
-  * Uses autoconf.
-  * Now actually includes the program ChangeLog.
-
- -- Per Lundberg <plundis@debian.org>  Mon, 15 May 2000 18:27:00 +0200
-
-turqstat (1.3) unstable; urgency=low
-
-  * New version (see ChangeLog).
-
- -- Per Lundberg <plundis@debian.org>  Sat, 25 Mar 2000 15:02:59 +0100
-
-turqstat (1.2-1) unstable; urgency=low
-
-  * Initial Release.
-  * Took jamread.* from upcoming 1.3 version to be able to compile with
-    GNU C++ 2.95.
-
- -- Per Lundberg <plundis@debian.org>  Thu, 14 Oct 1999 20:43:27 +0200
