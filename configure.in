@@ -220,6 +220,19 @@ if test "$locale" = "yes"; then
 fi
 
 AC_LANG_CPLUSPLUS
+AC_CACHE_CHECK([if compiler needs explicit namespace], ac_cv_namespace,
+  AC_TRY_COMPILE([#include <string>],
+    [ string s = "Test"; ],
+    ac_cv_namespace=no,
+    AC_TRY_COMPILE([#include <string>
+      using namespace std;],
+      [string s = "Test"; ],
+      ac_cv_namespace=yes,
+      AC_MSG_ERROR(Cannot instantiate the string class))))
+if test "$ac_cv_namespace" = "no"; then
+  AC_DEFINE(HAVE_IMPLICIT_NAMESPACE)
+fi
+
 AC_CACHE_CHECK([for working wstring], ac_cv_wstring,
   AC_TRY_COMPILE([#include <wchar.h>
   #include <string>
@@ -228,6 +241,15 @@ AC_CACHE_CHECK([for working wstring], ac_cv_wstring,
   ac_cv_wstring=yes, ac_cv_wstring=no))
 if test "$ac_cv_wstring" = "yes"; then
   AC_DEFINE(HAVE_WORKING_WSTRING)
+fi
+
+AC_CACHE_CHECK([for fstream::form], ac_cv_fstream_form,
+  AC_TRY_COMPILE([#include <fstream>
+    using namespace std;],
+    [ fstream f; f.form(""); ],
+    ac_cv_fstream_form=yes, ac_cv_fstream_form=no))
+if test "$ac_cv_fstream_form" = "yes"; then
+  AC_DEFINE(HAVE_FSTREAM_FORM_METHOD)
 fi
 
 AC_LANG_C
