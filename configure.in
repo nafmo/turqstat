@@ -221,7 +221,7 @@ AC_CACHE_CHECK([for sleep in unistd.h], ac_cv_sleep,
     ac_cv_sleep=no, ac_cv_sleep=yes))
 if test "$ac_cv_sleep" = "yes"; then
   AC_DEFINE(HAVE_SLEEP)
-#else
+else
   AC_CACHE_CHECK([for _sleep in stdlib.h], ac_cv__sleep,
     AC_TRY_COMPILE([#include <stdlib.h>
                     struct s *_sleep(const char *);],

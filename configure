@@ -2399,7 +2399,7 @@ if test "$ac_cv_sleep" = "yes"; then
 #define HAVE_SLEEP 1
 EOF
 
-#else
+else
   echo $ac_n "checking for _sleep in stdlib.h""... $ac_c" 1>&6
 echo "configure:2405: checking for _sleep in stdlib.h" >&5
 if eval "test \"`echo '$''{'ac_cv__sleep'+set}'`\" = set"; then
