@@ -1,6 +1,6 @@
-// Copyright (c) 2000 Peter Karlsson
+// Copyright (c) 2000-2001 Peter Karlsson
 //
-// $Id: output.cpp,v 1.4 2000/11/12 00:20:25 peter Exp $
+// $Id: output.cpp,v 1.5 2001/02/11 16:40:11 peter Exp $
 //
 // This program is free software; you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
