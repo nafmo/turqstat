@@ -31,11 +31,12 @@ debianclean:
 	fakeroot debian/rules clean
 
 install: turqstat@EXEEXT@
-	install -d $(DESTDIR)@bindir@ $(DESTDIR)@datadir@/doc/turqstat/ $(DESTDIR)@mandir@/man1
+	install -d $(DESTDIR)@bindir@ $(DESTDIR)@datadir@/doc/turqstat/ $(DESTDIR)@mandir@/man1 $(DESTDIR)@mandir@/sv/man1/
 	install -s turqstat@EXEEXT@ $(DESTDIR)@bindir@
 	install -m 644 turqstat.doc $(DESTDIR)@datadir@/doc/turqstat/
 	install -m 644 turqstat.dok $(DESTDIR)@datadir@/doc/turqstat/
 	install -m 644 turqstat.1   $(DESTDIR)@mandir@/man1/
+	install -m 644 turqstat-sv.1 $(DESTDIR)@mandir@/sv/man1/turqstat.1
 
 # Binary
 turqstat@EXEEXT@: $(OBJS) $(DEF)

@@ -1,3 +1,17 @@
+2000-05-01 - peter karlsson <peter@softwolves.pp.se>
+  turqstat.doc
+  turqstat.dok
+  turqstat.1
+    Documented recent changes.
+
+  turqstat-sv.1
+    Added Swedish manual page.
+
+  Makefile.in
+  debian/dirs
+  makedist.sh
+    Added rules for Swedish manual page.
+
 2000-04-30 - peter karlsson <peter@softwolves.pp.se>
   jamread.cpp
   squishread.cpp

@@ -1,4 +1,4 @@
-Turquoise SuperStat 1.4 - An area statistics program for Fidonet
+Turquoise SuperStat 1.4 - An area statistics program for Fidonet and Usenet
 (c) Copyright 1998-2000 Peter Karlsson.
 A Softwolves Software Release in 2000
 
@@ -65,7 +65,7 @@ to be written to.
 
 These extra options are available:
 
-General options:
+Data selection:
 
 -d <days>
    Selects the number of days back to count messages from. The default is 0,
@@ -75,12 +75,15 @@ General options:
    Selects the maximum number of entries in the toplists. The default is 15. 0
    indicates no limit.
 
+Input selection:
+
 -a <path>
    Selects the message base path for the FDAPX/w, MyPoint and taanstafl
    message bases, which have all message bases in the same files.
 
 -s Selects Squish style message base (default). The areapath parameter should
-   be the base name of the Squish files.
+   be the base name of the Squish files, or the name of any of the data files
+   (suffix is automatically removed).
 
 -m Selects FTSC *.MSG style message base. The areapath parameter should be the
    directory in which the messagebase resides.
@@ -89,7 +92,8 @@ General options:
    directory in which the messagebase resides.
 
 -j Select JAM style message base. The areapath parameter should be the base
-   name of the JAM files.
+   name of the JAM files, or the name of any of the data files (suffix is
+   automatically removed).
 
 -f Selects FDAPX/w style message base. Requires the use of the -a parameter to
    select the message base path. The areapath parameter should be the area
@@ -116,6 +120,10 @@ Toplist selection:
 
 -N Turns the top nets list off (default is on) (Fidonet only).
 
+-T Turns the top Internet topdomain list on/off. For Usenet, the default is
+   on, and this switch turns it off. For Fidonet, the default is off, and this
+   switch turns it on, but only if there are any RFC gated messages detected.
+
 -R Turns the recipient toplist off (default is on) (Fidonet only).
 
 -S Turns the subject toplist off (default is on).
@@ -133,9 +141,9 @@ Output options:
 
 -A Display all numbers in toplists (default is off).
 
--L Use the locale defined date format (default is to use the ISO-8601 format).
-   Please note that the support for local date formats varies with platform
-   and compiler.
+-L Use the locale defined date format (default is to use the ISO-8601
+   format, as per Swedish and EU standards). Please note that the support
+   for local date formats varies with platform and compiler.
 
 The options can be aggregated on the command line, for example:
 
@@ -196,8 +204,10 @@ HISTORY
   Adjusted time zone functions.
 2000-  -   - v1.4 -
   Uses autoconf for easier portability.
-  Toplist over Fidonet nets.
+  Toplist over Fidonet nets and Internet top domains.
   Support for locale date formats.
+  Finds Internet addresses in Fidonet areas.
+  Can give file names for JAM and Squish bases, instead of only base name.
 
 
 INCLUDED FILES
@@ -207,6 +217,7 @@ OS/2 and Win32 distribution:
 turqstat.doc - This documentation
 turqstat.dok - Documentation in Swedish
 turqstat.1   - Unix manual page
+turqstat-sv.1  Unix manual page in Swedish
 COPYING      - The GNU General Public License, version 2
 
 src/ directory:
@@ -250,7 +261,7 @@ os2/ directory:
   README.os2      - OS/2 release notes
 
 win32/ directory:
-  turqstat.exe    - Main executable file (Win32 i386, CygWin)
+  turqstat.exe    - Main executable file (Win32 i386, Mingw32)
   README.Win32    - Win32 release notes
 
 The Unix distribution consists of a .tar.gz containing all the sources listed

@@ -1,4 +1,4 @@
-Turquoise SuperStat 1.4 - Ett m”tesstatistikprogram f”r Fidonet
+Turquoise SuperStat 1.4 - Ett m”tesstatistikprogram f”r Fidonet och Usenet
 (c) Copyright 1998-2000 Peter Karlsson.
 A Softwolves Software Release in 2000
 
@@ -54,16 +54,16 @@ Alla statistikomr†den kan st„ngas av. Statistiken lagras i en textfil.
 
 Turquoise SuperStat „r helt kommandoradsstyrd, och formatet „r som f”ljer:
 
-  turqstat [v„xlar] utdatafil areas”kv„g(ar)
+  turqstat [flaggor] utdatafil areas”kv„g(ar)
 
 d„r areas”kv„g(ar) „r s”kv„gen till meddelandebasfilen, eller m”tesnumret
 (beror p† valt meddelandebasformat). Flera s”kv„gar eller m”tesnummer kan
 anges f”r att f† kombinerad statistik f”r flera m”ten. Utdatafil „r s”kv„gen
 till den textfil som statistiken skall skrivas till.
 
-Dessa extra kommandoradsv„xlar „r tillg„ngliga:
+Dessa extra kommandoradsflaggor „r tillg„ngliga:
 
-Allm„nna parametrar:
+Dataurval:
 
 -d <dagar>
    V„ljer det antal dagar tillbaka som meddelanden skall r„knas fr†n. Det
@@ -73,12 +73,15 @@ Allm„nna parametrar:
    V„ljer maximalt antal poster i topplistorna. F”rinst„llt v„rde „r 15. 0
    anger att ingen gr„ns anv„nds.
 
+Val av indata:
+
 -a <s”kv„g>
    V„ljer meddelandebass”kv„g f”r FXAPX/w-, MyPoint- och
    tanstaaflmeddelandebaser, vilka har alla meddelandebaser i samma filer.
 
 -s V„ljer meddelandebaser av Squishtyp (f”rinst„llt v„rde). Areas”kv„gen skall
-   vara basnamnet p† Squishfilerna.
+   vara basnamnet p† Squishfilerna, eller namnet p† n†gon av datafilerna
+   (filtill„gget tas automatiskt bort).
 
 -m V„ljer meddelandebaser av FTSC-*.MSG-typ. Areas”kv„gen skall vara katalogen
    i vilken meddelandebasen ligger.
@@ -87,7 +90,8 @@ Allm„nna parametrar:
    i vilken meddelandebasen ligger.
 
 -j V„ljer meddelandebaser av JAM-typ. Areas”kv„gen skall vara basnamnet p†
-   JAM-filerna.
+   JAM-filerna, eller namnet p† n†gon av datafilerna (filtill„gget tas
+   automatiskt bort).
 
 -f V„ljer meddelandebaser av FDAPX/w-typ. Kr„ver att parametern -a anv„nds f”r
    att v„lja meddelandebass”kv„gen. Areas”kv„gen skall vara m”tesnumret
@@ -104,6 +108,8 @@ Allm„nna parametrar:
 -u V„ljer en Usenet news-"spool". Areas”kv„gen skall vara katalogen i vilken
    Usenetartiklarna ligger.
 
+Val av topplistor:
+
 -Q St„nger av citatvolymsvartlistan (f”rinst„llt v„rde „r p†).
 
 -W St„nger av avs„ndartopplista (f”rinst„llt v„rde „r p†).
@@ -111,6 +117,11 @@ Allm„nna parametrar:
 -O St„nger av originalinneh†llstopplista (f”rinst„llt v„rde „r p†).
 
 -N St„nger av n„ttopplistan (f”rinst„llt v„rde „r p†) (enbart Fidonet).
+
+-T St„nger av/sl†r p† topplistan ”ver Internet-toppdom„ner. F”r Usenet „r
+   f”rval p†, varp† denna flagga st„nger av det. F”r Fidonet „r f”rval av,
+   varp† denna flagga sl†r p† det, men endast om RFC-gate:ade meddelanden
+   hittas.
 
 -R St„nger av mottagartopplista (f”rinst„llt v„rde „r p†) (enbart Fidonet).
 
@@ -122,27 +133,28 @@ Allm„nna parametrar:
 
 -D St„nger av postningsstatistik per dag (f”rinst„llt v„rde „r p†).
 
--V St„nger av visning av versioenr i programtopplista (f”rinst„llt v„rde „r
+-V St„nger av visning av versioner i programtopplista (f”rinst„llt v„rde „r
    p†).
 
 Utseende p† utdata:
 
 -A Visar alla siffror i topplistorna (f”rinst„llt v„rde „r av).
 
--L Anv„nd datumformatet enligt "locale"-definition (f”rinst„llt v„rde „r att
-   anv„nda ISO-8601-format). Observera att st”det f”r lokala datumformat
-   varierar beroende p† plattform och kompilatorer.
+-L Anv„nd datumformatet enligt "locale"-definition (f”rinst„llt v„rde „r
+   att anv„nda ISO-8601-format, vilket sammanfaller med EU- och svensk
+   norm). Observera att st”det f”r lokala datumformat varierar beroende p†
+   plattform och kompilatorer.
 
-V„xlarna kan kombineras p† kommandoraden, till exempel:
+Flaggorna kan kombineras p† kommandoraden, till exempel:
 
   turqstat -mWRSPHDON d:\text\output.txt d:\msgbase\thisarea
 
 kommer att skapa (enbart) en citatvolymsvartlista f”r *.MSG-meddelandebasen i
-katalogen d:\msgbase\thisarea. V„xlarna „r skiftl„gesk„nsliga.
+katalogen d:\msgbase\thisarea. Flaggorna „r skiftl„gesk„nsliga.
 
   turqstat -?
 
-visar en snabbhj„lpsk„rm med en ”versikt ”ver tillg„ngliga v„xlar.
+visar en snabbhj„lpsk„rm med en ”versikt ”ver tillg„ngliga flaggor.
 
 
 TIDSSTŽMPLAR
@@ -192,8 +204,10 @@ HISTORIK
   Justerade tidszonsfunktioner.
 2000-  -   - v1.4 -
   Anv„nder autoconf f”r l„ttare anpassning till nya plattformar.
-  Topplista ”ver Fidonetn„t.
+  Topplista ”ver Fidonetn„t och Internet-toppdom„ner.
   St”d f”r localdefinierade datumformat.
+  Hittar Internetadresser i Fidonetm”ten.
+  Kan ange f”r JAM- och Squishdatabaser, inte bara basnamnet.
 
 
 BIFOGADE FILER
@@ -201,6 +215,7 @@ BIFOGADE FILER
 turqstat.doc - Dokumentation p† engelska
 turqstat.dok - Denna dokumentation
 turqstat.1   - Unixmanualsida
+turqstat-sv.1  Unixmanualsida p† svenska
 COPYING      - GNU General Public License, version 2
 
 src/-katalogen:

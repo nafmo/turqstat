@@ -1,7 +1,7 @@
 .\" $Id$
-.TH TURQSTAT 1 "$Date$" "Softwolves Software" ""
+.TH TURQSTAT 1 2000 "Softwolves Software" ""
 .SH NAME
-turqstat \- Statistics tool for Fidonet message bases
+turqstat \- Statistics tool for Fidonet and Usenet
 .SH SYNOPSIS
 .PD 0
 .B turqstat
@@ -20,6 +20,10 @@ formats, or a standard Usenet news spool, and creates statistics about this:
 .PP
 .I Toplist of original content per message.
 .PP
+.I Toplist of Fidonet nets (Fidonet only).
+.PP
+.I Toplist of Internet topdomains.
+.PP
 .I Toplist of receivers (Fidonet only).
 .PP
 .I Toplist of subjects.
@@ -32,7 +36,7 @@ formats, or a standard Usenet news spool, and creates statistics about this:
 .RE
 .PD
 .SH OPTIONS
-.SS "GENERAL OPTIONS"
+.SS "DATA SELECTIOM"
 .TP
 .I \-d days
 Selects the number of days back to count messages from. The default is
@@ -41,11 +45,11 @@ Selects the number of days back to count messages from. The default is
 .I \-n num
 Selects the maximum number of entries in the toplists. The default is 15.
 0 indicates no limit.
+.SS "INPUT SELECTION"
 .TP
 .I \-a path
-Selects the area number for the FDAPX/w and MyPoint message bases, which
-have all messages in the same files.
-.SS "MESSAGE BASE TYPE"
+Selects the message base path for the FDAPX/w, MyPoint and taanstafl
+message bases, which have all message bases in the same files.
 .TP
 .I \-s
 Squish message bases (default).
@@ -72,7 +76,8 @@ MyPoint message bases.
 Usenet news spool.
 .SS "TOPLIST SELECTION"
 These options are used to turn toplists off.
-By default, all toplists are enabled.
+By default, all toplists are enabled (except for Internet top domains, see
+below).
 .TP
 .I \-Q
 Turns the quoter blacklist off.
@@ -88,6 +93,11 @@ Turns the top nets (Fidonet only) list off.
 .TP
 .I \-R
 Turns the recipient (Fidonet only) toplist off.
+.TP
+.I \-T
+Turns the top Internet topdomain list on/off. For Usenet, the default is
+on, and this switch turns it off. For Fidonet, the default is off, and this
+switch turns it on, but only if there are any RFC gated messages detected.
 .TP
 .I \-S
 Turns the subject toplist off.
@@ -109,21 +119,24 @@ Turns the display of versions in the program toplist off.
 Display all numbers in toplists (default is off).
 .TP
 .I \-L
-Use locale defined date format in output (default is ISO-8601 format).
+Use locale defined date format in output (default is ISO-8601 format, as
+per Swedish and EU standards).
 .SH "SEE ALSO"
 .I turqstat.doc
 .SH BUGS
 Since the C library is timezone aware, there are several places where times
 can be mangled because of this.
-This is not a bug in this program, it is a bug in the C programmling
+This is not a bug in this program, it is a bug in the C programming
 language.
+See the documentation file mention above for more information.
 .PP
 Report any bugs to the authors.
 .SH AUTHOR
 Turquoise SuperStat was written by Peter Karlsson.
-If you have bug-reports or questions, mail them to
-peter@softwolves.pp.se
+If you have bug reports or questions, mail them to
+peter@softwolves.pp.se or see the website at
+http://www.softwolves.pp.se/
 .PP
 A Softwolves Software (tm) Release in 2000.
 .PP
-This program is released under the GNU General Public License.
+This program is released under the GNU General Public License, version 2.
