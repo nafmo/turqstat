@@ -3,6 +3,11 @@
   configure.in
     Consolidated binary targets, and adds the turqstat.def file to the EMX
     check.
+    Added CygWin checks.
+
+  newsspoolread.cpp
+  sdmread.cpp
+    Use native findfirst/findnext also under CygWin.
 
 2000-04-02 - peter karlsson <peter@softwolves.pp.se>
   Makefile.in
