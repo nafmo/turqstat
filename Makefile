@@ -6,8 +6,8 @@ CFLAGS=-Wall -Zcrtdll -Zomf -Ismapi -Lsmapi -O3
 
 all: turqoise.exe
 
-turqoise.exe: turqoise.obj statengine.obj statview.obj turqoise.def squishread.obj smapi/smapiemo.lib
-        gcc $(CFLAGS) -o turqoise.exe *.obj *.def -lsmapiemo -lstdcpp -lgpp
+turqoise.exe: turqoise.obj statengine.obj statview.obj turqoise.def squishread.obj utility.obj smapi/smapiemo.lib
+        gcc $(CFLAGS) -o turqoise.exe *.obj *.def -lsmapiemo -lstdcpp
 
 turqoise.obj: turqoise.cpp statengine.h statview.h arearead.h squishread.h
         gcc $(CFLAGS) -c turqoise.cpp
@@ -20,6 +20,9 @@ statview.obj: statview.cpp statview.h statengine.h
 
 squishread.obj: squishread.cpp squishread.h arearead.h statengine.h
         gcc $(CFLAGS) -c squishread.cpp
+
+utility.obj: utility.cpp utility.h
+        gcc $(CFLAGS) -c utility.cpp
 
 smapi/smapiemo.lib:
         cd smapi
