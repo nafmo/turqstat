@@ -78,6 +78,7 @@ bool JamRead::Transfer(time_t starttime, StatEngine &destination)
     }
 
     // <name>.jdt - contains message text
+    filepath = string(areapath) + ".jdt";
     FILE *jdt = fopen(filepath.c_str(), "rb");
     if (!jdt)
     {
@@ -131,6 +132,7 @@ bool JamRead::Transfer(time_t starttime, StatEngine &destination)
             // Retrieve message body
             fseek(jdt, hdrinfo.offset, SEEK_SET);
             buf = new char[hdrinfo.txtlen + 1];
+
             if (!buf)
             {
                 cerr << "Unable to allocate memory for message body (msg #"
