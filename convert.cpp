@@ -476,7 +476,7 @@ string Encoder::Encode(const wstring &input)
 
             char result = 0;
             int low = 0, high = maplength - 1, mid;
-            while (!result)
+            while (!result && low <= high)
             {
                 mid = low + (high - low) / 2;
                 if (ucs == outmap[mid].unicode)
@@ -491,14 +491,46 @@ string Encoder::Encode(const wstring &input)
                 {
                     low = mid + 1;
                 }
+            }
 
-                // Check for error condition
-                if (low > high)
+            if (result)
+            {
+                s += result;
+            }
+            else if (!result)
+            {
+                // Use fallback if character was not found
+                low = 0;
+                high = fallbackmap_len -1;
+                const char *result = NULL;
+
+                while (!result && low <= high)
                 {
-                    result = '?';
+                    mid = low + (high - low) / 2;
+                    if (ucs == fallback[mid].unicode)
+                    {
+                        result = fallback[mid].fallback;
+                    }
+                    else if (ucs < fallback[mid].unicode)
+                    {
+                        high = mid - 1;
+                    }
+                    else if (ucs > fallback[mid].unicode)
+                    {
+                        low = mid + 1;
+                    }
+                }
+
+                if (result)
+                {
+                    s += result;
+                }
+                else
+                {
+                    // Give up and use a question mark
+                    s += '?';
                 }
             }
-            s += result;
         }
 
         i ++;

@@ -1,6 +1,6 @@
 #!/usr/bin/perl -w
 #
-# Copyright (c) 1998-2001 Peter Karlsson
+# Copyright (c) 2001 Peter Karlsson
 #
 # $Id$
 #
@@ -175,8 +175,16 @@ struct reversemap
     char legacy;            ///< Value in legacy encoding.
 };
 
+/** Structure used to represent the fallback mapping table. */
+struct fallbackmap
+{
+    unsigned short unicode; ///< Unicode code point.
+    const char *fallback;   ///< Fallback string representing codepoint.
+};
+
 EOM
 
+# Mapping tables
 foreach $file (sort keys %arrayname)
 {
 	# Sanity check.
@@ -253,7 +261,6 @@ foreach $file (sort keys %arrayname)
 
 	print HEADER '/** Outgoing conversion table for ', $name{$file}, " */\n";
 	print HEADER 'extern const struct reversemap ', $outname, '[', $#mapped + 1, "];\n";
-	print HEADER 'const unsigned short ', $outname, '_len = ', $#mapped + 1, ";\n\n";
 	print MAPPINGS 'const struct reversemap ', $outname, '[', $#mapped + 1, "] =\n{\n";
 	my $count = 0;
 
@@ -264,7 +271,45 @@ foreach $file (sort keys %arrayname)
 		print MAPPINGS ",\n" if ++ $count < $#mapped + 1;
 	}
 	print MAPPINGS "\n};\n\n";
+
+	print HEADER '/** Length of mapping table for ', $name{$file}, " */\n";
+	print HEADER 'const unsigned short ', $outname, '_len = ', $#mapped + 1, ";\n\n";
 }
+
+# RFC 1345 fallback table
+
+open RFC, "<rfc-1345.txt"
+	or die "Unable to open rfc-1345.txt: $!\n";
+print "Reading rfc-1345.txt (fallback mapping)...\n";
+
+my %fallback;
+while (<RFC>)
+{
+	if (/^ ([^ ]+) +([0-9a-fA-F]{4})    (.*[^ ])$/)
+	{
+		$fallback{hex($2)} = $1;
+		$fallback{hex($2)} =~ s/"/\\"/g;
+	}
+}
+close RFC;
+
+my @mapped = sort { $a <=> $b } grep { $_ >= 128 } keys %fallback;
+print HEADER "/** Fallback mapping table */\n";
+print HEADER 'extern const struct fallbackmap fallback[', $#mapped + 1, "];\n";
+print MAPPINGS 'const struct fallbackmap fallback[', $#mapped + 1, "] =\n{\n";
+my $count = 0;
+
+foreach $codepoint (@mapped)
+{
+	printf MAPPINGS "    { %5d, \"%s\" }",
+	       $codepoint, $fallback{$codepoint};
+	print MAPPINGS ",\n" if ++ $count < $#mapped + 1;
+}
+
+print MAPPINGS "\n};\n\n";
+
+print HEADER "/** Length of fallback mapping */\n";
+print HEADER 'const unsigned short fallbackmap_len = ', $#mapped + 1, ";\n\n";
 
 # Finish up.
 
