@@ -65,8 +65,10 @@ int main(int argc, char *argv[])
 
     // We don't want timezones here
 #if defined(__GNUC__) || defined(__EMX__)
+# if !defined(__CYGWIN__)
     timezone = 0;
     daylight = 0;
+# endif
 #endif
 
     // Display banner
