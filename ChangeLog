@@ -1,3 +1,17 @@
+2000-09-18 - peter karlsson <peter@softwolves.pp.se>
+  qtgui.cpp
+    Removed unimplemented "Save text file" from menu.
+    Added "Clear data" to menu and implemented it.
+    Implemented area number selection for message bases needing that.
+    Simplified area type detection.
+
+  qtgui.h
+    Added slot and method for clearing of data.
+
+  qtlist.cpp
+  qtlish.h
+    Added "Save" button and implemented necessary code for saving to file.
+
 2000-07-16 - peter karlsson <peter@softwolves.pp.se>
   qtgui.cpp
     Uses an instance of the QFileDialog class instead of one of its static
