@@ -204,9 +204,6 @@ void fixupctrlbuffer(char *body_p, char *ctrl_p)
     *newbody_p = 0;
 }
 
-const char *area_not_allocated = "Area path was not allocated properly.";
-const char *out_of_memory = "Out of memory.";
-
 #ifdef USE_OWN_GETOPT
 int optind = 0;
 char *optarg = NULL;
