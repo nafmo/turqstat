@@ -541,14 +541,14 @@ string convertcharset(const char *data, const unsigned short *input,
                 // ASCII always map to ASCII, even for 7-bit character sets
                 // (this means that a backslash in input will look wrong in
                 // output for iso-ir-11, but we can live with that)
-                s += (char) ucs;
+                s += char(ucs);
             }
             // Convert to a local codepoint by binary-searching the output
             // map. For improved speed (latin-1 <=> latin-1), we first check
             // if we have a 1-1 map.
             else if (ucs < 256 && output[ucs & 0x7F].unicode == ucs)
             {
-                s += output[ucs].legacy;
+                s += output[ucs & 0x7F].legacy;
             }
             else
             {
