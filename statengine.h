@@ -103,14 +103,14 @@ public:
     inline unsigned GetHourMsgs(unsigned h) { return hourcount[h];     };
 
     inline unsigned GetTotalNumber(void)    { return msgcount;         };
-/*
-    unsigned        msgcount, totallines, totalqlines, totalbytes, totalqbytes;;
-    unsigned        daycount[7], hourcount[24];
-    unsigned        numpeople, numsubjects, numprograms;
-    time_t          earliestwritten, latestwritten;
-    time_t          earliestreceived, latestreceived;
+    inline unsigned GetTotalBytes(void)     { return totalbytes;       };
+    inline unsigned GetTotalQBytes(void)    { return totalqbytes;      };
+    inline unsigned GetTotalLines(void)     { return totallines;       };
+    inline unsigned GetTotalQLines(void)    { return totalqlines;      };
+    inline unsigned GetTotalPeople(void)    { return numpeople;        };
+    inline unsigned GetTotalSubjects(void)  { return numsubjects;      };
+    inline unsigned GetTotalPrograms(void)  { return numprograms;      };
 
-*/
 protected:
     // Data types used by statistics engine
     struct persondata_s
@@ -173,7 +173,7 @@ protected:
     unsigned        numpeople, numsubjects, numprograms;
     time_t          earliestwritten, latestwritten;
     time_t          earliestreceived, latestreceived;
-    bool            datesvalid;
+    bool            wdatevalid, rdatevalid;
     persondata_s    *people_p;
     programdata_s   *programs_p;
     subjectdata_s   *subjects_p;
