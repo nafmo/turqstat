@@ -1,3 +1,15 @@
+2000-04-12 - peter karlsson <peter@softwolves.pp.se>
+  acconfig.h
+  configure.in
+    Corrected check for tm_gmtoff in struct tm
+    Findfirst detection for Cygwin/Mingw still doesn't work correct.
+
+  turqstat.cpp
+    Only include unistd.h if needed.
+
+  makedist.sh
+    Include CVS version id.
+
 2000-04-09 - peter karlsson <peter@softwolves.pp.se>
   Merged branch dealing with autoconf:
 
