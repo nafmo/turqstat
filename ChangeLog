@@ -1,4 +1,18 @@
-1999-11-14 - peter karlsson <pk@mds.mdh.se>
+1999-12-05 - peter karlsson <peter@softwolves.pp.se>
+  fdapxread.cpp
+    Fixed a possible division by zero bug
+
+  tanstaaflread.cpp
+    Fixed a possible division by zero bug
+    Checks for message base version 0 or 1 (bug in tanstaafl)
+
+  statengine.cpp
+  statengine.h
+  statview.cpp
+  turqstat.cpp
+    Counts the number of areas that statistics are taken from
+
+1999-11-14 - peter karlsson <peter@softwolves.pp.se>
   Makefile.linux
   turqstat.1
     Added man page.
@@ -6,7 +20,7 @@
   turqstat.cpp
     Fixed a bug in the help screen.
 
-1999-10-26 - peter karlsson <pk@mds.mdh.se>
+1999-10-26 - peter karlsson <peter@softwolves.pp.se>
   utility.cpp
   utility.h
     Added error handling function.
@@ -23,7 +37,7 @@
   tanstaaflread.cpp
     Uses new error handling function.
 
-1999-10-20 - peter karlsson <pk@mds.mdh.se>
+1999-10-20 - peter karlsson <peter@softwolves.pp.se>
   sdmread.cpp
   statengine.cpp
   statengine.h
@@ -31,13 +45,13 @@
   tanstaaflread.cpp
     Added special provisions for formats lacking arrival times.
 
-1999-10-18 - peter karlsson <pk@mds.mdh.se>
+1999-10-18 - peter karlsson <peter@softwolves.pp.se>
   tanstaaflread.cpp
   tanstaaflread.h
   turqstat.cpp
     Implemented support for tanstaafl message bases.
 
-1999-10-05 - peter karlsson <pk@mds.mdh.se>
+1999-10-05 - peter karlsson <peter@softwolves.pp.se>
   jamread.cpp
   jamread.h
     Implemented a workaround for GNU C++ 2.95 incompatiblity.
@@ -48,22 +62,22 @@
   sdmread.cpp
     Fixed precompiler command errors.
 
-1999-09-13 - peter karlsson <pk@mds.mdh.se>
+1999-09-13 - peter karlsson <peter@softwolves.pp.se>
   turqstat.cpp
     Reversed meaning of -a and areapath for MyPoint and FDAPX/w areas, to
     make it possible to get combined statistics in these message base
     formats as well.
 
-1999-09-09 - peter karlsson <pk@mds.mdh.se>
+1999-09-09 - peter karlsson <peter@softwolves.pp.se>
   turqstat.cpp
     Combined statistics (multiple area paths can be specified)
 
-1999-09-08 - peter karlsson <pk@mds.mdh.se>
+1999-09-08 - peter karlsson <peter@softwolves.pp.se>
   statengine.cpp
   statview.cpp
     Fixed "original content per message" top list bugs
 
-1999-09-08 - peter karlsson <pk@mds.mdh.se>
+1999-09-08 - peter karlsson <peter@softwolves.pp.se>
   statengine.cpp
   statengine.h
   statview.cpp
@@ -72,13 +86,13 @@
     Added support for "original content per message" top list
     (nonfunctional at the moment)
 
-1999-08-21 - peter karlsson <pk@mds.mdh.se>
+1999-08-21 - peter karlsson <peter@softwolves.pp.se>
   Makefile.CygWin
   turqstat.cpp
   utility.cpp
     Fixes for CygWin
 
-1999-07-18 - peter karlsson <pk@mds.mdh.se>
+1999-07-18 - peter karlsson <peter@softwolves.pp.se>
   fdapxread.cpp
   mypointread.cpp
     For Unix systems, we don't use backslashes in paths
@@ -91,14 +105,14 @@
   turqstat.cpp
     Changed the way it displays the copyright banner
 
-1999-07-16 - peter karlsson <pk@mds.mdh.se>
+1999-07-16 - peter karlsson <peter@softwolves.pp.se>
   sdmread.cpp
     New routines adapter for OS/2
 
   Makefile
     New Makefile for OS/2
 
-1999-07-15 / 1999-07-16 - peter karlsson <pk@mds.mdh.se>
+1999-07-15 / 1999-07-16 - peter karlsson <peter@softwolves.pp.se>
   ChangeLog
     Started changeloging
 
