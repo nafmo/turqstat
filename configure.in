@@ -132,8 +132,8 @@ if test "$ac_cv_header_wctype_h" = "no"; then
     void towupper(void); ], [],
     ac_cv_have_towupper_in_ctype_h=no,
     ac_cv_have_towupper_in_ctype_h=yes))
-  if test "$ac_cv_have_towupper_in_ctype_h" = "no"; then
-    AC_MSG_ERROR(Unable to locate required towupper function)
+  if test "$ac_cv_have_towupper_in_ctype_h" = "yes"; then
+    AC_DEFINE(HAVE_TOWUPPER_IN_CTYPE_H)
   fi
 fi
 

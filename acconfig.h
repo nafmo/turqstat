@@ -51,3 +51,6 @@
 
 /* Define if you have a working wstring implementation */
 #undef HAVE_WORKING_WSTRING
+
+/* Define if ctype.h defines towupper */
+#undef HAVE_TOWUPPER_IN_CTYPE_H
