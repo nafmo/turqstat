@@ -56,6 +56,7 @@ public:
         { return GetTop(restart, result, comparebytepermsg, TopBpm); };
     inline bool GetTopOriginalPerMsg(bool restart, persstat_s &result)
         { return GetTop(restart, result, compareoriginalpermsg, TopOpm); };
+    void DoneTopPeople(void);
 
     struct subjstat_s
     {
@@ -64,6 +65,7 @@ public:
     };
 
     bool GetTopSubjects(bool restart, subjstat_s &result);
+    void DoneTopSubjects(void);
 
     struct progstat_s
     {
@@ -76,6 +78,7 @@ public:
     };
 
     bool GetTopPrograms(bool restart, progstat_s &result);
+    void DoneTopPrograms(void);
 
     struct verstat_s
     {
@@ -92,6 +95,7 @@ public:
     };
 
     bool GetTopNets(bool restart, netstat_s &result);
+    void DoneTopNets();
 
     struct domainstat_s
     {
@@ -100,6 +104,7 @@ public:
     };
 
     bool GetTopDomains(bool restart, domainstat_s &result);
+    void DoneTopDomains();
 
     inline time_t GetEarliestReceived(void) { return earliestreceived; };
     inline time_t GetLastReceived(void)     { return latestreceived;   };

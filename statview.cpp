@@ -205,6 +205,7 @@ bool StatView::CreateReport(StatEngine *engine, string filename)
         }
 
         report << endl;
+        engine->DoneTopPeople();
 
         unsigned long long totalbytes = engine->GetTotalBytes();
         if (totalbytes)
@@ -301,6 +302,7 @@ bool StatView::CreateReport(StatEngine *engine, string filename)
         }
 
         report << endl;
+        engine->DoneTopPeople();
 
         if (news || !topreceived)
         {
@@ -393,6 +395,7 @@ bool StatView::CreateReport(StatEngine *engine, string filename)
         }
 
         report << endl;
+        engine->DoneTopPeople();
     }
 
     if (topnets && !news)
@@ -435,6 +438,7 @@ bool StatView::CreateReport(StatEngine *engine, string filename)
         }
 
         report << endl;
+        engine->DoneTopNets();
 
         report << "Messages from " << engine->GetTotalNets()
                << " different nets were found." << endl;
@@ -481,6 +485,7 @@ bool StatView::CreateReport(StatEngine *engine, string filename)
         }
 
         report << endl;
+        engine->DoneTopDomains();
 
         report << "Messages from " << engine->GetTotalDomains()
                << " different top domains were found." << endl;
@@ -546,6 +551,7 @@ bool StatView::CreateReport(StatEngine *engine, string filename)
         }
 
         report << endl;
+        engine->DoneTopPeople();
     }
 
     if (!news && topreceived)
@@ -600,6 +606,8 @@ bool StatView::CreateReport(StatEngine *engine, string filename)
         }
 
         report << endl;
+        engine->DoneTopSubjects();
+
         report << "A total of " << engine->GetTotalSubjects()
                << " subjects were identified." << endl;
         report << endl;
@@ -659,6 +667,8 @@ bool StatView::CreateReport(StatEngine *engine, string filename)
         }
 
         report << endl;
+        engine->DoneTopPrograms();
+
         report << "A total of " << engine->GetTotalPrograms()
                << " different programs (not counting different versions) "
                   "were identified." << endl;

@@ -1010,6 +1010,12 @@ void StatEngine::FlattenPeople(persstat_s *array, persondata_s *p)
     FlattenPeople(array, p->right);
 }
 
+void StatEngine::DoneTopPeople(void)
+{
+    if (NULL != persontoplist_p) delete[] persontoplist_p;
+    persontoplist_p = NULL;
+}
+
 bool StatEngine::GetTopSubjects(bool restart, subjstat_s &result)
 {
     if (restart || NULL == subjecttoplist_p)
@@ -1057,6 +1063,12 @@ void StatEngine::FlattenSubjects(subjstat_s *array, subjectdata_s *p)
     FlattenSubjects(array, p->right);
 }
 
+void StatEngine::DoneTopSubjects(void)
+{
+    if (NULL != subjecttoplist_p) delete[] subjecttoplist_p;
+    subjecttoplist_p = NULL;
+}
+
 bool StatEngine::GetTopPrograms(bool restart, progstat_s &result)
 {
     if (restart || NULL == programtoplist_p)
@@ -1102,6 +1114,12 @@ void StatEngine::FlattenPrograms(progstat_s *array, programdata_s *p)
 
     FlattenPrograms(array, p->left);
     FlattenPrograms(array, p->right);
+}
+
+void StatEngine::DoneTopPrograms(void)
+{
+    if (NULL != programtoplist_p) delete[] programtoplist_p;
+    programtoplist_p = NULL;
 }
 
 bool StatEngine::GetProgramVersions(bool restart, verstat_s &result)
@@ -1171,6 +1189,12 @@ void StatEngine::FlattenNets(netstat_s *array, netdata_s *p)
     FlattenNets(array, p->right);
 }
 
+void StatEngine::DoneTopNets(void)
+{
+    if (NULL != nettoplist_p) delete[] nettoplist_p;
+    nettoplist_p = NULL;
+}
+
 bool StatEngine::GetTopDomains(bool restart, domainstat_s &result)
 {
     if (restart || NULL == domaintoplist_p)
@@ -1216,6 +1240,12 @@ void StatEngine::FlattenDomains(domainstat_s *array, domaindata_s *p)
 
     FlattenDomains(array, p->left);
     FlattenDomains(array, p->right);
+}
+
+void StatEngine::DoneTopDomains(void)
+{
+    if (NULL != domaintoplist_p) delete[] domaintoplist_p;
+    domaintoplist_p = NULL;
 }
 
 // Comparison functions for QSort
