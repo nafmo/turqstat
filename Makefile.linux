@@ -37,8 +37,11 @@ sdmread.o: sdmread.cpp sdmread.h arearead.h statengine.h datatypes.h utility.h
 	g++ $(CFLAGS) -c sdmread.cpp
 
 dist: turqstat source.tar.gz
-	tar cvfz turqstat-linux.tar.gz turqstat turqstat.doc turqstat.dok source.tar.gz COPYING
-	del source.tar.gz
+	strip turqstat
+	iso2dos -i turqstat.doc doc/turqstat.doc
+	iso2dos -i turqstat.dok doc/turqstat.dok
+	zip -j turqstat-linux.zip turqstat source.tar.gz COPYING doc/*
+	rm source.tar.gz
 
 source.tar.gz:
 	tar cvfz source.tar.gz *.def *.cpp *.h Makefile*
