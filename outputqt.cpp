@@ -1,4 +1,4 @@
-// Copyright (c) 2000 Peter Karlsson
+// Copyright (c) 2000-2001 Peter Karlsson
 //
 // $Id$
 //
@@ -14,6 +14,8 @@
 // You should have received a copy of the GNU General Public License
 // along with this program; if not, write to the Free Software
 // Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
+
+#include <config.h>
 
 #include <iostream>
 #include <qprogressdialog.h>

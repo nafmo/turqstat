@@ -21,6 +21,8 @@
 // along with this program; if not, write to the Free Software
 // Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 
+#include <config.h>
+
 #include <time.h>
 #ifdef HAVE_LOCALE_H
 # include <locale.h>
