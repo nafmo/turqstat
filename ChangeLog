@@ -1,3 +1,7 @@
+2001-10-11 - peter karlsson <peter@softwolves.pp.se>
+  qtlist.h
+    Need to include <config.h> to resolve GCC 3.0 ambiguity.
+
 2001-10-10 - peter karlsson <peter@softwolves.pp.se>
   configure.in
   acconfig.h
