@@ -1,4 +1,4 @@
-// Copyright (c) 1999 Peter Karlsson
+// Copyright (c) 1999-2000 Peter Karlsson
 //
 // $Id$
 //
@@ -144,7 +144,7 @@ bool SdmRead::Transfer(time_t starttime, StatEngine &destination)
         }
 
         ctrlbuf = new char[msglen];
-        if (!msgbuf)
+        if (!ctrlbuf)
         {
             cerr << "Unable to allocate memory for control data ("
                  << thisfile.c_str() << ')' << endl;
