@@ -6,13 +6,15 @@ CXXFLAGS=@CXXFLAGS@ -I.
 LDFLAGS=@LDFLAGS@
 srcdir=@srcdir@
 VPATH=@scrdir@
+LIBS=@LIBS@
 
 all: turqstat
 
-OBJS=turqstat.o statengine.o statview.o turqstat.def squishread.o fdapxread.o jamread.o mypointread.o utility.o sdmread.o tanstaaflread.o newsspoolread.o
+OBJS=turqstat.o statengine.o statview.o squishread.o fdapxread.o jamread.o mypointread.o utility.o sdmread.o tanstaaflread.o newsspoolread.o
 
+# turqstat.def
 turqstat: $(OBJS)
-	@CXX@ $(CXXFLAGS) -o turqstat $(OBJS) -lstdc++
+	@CXX@ $(CXXFLAGS) -o turqstat $(OBJS) $(LIBS)
 
 turqstat.o: turqstat.cpp statengine.h statview.h arearead.h squishread.h fdapxread.h jamread.h mypointread.h version.h tanstaaflread.h
 	@CXX@ $(CXXFLAGS) -c $(srcdir)/turqstat.cpp
