@@ -110,6 +110,8 @@ bool StatView::CreateReport(StatEngine *engine, string filename,
 
     string tmp;
 
+    bool news = engine->IsNewsArea();
+
     if (quoters)
     {
         report << "-------------------------------------------"
@@ -128,8 +130,12 @@ bool StatView::CreateReport(StatEngine *engine, string filename,
             if (restart)
             {
                 restart = false;
-                report << "Place Name                                "
-                          "Msgs Address          Ratio" << endl;
+                if (news)
+                    report << "Place Name                                "
+                              "                 Msgs Ratio" << endl;
+                else
+                    report << "Place Name                                "
+                              "Msgs Address          Ratio" << endl;
             }
 
             if (data.messageswritten > 2 && data.bytesquoted > 0)
@@ -156,14 +162,31 @@ bool StatView::CreateReport(StatEngine *engine, string filename,
                     integ ++;
                 }
 
-                if (data.name != "")
-                    tmp = data.name;
-                else
-                    tmp = "(none)";
 
-                report.form("%-35.35s%5u %-15s%3u.%02u%%",
-                            tmp.c_str(), data.messageswritten,
-                            data.address.c_str(), integ, fract);
+                if (news)
+                {
+                    if (data.name != data.address)
+                        tmp = string(data.name + " <") +
+                              string(data.address + ">"); 
+                    else
+                        tmp = data.name;
+
+                    report.form("%-52.52s%5u %3u.%02u%%",
+                                tmp.c_str(), data.messageswritten,
+                                integ, fract);
+                }
+                else
+                {
+                    if (data.name != "")
+                        tmp = data.name;
+                    else
+                        tmp = "(none)";
+
+                    report.form("%-35.35s%5u %-15s%3u.%02u%%",
+                                tmp.c_str(), data.messageswritten,
+                                data.address.c_str(), integ, fract);
+                }
+
                 report << endl;
 
                 place ++;
@@ -217,8 +240,12 @@ bool StatView::CreateReport(StatEngine *engine, string filename,
             if (restart)
             {
                 restart = false;
-                report << "Place Name                                "
-                          "Msgs Address           Bytes Quoted" << endl;
+                if (news)
+                    report << "Place Name                                "
+                              "               Msgs    Bytes Quoted"  << endl;
+                else
+                    report << "Place Name                                "
+                              "Msgs Address           Bytes Quoted" << endl;
             }
 
             if (!showallnums && data.messageswritten == oldwritten)
@@ -242,14 +269,30 @@ bool StatView::CreateReport(StatEngine *engine, string filename,
                 integ ++;
             }
 
-            if (data.name != "")
-                tmp = data.name;
-            else
-                tmp = "(none)";
+            if (news)
+            {
+                if (data.name != data.address)
+                    tmp = string(data.name + " <") +
+                          string(data.address + ">"); 
+                else
+                    tmp = data.name;
 
-            report.form("%-35.35s%5u %-15.15s%8u",
-                         tmp.c_str(), data.messageswritten,
-                         data.address.c_str(), data.byteswritten);
+                report.form("%-50.50s%5u %8u",
+                            tmp.c_str(), data.messageswritten,
+                            data.byteswritten);
+            }
+            else
+            {
+                if (data.name != "")
+                    tmp = data.name;
+                else
+                    tmp = "(none)";
+
+                report.form("%-35.35s%5u %-15.15s%8u",
+                            tmp.c_str(), data.messageswritten,
+                            data.address.c_str(), data.byteswritten);
+            }
+
             if (data.bytesquoted > 0)
             {
                 report.form(" %3u.%1u%%",
@@ -292,9 +335,14 @@ bool StatView::CreateReport(StatEngine *engine, string filename,
             if (restart)
             {
                 restart = false;
-                report << "Place Name                        "
-                          "Address         Orig. / Msgs = PrMsg Quoted"
-                       << endl;
+                if (news)
+                    report << "Place Name                        "
+                              "                Orig. / Msgs = PrMsg Quoted"
+                           << endl;
+                else
+                    report << "Place Name                        "
+                              "Address         Orig. / Msgs = PrMsg Quoted"
+                           << endl;
             }
 
             unsigned originalpermsg =
@@ -321,15 +369,32 @@ bool StatView::CreateReport(StatEngine *engine, string filename,
                 integ ++;
             }
 
-            if (data.name != "")
-                tmp = data.name;
-            else
-                tmp = "(none)";
+            if (news)
+            {
+                if (data.name != data.address)
+                    tmp = string(data.name + " <") +
+                          string(data.address + ">"); 
+                else
+                    tmp = data.name;
 
-            report.form("%-28.28s%-15.15s%6u /%5u = %5u",
-                        tmp.c_str(), data.address.c_str(),
-                        data.byteswritten - data.bytesquoted,
-                        data.messageswritten, originalpermsg);
+                report.form("%-43.43s%6u /%5u = %5u",
+                            tmp.c_str(),
+                            data.byteswritten - data.bytesquoted,
+                            data.messageswritten, originalpermsg);
+            }
+            else
+            {
+                if (data.name != "")
+                    tmp = data.name;
+                else
+                    tmp = "(none)";
+
+                report.form("%-28.28s%-15.15s%6u /%5u = %5u",
+                            tmp.c_str(), data.address.c_str(),
+                            data.byteswritten - data.bytesquoted,
+                            data.messageswritten, originalpermsg);
+            }
+
             if (data.bytesquoted > 0)
             {
                 report.form(" %3u.%1u%%",
@@ -348,7 +413,7 @@ bool StatView::CreateReport(StatEngine *engine, string filename,
         report << endl;
     }
 
-    if (topreceived && !engine->IsNewsArea())
+    if (topreceived && !news)
     {
         report << "-------------------------------------------"
                   "----------------------------------" << endl;
