@@ -12,6 +12,7 @@ LIBS=@LIBS@
 QTLIBS=@QTLIB@
 DESTDIR=
 OBJS=turqstat.o statengine.o statview.o squishread.o fdapxread.o jamread.o mypointread.o utility.o sdmread.o tanstaaflread.o newsspoolread.o mytime.o output.o
+SUBOBJS=mappings/charsets.o mappings/mappings.o
 QTOBJS=qtgui.o moc_qtgui.o qtlist.o moc_qtlist.o qtreport.o moc_qtreport.o qtbars.o moc_qtbars.o statengine.o statview.o squishread.o fdapxread.o jamread.o mypointread.o utility.o sdmread.o tanstaaflread.o newsspoolread.o mytime.o outputqt.o
 @QT@EXE=turqstat@EXEEXT@ xturqstat@EXEEXT@
 @NOQT@EXE=turqstat@EXEEXT@
@@ -31,15 +32,18 @@ debian:
 @NOQT@clean:
 @NOQT@	-rm $(OBJS)
 @NOQT@	-rm $(EXE)
+@NOQT@	make -C mappings clean
 
 @QT@clean:
 @QT@	-rm $(OBJS) $(QTOBJS) moc_* *.moc
 @QT@	-rm $(EXE)
 @QT@	-make -C po clean
+@QT@	-make -C mappings clean
 
 distclean: clean
 	-rm config.status config.log config.cache config.h Makefile
 	-make -C po distclean
+	-make -C mappings distclean
 
 debianclean:
 	fakeroot debian/rules clean
@@ -67,11 +71,11 @@ docs: doxygen.conf
 	doxygen doxygen.conf
 
 # Binary
-turqstat@EXEEXT@: $(OBJS) $(DEF)
-	@CXX@ $(CXXFLAGS) $(LDFLAGS) -o turqstat@EXEEXT@ $(OBJS) $(DEF) $(LIBS)
+turqstat@EXEEXT@: $(OBJS) $(SUBOBJS) $(DEF)
+	@CXX@ $(CXXFLAGS) $(LDFLAGS) -o turqstat@EXEEXT@ $(OBJS) $(SUBOBJS) $(DEF) $(LIBS)
 
-@QT@xturqstat@EXEEXT@: $(QTOBJS) $(DEF)
-@QT@	@CXX@ $(CXXFLAGS) $(QTFLAGS) $(LDFLAGS) -o xturqstat@EXEEXT@ $(QTOBJS) $(DEF) $(LIBS) $(QTLIBS)
+@QT@xturqstat@EXEEXT@: $(QTOBJS) $(SUBOBJS) $(DEF)
+@QT@	@CXX@ $(CXXFLAGS) $(QTFLAGS) $(LDFLAGS) -o xturqstat@EXEEXT@ $(QTOBJS) $(SUBOBJS) $(DEF) $(LIBS) $(QTLIBS)
 
 # Object files
 turqstat.o: turqstat.cpp statengine.h statview.h arearead.h squishread.h fdapxread.h jamread.h mypointread.h version.h tanstaaflread.h config.h mytime.h output.h utility.h
@@ -86,7 +90,7 @@ statview.o: statview.cpp statview.h statengine.h version.h config.h utility.h
 squishread.o: squishread.cpp squishread.h arearead.h statengine.h datatypes.h utility.h config.h output.h
 	@CXX@ $(CXXFLAGS) -c $(srcdir)/squishread.cpp
 
-utility.o: utility.cpp utility.h config.h mytime.h
+utility.o: utility.cpp utility.h config.h mytime.h mappings/mappings.h mappings/charsets.h
 	@CXX@ $(CXXFLAGS) -c $(srcdir)/utility.cpp
 
 fdapxread.o: fdapxread.cpp fdapxread.h datatypes.h statengine.h arearead.h config.h output.h
@@ -154,6 +158,9 @@ output.o: output.cpp output.h
 
 @QT@outputqt.o: outputqt.cpp output.h
 @QT@	@CXX@ $(CXXFLAGS) $(QTFLAGS) -c $(srcdir)/outputqt.cpp
+
+$(SUBOBJS):
+	make -C mappings all
 
 # Other files
 doxygen.conf: doxygen.conf.in config.status

@@ -34,6 +34,15 @@ else
 fi],
 [qt=yes])
 
+AC_ARG_WITH(locale,
+[  --without-locale        do not build with locale support],
+[if test "$withval" = "yes"; then
+  locale=yes
+else
+  locale=no
+fi],
+[locale=yes])
+
 dnl Checks for programs ----------------------------------------------------
 dnl Since PROG_CC and PROG_CXX seems to think we are cross-compiling under
 dnl OS/2, because we haven't detected EXEEXT yet, hack around it.
@@ -103,7 +112,9 @@ if test "$ac_cv_header_limits_h" = "no"; then
   AC_MSG_ERROR(limits.h is needed to compile)
 fi
 AC_CHECK_HEADERS(stdint.h)
-AC_CHECK_HEADERS(locale.h)
+if test "$locale" = "yes"; then
+  AC_CHECK_HEADERS(locale.h)
+fi
 
 if test "$findfirst" = "no"; then
   AC_HEADER_DIRENT
@@ -162,25 +173,29 @@ AC_TRY_COMPILE([ #include <unistd.h> ],
 AC_CHECK_FUNC(snprintf, AC_DEFINE(HAVE_SNPRINTF),
   AC_CHECK_FUNC(_snprintf, AC_DEFINE(HAVE_USNPRINTF)))
 
-AC_CACHE_CHECK([for DosQueryCtryInfo in os2.h], ac_cv_dosqueryctryinfo,
-  AC_TRY_COMPILE([ #define INCL_DOSNLS
-#include <os2.h> ],
-[ COUNTRYINFO countryinfo;
-  COUNTRYCODE country = { 0, 0 };
-  ULONG datalength;
-  DosQueryCtryInfo(sizeof countryinfo, &country, &countryinfo, &datalength);
-], ac_cv_dosqueryctryinfo=yes, ac_cv_dosqueryctryinfo=no))
-if test "$ac_cv_dosqueryctryinfo" = "yes"; then
-  AC_DEFINE(HAVE_OS2_COUNTRYINFO)
+if test "$locale" = "yes"; then
+  AC_CACHE_CHECK([for DosQueryCtryInfo in os2.h], ac_cv_dosqueryctryinfo,
+    AC_TRY_COMPILE([ #define INCL_DOSNLS
+    #include <os2.h> ],
+    [ COUNTRYINFO countryinfo;
+      COUNTRYCODE country = { 0, 0 };
+      ULONG datalength;
+      DosQueryCtryInfo(sizeof countryinfo, &country, &countryinfo, &datalength);
+    ], ac_cv_dosqueryctryinfo=yes, ac_cv_dosqueryctryinfo=no))
+  if test "$ac_cv_dosqueryctryinfo" = "yes"; then
+    AC_DEFINE(HAVE_OS2_COUNTRYINFO)
+  fi
 fi
 
-AC_CACHE_CHECK([for GetDateFormat in windows.h], ac_cv_getdateformat,
-  AC_TRY_COMPILE([#include <windows.h>],
-[ SYSTEMTIME wintime; char *out; size_t len;
-  GetDateFormat(LOCALE_USER_DEFAULT, DATE_SHORTDATE, &wintime, NULL, out, len);
-], ac_cv_getdateformat=yes, ac_cv_getdateformat=no))
-if test "$ac_cv_getdateformat" = "yes"; then
-  AC_DEFINE(HAVE_WIN32_LOCALEINFO)
+if test "$locale" = "yes"; then
+  AC_CACHE_CHECK([for GetDateFormat in windows.h], ac_cv_getdateformat,
+    AC_TRY_COMPILE([#include <windows.h>],
+    [ SYSTEMTIME wintime; char *out; size_t len;
+      GetDateFormat(LOCALE_USER_DEFAULT, DATE_SHORTDATE, &wintime, NULL, out, len);
+    ], ac_cv_getdateformat=yes, ac_cv_getdateformat=no))
+  if test "$ac_cv_getdateformat" = "yes"; then
+    AC_DEFINE(HAVE_WIN32_LOCALEINFO)
+  fi
 fi
 
 dnl Check for variables ----------------------------------------------------
@@ -296,4 +311,4 @@ AC_SUBST(QTMOC)
 AC_SUBST(QTLIB)
 
 dnl Create output ----------------------------------------------------------
-AC_OUTPUT(Makefile po/Makefile doxygen.conf)
+AC_OUTPUT(Makefile po/Makefile mappings/Makefile doxygen.conf)
