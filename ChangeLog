@@ -1,3 +1,12 @@
+2001-03-17 - peter karlsson <peter@softwolves.pp.se>
+  qtlist.cpp
+  po/sv.po
+  po/xturqstat.po
+    Added option to save tab separated files.
+
+  debian/
+    Added menu hint and updated copyright year.
+
 2001-03-14 - peter karlsson <peter@softwolves.pp.se>
   Makefile.in
   po/Makefile.in
