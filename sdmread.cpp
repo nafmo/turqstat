@@ -64,7 +64,7 @@ bool SdmRead::Transfer(time_t starttime, StatEngine &destination)
     {
         dirname += '/';
     }
-#else if defined(__EMX__)
+#elif defined(__EMX__)
     string dirname = string(areapath);
     if (dirname[dirname.length() - 1] != '\\')
     {
@@ -75,6 +75,12 @@ bool SdmRead::Transfer(time_t starttime, StatEngine &destination)
 
     struct _find sdmdir;
     int rc = __findfirst(searchpath.c_str(), 0x2f, &sdmdir);
+
+    if (!rc)
+    {
+        cerr << "Unable to open *.MSG directory" << endl;
+        return false;
+    }
 #endif
 
     sdmhead_s sdmhead;
@@ -91,7 +97,7 @@ bool SdmRead::Transfer(time_t starttime, StatEngine &destination)
     struct stat   sdmstat;
 
     while (NULL != (sdmdirent_p = readdir(sdmdir)))
-#else if defined(__EMX__)
+#elif defined(__EMX__)
 # define FILENAME sdmdir.name
 # define FILESIZE (sdmdir.size_lo | (sdmdir.size_hi << 16))
     while (0 == rc)
