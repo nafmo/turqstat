@@ -1,4 +1,4 @@
-// Copyright (c) 1998-1999 Peter Karlsson
+// Copyright (c) 1998-2000 Peter Karlsson
 //
 // $Id$
 //
@@ -47,7 +47,7 @@ bool StatView::CreateReport(StatEngine *engine, string filename,
     report << "Turquoise SuperStat " << version << " * Message area statistics" << endl;
     report << "=================================================" << endl;
     report << endl;
-    report << "(c) Copyright 1998-1999 Peter Karlsson" << endl;
+    report << copyright << endl;
     report << endl;
 
     if (0 == engine->GetTotalNumber())
@@ -348,7 +348,7 @@ bool StatView::CreateReport(StatEngine *engine, string filename,
         report << endl;
     }
 
-    if (topreceived)
+    if (topreceived && !engine->IsNewsArea())
     {
         report << "-------------------------------------------"
                   "----------------------------------" << endl;
