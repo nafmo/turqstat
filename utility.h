@@ -147,8 +147,10 @@ extern char *optarg;
 int getopt(int _argc, char **_argv, const char *opts);
 #endif // USE_OWN_GETOPT
 
-#ifndef HAVE_WORKING_WSTRING
-# include <wchar.h>
+#if !defined(HAVE_WORKING_WSTRING)
+# if defined(HAVE_WCHAR_H)
+#  include <wchar.h>
+# endif
 /**
  * Simple wide-string class to use instead of the C++ standard one.
  * Provides justa about enough functionality for use with this program.
@@ -219,7 +221,11 @@ public:
      * Retrieve length of the string.
      * @return Number of characters (not bytes) in string.
      */
+# if defined(HAVE_WCHAR_H)
     inline size_t length() const { return wcslen(data_p); };
+# else
+    inline size_t length() const { return length(data_p); };
+# endif
 
     /**
      * Remove the first characters of the string.
@@ -233,6 +239,40 @@ private:
 
     /** Length of data buffer in characters (not bytes). */
     size_t size;
+
+    /**
+     * Replacement for the wcscpy library function.
+     * @param s The string to copy into this one.
+     */
+# if defined(HAVE_WCHAR_H)
+    inline void copy(const wchar_t *s) { wcscpy(data_p, s); };
+# else
+    inline void copy(const wchar_t *s) { copy(data_p, s); };
+# endif
+
+    /**
+     * Replacement for the wcscpy library function.
+     * @param d The destination to copy to.
+     * @param s The string to copy into this one.
+     */
+# if defined(HAVE_WCHAR_H)
+    static inline void copy(wchar_t *d, const wchar_t *s)
+        { wcscpy(d, s); };
+# else
+    static void copy(wchar_t *d, const wchar_t *s);
+# endif
+
+    /**
+     * Replacement for the wcslen library function.
+     * @param s The string to check the length of.
+     * @return Number of characters in string.
+     */
+# if defined(HAVE_WCHAR_H)
+    static inline size_t length(const wchar_t *s)
+        { return wcslen(s); };
+# else
+    static size_t length(const wchar_t *s);
+# endif
 };
 #endif // !HAVE_WORKING_WSTRING
 

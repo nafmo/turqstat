@@ -20,7 +20,9 @@
 #include <ctype.h>
 #include <stdio.h>
 #include <stdlib.h>
-#include <wchar.h>
+#if defined(HAVE_WCHAR_H)
+# include <wchar.h>
+#endif
 #if defined(HAVE_WCTYPE_H)
 # include <wctype.h>
 #endif
@@ -56,6 +58,22 @@ int fcompare(const string &s1, const string &s2, unsigned int max)
     // max, ls1 == ls2, which gives 0.
     return ls1 - ls2;
 }
+
+#if !defined(HAVE_WCTYPE_H) && !defined(HAVE_TOWUPPER_IN_CTYPE_H)
+// Light version of towupper used when we do not have one in the libraries,
+// and which only works for ASCII
+inline wchar_t towupper(wchar_t wc)
+{
+    if (wc < 128)
+    {
+        return toupper(wc);
+    }
+    else
+    {
+        return wc;
+    }
+}
+#endif
 
 // Compare two wide strings case in-sensitively
 // Why isn't this functionality available in ANSI C++? *sigh*
@@ -499,15 +517,15 @@ wstring::wstring(const wstring &s)
     // Allocate at least 32 characters, less is a waste.
     size = s.length() + 1 >? 32;
     data_p = new wchar_t[size];
-    wcscpy(data_p, s.data_p);
+    copy(s.data_p);
 }
 
 wstring::wstring(const wchar_t *s)
 {
     // Allocate at least 32 characters, less is a waste.
-    size = wcslen(s) + 1 >? 32;
+    size = length(s) + 1 >? 32;
     data_p = new wchar_t[size];
-    wcscpy(data_p, s);
+    copy(s);
 }
 
 wstring::~wstring()
@@ -518,18 +536,18 @@ wstring::~wstring()
 
 wstring &wstring::operator=(const wstring &s)
 {
-    size_t otherlen = wcslen(s.data_p);
+    size_t otherlen = s.length();
     if (otherlen < size)
     {
-        // Size for this string
-        wcscpy(data_p, s.data_p);
+        // Space for this string
+        copy(data_p, s.data_p);
     }
     else
     {
         // Grow in increments of 32 characters.
         size = (otherlen / 32 + 1) * 32;
         wchar_t *new_p = new wchar_t[size];
-        wcscpy(new_p, s.data_p);
+        copy(new_p, s.data_p);
         delete[] data_p;
         data_p = new_p;
     }
@@ -539,32 +557,36 @@ wstring &wstring::operator=(const wstring &s)
 void wstring::append(const wstring &s)
 {
     // Calculate new size
-    size_t newchars = wcslen(s.data_p);
-    size_t newsize = wcslen(data_p) + newchars + 1;
+    size_t newchars = length(s.data_p);
+    size_t newsize = length(data_p) + newchars + 1;
     if (newsize > size)
     {
         // Grow in increments of 32 characters.
         size = (newsize / 32 + 1) * 32;
         wchar_t *new_p = new wchar_t[size];
-        wcscpy(new_p, data_p);
+        copy(new_p, data_p);
         delete[] data_p;
         data_p = new_p;
     }
 
     // Append
+#if defined(HAVE_WCHAR_H)
     wcscat(data_p, s.data_p);
+#else
+    copy(data_p + length(), s.data_p);
+#endif
 }
 
 void wstring::append(wchar_t c)
 {
     // Calculate new size
-    size_t newsize = wcslen(data_p) + 2;
+    size_t newsize = length() + 2;
     if (newsize > size)
     {
         // Grow in increments of 32 characters.
         size = (newsize / 32 + 1) * 32;
         wchar_t *new_p = new wchar_t[size];
-        wcscpy(new_p, data_p);
+        copy(new_p, data_p);
         delete[] data_p;
         data_p = new_p;
     }
@@ -577,13 +599,13 @@ void wstring::append(wchar_t c)
 wchar_t wstring::operator[](size_t n) const
 {
     // Check argument for validity
-    return (n >= 0 && n <= wcslen(data_p)) ? data_p[n] : 0;
+    return (n >= 0 && n <= length()) ? data_p[n] : 0;
 }
 
 void wstring::skip(size_t n)
 {
     // Check argument for validity
-    if (n <= 0 || n >= wcslen(data_p))
+    if (n <= 0 || n >= length())
     {
         *data_p = 0;
     }
@@ -598,5 +620,23 @@ void wstring::skip(size_t n)
         *dest = 0;
     }
 }
+
+# if !defined(HAVE_WCHAR_H)
+void wstring::copy(wchar_t *d, const wchar_t *s)
+{
+    while (*s)
+    {
+        *(d ++) = *(s ++);
+    }
+    *d = 0;
+}
+
+size_t wstring::length(const wchar_t *s)
+{
+    int len = 0;
+    while (*(s ++)) ++ len;
+    return len;
+}
+# endif
 
 #endif // !HAVE_WORKING_WSTRING
