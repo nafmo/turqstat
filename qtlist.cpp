@@ -167,14 +167,11 @@ void TopListWindow::addQuoters(StatEngine *engine)
         if (data.bytesquoted && data.byteswritten)
         {
             QString tmp;
-            char *name_p = charConvertCopy(data.name);
-            if (data.name != data.address)
-                tmp = QString(name_p) +
-                      " <" + data.address.c_str() + ">";
+            QString name = charConvert(data.name);
+            if (name != QString(data.address.c_str()))
+                tmp = name + " <" + data.address.c_str() + ">";
             else
                 tmp = data.address.c_str();
-
-            delete[] name_p;
 
             QListViewItem *item =
                 new QListViewItem(listview, previous, QString::number(place ++),
@@ -201,15 +198,11 @@ void TopListWindow::addSenders(StatEngine *engine)
         if (!data.messageswritten) break;
 
         QString tmp;
-        char *name_p = charConvertCopy(data.name);
-        if (data.name != data.address)
-            tmp = QString(name_p) +
-                  " <" + data.address.c_str() + ">";
+        QString name = charConvert(data.name);
+        if (name != QString(data.address.c_str()))
+            tmp = name + " <" + data.address.c_str() + ">";
         else
             tmp = data.address.c_str();
-
-        delete[] name_p;
-
 
         QListViewItem *item =
             new QListViewItem(listview, previous, QString::number(place ++),
@@ -244,14 +237,11 @@ void TopListWindow::addOriginalContent(StatEngine *engine)
         }
 
         QString tmp;
-        char *name_p = charConvertCopy(data.name);
-        if (data.name != data.address)
-            tmp = QString(name_p) +
-                  " <" + data.address.c_str() + ">";
+        QString name = charConvert(data.name);
+        if (name != QString(data.address.c_str()))
+            tmp = name + " <" + data.address.c_str() + ">";
         else
             tmp = data.address.c_str();
-
-        delete[] name_p;
 
         unsigned originalpermsg =
             (data.byteswritten - data.bytesquoted) / data.messageswritten;
@@ -325,12 +315,10 @@ void TopListWindow::addReceivers(StatEngine *engine)
         if (!data.messagesreceived) break;
 
         QString tmp;
-        char *name_p = charConvertCopy(data.name);
-        if (name_p && *name_p)
-            tmp = QString(name_p);
+        if (data.name.length())
+            tmp = charConvert(data.name);
         else
             tmp = tr("(none)");
-        delete[] name_p;
 
         QListViewItem *item =
             new QListViewItem(listview, previous, QString::number(place ++),
@@ -358,12 +346,10 @@ void TopListWindow::addSubjects(StatEngine *engine)
     while (engine->GetTopSubjects(restart, data))
     {
         QString tmp;
-        char *subj_p = charConvertCopy(data.subject);
-        if (subj_p && *subj_p)
-            tmp = QString(subj_p);
+        if (data.subject.length())
+            tmp = charConvert(data.subject);
         else
             tmp = tr("(none)");
-        delete[] subj_p;
 
         QListViewItem *item =
             new QListViewItem(listview, previous, QString::number(place ++),
@@ -387,12 +373,10 @@ void TopListWindow::addSoftware(StatEngine *engine)
     while (engine->GetTopPrograms(restart, data))
     {
         QString tmp;
-        char *prog_p = charConvertCopy(data.program);
-        if (prog_p && *prog_p)
-            tmp = QString(prog_p);
+        if (data.program.length())
+            tmp = charConvert(data.program);
         else
             tmp = tr("(none)");
-        delete[] prog_p;
 
         QListViewItem *item =
             new QListViewItem(listview, previous, QString::number(place ++),
@@ -406,34 +390,17 @@ void TopListWindow::addSoftware(StatEngine *engine)
     engine->DoneTopPrograms();
 }
 
-char *TopListWindow::charConvertCopy(string &inputstring)
+QString TopListWindow::charConvert(wstring &inputstring)
 {
-    // Convert any characters in the range 128-159 as if they were in the
-    // IBM codepage 865 character set (Fidonet is mostly PC8 based).
-    // -*-TODO-*-This should of course be done in the engine itself
-    // (CHRS support with configurable fallback), but until that is
-    // implemented, this will have to do.
-    static const char convert[] =
-        "Çüéâäàå©êëèïîìÄÅÉæÆôöòûùÿÖÜø£ØPf";
-
-    unsigned char *output= (unsigned char *) new char[inputstring.length() + 1];
-    unsigned char *input = (unsigned char *) inputstring.c_str();
-    char *rc = (char *) output;
-
-    while (*input)
+    int length = inputstring.length();
+    QChar *tmp = new QChar[length];
+    for (int i = 0; i < length; i ++)
     {
-        if (*input >= 128 && *input <= 160)
-        {
-            *(output ++) = convert[*(input ++) & 0x7f];
-        }
-        else
-        {
-            *(output ++) = *(input ++);
-        }
+        tmp[i] = inputstring[i];
     }
 
-    // Terminate what we got
-    *output = 0;
+    QString rc = QString(tmp, length);
+    delete[] tmp;
 
     return rc;
 }

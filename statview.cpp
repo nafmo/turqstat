@@ -62,6 +62,9 @@ bool StatView::CreateReport(StatEngine *engine, string filename)
     fstream report(filename.c_str(), ios::out);
     if (!(report.is_open())) return false;
 
+    // Create an output text encoder
+    Encoder *encoder_p = Encoder::GetEncoderByName("IBMPC");
+
     // Include data as given from the statistics engine
     bool news = engine->IsNewsArea();
 
@@ -199,12 +202,12 @@ bool StatView::CreateReport(StatEngine *engine, string filename)
                     integ ++;
                 }
 
-
-                if (data.name != data.address)
-                    tmp = string(data.name + " <") +
+                string name = encoder_p->Encode(data.name);
+                if (name != data.address)
+                    tmp = string(name + " <") +
                           string(data.address + ">");
                 else
-                    tmp = data.name;
+                    tmp = name;
 
                 report.form("%-58.58s%5u %3u.%02u%%",
                             tmp.c_str(), data.messageswritten,
@@ -289,11 +292,12 @@ bool StatView::CreateReport(StatEngine *engine, string filename)
                 integ ++;
             }
 
-            if (data.name != data.address)
-                tmp = string(data.name + " <") +
+            string name = encoder_p->Encode(data.name);
+            if (name != data.address)
+                tmp = string(name + " <") +
                       string(data.address + ">");
             else
-                tmp = data.name;
+                tmp = name;
 
             report.form("%-50.50s%5u %8u",
                         tmp.c_str(), data.messageswritten,
@@ -381,11 +385,12 @@ bool StatView::CreateReport(StatEngine *engine, string filename)
                 integ ++;
             }
 
-            if (data.name != data.address)
-                tmp = string(data.name + " <") +
+            string name = encoder_p->Encode(data.name);
+            if (name != data.address)
+                tmp = string(name + " <") +
                       string(data.address + ">");
             else
-                tmp = data.name;
+                tmp = name;
 
             report.form("%-43.43s%6u /%5u = %5u",
                         tmp.c_str(),
@@ -537,8 +542,9 @@ bool StatView::CreateReport(StatEngine *engine, string filename)
                 report.form("%4u. ", place);
             }
 
-            if (data.name != "")
-                tmp = data.name;
+            string name = encoder_p->Encode(data.name);
+            if (!name.empty())
+                tmp = name;
             else
                 tmp = "(none)";
 
@@ -604,8 +610,9 @@ bool StatView::CreateReport(StatEngine *engine, string filename)
                 report.form("%4u. ", place);
             }
 
-            if (data.subject != "")
-                tmp = data.subject;
+            string subject = encoder_p->Encode(data.subject);
+            if (subject != "")
+                tmp = subject;
             else
                 tmp = "(none)";
 
@@ -656,7 +663,8 @@ bool StatView::CreateReport(StatEngine *engine, string filename)
                 report.form("%4u. ", place);
             }
 
-            report.form("%-35.35s%6u", data.program.c_str(), data.count);
+            string program = encoder_p->Encode(data.program);
+            report.form("%-35.35s%6u", program.c_str(), data.count);
             report << endl;
 
             if (showversions)
@@ -670,7 +678,8 @@ bool StatView::CreateReport(StatEngine *engine, string filename)
                         restartv = false;
                         report << "      ";
                     }
-                    report << ' ' << vdata.version << ':' << vdata.count;
+                    string version = encoder_p->Encode(vdata.version);
+                    report << ' ' << version << ':' << vdata.count;
                 }
                 if (!restartv) report << endl;
             }
@@ -756,6 +765,8 @@ bool StatView::CreateReport(StatEngine *engine, string filename)
               "----------------------------------" << endl;
 
     report.close();
+
+    delete encoder_p;
 
     return true;
 }

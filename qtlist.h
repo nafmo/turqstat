@@ -1,4 +1,4 @@
-// Copyright (c) 2000 Peter Karlsson
+// Copyright (c) 2000-2001 Peter Karlsson
 //
 // $Id$
 //
@@ -23,6 +23,7 @@
 
 class QListView;
 class StatEngine;
+class wstring;
 
 /**
  * Class describing a window showing a toplist. This class is used in the Qt
@@ -87,12 +88,11 @@ protected:
     void addSoftware(StatEngine *);
 
     /**
-     * Convert a character string from CP437 and copy it.
+     * Convert a wide character string into a QString.
      * @param inputstring String to copy.
-     * @return An allocated char array containing the copied string. Must be
-     *         deleted after use.
+     * @return A QString representation of the string.
      */
-    char *charConvertCopy(string &);
+    static QString charConvert(wstring &);
     /** Create a percent string to display in a toplist. */
     QString percentString(int, int);
 
