@@ -16,6 +16,12 @@
   configure.in
     Some additional checks to ensure portability.
 
+  newspoolread.cpp
+    Made it work under EMX (cannot open in text-mode with LF-terminate lines).
+
+  turqstat.cpp
+    Prints message when output file has been created.
+
 2000-04-30 - peter karlsson <peter@softwolves.pp.se>
   jamread.cpp
   squishread.cpp
