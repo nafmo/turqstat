@@ -29,16 +29,16 @@ static const char *days[] =
 
 bool StatView::CreateReport(StatEngine *engine, string filename,
     unsigned maxnumber,
-    bool quoters, bool topwritten, bool topreceived, bool topsubjects,
-    bool topprograms, bool weekstats, bool daystats, bool showversions,
-    bool showallnums)
+    bool quoters = true, bool topwritten = true, bool topreceived = true,
+    bool topsubjects = true, bool topprograms = true, bool weekstats = true,
+    bool daystats = true, bool showversions = true, bool showallnums = false)
 {
     // Create a report file
     fstream report(filename.c_str(), ios::out);
     if (!(report.is_open())) return false;
 
     // Include data as given from the statistics engine
-    report << "Turquoise SuperStat 1.0 * Message area statistics" << endl;
+    report << "Turquoise SuperStat 1.1 * Message area statistics" << endl;
     report << "=================================================" << endl;
     report << endl;
     report << "(c) Copyright 1998-1999 Peter Karlsson" << endl;
