@@ -1,6 +1,6 @@
 // Copyright (c) 2000 Peter Karlsson
 //
-// $Id: output.cpp,v 1.3 2000/11/11 23:35:52 peter Exp $
+// $Id: output.cpp,v 1.4 2000/11/12 00:20:25 peter Exp $
 //
 // This program is free software; you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -23,13 +23,13 @@
 
 #define STRLEN 256
 
-#ifndef HAS_SNPRINTF
-# ifdef HAS_USNPRINTF
+#ifndef HAVE_SNPRINTF
+# ifdef HAVE_USNPRINTF
 #  define snprintf _snprintf
 # else
 #  define snprintf(a,b,c,d) sprintf(a,c,d)
 # endif
-#endif // !HAS_SNPRINTF
+#endif // !HAVE_SNPRINTF
 
 static string GetMessage(TDisplay::errormessages_e);
 

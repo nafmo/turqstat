@@ -23,9 +23,9 @@
 #include <config.h>
 #include <iostream.h>
 #include <string>
-#ifdef HAS_GETOPT_IN_UNISTD
+#ifdef HAVE_GETOPT_IN_UNISTD
 # include <unistd.h>
-#elif defined(HAS_GETOPT_IN_GETOPT)
+#elif defined(HAVE_GETOPT_IN_GETOPT)
 # include <getopt.h>
 #endif
 #include <stdlib.h>

@@ -20,7 +20,7 @@
 #include <time.h>
 #include <string.h>
 #include <stdio.h>
-#ifdef HAS_EMX_FINDFIRST
+#ifdef HAVE_EMX_FINDFIRST
 # include <emx/syscalls.h>
 # include <io.h>
 #elif defined(HAVE_LIBCRTDLL)
@@ -79,7 +79,7 @@ bool NewsSpoolRead::Transfer(time_t starttime, time_t endtime,
     destination.NewsArea();
 
     // Open the message directory
-#if defined(HAS_EMX_FINDFIRST) || (HAVE_LIBCRTDLL)
+#if defined(HAVE_EMX_FINDFIRST) || (HAVE_LIBCRTDLL)
     string dirname = string(areapath);
     if (dirname[dirname.length() - 1] != '\\')
     {
@@ -88,7 +88,7 @@ bool NewsSpoolRead::Transfer(time_t starttime, time_t endtime,
 
     string searchpath = dirname + string("*");
 
-# ifdef HAS_EMX_FINDFIRST
+# ifdef HAVE_EMX_FINDFIRST
     struct _find spooldir;
     int rc = __findfirst(searchpath.c_str(), 0x2f, &spooldir);
 # else
@@ -102,7 +102,7 @@ bool NewsSpoolRead::Transfer(time_t starttime, time_t endtime,
         display->ErrorMessage(TDisplay::cannot_open_spool);
         return false;
     }
-#else // no HAS_EMX_FINDFIRST or HAVE_LIBCRTDLL
+#else // no HAVE_EMX_FINDFIRST or HAVE_LIBCRTDLL
     DIR *spooldir = opendir(areapath);
     if (!spooldir)
     {
@@ -130,7 +130,7 @@ bool NewsSpoolRead::Transfer(time_t starttime, time_t endtime,
 
     display->SetMessagesTotal(-1);
 
-#ifdef HAS_EMX_FINDFIRST
+#ifdef HAVE_EMX_FINDFIRST
 # define FILENAME spooldir.name
 # define FILESIZE (spooldir.size_lo | (spooldir.size_hi << 16))
     while (0 == rc)
@@ -138,7 +138,7 @@ bool NewsSpoolRead::Transfer(time_t starttime, time_t endtime,
 # define FILENAME spooldir.name
 # define FILESIZE spooldir.size
     while (rc != -1)
-#else // no HAS_EMX_FINDFIRST or HAVE_LIBCRTDLL
+#else // no HAVE_EMX_FINDFIRST or HAVE_LIBCRTDLL
 # define FILENAME spooldirent_p->d_name
 # define FILESIZE msgstat.st_size
     struct dirent *spooldirent_p;
@@ -241,7 +241,7 @@ out2:;
         display->UpdateProgress(++ msgn);
         if (msg) fclose(msg);
 
-#ifdef HAS_EMX_FINDFIRST
+#ifdef HAVE_EMX_FINDFIRST
         rc = __findnext(&spooldir);
 #elif defined(HAVE_LIBCRTDLL)
         rc = _findnext(spoolhandle, &spooldir);
@@ -250,7 +250,7 @@ out2:;
 
 #ifdef HAVE_LIBCRTDLL
     _findclose(spoolhandle);
-#elif !defined(HAS_EMX_FINDFIRST)
+#elif !defined(HAVE_EMX_FINDFIRST)
     closedir(spooldir);
 #endif
 

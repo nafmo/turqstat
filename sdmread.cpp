@@ -20,7 +20,7 @@
 #include <time.h>
 #include <string.h>
 #include <stdio.h>
-#ifdef HAS_EMX_FINDFIRST
+#ifdef HAVE_EMX_FINDFIRST
 # include <emx/syscalls.h>
 #elif defined(HAVE_LIBCRTDLL)
 # include <io.h>
@@ -80,7 +80,7 @@ bool SdmRead::Transfer(time_t starttime, time_t endtime,
     }
 
     // Open the message directory
-#if defined(HAS_EMX_FINDFIRST) || (HAVE_LIBCRTDLL)
+#if defined(HAVE_EMX_FINDFIRST) || (HAVE_LIBCRTDLL)
     string dirname = string(areapath);
     if (dirname[dirname.length() - 1] != '\\')
     {
@@ -89,7 +89,7 @@ bool SdmRead::Transfer(time_t starttime, time_t endtime,
 
     string searchpath = dirname + string("*.msg");
 
-# ifdef HAS_EMX_FINDFIRST
+# ifdef HAVE_EMX_FINDFIRST
     struct _find sdmdir;
     int rc = __findfirst(searchpath.c_str(), 0x2f, &sdmdir);
 # else
@@ -103,7 +103,7 @@ bool SdmRead::Transfer(time_t starttime, time_t endtime,
         display->ErrorMessage(TDisplay::cannot_open_msg_directory);
         return false;
     }
-#else // no HAS_EMX_FINDFIRST or HAVE_LIBCRTDLL
+#else // no HAVE_EMX_FINDFIRST or HAVE_LIBCRTDLL
     DIR *sdmdir = opendir(areapath);
     if (!sdmdir)
     {
@@ -116,7 +116,7 @@ bool SdmRead::Transfer(time_t starttime, time_t endtime,
     {
         dirname += '/';
     }
-#endif // else no HAS_EMX_FINDFIRST
+#endif // else no HAVE_EMX_FINDFIRST
 
     sdmhead_s sdmhead;
     FILE *msg = NULL;
@@ -127,7 +127,7 @@ bool SdmRead::Transfer(time_t starttime, time_t endtime,
 
     display->SetMessagesTotal(-1);
 
-#ifdef HAS_EMX_FINDFIRST
+#ifdef HAVE_EMX_FINDFIRST
 # define FILENAME sdmdir.name
 # define FILESIZE (sdmdir.size_lo | (sdmdir.size_hi << 16))
     while (0 == rc)
@@ -135,7 +135,7 @@ bool SdmRead::Transfer(time_t starttime, time_t endtime,
 # define FILENAME sdmdir.name
 # define FILESIZE sdmdir.size
     while (rc != -1)
-#else // no HAS_EMX_FINDFIRST or HAVE_LIBCRTDLL
+#else // no HAVE_EMX_FINDFIRST or HAVE_LIBCRTDLL
 # define FILENAME sdmdirent_p->d_name
 # define FILESIZE sdmstat.st_size
     struct dirent *sdmdirent_p;
@@ -160,7 +160,7 @@ bool SdmRead::Transfer(time_t starttime, time_t endtime,
             goto out;
         }
 
-#if !defined(HAS_EMX_FINDFIRST) && !defined(HAVE_LIBCRTDLL)
+#if !defined(HAVE_EMX_FINDFIRST) && !defined(HAVE_LIBCRTDLL)
         stat(thisfile.c_str(), &sdmstat);
 #endif
 
@@ -223,7 +223,7 @@ out2:;
         display->UpdateProgress(++ msgn);
         if (msg) fclose(msg);
 
-#ifdef HAS_EMX_FINDFIRST
+#ifdef HAVE_EMX_FINDFIRST
         rc = __findnext(&sdmdir);
 #elif defined(HAVE_LIBCRTDLL)
         rc = _findnext(sdmhandle, &sdmdir);
@@ -232,7 +232,7 @@ out2:;
 
 #ifdef HAVE_LIBCRTDLL
     _findclose(sdmhandle);
-#elif !defined(HAS_EMX_FINDFIRST)
+#elif !defined(HAVE_EMX_FINDFIRST)
     closedir(sdmdir);
 #endif
 
