@@ -1,3 +1,17 @@
+2001-07-12 - peter karlsson <peter@softwolves.pp.se>
+  utility.cpp
+  utility.h
+    Fixes for compilers without wide character library functions (EMX).
+
+  convert.cpp
+    Fixes for strcasecmp/stricmp differences.
+
+  configure.in
+  acconfig.h
+    Allow towupper to be missing.
+    Added check for wchar.h
+    Added check for strcasecmp/stricmp.
+
 2001-07-05 - peter karlsson <peter@softwolves.pp.se>
   datatypes.h
   doxygen.conf.in
