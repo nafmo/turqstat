@@ -37,6 +37,7 @@ sdmread.o: sdmread.cpp sdmread.h arearead.h statengine.h datatypes.h utility.h
 	gcc $(CFLAGS) -DUNIX -c sdmread.cpp
 
 dist: turqstat.exe
+	strip turqstat.exe
 	rar -av a turqstat.rar turqstat.exe README.Win32 cygwin1.dll
 
 clean:
