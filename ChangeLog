@@ -1,3 +1,9 @@
+1999-08-21 - peter karlsson <pk@mds.mdh.se>
+  Makefile.CygWin
+  turqstat.cpp
+  utility.cpp
+    Fixes for CygWin
+
 1999-07-18 - peter karlsson <pk@mds.mdh.se>
   fdapxread.cpp
   mypointread.cpp
