@@ -1,6 +1,6 @@
 // Copyright (c) 2000 Peter Karlsson
 //
-// $Id: output.cpp,v 1.1 2000/06/19 20:01:09 peter Exp $
+// $Id: output.cpp,v 1.2 2000/06/22 17:49:03 peter Exp $
 //
 // This program is free software; you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -19,24 +19,29 @@
 
 #include "output.h"
 
-ProgressDisplay *ProgressDisplay::GetOutputObject()
+TDisplay *TDisplay::GetOutputObject()
 {
-    static ProgressDisplay *outputobject = NULL;
+    static TDisplay *outputobject = NULL;
 
     if (!outputobject)
     {
-        outputobject = new ProgressDisplay();
+        outputobject = new TDisplay();
+        if (!outputobject)
+        {
+            cerr << "Unable to allocate memory for output object!" << endl;
+            exit(255);
+        }
     }
 
     return outputobject;
 }
 
-void ProgressDisplay::SetMessagesTotal(int number)
+void TDisplay::SetMessagesTotal(int number)
 {
     maximum = number;
 }
 
-void ProgressDisplay::UpdateProgress(int message)
+void TDisplay::UpdateProgress(int message)
 {
     if (maximum <= 0)
     {
@@ -48,22 +53,60 @@ void ProgressDisplay::UpdateProgress(int message)
     }
 }
 
-void ProgressDisplay::ErrorMessage(string errormessage)
+void TDisplay::ErrorMessage(string errormessage)
 {
     cerr << "Error: " << errormessage << endl;
 }
 
-void ProgressDisplay::ErrorMessage(string errormessage, int number)
+void TDisplay::ErrorMessage(string errormessage, int number)
 {
     cerr << "Error: " << errormessage << number << endl;
 }
 
-void ProgressDisplay::WarningMessage(string errormessage)
+static string GetMessage(TDisplay::errormessages_e errormessage)
+    return s;
+{
+    switch (errormessage)
+    {
+        case TDisplay::out_of_memory:
+            s = "Out of memory.";
+            break;
+
+        case TDisplay::area_not_allocated:
+            s = "Area path was not allocated properly.";
+            break;
+
+        case TDisplay::message_base_mismatch:
+            s = "Message base format mismatch.";
+            break;
+
+        case TDisplay::out_of_memory_area:
+            s = "Out of memory allocating area object.";
+            break;
+    }
+}
+
+void TDisplay::ErrorQuit(errormessages_e errormessage, int returncode)
+{
+    ErrorMessage(GetMessage(errormessage));
+    cerr << "Program halted!" << endl;
+    exit(returncode);
+}
+
+void TDisplay::InternalErrorQuit(errormessages_e errormessage,
+                                        int returncode)
+{
+    ErrorMessage(string("Internal error: ") + GetMessage(errormessage));
+    cerr << "Program halted!" << endl;
+    exit(returncode);
+}
+
+void TDisplay::WarningMessage(string errormessage)
 {
     cerr << "Warning: " << errormessage << endl;
 }
 
-void ProgressDisplay::WarningMessage(string errormessage, int number)
+void TDisplay::WarningMessage(string errormessage, int number)
 {
     cerr << "Warning: " << errormessage << number << endl;
 }

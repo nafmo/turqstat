@@ -19,22 +19,28 @@
 #include <qprogressdialog.h>
 #include <qmessagebox.h>
 #include <qtgui.h>
+#include <qapplication.h>
 
 #include "output.h"
 
-ProgressDisplay *ProgressDisplay::GetOutputObject()
+TDisplay *TDisplay::GetOutputObject()
 {
-    static ProgressDisplay *outputobject = NULL;
+    static TDisplay *outputobject = NULL;
 
     if (!outputobject)
     {
-        outputobject = new ProgressDisplay();
+        outputobject = new TDisplay();
+        if (!outputobject)
+        {
+            cerr << "Unable to allocate memory for output object!" << endl;
+            exit(255);
+        }
     }
 
     return outputobject;
 }
 
-void ProgressDisplay::SetMessagesTotal(int number)
+void TDisplay::SetMessagesTotal(int number)
 {
     maximum = number;
 
@@ -52,7 +58,7 @@ void ProgressDisplay::SetMessagesTotal(int number)
     p->setProgress(0);
 }
 
-void ProgressDisplay::UpdateProgress(int messages)
+void TDisplay::UpdateProgress(int messages)
 {
     QProgressDialog *p = InfoWindow::getMainWindow()->getProgressDialog();
     if (!p) return;
@@ -67,13 +73,13 @@ void ProgressDisplay::UpdateProgress(int messages)
     }
 }
 
-void ProgressDisplay::ErrorMessage(string errormessage)
+void TDisplay::ErrorMessage(string errormessage)
 {
     QMessageBox::critical(NULL, "Turquoise SuperStat", errormessage.c_str(),
                           QMessageBox::Ok | QMessageBox::Default, 0, 0);
 }
 
-void ProgressDisplay::ErrorMessage(string errormessage, int number)
+void TDisplay::ErrorMessage(string errormessage, int number)
 {
     QMessageBox::critical(NULL, "Turquoise SuperStat",
                           QString(errormessage.c_str()) +
@@ -81,13 +87,57 @@ void ProgressDisplay::ErrorMessage(string errormessage, int number)
                           QMessageBox::Ok | QMessageBox::Default, 0, 0);
 }
 
-void ProgressDisplay::WarningMessage(string errormessage)
+static QString GetMessage(TDisplay::errormessages_e errormessage)
+    return s;
+{
+    switch (errormessage)
+    {
+        case TDisplay::out_of_memory:
+            s = qApp->translate("TDisplay", "Out of memory.");
+            break;
+
+        case TDisplay::area_not_allocated:
+            s = qApp->translate("TDisplay",
+                                "Area path was not allocated properly.");
+            break;
+
+        case TDisplay::message_base_mismatch:
+            s = qApp->translate("TDisplay", "Message base format mismatch.");
+            break;
+
+        case TDisplay::out_of_memory_area:
+            s = qApp->translate("TDisplay",
+                                "Out of memory allocating area object.");
+            break;
+    }
+}
+
+void TDisplay::ErrorQuit(errormessages_e errormessage, int returncode)
+{
+    QMessageBox::critical(NULL, "Turquoise SuperStat",
+                          GetMessage(errormessage),
+                          QMessageBox::Ok | QMessageBox::Default, 0, 0);
+    cerr << "Program halted!" << endl;
+    exit(returncode);
+}
+
+void TDisplay::InternalErrorQuit(errormessages_e errormessage,
+                                        int returncode)
+{
+    QMessageBox::critical(NULL, qApp->translate("TDisplay", "Internal error"),
+                          GetMessage(errormessage),
+                          QMessageBox::Ok | QMessageBox::Default, 0, 0);
+    cerr << "Program halted!" << endl;
+    exit(returncode);
+}
+
+void TDisplay::WarningMessage(string errormessage)
 {
     QMessageBox::warning(NULL, "Turquoise SuperStat", errormessage.c_str(),
                          QMessageBox::Ok | QMessageBox::Default, 0, 0);
 }
 
-void ProgressDisplay::WarningMessage(string errormessage, int number)
+void TDisplay::WarningMessage(string errormessage, int number)
 {
     QMessageBox::warning(NULL, "Turquoise SuperStat",
                          QString(errormessage.c_str()) +

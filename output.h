@@ -22,23 +22,33 @@
 
 class ostream;
 
-class ProgressDisplay
+class TDisplay
 {
 public:
     // Constructor and destructor
-    ProgressDisplay() : maximum(-1) {};
+    TDisplay() : maximum(-1) {};
 
+    // Data types
+    enum errormessages_e
+    {
+        out_of_memory, area_not_allocated, message_base_mismatch,
+        out_of_memory_area
+    };
+
+    // Message methods
     void SetMessagesTotal(int number);
     void UpdateProgress(int messages);
     void ErrorMessage(string errormessage);
     void ErrorMessage(string errormessage, int number);
+    void ErrorQuit(errormessages_e errormessage, int returncode);
+    void InternalErrorQuit(errormessages_e errormessage, int returncode);
     void WarningMessage(string errormessage);
     void WarningMessage(string errormessage, int number);
 
-    static ProgressDisplay *GetOutputObject();
+    static TDisplay *GetOutputObject();
 
 protected:
-    ProgressDisplay *outputobject;
-    int             maximum;
+    TDisplay    *outputobject;
+    int         maximum;
 };
 #endif
