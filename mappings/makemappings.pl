@@ -248,29 +248,23 @@ foreach $file (sort keys %arrayname)
 	# Write mapping table for Unicode to charset.
 	my $outname = $arrayname{$file} . "_rev";
 	print HEADER '/** Outgoing conversion table for ', $name{$file}, " */\n";
-	print HEADER 'extern const struct reversemap ', $outname, "[256];\n\n";
-	print MAPPINGS 'const struct reversemap ', $outname, "[256] =\n{\n";
+	print HEADER 'extern const struct reversemap ', $outname, "[128];\n\n";
+	print MAPPINGS 'const struct reversemap ', $outname, "[128] =\n{\n";
 	my $count = 0;
-	foreach $codepoint (0..255)
+	my @mapped = sort { $a <=> $b } grep { $_ >= 128 } keys %outmap;
+	my $prev = 127;
+
+	foreach (0 .. 126 - $#mapped)
 	{
-		if (!defined $inmap{$codepoint})
-		{
-			printf MAPPINGS "    {     0, %3d }, // Undefined codepoint\n",
-			       $codepoint;
-			$count ++;
-		}
-		elsif (defined $duplicate{$codepoint})
-		{
-			printf MAPPINGS "    {     0, %3d }, // Duplicated mapping\n",
-			       $codepoint;
-		}
+		print MAPPINGS "    {     0,   0 }, // Filler\n";
+		$count ++;
 	}
 
-	foreach $codepoint (sort { $a <=> $b } keys %outmap)
+	foreach $codepoint (@mapped)
 	{
 		printf MAPPINGS "    { %5d, %3d }",
 		       $codepoint, $outmap{$codepoint};
-		print MAPPINGS ",\n" if ++ $count < 256;
+		print MAPPINGS ",\n" if ++ $count < 128;
 	}
 	print MAPPINGS "\n};\n\n";
 }
