@@ -3,7 +3,7 @@
 // A statistic collection program for Fidonet systems
 // Version 1.3
 //
-// Copyright (c) 1998-1999 Peter Karlsson
+// Copyright (c) 1998-2000 Peter Karlsson
 //
 // $Id$
 //
@@ -79,9 +79,9 @@ int main(int argc, char *argv[])
     cout << "Turquoise " << version
          << " - Statistics tool for Fidonet message bases"
          << endl;
-    cout << "(c) Copyright 1998-1999 Peter Karlsson. "
+    cout << "(c) Copyright 1998-2000 Peter Karlsson. "
             "GNU GPL 2 licensed." << endl;
-    cout << "A Softwolves Software Release in 1999." << endl;
+    cout << "A Softwolves Software Release in 2000." << endl;
     cout << endl;
 
     // Handle arguments
