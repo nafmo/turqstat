@@ -1,3 +1,15 @@
+2000-04-13 - peter karlsson <peter@softwolves.pp.se>
+  makedist.btm
+    Added batch file for creating the OS2/Win32 distribution archives.
+
+  turqstat.doc
+  turqstat.dok
+    Documented changes in distribution file structure.
+
+  turqstat.cpp
+  version.h
+    Preparations for 1.4.
+
 2000-04-12 - peter karlsson <peter@softwolves.pp.se>
   acconfig.h
   configure.in
