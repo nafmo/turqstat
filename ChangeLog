@@ -2,6 +2,19 @@
   Makefile.in
     Once and for all fixed the directory problems.
 
+  statview.cpp
+  statview.h
+  turqstat.cpp
+  turqstat.doc
+  turqstat.dok
+  utility.cpp
+  utility.h
+  README.os2
+    Use OS/2 API functions for locale dates, instead of strftime.
+
+  version.h
+    Updates for 2.1.
+
 2001-01-09 - peter karlsson <peter@softwolves.pp.se>
   Released 2.0.1, branching from 2.0 release:
 
