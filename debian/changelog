@@ -1,3 +1,9 @@
+turqstat (2.1) unstable; urgency=low
+
+  * Cleaned up Debianization slightly.
+
+ -- peter karlsson <peterk@debian.org>  UNRELEASED
+
 turqstat (2.0) unstable; urgency=low
 
   * Now officially maintained in Debian by the original author.
