@@ -359,3 +359,30 @@ string Encoder::Encode(const wstring &input)
 
     return s;
 }
+
+CharsetEnumerator::CharsetEnumerator(names_e namelist)
+    : current(0)
+{
+    switch (namelist)
+    {
+        case Fidonet:
+            map = fidocharsets;
+            break;
+
+        case Usenet:
+        default: // Just in case
+            map = usenetcharsets;
+            break;
+    }
+}
+
+const char *CharsetEnumerator::Next()
+{
+    if (!map[current].charset)
+    {
+        // We're at the end
+        return NULL;
+    }
+
+    return map[current ++].charset;
+}

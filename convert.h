@@ -108,4 +108,39 @@ private:
     const struct reversemap *outmap;
 };
 
+struct tablemap;
+
+/**
+ * Class used to enumerate all available character sets.
+ */
+class CharsetEnumerator
+{
+public:
+    /**
+     * Selection of available sets of character set names.
+     */
+    enum names_e { Fidonet, Usenet };
+
+    /**
+     * Create a character set enumerator object, enumerating the character
+     * sets for the selected name space.
+     * @param namespace Which character set names to use.
+     */
+    CharsetEnumerator(names_e);
+
+    /**
+     * Get next character set name in the enumeration list.
+     * @return NULL when end of list is reached, otherwise name of next
+     *         character set.
+     */
+    const char *Next();
+
+private:
+    /** Pointer to character set map we are enumerating. */
+    const struct tablemap *map;
+
+    /** Current enumeration index. */
+    int current;
+};
+
 #endif
