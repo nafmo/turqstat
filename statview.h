@@ -19,24 +19,20 @@
 #ifndef __STATVIEW_H
 #define __STATVIEW_H
 
-#ifdef __EMX__
-# include <Strng.h>
-#else
-# include <String.h>
-#endif
+#include <string>
 #include "statengine.h"
 
 class StatView
 {
 public:
-    bool CreateReport(StatEngine *engine, String filename,
+    bool CreateReport(StatEngine *engine, string filename,
                       unsigned maxnumber,
                       bool quoters, bool topwritten, bool topreceived,
                       bool topsubjects, bool topprograms,
                       bool weekstats, bool daystats);
 
 protected:
-    String Mangle(String, unsigned);
+    string Mangle(string, unsigned);
 };
 
 #endif

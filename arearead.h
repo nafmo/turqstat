@@ -19,11 +19,7 @@
 #ifndef __AREAREAD_H
 #define __AREAREAD_H
 
-#ifdef __EMX__
-# include <Strng.h>
-#else
-# include <String.h>
-#endif
+#include <string>
 
 #include "statengine.h"
 

@@ -19,11 +19,7 @@
 #ifndef __SQUISHREAD_H
 #define __SQUISHREAD_H
 
-#ifdef __EMX__
-# include <Strng.h>
-#else
-# include <String.h>
-#endif
+#include <string>
 
 #include "arearead.h"
 #include "statengine.h"

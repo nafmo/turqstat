@@ -28,13 +28,13 @@ static const char *days[] =
       "Saturday ",
       "Sunday   " };
 
-bool StatView::CreateReport(StatEngine *engine, String filename,
+bool StatView::CreateReport(StatEngine *engine, string filename,
     unsigned maxnumber,
     bool quoters, bool topwritten, bool topreceived, bool topsubjects,
     bool topprograms, bool weekstats, bool daystats)
 {
     // Create a report file
-    fstream report(filename, ios::out);
+    fstream report(filename.c_str(), ios::out);
     if (!(report.is_open())) return false;
 
     // Include data as given from the statistics engine
@@ -81,6 +81,8 @@ bool StatView::CreateReport(StatEngine *engine, String filename,
 
     report << endl;
 
+    string tmp;
+
     if (quoters)
     {
         report << "-------------------------------------------"
@@ -126,13 +128,16 @@ bool StatView::CreateReport(StatEngine *engine, String filename,
                     fract = 0;
                     integ ++;
                 }
-                if ("" == data.name)
-                    report << "(none)                             ";
+
+                if (data.name != "")
+                    tmp = data.name;
                 else
-                    report << Mangle(data.name, 35);
-                report.form("%5u ", data.messageswritten);
-                report << Mangle(data.address, 15);
-                report.form("%3u.%02u%%", integ, fract) << endl;
+                    tmp = "(none)";
+
+                report.form("%-35s%5u %-15s%3u.%02u%%",
+                            tmp.c_str(), data.messageswritten,
+                            data.address.c_str(), integ, fract);
+                report << endl;
 
                 place ++;
                 oldpercent = percentquotes;
@@ -209,15 +214,21 @@ bool StatView::CreateReport(StatEngine *engine, String filename,
                 fract = 0;
                 integ ++;
             }
-            if ("" == data.name)
-                report << "(none)                             ";
+
+            if (data.name != "")
+                tmp = data.name;
             else
-                report << Mangle(data.name, 35);
-            report.form("%5u ", data.messageswritten);
-            report << Mangle(data.address, 15);
-            report.form(" %7u %3u.%1u%%",
-                        data.byteswritten,
-                        integ, fract) << endl;
+                tmp = "(none)";
+
+            report.form("%-35s%5u %-15s%7u",
+                         tmp.c_str(), data.messageswritten,
+                         data.address.c_str(), data.byteswritten);
+            if (data.bytesquoted > 0)
+            {
+                report.form(" %3u.%1u%%",
+                             integ, fract);
+            }
+            report << endl;
 
             place ++;
             oldwritten = data.messageswritten;
@@ -258,17 +269,19 @@ bool StatView::CreateReport(StatEngine *engine, String filename,
                 report.form("%4u. ", place);
             }
 
-            if ("" == data.name)
-                report << "(none)                             ";
+            if (data.name != "")
+                tmp = data.name;
             else
-                report << Mangle(data.name, 35);
-            report.form("%5u %5u ",
+                tmp = "(none)";
+
+            report.form("%-35s%5u %5u",
+                        tmp.c_str(),
                         data.messagesreceived,
                         data.messageswritten);
 
             if (data.messageswritten)
             {
-                report.form("%6u%%", (100 * data.messagesreceived) /
+                report.form(" %6u%%", (100 * data.messagesreceived) /
                                      data.messageswritten);
             }
 
@@ -319,13 +332,18 @@ bool StatView::CreateReport(StatEngine *engine, String filename,
                 report.form("%4u. ", place);
             }
 
-
-            if ("" == data.subject)
-                report << "(none)                                    "
-                          "             ";
+            if (data.subject != "")
+            {
+                if (data.subject.length() > 55)
+                    tmp = data.subject.substr(0, 55);
+                else
+                    tmp = data.subject;
+            }
             else
-                report << Mangle(data.subject, 55);
-            report.form("%6u %7u", data.count, data.bytes);
+                tmp = "(none)";
+
+            report.form("%-55s%6u %7u",
+                        tmp.c_str(), data.count, data.bytes);
 
             report << endl;
 
@@ -369,10 +387,7 @@ bool StatView::CreateReport(StatEngine *engine, String filename,
                 report.form("%4u. ", place);
             }
 
-            report << Mangle(data.program, 35);
-
-            report.form("%6u", data.count);
-
+            report.form("%-35s%6u", data.program.c_str(), data.count);
             report << endl;
 
             bool restartv = true;
@@ -467,13 +482,4 @@ bool StatView::CreateReport(StatEngine *engine, String filename,
               "----------------------------------" << endl;
 
     report.close();
-}
-
-String StatView::Mangle(String s, unsigned len)
-{
-    if (s.length() == len) return s;
-    if (s.length() > len) return s.at(0, len);
-    String r = s;
-    while (r.length() < len) r += ' ';
-    return r;
 }

@@ -16,10 +16,12 @@
 // along with this program; if not, write to the Free Software
 // Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 
-#include "statengine.h"
 #include <limits.h>
 #include <iostream.h>
 #include <stdlib.h>
+
+#include "statengine.h"
+#include "utility.h"
 
 StatEngine::StatEngine(void)
 {
@@ -54,8 +56,8 @@ StatEngine::~StatEngine(void)
     if (programtoplist_p) delete[] programtoplist_p;
 }
 
-void StatEngine::AddData(String fromname, String toname, String subject,
-                         String controldata, String msgbody,
+void StatEngine::AddData(string fromname, string toname, string subject,
+                         string controldata, string msgbody,
                          time_t timewritten, time_t timereceived)
 {
     enum { None, Left, Right } direction;
@@ -125,25 +127,25 @@ void StatEngine::AddData(String fromname, String toname, String subject,
     bool isquoted = false, foundtear = false;
     do
     {
-        int nextcr = msgbody.index('\n', currindex);
-        int nextcr2 = msgbody.index('\r', currindex);
+        int nextcr = msgbody.find('\n', currindex);
+        int nextcr2 = msgbody.find('\r', currindex);
         if (nextcr2 < nextcr || -1 == nextcr) nextcr = nextcr2;
         if (-1 == nextcr) nextcr = msgbody.length();
-        String thisline = msgbody.at((int) currindex, nextcr - currindex);
+        string thisline = msgbody.substr((int) currindex, nextcr - currindex);
 
-        if ("--- " == thisline.at(0, 4) ||
+        if ("--- " == thisline.substr(0, 4) ||
             thisline.length() == 3 && "---" == thisline)
         {
             foundtear = true;
         }
-        else if (" * Origin: " == thisline.at(0, 11))
+        else if (" * Origin: " == thisline.substr(0, 11))
         {
             break;
         }
         else
             foundtear = false;
 
-        int gt = thisline.index('>'), lt = thisline.index('<');
+        int gt = thisline.find('>'), lt = thisline.find('<');
         if (gt >= 0 && gt < 6 && (-1 == lt || gt < lt))
         {
             isquoted = true;
@@ -221,15 +223,15 @@ void StatEngine::AddData(String fromname, String toname, String subject,
 
     if (subject.length() > 3)
     {
-        if (fcompare(subject.at(0, 3), "re:") == 0)
+        if (fcompare(subject.substr(0, 3), "re:") == 0)
         {
             if (' ' == subject[3])
             {
-                subject = subject.at(4, subject.length() - 4);
+                subject = subject.substr(4, subject.length() - 4);
             }
             else
             {
-                subject = subject.at(3, subject.length() - 3);
+                subject = subject.substr(3, subject.length() - 3);
             }
         }
     }
@@ -285,38 +287,37 @@ void StatEngine::AddData(String fromname, String toname, String subject,
     subfound_p->bytes += bytes;
 
     // Locate program name and version in database, and update statistics
-    String program = "";
+    string program = "";
     // PID takes precedence over tearline
-    if (controldata.contains("PID: "))
+    int where;
+    if ((where = controldata.find("PID: ")) != -1)
     {
-        int where = controldata.index("PID: ");
-        int howfar = controldata.index((char) 1, where);
+        int howfar = controldata.find((char) 1, where);
         if (-1 == howfar) howfar = controldata.length();
-        program = controldata.at(where + 5, howfar - where - 5);
+        program = controldata.substr(where + 5, howfar - where - 5);
     }
-    else if (msgbody.contains("--- "))
+    else if ((where = msgbody.find("--- ")) != -1)
     {
-        int where = msgbody.index("--- ");
-        int howfar = msgbody.index('\n', where);
-        if (-1 == howfar) howfar = msgbody.index('\r', where);
+        int howfar = msgbody.find('\n', where);
+        if (-1 == howfar) howfar = msgbody.find('\r', where);
         if (-1 == howfar) howfar = msgbody.length();
-        program = msgbody.at(where + 4, howfar - where - 4);
+        program = msgbody.substr(where + 4, howfar - where - 4);
     }
 
     // Split program name and version
     // It is believed to be divided as such: "Program<space>Version<space>Other"
     // the last part is not counted
 
-    int space1 = program.index(' ');
-    int space2 = program.index(' ', space1 + 1);
+    int space1 = program.find(' ');
+    int space2 = program.find(' ', space1 + 1);
     if (-1 == space1) space1 = space2 = program.length();
     if (-1 == space2) space2 = program.length();
 
-    String programname;
+    string programname;
     if (space1 && '+' == program[space1 - 1])
-        programname = program.at(0, space1 - 1);
+        programname = program.substr(0, space1 - 1);
     else
-        programname = program.at(0, space1);
+        programname = program.substr(0, space1);
 
     if (programname != "")
     {
@@ -372,12 +373,12 @@ void StatEngine::AddData(String fromname, String toname, String subject,
         {
             // Locate version number in the linked list, if we do not
             // find it, add it to it.
-            String programvers;
+            string programvers;
 
             if (space2 && '+' == program[space2 - 1] && space2 - space1 > 2)
-                programvers = program.at(space1 + 1, space2 - space1 - 2);
+                programvers = program.substr(space1 + 1, space2 - space1 - 2);
             else
-                programvers = program.at(space1 + 1, space2 - space1 - 1);
+                programvers = program.substr(space1 + 1, space2 - space1 - 1);
 
             programversion_s **vertrav_pp = &(progfound_p->versions_p);
             while (*vertrav_pp != NULL &&
@@ -418,29 +419,29 @@ void StatEngine::AddData(String fromname, String toname, String subject,
     hourcount[tm_p->tm_hour] ++;
 }
 
-String StatEngine::ParseAddress(String controldata, String msgbody)
+string StatEngine::ParseAddress(string controldata, string msgbody)
 {
     // Locate Origin
-    int index = msgbody.index(" * Origin: ");
+    int index = msgbody.find(" * Origin: ");
     if (-1 != index)
     {
         // Locate last '(' and ')' parenthesis on line
-        int endsat = msgbody.index('\n', index);
-        int endsat2 = msgbody.index('\r', index);
+        int endsat = msgbody.find('\n', index);
+        int endsat2 = msgbody.find('\r', index);
         if (endsat2 < endsat || -1 == endsat) endsat = endsat2;
         if (-1 == endsat) endsat = msgbody.length();
-        int leftparen = msgbody.index('(', index), prevleftparen = leftparen;
+        int leftparen = msgbody.find('(', index), prevleftparen = leftparen;
         while (leftparen != -1 && leftparen < endsat)
         {
             prevleftparen = leftparen;
-            leftparen = msgbody.index('(', leftparen + 1);
+            leftparen = msgbody.find('(', leftparen + 1);
         }
         leftparen = prevleftparen; // for clarity
-        int rightparen = msgbody.index(')', leftparen);
+        int rightparen = msgbody.find(')', leftparen);
         if (-1 != rightparen && rightparen < endsat)
         {
             // Okay, we've found them, get the address
-            return msgbody.at(leftparen + 1, rightparen - leftparen - 1);
+            return msgbody.substr(leftparen + 1, rightparen - leftparen - 1);
         }
     }
 
@@ -449,26 +450,26 @@ String StatEngine::ParseAddress(String controldata, String msgbody)
     // MSGID Network#address serial
     // MSGID address@network serial
     // MSGID address serial
-    index = controldata.index("MSGID: ");
+    index = controldata.find("MSGID: ");
     if (-1 != index)
     {
-        int index2 = controldata.index(' ', index + 1);
+        int index2 = controldata.find(' ', index + 1);
         if (-1 != index2)
         {
-            int index3 = controldata.index(' ', index2 + 1);
-            int index4 = controldata.index('@', index2 + 1);
-            int index5 = controldata.index('#', index2 + 1);
+            int index3 = controldata.find(' ', index2 + 1);
+            int index4 = controldata.find('@', index2 + 1);
+            int index5 = controldata.find('#', index2 + 1);
             if (index4 != -1 && index4 < index3) index3 = index4;
             if (index5 != -1 && index5 < index3) index2 = index5;
             if (-1 != index3)
             {
-                return controldata.at(index2 + 1, index3 - index - 7);
+                return controldata.substr(index2 + 1, index3 - index - 7);
             }
         }
     }
 
     // Give up
-    return String("N/A");
+    return string("N/A");
 }
 
 bool StatEngine::GetTop(bool restart, persstat_s &result,

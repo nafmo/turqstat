@@ -19,11 +19,7 @@
 #ifndef __STATENGINE_H
 #define __STATENGINE_H
 
-#ifdef __EMX__
-# include <Strng.h>
-#else
-# include <String.h>
-#endif
+#include <string>
 #include <time.h>
 
 int comparenumwritten(const void *, const void *);
@@ -41,16 +37,16 @@ public:
     ~StatEngine(void);
 
     // Method to report data to the statistics engine
-    void AddData(String fromname, String toname, String subject,
-                 String controldata, String msgbody,
+    void AddData(string fromname, string toname, string subject,
+                 string controldata, string msgbody,
                  time_t timewritten, time_t timereceived);
 
     // Structures and methods used to retrieve data from the
     // statistics engine
     struct persstat_s
     {
-        String      name;
-        String      address;
+        string      name;
+        string      address;
         unsigned    byteswritten, lineswritten, bytesquoted, linesquoted,
                     messageswritten, messagesreceived;
     };
@@ -68,7 +64,7 @@ public:
 
     struct subjstat_s
     {
-        String      subject;
+        string      subject;
         unsigned    count, bytes;
     };
 
@@ -78,7 +74,7 @@ public:
     {
         friend class StatEngine;
 
-        String      program;
+        string      program;
         unsigned    count;
     private:
         void        *versions; // should be struct StatEngine::programversion_s
@@ -88,7 +84,7 @@ public:
 
     struct verstat_s
     {
-        String      version;
+        string      version;
         unsigned    count;
     };
 
@@ -115,8 +111,8 @@ protected:
     // Data types used by statistics engine
     struct persondata_s
     {
-        String      name;
-        String      address;
+        string      name;
+        string      address;
         unsigned    byteswritten, lineswritten, bytesquoted, linesquoted,
                     messageswritten, messagesreceived;
 
@@ -131,7 +127,7 @@ protected:
 
     struct programversion_s
     {
-        String      version;
+        string      version;
         unsigned    count;
 
         programversion_s    *next;
@@ -142,7 +138,7 @@ protected:
 
     struct programdata_s
     {
-        String              programname;
+        string              programname;
         programversion_s    *versions_p;
         unsigned            count;
 
@@ -157,7 +153,7 @@ protected:
 
     struct subjectdata_s
     {
-        String      subject;
+        string      subject;
         unsigned    count, bytes;
 
         subjectdata_s   *left, *right;
@@ -187,7 +183,7 @@ protected:
     programversion_s    *currversion;
 
     // Internal methods
-    String ParseAddress(String, String);
+    string ParseAddress(string, string);
     void FlattenPeople(persstat_s *, persondata_s *);
     void FlattenSubjects(subjstat_s *, subjectdata_s *);
     void FlattenPrograms(progstat_s *, programdata_s *);

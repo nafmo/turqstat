@@ -16,6 +16,7 @@
 // along with this program; if not, write to the Free Software
 // Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 
+#include <iostream.h>
 #include <time.h>
 #include <string.h>
 extern "C" {
@@ -99,10 +100,10 @@ bool SquishRead::Transfer(time_t starttime, StatEngine &destination)
             // Add to statistics
             if (stampToTimeT(&msg.date_arrived) >= starttime)
             {
-                destination.AddData(String((char *) msg.from),
-                                    String((char *) msg.to),
-                                    String((char *) msg.subj),
-                                    String(ctrlbuf), String(msgbuf),
+                destination.AddData(string((char *) msg.from),
+                                    string((char *) msg.to),
+                                    string((char *) msg.subj),
+                                    string(ctrlbuf), string(msgbuf),
                                     stampToTimeT(&msg.date_written),
                                     stampToTimeT(&msg.date_arrived));
             }

@@ -22,11 +22,7 @@
 // Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 
 #include <iostream.h>
-#ifdef __EMX__
-# include <Strng.h>
-#else
-# include <String.h>
-#endif
+#include <string>
 #include <unistd.h>
 #include <stdlib.h>
 
