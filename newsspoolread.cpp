@@ -80,7 +80,7 @@ bool NewsSpoolRead::Transfer(time_t starttime, StatEngine &destination)
     struct _find spooldir;
     int rc = __findfirst(searchpath.c_str(), 0x2f, &spooldir);
 
-    if (!rc)
+    if (-1 == rc)
     {
         cerr << "Unable to open spool directory" << endl;
         return false;

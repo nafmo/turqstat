@@ -82,7 +82,7 @@ bool SdmRead::Transfer(time_t starttime, StatEngine &destination)
     struct _find sdmdir;
     int rc = __findfirst(searchpath.c_str(), 0x2f, &sdmdir);
 
-    if (!rc)
+    if (-1 == rc)
     {
         cerr << "Unable to open *.MSG directory" << endl;
         return false;
