@@ -1,6 +1,6 @@
 Turquoise SuperStat 1.3 - Ett m”tesstatistikprogram f”r Fidonet
-(c) Copyright 1998-1999 Peter Karlsson.
-A Softwolves Software Release in 1999
+(c) Copyright 1998-2000 Peter Karlsson.
+A Softwolves Software Release in 2000
 
 http://www.softwolves.pp.se/wolves/
 
@@ -10,20 +10,20 @@ LICENS
 Denna programvara distribueras i enlighet med GNU General Public License
 version 2, vilken finns i den bifogade filen COPYING, med f”ljande till„gg:
 
-Detta program kan l„nkas mot k„llkod eller bin„ra bibliotek f”r att komma
-†t Fidonetmeddelandebaser vilka inte „r f”renliga med GNU GPL, s† l„nge som
+Detta program kan l„nkas mot k„llkod eller bin„ra bibliotek f”r att komma †t
+Fidonetmeddelandebaser vilka inte „r f”renliga med GNU GPL, s† l„nge som
 inkluderingen av denna inte f”rhindrar den fria distributionen av
-huvudk„llkoden. Det m†ste ocks† vara m”jligt att kompilera huvudk„llkoden
-utan att anv„nda denna kod eller bin„ra bibliotek (t.ex med villkorliga
+huvudk„llkoden. Det m†ste ocks† vara m”jligt att kompilera huvudk„llkoden utan
+att anv„nda denna kod eller bin„ra bibliotek (t.ex med villkorliga
 preprocessordirektiv) och fortfarande f† en anv„ndbar bin„r.
 
-Bin„rer som skapas genom att l„nka mot dylik meddelandebaskod m†ste vara
-fritt distribuerbar och anv„ndbar av vem som helst (dvs. det „r inte nog
-att till†ta "enbart ickekommersiell anv„ndning"). Om detta inte kan g”ras
-f†r inga s†dana bin„rer spridas.
+Bin„rer som skapas genom att l„nka mot dylik meddelandebaskod m†ste vara fritt
+distribuerbara och anv„ndbara av vem som helst (dvs. det „r inte nog att
+till†ta "enbart ickekommersiell anv„ndning"). Om detta inte kan g”ras f†r inga
+s†dana bin„rer spridas.
 
-Žven med dessa undantag f”respr†kas licensiering av ny meddelandebaskod
-under GNU GPL.
+Žven med dessa undantag f”respr†kas licensiering av ny meddelandebaskod under
+GNU GPL.
 
 
 ™VRIGA UPPHOVSRŽTTER
@@ -36,8 +36,8 @@ Squish, SquishMail and Maximus are trademarks of Scott J. Dudley.
 
 ANVŽNDNING
 
-Turquoise SuperStat l„ser inneh†llet i en Fidonetmeddelandebas i n†got av
-de st”dda formaten, och skapar statistik inom f”ljande omr†den:
+Turquoise SuperStat l„ser inneh†llet i en Fidonetmeddelandebas i n†got av de
+st”dda formaten, och skapar statistik inom f”ljande omr†den:
 
  * Svartlista ”ver citatvolym.
  * Topplista ”ver avs„ndare.
@@ -85,8 +85,8 @@ Dessa extra kommandoradsv„xlar „r tillg„ngliga:
 -j V„ljer meddelandebaser av JAM-typ. Areas”kv„gen skall vara basnamnet p†
    JAM-filerna.
 
--f V„ljer meddelandebaser av FDAPX/w-typ. Kr„ver att parametern -a anv„nds
-   f”r att v„lja meddelandebass”kv„gen. Areas”kv„gen skall vara m”tesnumret
+-f V„ljer meddelandebaser av FDAPX/w-typ. Kr„ver att parametern -a anv„nds f”r
+   att v„lja meddelandebass”kv„gen. Areas”kv„gen skall vara m”tesnumret
    (1-1999).
 
 -t V„ljer meddelandebaser av tanstaafl-typ. Kr„ver att parametern -a anv„nds
@@ -96,6 +96,9 @@ Dessa extra kommandoradsv„xlar „r tillg„ngliga:
 -p V„ljer meddelandebaser av MyPoint-typ. Kr„ver att parametern -a anv„nds f”r
    f”r att v„lja meddelandebass”kv„gen (underkatalogen AREAS). Areas”kv„gen
    skall vara m”tesnumret.
+
+-u V„ljer en Usenet news-"spool". Areas”kv„gen skall vara katalogen i vilken
+   Usenetartiklarna ligger.
 
 -Q St„nger av citatvolymsvartlistan (f”rinst„llt v„rde „r p†).
 
@@ -122,8 +125,8 @@ V„xlarna kan kombineras p† kommandoraden, till exempel:
 
   turqstat -mWRSPHD d:\text\output.txt d:\msgbase\thisarea
 
-kommer att skapa (enbart) en citatvolymsvartlista f”r *.MSG-meddelandebasen
-i katalogen d:\msgbase\thisarea. V„xlarna „r skiftl„gesk„nsliga.
+kommer att skapa (enbart) en citatvolymsvartlista f”r *.MSG-meddelandebasen i
+katalogen d:\msgbase\thisarea. V„xlarna „r skiftl„gesk„nsliga.
 
   turqstat -?
 
@@ -140,7 +143,8 @@ utan att missa meddelanden som har tagit en halv vecka f”r att komma fram.
 
 Dock saknar vissa meddelandebasformat, n„mligen FTSC *.MSG och tanstaafls
 format, dessa ankomsttider. D„rf”r kommer i dessa fall datumet n„r texten
-skrivits ist„llet att anv„ndas.
+skrivits ist„llet att anv„ndas. F”r Usenet news anses filskapandedatumet vara
+ankomsttiden.
 
 
 HISTORIK
@@ -156,11 +160,12 @@ HISTORIK
   St”der *.MSG av b†de FTSC- och Opustyp.
   Diverse felr„ttelser.
   Windows- och Linuxversionerna fungerar (b„ttre) nu.
-1999-  -   - v1.3 -
+2000-  -   - v1.3 -
   St”der kombinerad statistik fr†n flera m”ten.
   OBS! Ordningen p† kommandoradsparametrarna har „ndrats.
   Lade till topplista ”ver medeloriginalinneh†ll per meddelande.
   Lade till st”d f”r tanstaafl-meddelandebaser.
+  Lade till st”d f”r Usenet news-"spool".
   Diverse felr„ttelser.
 
 
@@ -183,6 +188,8 @@ source.rar   - Arkiv inneh†llandes k„llkoden:
   jamread.h       - Headerfil f”r ovanst†ende
   mypointread.cpp - K„llkod f”r l„sning av MyPoint-meddelandebaser
   mypointread.h   - Headerfil f”r ovanst†ende
+  newsspoolread.cpp K„llkod f”r l„sning av Usenet news-"spool"
+  newsspoolread.h - Headerfil f”r ovanst†ende
   squishread.cpp  - K„llkod f”r l„sning av Squish-meddelandebaser
   squishread.h    - Headerfil f”r ovanst†ende
   sdmread.cpp     - K„llkod f”r l„sning av *.MSG-meddelandebaser
@@ -214,6 +221,6 @@ g”ras om f”r att st”da processorer av typen "big endian".
 
 KONTAKT
 
-F”rfattaren, Peter Karlsson, kan n†s via n„tpost p† 2:206/224.42, eller via
-Internet-e-post p† peter@softwolves.pp.se. Information om detta program
-finns p† webben p† http://www.softwolves.pp.se/wolves/
+F”rfattaren, Peter Karlsson, kan n†s via n„tpost p† 2:210/45.0, eller via
+Internet-e-post p† peter@softwolves.pp.se. Information om detta program finns
+p† webben p† http://www.softwolves.pp.se/wolves/

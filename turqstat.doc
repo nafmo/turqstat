@@ -1,30 +1,29 @@
 Turquoise SuperStat 1.3 - An area statistics program for Fidonet
-(c) Copyright 1998-1999 Peter Karlsson.
-A Softwolves Software Release in 1999
+(c) Copyright 1998-2000 Peter Karlsson.
+A Softwolves Software Release in 2000
 
 http://www.softwolves.pp.se/wolves/
 
 
 LICENSE
 
-This software is distributed under the GNU General Public License version
-2, as can be found in the accompanying file COPYING, with the following
-addition:
+This software is distributed under the GNU General Public License version 2,
+as can be found in the accompanying file COPYING, with the following addition:
 
-This program may be linked against any Fidonet message base access sources
-or binary libraries that does not comply with the GNU GPL, as long as their
-inclusion does not compromise the free distribution of the main source
-code. It must also be possible to compile the main source without using
-these access sources or binary libraries (e.g with conditional
-pre-processor directives) and still get a working binary.
+This program may be linked against any Fidonet message base access sources or
+binary libraries that does not comply with the GNU GPL, as long as their
+inclusion does not compromise the free distribution of the main source code.
+It must also be possible to compile the main source without using these access
+sources or binary libraries (e.g with conditional pre-processor directives)
+and still get a working binary.
 
 Binaries created by linking against such message base access code must be
 freely distributable and usable by anyone (i.e it is not enough to warrant
 "non-commercial use only"). If this cannot be complied with, then no such
 binaries must be distributed.
 
-Even with this exception, licensing new message base access sources under
-GNU GPL is encouraged.
+Even with this exception, licensing new message base access sources under GNU
+GPL is encouraged.
 
 
 OTHER COPYRIGHTS
@@ -37,8 +36,8 @@ Squish, SquishMail and Maximus are trademarks of Scott J. Dudley.
 
 USEAGE
 
-Turquoise SuperStat reads the contents of a Fidonet message area in one of
-its supported formats, and creates statistics about this:
+Turquoise SuperStat reads the contents of a Fidonet message area in one of its
+supported formats, and creates statistics about this:
 
  * Quoter blacklist.
  * Toplist of senders.
@@ -49,8 +48,8 @@ its supported formats, and creates statistics about this:
  * Postings by weekday.
  * Postings by time of day.
 
-Any of the statistic subjects may be turned off. The statistics is stored
-in a text file.
+Any of the statistic subjects may be turned off. The statistics is stored in a
+text file.
 
 Turquoise SuperStat is entirely command line driven, and the format is this:
 
@@ -65,12 +64,12 @@ to be written to.
 These extra options are available:
 
 -d <days>
-   Selects the number of days back to count messages from. The default is
-   0, which mean count all messages.
+   Selects the number of days back to count messages from. The default is 0,
+   which mean count all messages.
 
 -n <num>
-   Selects the maximum number of entries in the toplists. The default is 15.
-   0 indicates no limit.
+   Selects the maximum number of entries in the toplists. The default is 15. 0
+   indicates no limit.
 
 -a <path>
    Selects the message base path for the FDAPX/w, MyPoint and taanstafl
@@ -99,6 +98,9 @@ These extra options are available:
 -p Selects MyPoint style message base. Requires the use of the -a parameter to
    select the message base path (the AREAS subdirectory). The areapath
    parameter should be the area number.
+
+-u Select a Usenet news spool. The areapath parameter should be the path in
+   which the news article files reside.
 
 -Q Turns the quoter blacklist off (default is on).
 
@@ -130,8 +132,7 @@ d:\msgbase\thisarea directory. The options are case sensitive.
 
   turqstat -?
 
-will give you a quick help screen with an overview of the available
-options.
+will give you a quick help screen with an overview of the available options.
 
 
 TIME STAMPS
@@ -142,9 +143,10 @@ arrive. This ensures that if you each week take statistics over the last seven
 days, you will always get all messages that arrived during the last week, not
 missing messages which happen to have taken half a week to arrive.
 
-However, some message base formats, notably FTSC *.MSG and tanstaafl
-message bases, lack an arrival time stamp, so in these cases the date written
-stamp will be used instead.
+However, some message base formats, notably FTSC *.MSG and tanstaafl message
+bases, lack an arrival time stamp, so in these cases the date written stamp
+will be used instead. For Usenet news spools, the file create date is
+considered to be the arrival time.
 
 
 HISTORY
@@ -160,11 +162,12 @@ HISTORY
   Supports both FTSC and Opus style *.MSG bases.
   Various bugfixes.
   Windows and Linux versions work (better) now.
-1999-  -   - v1.3 -
+2000-  -   - v1.3 -
   Supports combined statistics from more than one echo.
   NB! The order of the command line parameters has changed.
   Added toplist of average original content per message.
   Added support for tanstaafl message bases.
+  Added support for Usenet news spools.
   Various bugfixes.
 
 
@@ -187,6 +190,8 @@ source.rar   - Archive containing the source code:
   jamread.h       - Header file for the above
   mypointread.cpp - Access sources for MyPoint message bases
   mypointread.h   - Header file for the above
+  newsspoolread.cpp Access sources for Usenet news spools
+  newsspoolread.h - Header file for the above
   squishread.cpp  - Access sources for Squish message bases
   squishread.h    - Header file for the above
   sdmread.cpp     - Access sources for *.MSG message bases
@@ -218,7 +223,6 @@ rewritten to support "big endian" processors.
 
 CONTACT
 
-The author, Peter Karlsson, can be contacted via netmail at 2:206/224.42, or
-via Internet e-mail at peter@softwolves.pp.se. Information about this
-program is available on the world wide web at
-http://www.softwolves.pp.se/wolves/
+The author, Peter Karlsson, can be contacted via netmail at 2:210/45.0, or via
+Internet e-mail at peter@softwolves.pp.se. Information about this program is
+available on the world wide web at http://www.softwolves.pp.se/wolves/
