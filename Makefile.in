@@ -19,9 +19,11 @@ DEF=@DEF@
 prefix=@prefix@
 exec_prefix=@exec_prefix@
 xbindir=@exec_prefix@/X11R6/bin
+xmandir=@exec_prefix@/X11R6/man
 
 # Magic targets
 all: $(EXE)
+@QT@	make -C po all
 
 debian:
 	fakeroot debian/rules binary
@@ -51,10 +53,13 @@ debianclean:
 @NOINST@	install -m 644 turqstat-sv.1 $(DESTDIR)@mandir@/sv/man1/turqstat.1
 @NOINST@
 @NOINST@@QT@install-qt: xturqstat@EXEEXT@
-@NOINST@@QT@	install -d $(DESTDIR)$(xbindir) $(DESTDIR)@datadir@/doc/xturqstat/ $(DESTDIR)@datadir@/doc/xturqstat/sv/
+@NOINST@@QT@	install -d $(DESTDIR)$(xbindir) $(DESTDIR)@datadir@/doc/xturqstat/ $(DESTDIR)@datadir@/doc/xturqstat/sv/ $(DESTDIR)@mandir@/man1 $(DESTDIR)@mandir@/sv/man1/
 @NOINST@@QT@	install -s xturqstat@EXEEXT@ $(DESTDIR)$(xbindir)
 @NOINST@@QT@	install -m 644 turqstat.doc $(DESTDIR)@datadir@/doc/xturqstat/
 @NOINST@@QT@	install -m 644 turqstat.dok $(DESTDIR)@datadir@/doc/xturqstat/sv/
+@NOINST@@QT@	install -m 644 xturqstat.1  $(DESTDIR)$(xmandir)/man1/
+@NOINST@@QT@	install -m 644 xturqstat-sv.1 $(DESTDIR)$(xmandir)/sv/man1/xturqstat.1
+@NOINST@@QT@	make -C po install
 
 # Binary
 turqstat@EXEEXT@: $(OBJS) $(DEF)
