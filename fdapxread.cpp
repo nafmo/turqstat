@@ -121,10 +121,10 @@ bool FdApxRead::Transfer(time_t starttime, StatEngine &destination)
             // Check if message is too old
             if (msghdrapx.statusflags & Fdapx_local)
             {
-                if (msghdrapx.timewritten < starttime)
+                if ((time_t) msghdrapx.timewritten < starttime)
                     goto out;
             }
-            else if (msghdrapx.timesentrcvd < starttime)
+            else if ((time_t) msghdrapx.timesentrcvd < starttime)
                 goto out;
 
             // Retrieve message body (includes kludges)
