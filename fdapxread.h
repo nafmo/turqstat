@@ -1,4 +1,4 @@
-// Copyright (c) 1999-2000 Peter Karlsson
+// Copyright (c) 1999-2001 Peter Karlsson
 //
 // $Id$
 //
@@ -54,12 +54,14 @@ public:
      * This function transfers all messages in the message bases, received
      * after the specified starting date, to the specified statistics engine.
      *
-     * @param starttime   Date to start retrieve statistcs from.
+     * @param starttime   Date to start retrieve statistics from.
+     * @param endtime     Date to stop retrieve statistics at.
      * @param destination Engine object to transfer data to.
      * @return True if the message base was read correctly (even if no
-     *         messages fits the condition.
+     *         messages fits the condition).
      */
-    virtual bool Transfer(time_t starttime, StatEngine &destination);
+    virtual bool Transfer(time_t starttime, time_t endtime,
+                          StatEngine &destination);
 
 protected:
     /** Path to message base. */

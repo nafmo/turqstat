@@ -1,4 +1,4 @@
-// Copyright (c) 1999-2000 Peter Karlsson
+// Copyright (c) 1999-2001 Peter Karlsson
 //
 // $Id$
 //
@@ -42,7 +42,8 @@ JamRead::~JamRead()
     if (areapath) delete areapath;
 }
 
-bool JamRead::Transfer(time_t starttime, StatEngine &destination)
+bool JamRead::Transfer(time_t starttime, time_t endtime,
+                       StatEngine &destination)
 {
     // Get the output object
     TDisplay *display = TDisplay::GetOutputObject();
@@ -155,13 +156,15 @@ bool JamRead::Transfer(time_t starttime, StatEngine &destination)
             display->UpdateProgress(active);
             if (active == total) stay = false;
 
-            // Check if message is too old
+            // Check if message is outside time range
             if (0 == hdrinfo.dateprocessed)
             {
-                if ((time_t) hdrinfo.datewritten < starttime)
+                if (time_t(hdrinfo.datewritten) < starttime ||
+                    time_t(hdrinfo.datewritten) > endtime)
                     goto out;
             }
-            else if ((time_t) hdrinfo.dateprocessed < starttime)
+            else if (time_t(hdrinfo.dateprocessed) < starttime ||
+                     time_t(hdrinfo.dateprocessed) > endtime)
                 goto out;
 
             // Retrieve message body

@@ -1,4 +1,4 @@
-// Copyright (c) 1999-2000 Peter Karlsson
+// Copyright (c) 1999-2001 Peter Karlsson
 //
 // $Id$
 //
@@ -37,7 +37,8 @@ FdApxRead::~FdApxRead()
     if (areapath) delete areapath;
 }
 
-bool FdApxRead::Transfer(time_t starttime, StatEngine &destination)
+bool FdApxRead::Transfer(time_t starttime, time_t endtime,
+                          StatEngine &destination)
 {
     // Get the output object
     TDisplay *display = TDisplay::GetOutputObject();
@@ -131,13 +132,15 @@ bool FdApxRead::Transfer(time_t starttime, StatEngine &destination)
             display->UpdateProgress(msgnum);
             if (high == msgnum) stay = false;
 
-            // Check if message is too old
+            // Check if message is outside time range
             if (msghdrapx.statusflags & Fdapx_local)
             {
-                if ((time_t) msghdrapx.timewritten < starttime)
+                if (time_t(msghdrapx.timewritten) < starttime ||
+                    time_t(msghdrapx.timewritten) > endtime)
                     goto out;
             }
-            else if ((time_t) msghdrapx.timesentrcvd < starttime)
+            else if (time_t(msghdrapx.timewritten) < starttime ||
+                     time_t(msghdrapx.timewritten) > endtime)
                 goto out;
 
             // Retrieve message body (includes kludges)

@@ -1,4 +1,4 @@
-// Copyright (c) 1999-2000 Peter Karlsson
+// Copyright (c) 1999-2001 Peter Karlsson
 //
 // $Id$
 //
@@ -37,7 +37,8 @@ TanstaaflRead::~TanstaaflRead()
     if (areapath) delete areapath;
 }
 
-bool TanstaaflRead::Transfer(time_t starttime, StatEngine &destination)
+bool TanstaaflRead::Transfer(time_t starttime, time_t endtime,
+                             StatEngine &destination)
 {
     // Get the output object
     TDisplay *display = TDisplay::GetOutputObject();
@@ -141,8 +142,9 @@ bool TanstaaflRead::Transfer(time_t starttime, StatEngine &destination)
             display->UpdateProgress(msgnum);
             if (high == msgnum) stay = false;
 
-            // Check if message is too old
-            if ((time_t) msghdrtfl.timewritten < starttime)
+            // Check if message is outside time range
+            if (time_t(msghdrtfl.timewritten) < starttime ||
+                time_t(msghdrtfl.timewritten) > endtime)
                 goto out;
 
             // Retrieve message body (includes kludges)

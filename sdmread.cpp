@@ -1,4 +1,4 @@
-// Copyright (c) 1999-2000 Peter Karlsson
+// Copyright (c) 1999-2001 Peter Karlsson
 //
 // $Id$
 //
@@ -61,7 +61,8 @@ SdmRead::~SdmRead()
     if (areapath) delete areapath;
 }
 
-bool SdmRead::Transfer(time_t starttime, StatEngine &destination)
+bool SdmRead::Transfer(time_t starttime, time_t endtime,
+                       StatEngine &destination)
 {
     // Get the output object
     TDisplay *display = TDisplay::GetOutputObject();
@@ -204,7 +205,7 @@ bool SdmRead::Transfer(time_t starttime, StatEngine &destination)
         }
 
         // Add to statistics
-        if (arrived >= starttime)
+        if (arrived >= starttime && arrived <= endtime)
         {
             destination.AddData(string((char *) sdmhead.fromusername),
                                 string((char *) sdmhead.tousername),

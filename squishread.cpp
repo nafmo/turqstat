@@ -1,4 +1,4 @@
-// Copyright (c) 1999-2000 Peter Karlsson
+// Copyright (c) 1999-2001 Peter Karlsson
 //
 // $Id$
 //
@@ -36,7 +36,8 @@ SquishRead::~SquishRead()
     if (areapath) delete areapath;
 }
 
-bool SquishRead::Transfer(time_t starttime, StatEngine &destination)
+bool SquishRead::Transfer(time_t starttime, time_t endtime,
+                          StatEngine &destination)
 {
     // Get the output object
     TDisplay *display = TDisplay::GetOutputObject();
@@ -170,14 +171,15 @@ bool SquishRead::Transfer(time_t starttime, StatEngine &destination)
         fixupctrlbuffer(msgbuf, NULL);
 
         // Add to statistics
-        if (stampToTimeT(&xmsg.date_arrived) >= starttime)
+        time_t arrivaltime = stampToTimeT(&xmsg.date_arrived);
+        if (arrivaltime >= starttime && arrivaltime <= endtime)
         {
             destination.AddData(string((char *) xmsg.from),
                                 string((char *) xmsg.to),
                                 string((char *) xmsg.subject),
                                 string(ctrlbuf), string(msgbuf),
                                 stampToTimeT(&xmsg.date_written),
-                                stampToTimeT(&xmsg.date_arrived));
+                                arrivaltime);
         }
 
         // Clean up our mess

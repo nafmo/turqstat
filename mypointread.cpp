@@ -1,4 +1,4 @@
-// Copyright (c) 1999-2000 Peter Karlsson
+// Copyright (c) 1999-2001 Peter Karlsson
 //
 // $Id$
 //
@@ -37,7 +37,8 @@ MyPointRead::~MyPointRead()
     if (areapath) delete areapath;
 }
 
-bool MyPointRead::Transfer(time_t starttime, StatEngine &destination)
+bool MyPointRead::Transfer(time_t starttime, time_t endtime,
+                           StatEngine &destination)
 {
     // Get the output object
     TDisplay *display = TDisplay::GetOutputObject();
@@ -177,7 +178,8 @@ bool MyPointRead::Transfer(time_t starttime, StatEngine &destination)
         }
 
         // Only proceed if message is inside interval and not deleted
-        if ((time_t) arrtim >= starttime &&
+        if (time_t(arrtim) >= starttime &&
+            time_t(arrtim) <= endtime &&
             0 == (flags.bits & Mypoint_delete))
         {
             // Retrieve sender, recipient, subject

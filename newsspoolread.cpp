@@ -63,7 +63,8 @@ NewsSpoolRead::~NewsSpoolRead()
     if (areapath) delete areapath;
 }
 
-bool NewsSpoolRead::Transfer(time_t starttime, StatEngine &destination)
+bool NewsSpoolRead::Transfer(time_t starttime, time_t endtime,
+                             StatEngine &destination)
 {
     // Get the output object
     TDisplay *display = TDisplay::GetOutputObject();
@@ -175,7 +176,8 @@ bool NewsSpoolRead::Transfer(time_t starttime, StatEngine &destination)
         arrived -= _timezone * 60;
 #endif
 
-        if (arrived < starttime) goto out2;
+        // Check if message is outside time range
+        if (arrived < starttime || arrived > endtime) goto out2;
 
         // Read the message header
         length = FILESIZE;
