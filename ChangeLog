@@ -1,3 +1,11 @@
+2000-06-08 - peter karlsson <peter@softwolves.pp.se>
+  turqstat.1
+    Corrected a spelling error in the manual page.
+
+2000-05-18 - peter karlsson <peter@softwolves.pp.se>
+  makedist.sh
+    Removes temporary directories.
+
 2000-05-15 - peter karlsson <peter@softwolves.pp.se>
   turqstat.doc
   turqstat.dok
