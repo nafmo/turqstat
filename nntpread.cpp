@@ -27,8 +27,6 @@
 #include "statengine.h"
 #include "output.h"
 
-#define BUFSIZE 65536
-
 NntpRead::NntpRead(const char *_server, const char *_newsgroup)
 {
     server = strdup(_server);
@@ -215,9 +213,8 @@ bool NntpRead::Transfer(time_t starttime, time_t endtime,
     display->SetMessagesTotal(numarticles);
 
     // Retrieve all articles
-    char *msgbuf = NULL, *ctrlbuf = NULL, *p;
     time_t posttime;
-    size_t bufused, buflen, length, thislength;
+    size_t thislength;
     int msgn = 0;
     char line[BUFSIZ];
 
@@ -249,57 +246,48 @@ bool NntpRead::Transfer(time_t starttime, time_t endtime,
         // Read data until we get "." on an otherwise empty line.
         // Store in ctrlbuf (^A separated)
         posttime = time_t(0);
-        p = ctrlbuf = new char[BUFSIZE];
-        length = BUFSIZE;
-        if (!ctrlbuf) goto out;
+        string ctrlbuf, msgbuf;
 
-        while (NULL != (p = fgets(p, length, sock)))
+        while (NULL != (fgets(line, BUFSIZ, sock)))
         {
             // Leave loop if at end of header
-            if ('.' == *p && ('\r' == *(p + 1) || '\n' == *(p + 1)))
+            if ('.' == line[0] && ('\r' == line[1] || '\n' == line[1]))
             {
-                // Terminate header buffer
-                *(p - 1) = 0;
                 break;
             }
-//printf("| %s", p);
 
             // Insert a ^A marker before buffer start
-            *(p - 1) = 1;
+            ctrlbuf += '\1';
 
-            thislength = strlen(p);
+            thislength = strlen(line);
             if (thislength > 2)
             {
-                if ('\r' ==p[thislength - 2] || '\n' == p[thislength - 2])
+                if ('\r' == line[thislength - 2] ||
+                    '\n' == line[thislength - 2])
                 {
-                    thislength --;
+                    thislength -= 2;
                 }
             }
 
-            if (!posttime && thislength > 5 && 0 == fcompare(p, "DATE:", 5))
+            if (!posttime && thislength > 5 &&
+                0 == fcompare(line, "DATE:", 5))
             {
-                unsigned char *date_p = (unsigned char *) p + 5;
+                unsigned char *date_p = (unsigned char *) &line[5];
                 while (isspace(*date_p)) date_p ++;
                 posttime = rfcToTimeT(string((char *) date_p));
-//printf(">> posttime=%d\n", (int) posttime);
             }
 
-            // Point past newline marker (which will be overwritten)
-            p += thislength;
-            length -= thislength;
+            // Copy string to ctrl buffer
+            ctrlbuf.append(line, thislength);
         }
 
         if (posttime < starttime || posttime > endtime)
         {
-//printf(">> outside interval %d-%d\n", (int) starttime, (int) endtime);
             // Outside wanted interval; go to the next one
             goto out;
         }
 
         // Retrieve article body
-        msgbuf = (char *) malloc(sizeof (char *) * BUFSIZE);
-        if (!msgbuf) goto out;
-
         snprintf(command, 512, "BODY %u\r\n", article);
         response = SendCommand(command);
         if (-1 == response)
@@ -321,20 +309,15 @@ bool NntpRead::Transfer(time_t starttime, time_t endtime,
 
         // Read data until we get "." on an otherwise empty line.
         // Store in msgbuf (raw).
-        bufused = 0;
-        buflen = BUFSIZE;
         while (NULL != fgets(line, BUFSIZ, sock))
         {
             // Leave loop if at end of body
             if ('.' == line[0] && ('\r' == line[1] || '\n' == line[1]))
             {
-                // Terminate body buffer
-                msgbuf[bufused] = 0;
                 break;
             }
 
             // Remove CR and LF terminators
-//printf("| %s", line);
             thislength = strlen(line);
             while (thislength && ('\n' == line[thislength - 1] ||
                                   '\r' == line[thislength - 1]))
@@ -342,40 +325,18 @@ bool NntpRead::Transfer(time_t starttime, time_t endtime,
                 thislength --;
             }
 
-            // Check that we have enough space, reallocate if necessary
-            while (bufused + thislength + 2 > buflen)
-            {
-                buflen += BUFSIZE;
-//printf(">> realloc (%d)\n", buflen);
-                msgbuf = (char *) realloc(msgbuf, sizeof (char *) * buflen);
-                if (!msgbuf)
-                {
-                    // Panic!
-                    display->ErrorMessage(TDisplay::out_of_memory);
-                    delete[] ctrlbuf;
-                    return false;
-                }
-            }
-
             // Copy
-            strncpy(msgbuf + bufused, line, thislength);
-            bufused += thislength;
-            msgbuf[bufused ++] = '\n';
-            msgbuf[bufused] = 0;
-assert(bufused < buflen);
-//printf(">> bufused=%u buflen=%u\n", bufused, buflen);
+            msgbuf.append(line, thislength);
+            msgbuf += '\n';
         }
-//printf("----------\n%s\n----------\n%s\n----------\n", ctrlbuf, msgbuf);
 
         // Add to statistics
         destination.AddData(string(""), string(""), string(""),
-                            string(ctrlbuf), string(msgbuf),
+                            ctrlbuf, msgbuf,
                             posttime, posttime);
 
         // Clean up our mess
-        free(msgbuf);
 out:;
-        delete[] ctrlbuf;
 
         display->UpdateProgress(++ msgn);
     }
@@ -413,7 +374,6 @@ int NntpRead::ConnectServer()
 int NntpRead::SendCommand(const char *command)
 {
     // Send command
-//printf("> %s", command);
     fflush(sock);
     fputs(command, sock);
     fflush(sock);
@@ -426,10 +386,8 @@ int NntpRead::GetResponse()
     // Retrieve response code
     char *p;
     fgets(buffer, sizeof buffer, sock);
-//printf("< %s", buffer);
     long int rc = strtol(buffer, &p, 10);
     if (p == buffer) rc = -1;
-//printf(": rc=%ld\n", rc);
 
     return rc;
 }
