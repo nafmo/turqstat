@@ -1,0 +1,54 @@
+# Makefile for Linux, GNU C++ and GNU make
+#
+# $Id$
+
+CFLAGS=-Wall -O3 -Ismapi -Lsmapi -DHAS_SMAPI -DUNIX
+
+all: turqstat
+
+turqstat: turqstat.o statengine.o statview.o turqstat.def squishread.o fdapxread.o jamread.o mypointread.o utility.o smapi/libsmapilnx.a
+	g++ $(CFLAGS) -o turqstat *.o -lstdc++ -lsmapilnx
+
+turqstat.o: turqstat.cpp statengine.h statview.h arearead.h squishread.h fdapxread.h jamread.h mypointread.h
+	g++ $(CFLAGS) -c turqstat.cpp
+
+statengine.o: statengine.cpp statengine.h
+	g++ $(CFLAGS) -c statengine.cpp
+
+statview.o: statview.cpp statview.h statengine.h
+	g++ $(CFLAGS) -c statview.cpp
+
+squishread.o: squishread.cpp squishread.h arearead.h statengine.h
+	g++ $(CFLAGS) -c squishread.cpp
+
+utility.o: utility.cpp utility.h
+	g++ $(CFLAGS) -c utility.cpp
+
+fdapxread.o: fdapxread.cpp fdapxread.h datatypes.h statengine.h arearead.h
+	g++ $(CFLAGS) -c fdapxread.cpp
+
+jamread.o: jamread.cpp jamread.h datatypes.h statengine.h arearead.h
+	g++ $(CFLAGS) -c jamread.cpp
+
+mypointread.o: mypointread.cpp mypointread.h datatypes.h statengine.h arearead.h
+	g++ $(CFLAGS) -c mypointread.cpp
+
+smapi/libsmapilnx.a:
+	cd smapi
+	make -f Makefile.lnx
+	cd ..
+
+dist: turqstat source.tar.gz
+	tar cvfz turqstat-linux.tar.gz turqstat turqstat.doc turqstat.dok source.tar.gz COPYING
+	del source.tar.gz
+
+source.tar.gz:
+	tar cvfz source.tar.gz *.def *.cpp *.h Makefile*
+
+clean:	almostclean
+	-del smapi/*.o
+	-del smapi/*.a
+
+almostclean:
+	-rm *.o
+	-rm turqstat
