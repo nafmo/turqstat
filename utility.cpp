@@ -70,7 +70,6 @@ time_t stampToTimeT(struct stamp_s *st)
     tms.tm_mday = st->date.da;
     tms.tm_mon = st->date.mo - 1;
     tms.tm_year = st->date.yr + 80;
-    tms.tm_isdst = 0;
     tt = my_mktime(&tms);
     return tt;
 }
@@ -104,14 +103,12 @@ time_t asciiToTimeT(const char *datetime)
     // Check month
     char *c_p = strstr(months, month);
     if (!c_p) return 0;
-    tms.tm_mon = ((int) (c_p - months)) / 3;
+    tms.tm_mon = int(c_p - months) / 3;
 
     // Check year
     // FIXME: This need to be corrected to handle dates >2080
     //        better use some sliding-window technique
     if (tms.tm_year < 80) tms.tm_year += 100;
-
-    tms.tm_isdst = 0;
 
     tt = my_mktime(&tms);
     return tt;
@@ -119,12 +116,13 @@ time_t asciiToTimeT(const char *datetime)
 
 // Convert RFC stype time-stamp to time_t (local time, ignores time zone
 // identifier)
-time_t rfcToTimeT(string datetime)
+time_t rfcToTimeT(const string &datetime)
 {
     // "[Www, ]Dd Mmm [Yy]yy HH:MM:SS[ +ZZZZ]"
     time_t tt;
     struct tm tms;
     char month[4] = { 0,0,0,0 };
+    int rc;
 
     // Chop weekday (if any)
     int pos = datetime.find(',');
@@ -132,9 +130,14 @@ time_t rfcToTimeT(string datetime)
 
     // "[ ]Dd Mmm [Yy]yy HH:MM:SS[ +ZZZZ]"
     // Note: timezones are ignored!
-    sscanf(datetime.c_str(), "%d %s %d %d:%d:%d",
-           &tms.tm_mday, month, &tms.tm_year,
-           &tms.tm_hour, &tms.tm_min, &tms.tm_sec);
+    rc = sscanf(datetime.c_str(), "%d %s %d %d:%d:%d",
+                &tms.tm_mday, month, &tms.tm_year,
+                &tms.tm_hour, &tms.tm_min, &tms.tm_sec);
+
+    if (rc != 6)
+    {
+        return time_t(-1);
+    }
 
     // RFC years should be four-digit
     if (tms.tm_year >= 1900) tms.tm_year -= 1900;
@@ -144,7 +147,49 @@ time_t rfcToTimeT(string datetime)
     if (!c_p) return 0;
     tms.tm_mon = ((int) (c_p - months)) / 3;
 
-    tms.tm_isdst = 0;
+    tt = my_mktime(&tms);
+    return tt;
+}
+
+// Convert standard timespecs to time_t (in local time)
+time_t timespectoTimeT(const string &datetime)
+{
+    time_tt tt;
+    struct tm tms;
+    int rc;
+
+    // YyyyMmDdTHHMMSS or YyyyMmDd only
+    if (8 == datetime.length())
+    {
+        rc = sscanf(datetime.c_str(), "%4d%2d%2d",
+                    &tms.tm_year, &tms.tm_mon, &tms.tm_mday);
+        if (rc != 3)
+        {
+            return time_t(-1);
+        }
+        tms.tm_hour = 0;
+        tms.tm_min  = 0;
+        tms.tm_sec  = 0;
+    }
+    else if (15 == datetime.length())
+    {
+        rc = sscanf(datetime.c_str(), "%4d%2d%2dT%2d%2d%2d",
+                    &tms.tm_year, &tms.tm_mon, &tms.tm_mday,
+                    &tms.tm_hour, &tms.tm_min, &tms.tm_sec);
+        if (rc != 6)
+        {
+            return time_t(-1);
+        }
+    }
+    else
+    {
+        return time_t(-1);
+    }
+
+    // Years are always four digit here
+    tms.tm_year -= 1900;
+    // struct tm Months are zero based
+    tms.tm_mon --;
 
     tt = my_mktime(&tms);
     return tt;

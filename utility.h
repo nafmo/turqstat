@@ -74,10 +74,17 @@ time_t asciiToTimeT(const char *datetime);
 
 /**
  * Convert RFC stype date-time string to time_t.
- * @param datetime Pointer to RFC style date-time string.
- * @return Number of seconds since epoch (ignoring timezones).
+ * @param datetime RFC style date-time string.
+ * @return Number of seconds since epoch (ignoring timezones). -1 on error.
  */
-time_t rfcToTimeT(string datetime);
+time_t rfcToTimeT(const string &datetime);
+
+/**
+ * Convert time specification as used in command line date ranges to time_t.
+ * @param datetime Time specification string.
+ * @return Number of seconds since epoch (ignoring timezones). -1 on error.
+ */
+time_t timespecToTimeT(const string &datetime);
 
 /**
  * Separate kludges and body in a Fidonet mesage.
