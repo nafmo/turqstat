@@ -1,3 +1,12 @@
+2000-07-16 - peter karlsson <peter@softwolves.pp.se>
+  qtgui.cpp
+    Uses an instance of the QFileDialog class instead of one of its static
+    methods, to make it possible to retrieve selected filter settings.
+
+  configure.in
+  Makefile.in
+    Added autoconf magic for detecting Qt.
+
 2000-07-14 - peter karlsson <peter@softwolves.pp.se>
   qtgui.cpp
   qtgui.h
