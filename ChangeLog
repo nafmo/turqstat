@@ -1,3 +1,9 @@
+2000-04-07 - peter karlsson <peter@softwolves.pp.se>
+  Makefile.in
+  configure.in
+    Consolidated binary targets, and adds the turqstat.def file to the EMX
+    check.
+
 2000-04-02 - peter karlsson <peter@softwolves.pp.se>
   Makefile.in
   configure.in

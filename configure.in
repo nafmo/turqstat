@@ -30,7 +30,8 @@ dnl Checks for programs ----------------------------------------------------
 AC_PROG_CC
 AC_PROG_CXX
 
-dnl EMX uses stdcpp instead of stdc++
+dnl EMX uses stdcpp instead of stdc++, uses .exe suffix and uses the
+dnl turqstat.def file to set the application title
 AC_MSG_CHECKING([for EMX])
 AC_TRY_COMPILE(, [#ifndef __EMX__
 Syntax Error
@@ -40,11 +41,14 @@ AC_MSG_RESULT($have_emx)
 if test "$have_emx" = "yes"; then
   standardcpplib=stdcpp
   EXE=.exe
+  DEF=turqstat.def
 else
   standardcpplib=stdc++
   EXE=
+  DEF=
 fi
 AC_SUBST(EXE)
+AC_SUBST(DEF)
 
 dnl Checks for libraries ---------------------------------------------------
 AC_CHECK_LIB($standardcpplib, cout)

@@ -10,18 +10,25 @@ VPATH=@scrdir@
 LIBS=@LIBS@
 DESTDIR=
 OBJS=turqstat.o statengine.o statview.o squishread.o fdapxread.o jamread.o mypointread.o utility.o sdmread.o tanstaaflread.o newsspoolread.o
+DEF=@DEF@
 prefix=/usr
 exec_prefix=${prefix}
 
 # Magic targets
 all: turqstat@EXE@
 
+debian:
+	fakeroot debian/rules binary
+
 clean:
 	-rm $(OBJS)
-	-rm turqstat
+	-rm turqstat@EXE@
 
 distclean: clean
 	-rm config.status config.log config.h Makefile
+
+debianclean:
+	fakeroot debian/rules clean
 
 install: turqstat@EXE@
 	install -d $(DESTDIR)@bindir@ $(DESTDIR)@datadir@/doc/turqstat/ $(DESTDIR)@mandir@/man1
@@ -31,12 +38,8 @@ install: turqstat@EXE@
 	install -m 644 turqstat.1   $(DESTDIR)@mandir@/man1/
 
 # Binary
-turqstat: $(OBJS)
-	@CXX@ $(CXXFLAGS) $(LDFLAGS) -o turqstat $(OBJS) $(LIBS)
-
-# OS/2 binary
-turqstat.exe: $(OBJS) turqstat.def
-	@CXX@ $(CXXFLAGS) $(LDFLAGS) -o turqstat.exe $(OBJS) turqstat.def $(LIBS)
+turqstat@EXE@: $(OBJS) $(DEF)
+	@CXX@ $(CXXFLAGS) $(LDFLAGS) -o turqstat $(OBJS) $(DEF) $(LIBS)
 
 # Object files
 turqstat.o: turqstat.cpp statengine.h statview.h arearead.h squishread.h fdapxread.h jamread.h mypointread.h version.h tanstaaflread.h config.h
@@ -71,3 +74,6 @@ sdmread.o: sdmread.cpp sdmread.h arearead.h statengine.h datatypes.h utility.h c
 
 newsspoolread.o: newsspoolread.cpp newsspoolread.h arearead.h utility.h config.h
 	@CXX@ $(CXXFLAGS) -c $(srcdir)/newsspoolread.cpp
+
+# List phony targets
+.PHONY: all debian clean distclean debianclean install
