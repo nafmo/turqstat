@@ -15,8 +15,8 @@ rm -rf turqstat-$ver/
 mkdir -p turqstat-$ver/debian
 autoconf
 autoheader
-rm config.h
 cp -p *.def *.cpp *.h Makefile.in config.h.in configure configure.in ChangeLog COPYING turqstat-$ver/
+rm turqstat-$ver/config.h
 iso2dos -i turqstat.doc  turqstat-$ver/turqstat.doc
 touch -r   turqstat.doc  turqstat-$ver/turqstat.doc
 iso2dos -i turqstat.dok  turqstat-$ver/turqstat.dok

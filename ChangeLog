@@ -28,6 +28,9 @@
   configure.in
     Remove some time zone junk.
 
+  makedist.sh
+    Made a little bit smarter.
+
   Makefile.in
   mytime.cpp
   mytime.h
