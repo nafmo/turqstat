@@ -106,14 +106,14 @@ bool StatView::CreateReport(StatEngine *engine, string filename)
     }
 
     time_t earliest = engine->GetEarliestReceived();
-    struct tm *p1 = localtime(&earliest);
+    struct tm *p1 = gmtime(&earliest);
     char date[64];
     strftime(date, 64, dateformat, p1);
 
     report << "between " << date << " and ";
 
     time_t latest = engine->GetLastReceived();
-    struct tm *p2 = localtime(&latest);
+    struct tm *p2 = gmtime(&latest);
     strftime(date, 64, dateformat, p2);
 
     report << date;
@@ -123,13 +123,13 @@ bool StatView::CreateReport(StatEngine *engine, string filename)
         report << " (written between ";
 
         time_t wearliest = engine->GetEarliestWritten();
-        struct tm *p3 = localtime(&wearliest);
+        struct tm *p3 = gmtime(&wearliest);
         strftime(date, 64, dateformat, p3);
 
         report << date << " and ";
 
         time_t wlatest = engine->GetLastWritten();
-        struct tm *p4 = localtime(&wlatest);
+        struct tm *p4 = gmtime(&wlatest);
         strftime(date, 64, dateformat, p4);
 
         report << date << ")";

@@ -825,7 +825,10 @@ void StatEngine::AddData(string fromname, string toname, string subject,
             latestwritten    = timewritten;
         wdatevalid = true;
 
-        struct tm *tm_p = localtime(&timewritten);
+        // Convert to a struct tm so we can find out weekday and daytime.
+        // Since we have a "local" time_t, we use gmtime and just ignore
+        // time zone info.
+        struct tm *tm_p = gmtime(&timewritten);
         if (tm_p)
         {
             daycount[tm_p->tm_wday] ++;
