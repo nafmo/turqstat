@@ -2,6 +2,10 @@
   converter.cpp
     Added support for FDAPX/w stupid CODEPAGE kludge.
 
+  configure.in
+  doxygen.conf.in
+    Added magic for detecting whether the dot tool is available.
+
 2001-05-17 - peter karlsson <peter@softwolves.pp.se>
   converter.cpp
   converter.h
