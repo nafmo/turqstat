@@ -1,3 +1,15 @@
+2000-12-03 - peter karlsson <peter@softwolves.pp.se>
+  debian/
+    Added Debian menu entry for XTurqstat.
+    Cleaned up Debianization files.
+
+  Makefile.in
+    Fixed some directory name problems.
+    Added target for creating source documentation via doxygen.
+
+  doxygen.conf.in
+    Configuration file for creating source documentation via doxygen.
+
 2000-11-26 - peter karlsson <peter@softwolves.pp.se>
   qtlist.cpp
     Comma-separated files are *.csv, not *.csf.
