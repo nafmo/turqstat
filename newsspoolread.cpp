@@ -86,15 +86,13 @@ bool NewsSpoolRead::Transfer(time_t starttime, StatEngine &destination)
 # ifdef HAS_EMX_FINDFIRST
     struct _find spooldir;
     int rc = __findfirst(searchpath.c_str(), 0x2f, &spooldir);
-
-    if (!rc)
 # else
     struct _finddata_t spooldir;
     int spoolhandle = _findfirst(searchpath.c_str(), &spooldir);
     int rc = spoolhandle;
+# endif
 
     if (-1 == rc)
-# endif
     {
         cerr << "Unable to open spool directory" << endl;
         return false;

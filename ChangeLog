@@ -1,3 +1,8 @@
+2000-04-14 - peter karlsson <peter@softwolves.pp.se>
+  newsspoolread.cpp
+  sdmread.cpp
+    Bugfixed EMX findfirst/findnext return value checks.
+
 2000-04-13 - peter karlsson <peter@softwolves.pp.se>
   makedist.btm
     Added batch file for creating the OS2/Win32 distribution archives.

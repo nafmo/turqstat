@@ -87,15 +87,13 @@ bool SdmRead::Transfer(time_t starttime, StatEngine &destination)
 # ifdef HAS_EMX_FINDFIRST
     struct _find sdmdir;
     int rc = __findfirst(searchpath.c_str(), 0x2f, &sdmdir);
-
-    if (!rc)
 # else
     struct _finddata_t sdmdir;
     int sdmhandle = _findfirst(searchpath.c_str(), &sdmdir);
     int rc = sdmhandle;
+# endif
 
     if (-1 == rc)
-# endif
     {
         cerr << "Unable to open *.MSG directory" << endl;
         return false;
