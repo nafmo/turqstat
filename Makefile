@@ -2,41 +2,39 @@
 #
 # $Id$
 
-CFLAGS=-Wall -Zcrtdll -Zomf -Ismapi -Lsmapi -O3 -DHAS_SMAPI
+CFLAGS=-Wall -O3 -g
 
 all: turqstat.exe
 
-turqstat.exe: turqstat.obj statengine.obj statview.obj turqstat.def squishread.obj fdapxread.obj jamread.obj mypointread.obj utility.obj smapi/smapiemo.lib
-        gcc $(CFLAGS) -o turqstat.exe *.obj *.def -lsmapiemo -lstdcpp
+turqstat.exe: turqstat.o statengine.o statview.o turqstat.def squishread.o fdapxread.o jamread.o mypointread.o utility.o sdmread.o
+        gcc $(CFLAGS) -o turqstat.exe *.o -lstdcpp
 
-turqstat.obj: turqstat.cpp statengine.h statview.h arearead.h squishread.h fdapxread.h jamread.h mypointread.h
+turqstat.o: turqstat.cpp statengine.h statview.h arearead.h squishread.h fdapxread.h jamread.h mypointread.h version.h
         gcc $(CFLAGS) -c turqstat.cpp
 
-statengine.obj: statengine.cpp statengine.h
+statengine.o: statengine.cpp statengine.h
         gcc $(CFLAGS) -c statengine.cpp
 
-statview.obj: statview.cpp statview.h statengine.h
+statview.o: statview.cpp statview.h statengine.h version.h
         gcc $(CFLAGS) -c statview.cpp
 
-squishread.obj: squishread.cpp squishread.h arearead.h statengine.h
+squishread.o: squishread.cpp squishread.h arearead.h statengine.h datatypes.h utility.h
         gcc $(CFLAGS) -c squishread.cpp
 
-utility.obj: utility.cpp utility.h
+utility.o: utility.cpp utility.h
         gcc $(CFLAGS) -c utility.cpp
 
-fdapxread.obj: fdapxread.cpp fdapxread.h datatypes.h statengine.h arearead.h
+fdapxread.o: fdapxread.cpp fdapxread.h datatypes.h statengine.h arearead.h
         gcc $(CFLAGS) -c fdapxread.cpp
 
-jamread.obj: jamread.cpp jamread.h datatypes.h statengine.h arearead.h
+jamread.o: jamread.cpp jamread.h datatypes.h statengine.h arearead.h
         gcc $(CFLAGS) -c jamread.cpp
 
-mypointread.obj: mypointread.cpp mypointread.h datatypes.h statengine.h arearead.h
+mypointread.o: mypointread.cpp mypointread.h datatypes.h statengine.h arearead.h
         gcc $(CFLAGS) -c mypointread.cpp
 
-smapi/smapiemo.lib:
-        cd smapi
-        nmake -f makefile.emo
-        cd ..
+sdmread.o: sdmread.cpp sdmread.h arearead.h statengine.h datatypes.h utility.h
+        gcc $(CFLAGS) -c sdmread.cpp
 
 dist: turqstat.exe source.rar
         rar -av a turqstat.rar turqstat.exe turqstat.doc turqstat.dok source.rar COPYING
@@ -44,13 +42,7 @@ dist: turqstat.exe source.rar
 
 source.rar:
         rar -s -av a source.rar *.def *.cpp *.h Makefile
-#       rar -s -av a source.rar *.def *.cpp *.h Makefile smapi\*.c smapi\*.h smapi\*.asm smapi\*.txt smapi\*.diz smapi\makefile.*
 
-clean: almostclean
-        -del smapi\*.obj
-        -del smapi\*.lib
-        -del smapi\*.bak
-
-almostclean:
+clean:
         -del *.obj
         -del *.exe

@@ -25,6 +25,9 @@
 # include <sys/stat.h>
 # include <unistd.h>
 #endif
+#ifdef __EMX__
+# include <emx/syscalls.h>
+#endif
 
 #include "sdmread.h"
 
@@ -48,7 +51,7 @@ bool SdmRead::Transfer(time_t starttime, StatEngine &destination)
     }
 
     // Open the message directory
-#ifdef UNIX
+#if defined(UNIX)
     DIR *sdmdir = opendir(areapath);
     if (!sdmdir)
     {
@@ -56,15 +59,23 @@ bool SdmRead::Transfer(time_t starttime, StatEngine &destination)
         return false;
     }
 
-#else
-# error No non-Unix code yet!
-#endif
-
     string dirname = string(areapath);
     if (dirname[dirname.length() - 1] != '/')
     {
         dirname += '/';
     }
+#else if defined(__EMX__)
+    string dirname = string(areapath);
+    if (dirname[dirname.length() - 1] != '\\')
+    {
+        dirname += '\\';
+    }
+
+    string searchpath = dirname + string("*.msg");
+
+    struct _find sdmdir;
+    int rc = __findfirst(searchpath.c_str(), 0x2f, &sdmdir);
+#endif
 
     sdmhead_s sdmhead;
     FILE *msg = NULL;
@@ -73,13 +84,17 @@ bool SdmRead::Transfer(time_t starttime, StatEngine &destination)
     time_t written, arrived;
     UINT32 msgn = 0;
 
-#ifdef UNIX
+#if defined(UNIX)
 # define FILENAME sdmdirent_p->d_name
 # define FILESIZE sdmstat.st_size
     struct dirent *sdmdirent_p;
     struct stat   sdmstat;
 
     while (NULL != (sdmdirent_p = readdir(sdmdir)))
+#else if defined(__EMX__)
+# define FILENAME sdmdir.name
+# define FILESIZE (sdmdir.size_lo | (sdmdir.size_hi << 16))
+    while (0 == rc)
 #endif
     {
         // Check that we really have a *.msg file
@@ -125,7 +140,7 @@ bool SdmRead::Transfer(time_t starttime, StatEngine &destination)
         }
 
         fread(msgbuf, msglen, 1, msg);
-        
+
         // Separate kludges from text
         fixupctrlbuffer(msgbuf, ctrlbuf);
 
@@ -150,16 +165,20 @@ bool SdmRead::Transfer(time_t starttime, StatEngine &destination)
         }
 
         // Clean up our mess
-out:;        
+out:;
         delete ctrlbuf;
 out2:;
         delete msgbuf;
 
         cout << ++ msgn << " done\r";
         if (msg) fclose(msg);
+
+#if defined(__EMX__)
+        rc = __findnext(&sdmdir);
+#endif
     }
 
-#ifdef UNIX
+#if defined(UNIX)
     closedir(sdmdir);
 #endif
 

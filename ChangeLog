@@ -1,3 +1,10 @@
+1999-07-16 - peter karlsson <pk@mds.mdh.se>
+  sdmread.cpp
+    New routines adapter for OS/2
+
+  Makefile
+    New Makefile for OS/2
+
 
 1999-07-15 / 1999-07-16 - peter karlsson <pk@mds.mdh.se>
   ChangeLog
