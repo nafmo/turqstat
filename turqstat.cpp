@@ -54,14 +54,10 @@ public:
     enum basetype_e { squish, sdm, opus, fdapx, jam, mypoint, tanstaafl,
                       newsspool };
 
-    StatRetr(char **areapath, int numpaths, char *outputfilepath,
-             char *basepath,
-             unsigned days,
-             basetype_e basetype, unsigned maxnumber,
-             bool quoters, bool topwritten, bool topreceived,
-             bool topsubjects, bool topprograms,
-             bool weekstats, bool daystats, bool showversions,
-             bool showallnums, bool toporiginal);
+    StatRetr(StatEngine &, StatView &,
+             char **areapath, int numpaths, char *outputfilepath,
+             char *basepath, basetype_e basetype,
+             unsigned days);
     ~StatRetr();
 };
 
@@ -74,7 +70,7 @@ int main(int argc, char *argv[])
     bool quoters = true, topwritten = true, topreceived = true,
          topsubjects = true, topprograms = true, weekstats = true,
          daystats = true, versions = true, allnums = false,
-         toporiginal = true;
+         toporiginal = true, topnets = true;
 
     // We don't want timezones here
 #ifdef HAVE_TIMEZONE
@@ -100,7 +96,7 @@ int main(int argc, char *argv[])
 
     // Handle arguments
     int c;
-    while (EOF != (c = getopt(argc, argv, "d:n:a:smofjptuQWRSPOHDVN?")))
+    while (EOF != (c = getopt(argc, argv, "d:n:a:smofjptuQWRSPOHDVNA?")))
     {
         switch (c)
         {
@@ -123,11 +119,12 @@ int main(int argc, char *argv[])
             case 'S':   topsubjects = false;                        break;
             case 'P':   topprograms = false;                        break;
             case 'O':   toporiginal = false;                        break;
+            case 'N':   topnets = false;                            break;
             case 'H':   daystats = false;                           break;
             case 'D':   weekstats = false;                          break;
 
             case 'V':   versions = false;                           break;
-            case 'N':   allnums = true;                             break;
+            case 'A':   allnums = true;                             break;
 
             case '?':
             default:
@@ -158,14 +155,15 @@ int main(int argc, char *argv[])
                 cout << "  -Q -W -R -S -P Turn quoters/written/received/"
                                          "subjects/programs toplist off"
                      << endl;
-                cout << "  -O             Turn original per msg toplist off"
+                cout << "  -O -N          Turn original per msg/Fidonet nets "
+                                         "toplist off"
                      << endl;
                 cout << "  -H -D          Turn hour/day statistics off"
                      << endl;
                 cout << "  -V             Don't provide version info for "
                                          "programs toplist"
                      << endl;
-                cout << "  -N             Show all numbers in toplists, even "
+                cout << "  -A             Show all numbers in toplists, even "
                                          "for same score"
                      << endl;
                 return 1;
@@ -178,22 +176,40 @@ int main(int argc, char *argv[])
         return 1;
     }
 
-    StatRetr s(&argv[optind + 1], argc - optind - 1, argv[optind],
-               basepath, days, basetype, maxnum, quoters, topwritten,
-               topreceived, topsubjects, topprograms, weekstats, daystats,
-               versions, allnums, toporiginal);
+    // Create engine object
+    StatEngine engine;
+
+    // Create view object
+    StatView view;
+
+    // Enable toplists we want
+    view.EnableQuoters(quoters);
+    view.EnableTopWritten(topwritten);
+    view.EnableTopOriginal(toporiginal);
+    view.EnableTopNets(topnets);
+    view.EnableTopReceived(topreceived);
+    view.EnableTopSubjects(topsubjects);
+    view.EnableTopPrograms(topprograms);
+    view.EnableWeekStats(weekstats);
+    view.EnableDayStats(daystats);
+
+    // Set toplist parameters
+    view.ShowVersions(versions);
+    view.ShowAllNums(allnums);
+    view.SetMaxEntries(maxnum);
+
+    // Create retrieval object, and do the work
+    StatRetr s(engine, view,
+               &argv[optind + 1], argc - optind - 1, argv[optind],
+               basepath, basetype, days);
 
     return 0;
 }
 
-StatRetr::StatRetr(char **areapath, int numpaths, char *outputfilepath,
-                   char *basepath,
-                   unsigned days,
-                   basetype_e basetype, unsigned maxnumber,
-                   bool quoters, bool topwritten, bool topreceived,
-                   bool topsubjects, bool topprograms,
-                   bool weekstats, bool daystats, bool showversions,
-                   bool showallnums, bool toporiginal)
+StatRetr::StatRetr(StatEngine &engine, StatView &view,
+                   char **areapath, int numpaths, char *outputfilepath,
+                   char *basepath, basetype_e basetype,
+                   unsigned days)
 {
     unsigned areanum;
 
@@ -210,7 +226,6 @@ StatRetr::StatRetr(char **areapath, int numpaths, char *outputfilepath,
     from = mktime(fromtm);
 
     // Transfer from area(s) to engine
-    StatEngine engine;
     AreaRead *area;
     int counter = 0;
     while (numpaths)
@@ -267,12 +282,8 @@ StatRetr::StatRetr(char **areapath, int numpaths, char *outputfilepath,
         numpaths --;
     }
 
-    // Create output
-    StatView view;
-    view.CreateReport(&engine, outputfilepath, maxnumber,
-                      quoters, topwritten, topreceived, topsubjects,
-                      topprograms, weekstats, daystats, showversions,
-                      showallnums, toporiginal);
+    // Write output
+    view.CreateReport(&engine, outputfilepath);
 }
 
 StatRetr::~StatRetr()
