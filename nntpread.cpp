@@ -460,13 +460,13 @@ bool NntpRead::SendLine(const char *line)
     // Iterate until entire line is sent
     while (linelength)
     {
-        ssize_t rc = write(sockfd, line, linelength);
+        int rc = send(sockfd, line, linelength, 0);
 
         // Check for possible errors
         if (-1 == rc)
         {
-            // Ignore "interrupted" and "try again" errors.
-            if (EINTR != errno && EAGAIN != errno)
+            // Ignore "interrupted", "try again" and "would block" errors.
+            if (EINTR != errno && EAGAIN != errno && EWOULDBLOCK != errno)
             {
                 return false;
             }
@@ -537,7 +537,7 @@ bool NntpRead::GetLine(char *outbuffer, size_t maxlen)
         // Read another chunk of data unless we found a LF already
         if (!foundlf)
         {
-            ssize_t rc = read(sockfd, socketbuffer, BUFSIZ);
+            int rc = recv(sockfd, socketbuffer, BUFSIZ, 0);
             if (-1 == rc)
             {
                 // Ignore "interrupted" and "try again" errors.
@@ -549,6 +549,8 @@ bool NntpRead::GetLine(char *outbuffer, size_t maxlen)
             else if (0 == rc)
             {
                 // This indicates end-of-file
+                // (or at least it did when I was using read(), I'll just
+                //  keep it in for now)
                 if (copiedanything)
                 {
                     *outbuffer = 0;
