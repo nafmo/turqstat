@@ -4,7 +4,7 @@ rem $Id$
 setlocal
 unalias /q copy deltree make del
 
-iff not exist c:\dev\95\turqstat\turqstat.exe .or. not exist c:\dev\95\turqstat\teal.exe then
+iff not exist 95build\turqstat.exe .or. not exist 95build\teal.exe then
   echo Du m†ste kompilera Win32-versionen
   quit
 endiff
@@ -44,9 +44,9 @@ copy config.h     dist\os2\
 del  config.h
 copy README.os2   dist\os2\
 
-copy README.Win32                    dist\win32\
-copy c:\dev\95\turqstat\turqstat.exe dist\win32\turqstat.exe
-copy c:\dev\95\turqstat\teal.exe     dist\win32\teal.exe
+copy README.Win32         dist\win32\
+copy 95build\turqstat.exe dist\win32\turqstat.exe
+copy 95build\teal.exe     dist\win32\teal.exe
 
 copy *.def *.cpp *.h Makefile.in config.h.in doxygen.conf.in configure configure.in ChangeLog dist\src\
 copy mappings\*.txt;*.cpp;*.h;*.in;*.pl dist\src\mappings\
