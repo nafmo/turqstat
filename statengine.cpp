@@ -1023,35 +1023,73 @@ wstring StatEngine::DeQP(const string &qp, Decoder *maindecoder_p) const
     pos = qp.find("=?");
     while (pos >= 0)
     {
-        int qpos = qp.find("?Q?", pos + 3);
-        if (-1 == qpos)
+        int qpos = qp.find('?', pos + 3);
+
+        if (-1 != qpos && '?' == qp[qpos + 2])
         {
-            qpos = qp.find("?q?", pos + 3);
-        }
-        if (-1 != qpos)
-        {
-            // Copy data up to start of QP string
+            char quotetype = qp[qpos + 1];
+
+            // Copy data up to start of QP/Base64 string
             rc.append(maindecoder_p->Decode(qp.substr(current, pos - current)));
 
-            // Locate end of QP string
+            // Locate end of QP/Base64 string
             endpos = qp.find("?=", qpos + 3);
             current = endpos + 2;
 
-            // Convert QP code to bytestream
             string tmpstr;
-            for (int i = qpos + 3; i < endpos; i ++)
+            if ('b' == quotetype || 'B' == quotetype)
             {
-                if ('=' == qp[i])
+                // Convert Base64 code to bytestream
+                const char base64[] =
+                    "ABCDEFGHIJKLMNOPQRSTUVWXYZ" // 0-25
+                    "abcdefghijklmnopqrstuvwxyz" // 26-51
+                    "0123456789+/=";             // 52-63 + pad
+                int b64buf = 0, b64count = 0, c;
+                for (int i = qpos + 3; i < endpos; i ++)
                 {
-                    hex = qp.substr(i + 1, 2);
-                    sscanf(hex.c_str(), "%x", &qpchar);
-                    tmpstr += (char) qpchar;
-                    i += 2;
+                    char *p = strchr(base64, qp[i]);
+                    int b64val = p ? (p - base64) : 0;
+                    if (64 == b64val) b64val = 0;
+                    b64buf = (b64buf << 6) | b64val;
+                    switch (++ b64count)
+                    {
+                        case 2:
+                            c = (b64buf & 0xff0) >> 4;
+                            if (c) tmpstr += char(c);
+                            b64buf &= 0x0f;
+                            break;
+
+                        case 3:
+                            c = (b64buf & 0x3fc) >> 2;
+                            if (c) tmpstr += char(c);
+                            b64buf &= 0x03;
+                            break;
+
+                        case 4:
+                            if (b64buf) tmpstr += char(b64buf);
+                            b64buf = 0;
+                            b64count = 0;
+                            break;
+                    }
                 }
-                else if ('_' == qp[i])
-                    tmpstr += ' ';
-                else
-                    tmpstr += qp[i];
+            }
+            else
+            {            
+                // Convert QP code to bytestream
+                for (int i = qpos + 3; i < endpos; i ++)
+                {
+                    if ('=' == qp[i])
+                    {
+                        hex = qp.substr(i + 1, 2);
+                        sscanf(hex.c_str(), "%x", &qpchar);
+                        tmpstr += char(qpchar);
+                        i += 2;
+                    }
+                    else if ('_' == qp[i])
+                        tmpstr += ' ';
+                    else
+                        tmpstr += qp[i];
+                }
             }
 
             // Convert bytestream to string
