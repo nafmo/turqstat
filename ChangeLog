@@ -8,6 +8,9 @@
   Makefile.in
     Corrected distclean target.
 
+  makedist.btm
+    Corrected file list.
+
 2000-05-07 - peter karlsson <peter@softwolves.pp.se>
   statview.cpp
   statengine.h

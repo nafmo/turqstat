@@ -43,6 +43,6 @@ copy c:\dev\95\turqstat\turqstat.exe win32\turqstat.exe
 
 copy *.def *.cpp *.h Makefile.in config.h.in configure configure.in ChangeLog src\
 
-rar a -s -av turq%ver.rar turqstat.do? turqstat.1 COPYING src\* os2\* win32\*
+rar a -s -av turq%ver.rar turqstat.do? turqstat.1 turqstat-sv.1 COPYING src\* os2\* win32\*
 
 deltree /y src
