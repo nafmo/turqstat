@@ -37,13 +37,15 @@
 #include "mypointread.h"
 #include "sdmread.h"
 #include "tanstaaflread.h"
+#include "newsspoolread.h"
 #include "version.h"
 #include "utility.h"
 
 class StatRetr
 {
 public:
-    enum basetype_e { squish, sdm, opus, fdapx, jam, mypoint, tanstaafl };
+    enum basetype_e { squish, sdm, opus, fdapx, jam, mypoint, tanstaafl,
+                      newsspool };
 
     StatRetr(char **areapath, int numpaths, char *outputfilepath,
              char *basepath,
@@ -79,14 +81,13 @@ int main(int argc, char *argv[])
     cout << "Turquoise " << version
          << " - Statistics tool for Fidonet message bases"
          << endl;
-    cout << "(c) Copyright 1998-2000 Peter Karlsson. "
-            "GNU GPL 2 licensed." << endl;
-    cout << "A Softwolves Software Release in 2000." << endl;
+    cout << copyright << ". GNU GPL 2 licensed." << endl;
+    cout << "A Softwolves Software Release in " << releaseyear << "." << endl;
     cout << endl;
 
     // Handle arguments
     int c;
-    while (EOF != (c = getopt(argc, argv, "d:n:a:smofjptQWRSPOHDVN?")))
+    while (EOF != (c = getopt(argc, argv, "d:n:a:smofjptuQWRSPOHDVN?")))
     {
         switch (c)
         {
@@ -101,6 +102,7 @@ int main(int argc, char *argv[])
             case 'j':   basetype = StatRetr::jam;                   break;
             case 'p':   basetype = StatRetr::mypoint;               break;
             case 't':   basetype = StatRetr::tanstaafl;             break;
+            case 'u':   basetype = StatRetr::newsspool;             break;
 
             case 'Q':   quoters = false;                            break;
             case 'W':   topwritten = false;                         break;
@@ -136,6 +138,8 @@ int main(int argc, char *argv[])
                 cout << "  -t             Tanstaafl style message base (needs -a)"
                      << endl;
                 cout << "  -p             MyPoint style message base (needs -a)"
+                     << endl;
+                cout << "  -u             Usenet News spool"
                      << endl;
                 cout << endl;
                 cout << "  -Q -W -R -S -P Turn quoters/written/received/"
@@ -227,6 +231,10 @@ StatRetr::StatRetr(char **areapath, int numpaths, char *outputfilepath,
             case tanstaafl:
                 areanum = strtoul(areapath[counter], NULL, 10);
                 area = new TanstaaflRead(basepath, areanum);
+                break;
+
+            case newsspool:
+                area = new NewsSpoolRead(areapath[counter]);
                 break;
 
             default:
