@@ -28,6 +28,7 @@ StatEngine::StatEngine(void)
     for (int i = 0; i < 7; i ++) daycount[i] = 0;
     for (int i = 0; i < 24; i ++) hourcount[i] = 0;
     numpeople = numsubjects = numprograms = 0;
+    totallines = totalqlines = totalbytes = totalqbytes = 0;
     people_p = NULL;
     programs_p = NULL;
     subjects_p = NULL;
@@ -35,7 +36,9 @@ StatEngine::StatEngine(void)
     subjecttoplist_p = NULL;
     programtoplist_p = NULL;
     currversion = NULL;
-    datesvalid = false;
+    wdatevalid = false;
+    rdatevalid = false;
+    earliestwritten = latestwritten = earliestreceived = latestreceived = 0;
     currpersontype = None;
 }
 
@@ -79,17 +82,18 @@ void StatEngine::AddData(String fromname, String toname, String subject,
 
             // found_p points to the leaf (NULL at the end, which is where
             // we need the leaf above to add the leaf to)
-            if (fromname < perstrav_p->name)
+            if (fcompare(fromname, perstrav_p->name) < 0)
             {
                 direction = Left;
                 persfound_p = perstrav_p->left;
             }
-            if (fromname > perstrav_p->name)
+            if (fcompare(fromname, perstrav_p->name) > 0)
             {
                 direction = Right;
                 persfound_p = perstrav_p->right;
             }
-        } while (NULL != persfound_p && persfound_p->name != fromname);
+        } while (NULL != persfound_p &&
+                 fcompare(persfound_p->name, fromname) != 0);
 
         if (NULL == persfound_p)
         {
@@ -187,17 +191,18 @@ void StatEngine::AddData(String fromname, String toname, String subject,
 
         // found_p points to the leaf (NULL at the end, which is where
         // we need the leaf above to add the leaf to)
-        if (toname < perstrav_p->name)
+        if (fcompare(toname, perstrav_p->name) < 0)
         {
             direction = Left;
             persfound_p = perstrav_p->left;
         }
-        if (toname > perstrav_p->name)
+        if (fcompare(toname, perstrav_p->name) > 0)
         {
             direction = Right;
             persfound_p = perstrav_p->right;
         }
-    } while (NULL != persfound_p && persfound_p->name != toname);
+    } while (NULL != persfound_p &&
+             fcompare(persfound_p->name, toname) != 0);
 
     if (NULL == persfound_p)
     {
@@ -250,17 +255,18 @@ void StatEngine::AddData(String fromname, String toname, String subject,
 
             // found_p points to the leaf (NULL at the end, which is where
             // we need the leaf above to add the leaf to)
-            if (subject < subtrav_p->subject)
+            if (fcompare(subject, subtrav_p->subject) < 0)
             {
                 direction = Left;
                 subfound_p = subtrav_p->left;
             }
-            if (subject > subtrav_p->subject)
+            if (fcompare(subject, subtrav_p->subject) > 0)
             {
                 direction = Right;
                 subfound_p = subtrav_p->right;
             }
-        } while (NULL != subfound_p && subfound_p->subject != subject);
+        } while (NULL != subfound_p &&
+                 fcompare(subfound_p->subject, subject) != 0);
 
         if (NULL == subfound_p)
         {
@@ -306,7 +312,11 @@ void StatEngine::AddData(String fromname, String toname, String subject,
     if (-1 == space1) space1 = space2 = program.length();
     if (-1 == space2) space2 = program.length();
 
-    String programname = program.at(0, space1);
+    String programname;
+    if (space1 && '+' == program[space1 - 1])
+        programname = program.at(0, space1 - 1);
+    else
+        programname = program.at(0, space1);
 
     if (programname != "")
     {
@@ -330,17 +340,18 @@ void StatEngine::AddData(String fromname, String toname, String subject,
 
                 // found_p points to the leaf (NULL at the end, which is where
                 // we need the leaf above to add the leaf to)
-                if (programname < progtrav_p->programname)
+                if (fcompare(programname, progtrav_p->programname) < 0)
                 {
                     direction = Left;
                     progfound_p = progtrav_p->left;
                 }
-                if (programname > progtrav_p->programname)
+                if (fcompare(programname, progtrav_p->programname) > 0)
                 {
                     direction = Right;
                     progfound_p = progtrav_p->right;
                 }
-            } while (NULL != progfound_p && progfound_p->programname != programname);
+            } while (NULL != progfound_p &&
+                     fcompare(progfound_p->programname, programname) != 0);
 
             if (NULL == progfound_p)
             {
@@ -361,10 +372,16 @@ void StatEngine::AddData(String fromname, String toname, String subject,
         {
             // Locate version number in the linked list, if we do not
             // find it, add it to it.
-            String programvers = program.at(space1 + 1, space2 - space1 - 1);
+            String programvers;
+
+            if (space2 && '+' == program[space2 - 1] && space2 - space1 > 2)
+                programvers = program.at(space1 + 1, space2 - space1 - 2);
+            else
+                programvers = program.at(space1 + 1, space2 - space1 - 1);
 
             programversion_s **vertrav_pp = &(progfound_p->versions_p);
-            while (*vertrav_pp != NULL && (*vertrav_pp)->version != programvers)
+            while (*vertrav_pp != NULL &&
+                   fcompare((*vertrav_pp)->version, programvers) != 0)
             {
                 vertrav_pp = &((*vertrav_pp)->next);
             }
@@ -381,21 +398,20 @@ void StatEngine::AddData(String fromname, String toname, String subject,
     // Check writing and receiption date and add to statistics
     if (timewritten != 0) // 0 date indicates error
     {
-        if (!datesvalid || timewritten  < earliestwritten)
+        if (!wdatevalid || timewritten  < earliestwritten)
             earliestwritten  = timewritten;
-        if (!datesvalid || timewritten  > latestwritten)
+        if (!wdatevalid || timewritten  > latestwritten)
             latestwritten    = timewritten;
+        wdatevalid = true;
     }
     if (timereceived != 0)
     {
-        if (!datesvalid || timereceived < earliestreceived)
+        if (!rdatevalid || timereceived < earliestreceived)
             earliestreceived = timereceived;
-        if (!datesvalid || timereceived > latestreceived)
+        if (!rdatevalid || timereceived > latestreceived)
             latestreceived   = timereceived;
+        rdatevalid = true;
     }
-
-    if (!datesvalid && timewritten != 0 && timereceived != 0)
-        datesvalid = true;
 
     struct tm *tm_p = localtime(&timewritten);
     daycount[tm_p->tm_wday] ++;
@@ -642,6 +658,17 @@ int comparenumreceived(const void *p1, const void *p2)
 
 int comparenumquoted(const void *p1, const void *p2)
 {
+    // Special handling of the case with no bytes written (recipient only)
+    if (0 == (((StatEngine::persstat_s *) p1)->byteswritten))
+    {
+        if (0 == (((StatEngine::persstat_s *) p2)->byteswritten))
+            return 0;
+        else
+            return -1;
+    }
+    else if (0 == (((StatEngine::persstat_s *) p2)->byteswritten))
+        return 1;
+
     unsigned long long d1 =
         ((unsigned long long)
          (((StatEngine::persstat_s *) p1)->bytesquoted)) *
