@@ -1,0 +1,47 @@
+
+1999-07-15 / 1999-07-16 - peter karlsson <pk@mds.mdh.se>
+  ChangeLog
+    Started changeloging
+
+  squishread.cpp
+  squishread.h
+    Rewritten for native Squish support (non-API)
+
+  utility.cpp
+  utility.h
+    Moved stampToTimeT here
+    Added fixupctrlbuffer from fdapx for use in sdm too
+    Added asciiToTimeT
+
+  sdmread.cpp
+  sdmread.h
+    Added for native *.MSG support
+
+  turqstat.cpp
+    Adjusted for new Squish/*.MSG support
+    Modified to use version.h
+
+  datatypes.h
+    Added explicit definition of unsigned numbers to remove compiler
+    warnings
+
+  fdapxread.cpp
+    Moved routines for separating body and kludges into utility.cpp
+
+  jamread.h
+  fdapxread.h
+  mypointread.h
+    #pragma pack for all GNU compilers
+
+  statengine.h
+    Fixed bug with wrong toplist identifiers (didn't cause problems with
+    current implementation of statview, though)
+
+  version.h
+    Defines current version
+
+  statview.cpp
+    Modified to use version.h
+
+  Makefile.linux
+    Modified for new Squish/SDM routines
