@@ -107,7 +107,6 @@ if test "$ac_cv_mingw32" = "yes"; then
   findfirst=yes
 fi
 
-AC_CHECK_LIB(w, wcscpy)
 AC_CHECK_LIB(socket, socket)
 AC_CHECK_LIB(nsl, gethostbyname)
 
@@ -250,6 +249,10 @@ AC_CACHE_CHECK([for working wstring], ac_cv_wstring,
   ac_cv_wstring=yes, ac_cv_wstring=no))
 if test "$ac_cv_wstring" = "yes"; then
   AC_DEFINE(HAVE_WORKING_WSTRING)
+fi
+
+if test "$ac_cv_wstring" = "no"; then
+  AC_CHECK_LIB(w, wcscat)
 fi
 
 AC_CACHE_CHECK([for fstream::form], ac_cv_fstream_form,
