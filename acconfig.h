@@ -39,3 +39,6 @@
 
 /* Define if you have Win32 GetDateFormat API */
 #undef HAVE_WIN32_LOCALEINFO
+
+/* Define if you have a working wstring implementation */
+#undef HAVE_WORKING_WSTRING

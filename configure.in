@@ -198,6 +198,18 @@ if test "$locale" = "yes"; then
   fi
 fi
 
+AC_LANG_CPLUSPLUS
+AC_CACHE_CHECK([for working wstring], ac_cv_wstring,
+  AC_TRY_COMPILE([#include <wchar.h>
+  #include <string>],
+  [ wstring s; wchar_t *p = s.c_str(); ],
+  ac_cv_wstring=yes, ac_cv_wstring=no))
+if test "$ac_cv_wstring" = "yes"; then
+  AC_DEFINE(HAVE_WORKING_WSTRING)
+fi
+
+AC_LANG_C
+
 dnl Check for variables ----------------------------------------------------
 
 AC_MSG_CHECKING(for timezone in time.h)
