@@ -25,12 +25,6 @@
 #include "utility.h"
 #include "statengine.h"
 
-#if defined(UNIX)
-# define DIRSEP '/'
-#else
-# define DIRSEP '\\'
-#endif
-
 MyPointRead::MyPointRead(const char *path, unsigned areanum)
 {
     areapath = strdup(path);
@@ -65,8 +59,14 @@ bool MyPointRead::Transfer(time_t starttime, StatEngine &destination)
 
     // Open the message area files
     string basepath = areapath;
-    if (DIRSEP != basepath[basepath.length() - 1])
-        basepath += DIRSEP;
+#ifdef BACKSLASH_PATHS
+    if (basepath[basepath.length() - 1] != '/' &&
+        basepath[basepath.length() - 1] != '\\')
+        basepath += '\\';
+#else
+    if (basepath[basepath.length() - 1] != '/')
+        basepath += '/';
+#endif
     basepath += "MYPOINT.";
 
     string filepath = basepath + ending;

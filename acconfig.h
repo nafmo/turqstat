@@ -27,3 +27,6 @@
 
 /* Define if we can remove timezone with putenv and tzset */
 #undef FOOL_TZSET
+
+/* Define if platform primarily uses backslash as path separators */
+#undef BACKSLASH_PATHS

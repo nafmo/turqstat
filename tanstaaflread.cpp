@@ -25,12 +25,6 @@
 #include "utility.h"
 #include "statengine.h"
 
-#if defined(UNIX)
-# define DIRSEP '/'
-#else
-# define DIRSEP '\\'
-#endif
-
 TanstaaflRead::TanstaaflRead(const char *path, unsigned areanum)
 {
     areapath = strdup(path);
@@ -64,8 +58,14 @@ bool TanstaaflRead::Transfer(time_t starttime, StatEngine &destination)
     // Open the message area files
     // msgstat.tfl - contains a record of area info
     string basepath = string(areapath);
-    if (DIRSEP != basepath[basepath.length() - 1])
-        basepath += DIRSEP;
+#ifdef BACKSLASH_PATHS
+    if (basepath[basepath.length() - 1] != '/' &&
+        basepath[basepath.length() - 1] != '\\')
+        basepath += '\\';
+#else
+    if (basepath[basepath.length() - 1] != '/')
+        basepath += '/';
+#endif
 
     string filepath = basepath + "msgstat.tfl";
     FILE *msgstat = fopen(filepath.c_str(), "rb");
