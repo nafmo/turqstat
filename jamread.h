@@ -92,11 +92,26 @@ protected:
      /* uint8_t   buffer[datlen]; */
     };
 
+    static const uint16_t Jam_oaddress    = 0;      // Ignored
+    static const uint16_t Jam_daddress    = 1;      // Ignored
     static const uint16_t Jam_sender      = 2;
     static const uint16_t Jam_recipient   = 3;
     static const uint16_t Jam_MSGID       = 4;
+    static const uint16_t Jam_REPLY       = 5;      // Ignored
     static const uint16_t Jam_subject     = 6;
     static const uint16_t Jam_PID         = 7;
+    static const uint16_t Jam_VIA         = 8;      // Ignored
+    static const uint16_t Jam_fileattach  = 9;      // Ignored
+    static const uint16_t Jam_filealias   = 10;     // Ignored
+    static const uint16_t Jam_freq        = 11;     // Ignored
+    static const uint16_t Jam_filewildcard= 12;     // Ignored
+    static const uint16_t Jam_attachlist  = 13;     // Ignored
+    static const uint16_t Jam_reserved    = 1000;   // Ignored
+    static const uint16_t Jam_kludge      = 2000;
+    static const uint16_t Jam_SEENBY      = 2001;   // Ignored
+    static const uint16_t Jam_PATH        = 2002;   // Ignored
+    static const uint16_t Jam_FLAGS       = 2003;   // Ignored
+    static const uint16_t Jam_TZUTC       = 2004;   // Ignored
 
     // *.JDX
     struct jamjdx_s
@@ -106,7 +121,7 @@ protected:
     };
 
     static const uint16_t Jam_msgbaseversion = 1;
-    static const uint8_t  Jam_signature[4];//= "JAM";
+    static const uint8_t  Jam_signature[4];
 };
 
 #if defined(__GNUC__) || defined(__EMX__)

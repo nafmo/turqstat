@@ -29,7 +29,7 @@
 #include "utility.h"
 #include "statengine.h"
 
-const uint8_t JamRead::Jam_signature[4] = "JAM";
+const uint8_t JamRead::Jam_signature[4] = { 'J', 'A', 'M', 0 };
 
 JamRead::JamRead(const char *path)
 {
@@ -98,7 +98,7 @@ bool JamRead::Transfer(time_t starttime, StatEngine &destination)
     jamhdr_msg_s hdrinfo;
     jamhdr_subhdr_s subheader;
     string ctrlinfo, sender, recipient, subject;
-    char *buf, subtmp[101];
+    char *buf, subtmp[256];
     while (stay)
     {
         if (1 != fread(&jdxinfo, sizeof (jamjdx_s), 1, jdx))
@@ -195,6 +195,13 @@ bool JamRead::Transfer(time_t starttime, StatEngine &destination)
                             fread(&subtmp, subheader.datlen, 1, jhr);
                             subtmp[subheader.datlen] = 0;
                             ctrlinfo += "\1PID: ";
+                            ctrlinfo += subtmp;
+                            break;
+
+                        case Jam_kludge:
+                            fread(&subtmp, subheader.datlen, 1, jhr);
+                            subtmp[subheader.datlen] = 0;
+                            ctrlinfo += '\1';
                             ctrlinfo += subtmp;
                             break;
 
