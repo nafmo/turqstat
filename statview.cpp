@@ -63,7 +63,7 @@ bool StatView::CreateReport(StatEngine *engine, string filename)
     if (!(report.is_open())) return false;
 
     // Create an output text encoder
-    Encoder *encoder_p = Encoder::GetEncoderByName("IBMPC");
+    Encoder *encoder_p = Encoder::GetEncoderByName(charset.c_str());
 
     // Include data as given from the statistics engine
     bool news = engine->IsNewsArea();

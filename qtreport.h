@@ -1,4 +1,4 @@
-// Copyright (c) 2000 Peter Karlsson
+// Copyright (c) 2000-2001 Peter Karlsson
 //
 // $Id$
 //
@@ -23,6 +23,7 @@
 class StatEngine;
 class QCheckBox;
 class QSpinBox;
+class QComboBox;
 
 /**
  * Class describing a window asking what to save to file. This class is used
@@ -60,12 +61,13 @@ protected:
     QCheckBox *topprograms;
     QCheckBox *weekstats;
     QCheckBox *daystats;
-#ifdef HAVE_LOCALE_H
+#if defined(HAVE_LOCALE_H) || defined(HAVE_OS2_COUNTRYINFO) || defined(HAVE_WIN32_LOCALEINFO)
     QCheckBox *uselocale;
 #endif
 
     // Input boxes
     QSpinBox *maxnum;
+    QComboBox *charset;
 
 protected slots:
     /**
@@ -87,11 +89,12 @@ private:
     static bool dotopprograms;  ///< Remember if we want programs toplist.
     static bool doweekstats;    ///< Remember if we want weekday statistics.
     static bool dodaystats;     ///< Remember if we want hour statistics.
-#ifdef HAVE_LOCALE_H
+#if defined(HAVE_LOCALE_H) || defined(HAVE_OS2_COUNTRYINFO) || defined(HAVE_WIN32_LOCALEINFO)
     static bool douselocale;    ///< Remember if we want local date formats.
 #endif
 
     static int defaultmaxnum;   ///< Remember number of entries in toplists.
+    static QString docharset;   ///< Remember character set to use.
 };
 
 #endif

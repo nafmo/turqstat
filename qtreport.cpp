@@ -1,4 +1,4 @@
-// Copyright (c) 2000 Peter Karlsson
+// Copyright (c) 2000-2001 Peter Karlsson
 //
 // $Id$
 //
@@ -15,15 +15,20 @@
 // along with this program; if not, write to the Free Software
 // Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 
+#include <config.h>
+
 #include <qlayout.h>
 #include <qfiledialog.h>
 #include <qcheckbox.h>
 #include <qspinbox.h>
 #include <qpushbutton.h>
+#include <qcombobox.h>
+#include <qlabel.h>
 #include <limits.h>
 
 #include "qtreport.h"
 #include "statview.h"
+#include "convert.h"
 
 bool ReportSelectWindow::doquoters = true;
 bool ReportSelectWindow::dotopwritten = true;
@@ -35,9 +40,10 @@ bool ReportSelectWindow::dotopsubjects = true;
 bool ReportSelectWindow::dotopprograms = true;
 bool ReportSelectWindow::doweekstats = true;
 bool ReportSelectWindow::dodaystats = true;
-#ifdef HAVE_LOCALE_H
+#if defined(HAVE_LOCALE_H) || defined(HAVE_OS2_COUNTRYINFO) || defined(HAVE_WIN32_LOCALEINFO)
 bool ReportSelectWindow::douselocale = true;
 #endif
+QString ReportSelectWindow::docharset = "iso-8859-1";
 
 int ReportSelectWindow::defaultmaxnum = 15;
 
@@ -69,7 +75,7 @@ ReportSelectWindow::ReportSelectWindow(QWidget *parent, const char *name,
         new QCheckBox(tr("&Enable posting by weekday statistics"), this);
     daystats =
         new QCheckBox(tr("Enable posting by &hour statiscs"), this);
-#ifdef HAVE_LOCALE_H
+#if defined(HAVE_LOCALE_H) || defined(HAVE_OS2_COUNTRYINFO) || defined(HAVE_WIN32_LOCALEINFO)
     uselocale =
         new QCheckBox(tr("&Use locale date format"), this);
 #endif
@@ -85,7 +91,7 @@ ReportSelectWindow::ReportSelectWindow(QWidget *parent, const char *name,
     topprograms->setChecked(dotopprograms);
     weekstats->setChecked(doweekstats);
     daystats->setChecked(dodaystats);
-#ifdef HAVE_LOCALE_H
+#if defined(HAVE_LOCALE_H) || defined(HAVE_OS2_COUNTRYINFO) || defined(HAVE_WIN32_LOCALEINFO)
     uselocale->setChecked(douselocale);
 #endif
 
@@ -100,7 +106,7 @@ ReportSelectWindow::ReportSelectWindow(QWidget *parent, const char *name,
     layout->addWidget(topprograms);
     layout->addWidget(weekstats);
     layout->addWidget(daystats);
-#ifdef HAVE_LOCALE_H
+#if defined(HAVE_LOCALE_H) || defined(HAVE_OS2_COUNTRYINFO) || defined(HAVE_WIN32_LOCALEINFO)
     layout->addWidget(uselocale);
 #endif
 
@@ -109,6 +115,24 @@ ReportSelectWindow::ReportSelectWindow(QWidget *parent, const char *name,
     maxnum->setValue(defaultmaxnum);
     maxnum->setSuffix(tr(" entries"));
     layout->addWidget(maxnum);
+
+    QLabel *charsetlabel = new QLabel(tr("&Character set for report"), this);
+    layout->addWidget(charsetlabel);
+
+    charset = new QComboBox(false, this);
+    layout->addWidget(charset);
+    charsetlabel->setBuddy(charset);
+
+    CharsetEnumerator charsets(CharsetEnumerator::Usenet);
+    const char *charsetname;
+    while (NULL != (charsetname = charsets.Next()))
+    {
+        charset->insertItem(charsetname);
+        if (docharset == charsetname)
+        {
+            charset->setCurrentItem(charset->count() - 1);
+        }
+    }
 
     // Add buttons
     QHBoxLayout *buttonlayout = new QHBoxLayout(layout);
@@ -149,10 +173,11 @@ void ReportSelectWindow::saveToFile()
     dotopprograms = topprograms->isChecked();
     doweekstats = weekstats->isChecked();
     dodaystats = daystats->isChecked();
-#ifdef HAVE_LOCALE_H
+#if defined(HAVE_LOCALE_H) || defined(HAVE_OS2_COUNTRYINFO) || defined(HAVE_WIN32_LOCALEINFO)
     douselocale = uselocale->isChecked();
 #endif
     defaultmaxnum = maxnum->value();
+    docharset = charset->currentText();
 
     // Enable toplists we want
     view.EnableQuoters(doquoters);
@@ -165,7 +190,7 @@ void ReportSelectWindow::saveToFile()
     view.EnableTopPrograms(dotopprograms);
     view.EnableWeekStats(doweekstats);
     view.EnableDayStats(dodaystats);
-#ifdef HAVE_LOCALE_H
+#if defined(HAVE_LOCALE_H) || defined(HAVE_OS2_COUNTRYINFO) || defined(HAVE_WIN32_LOCALEINFO)
     view.UseLocale(douselocale);
 #endif
 
@@ -173,6 +198,7 @@ void ReportSelectWindow::saveToFile()
     view.ShowVersions(true);
     view.ShowAllNums(false);
     view.SetMaxEntries(defaultmaxnum);
+    view.SetCharset(docharset.latin1());
 
     // Write output
     view.CreateReport(engine, string(filename.local8Bit()));

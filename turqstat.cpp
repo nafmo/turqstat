@@ -116,6 +116,11 @@ int main(int argc, char *argv[])
          daystats = true, versions = true, allnums = false,
          toporiginal = true, topnets = true, topdomains = true;
     time_t *range_start_p = NULL, *range_end_p = NULL;
+#if defined(__EMX__) || defined(__CYGWIN__) || defined (__MINGW32__)
+    const char *charset = "IBMPC";
+#else
+    const char *charset = "LATIN-1";
+#endif
 #if defined(HAVE_LOCALE_H) || defined(HAVE_OS2_COUNTRYINFO) || defined(HAVE_WIN32_LOCALEINFO)
     bool uselocale = false;
 #endif
@@ -136,9 +141,9 @@ int main(int argc, char *argv[])
     // Handle arguments
     int c;
 #if defined(HAVE_LOCALE_H) || defined(HAVE_OS2_COUNTRYINFO) || defined(HAVE_WIN32_LOCALEINFO)
-    while (EOF != (c = getopt(argc, argv, "d:n:a:r:smofjptuQWRSPOHDVNTAL?")))
+    while (EOF != (c = getopt(argc, argv, "d:n:a:r:C:smofjptuQWRSPOHDVNTAL?")))
 #else
-    while (EOF != (c = getopt(argc, argv, "d:n:a:r:smofjptuQWRSPOHDVNTA?")))
+    while (EOF != (c = getopt(argc, argv, "d:n:a:r:C:smofjptuQWRSPOHDVNTA?")))
 #endif
     {
         switch (c)
@@ -175,6 +180,8 @@ int main(int argc, char *argv[])
 #if defined(HAVE_LOCALE_H) || defined(HAVE_OS2_COUNTRYINFO) || defined(HAVE_WIN32_LOCALEINFO)
             case 'L':   uselocale = true;                           break;
 #endif
+
+            case 'C':   charset = optarg;                           break;
 
             case '?':
             default:
@@ -227,6 +234,7 @@ int main(int argc, char *argv[])
     view.ShowVersions(versions);
     view.ShowAllNums(allnums);
     view.SetMaxEntries(maxnum);
+    view.SetCharset(charset);
 
     // Compute starting time if days parameter is given
     if (days != 0 && !range_start_p)
@@ -344,18 +352,21 @@ void helpscreen(void)
     cout << "  -o  Opus *.MSG   -t  Tanstaafl*   -u  Usenet news spool" << endl;
     cout << "    * = requires -a parameter" << endl;
     cout << endl;
-    cout << "Toplist selection options (turns off respective list):" << endl;
+    cout << "Output selection options (turns off respective list):" << endl;
     cout << "  -Q  Quoters     -S  Subjects   -N  Fidonet nets   -H Hour stats"
          << endl;
     cout << "  -W  Writers     -P  Programs   -T  Topdomains*  "
             "  -D Weekday stats" << endl;
-    cout << "  -R  Receivers   -O  Original" << endl;
-    cout << "  -V  No program version info   -A  Show all numbers in toplists"
+    cout << "  -R  Receivers   -O  Original       * = off for Usenet, on for "
+            "Fidonet" << endl;
+    cout << "  -V          No version info    -A  Show all numbers in toplists"
          << endl;
 #if defined(HAVE_LOCALE_H) || defined(HAVE_OS2_COUNTRYINFO) || defined(HAVE_WIN32_LOCALEINFO)
-    cout << "  -L  Use locale's date format" << endl;
+    cout << "  -C charset  Output charset     -L  Use locale's date "
+            "format" << endl;
+#else
+    cout << "  -C charset  Output charset" << endl;
 #endif
-    cout << "    * = turn off for Usenet, turn on for Fidonet" << endl;
 }
 
 void evaluaterange(const char *rangespec,

@@ -80,6 +80,9 @@ public:
     /** Tell view the maximum number of entries to display in toplist. */
     inline void SetMaxEntries(unsigned max) { maxnumber = max;    };
 
+    /** Tell view which character set to use for output. */
+    void SetCharset(const char *in_charset) { charset = in_charset; };
+
     // This does the actual work
     /**
      * Create a report. This method is the one that does the actual work,
@@ -102,6 +105,8 @@ protected:
 #endif
 
     unsigned    maxnumber;
+
+    string      charset;
 };
 
 #endif
