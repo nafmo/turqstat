@@ -117,6 +117,21 @@ AC_TRY_COMPILE([ #include <time.h> ], [  struct tm t; t.tm_gmtoff = 0; ],
   AC_DEFINE(HAS_TM_GMTOFF) AC_MSG_RESULT(yes),
   AC_MSG_RESULT(no))
 
+dnl This is mostly copied from the standard AC_CHECK_SIZEOF macro
+AC_CACHE_CHECK([size of time_t], ac_cv_sizeof_time_t,
+  AC_TRY_RUN([#include <time.h>
+#include <stdio.h>
+main()
+{
+  FILE *f = fopen("conftestval", "w");
+  if (!f) exit(1);
+  fprintf(f, "%d\n", sizeof(time_t));
+  exit(0);
+}], ac_cv_sizeof_time_t=`cat conftestval`,
+    ac_cv_sizeof_time_t=4,
+    ac_cv_sizeof_time_t=4))
+AC_DEFINE_UNQUOTED(SIZEOF_TIME_T, $ac_cv_sizeof_time_t)
+
 dnl Check for library functions --------------------------------------------
 AC_FUNC_STRFTIME
 if test "$ac_cv_func_strftime" = "no"; then

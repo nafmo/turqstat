@@ -27,3 +27,6 @@
 
 /* Define if C library includes _snprintf instead of snprint */
 #undef HAS_USNPRINTF
+
+/* Define to size of time_t, in bytes */
+#undef SIZEOF_TIME_T
