@@ -23,6 +23,8 @@
 
 #include "output.h"
 
+static QString GetMessage(TDisplay::errormessages_e);
+
 TDisplay *TDisplay::GetOutputObject()
 {
     static TDisplay *outputobject = NULL;
@@ -32,7 +34,7 @@ TDisplay *TDisplay::GetOutputObject()
         outputobject = new TDisplay();
         if (!outputobject)
         {
-            cerr << "Unable to allocate memory for output object!" << endl;
+            cerr << GetMessage(cannot_allocate_tdisplay) << endl;
             exit(255);
         }
     }
@@ -109,6 +111,15 @@ static QString GetMessage(TDisplay::errormessages_e errormessage)
             s = qApp->translate("TDisplay",
                                 "Out of memory allocating area object.");
             break;
+
+        case TDisplay::program_halted:
+            s = qApp->translate("TDisplay", "Program halted!");
+            break;
+
+		case TDisplay::cannot_allocate_tdisplay:
+		    s = qApp->translate("TDisplay",
+		                        "Unable to allocate memory for output object!");
+		    break;
     }
 }
 
@@ -117,7 +128,7 @@ void TDisplay::ErrorQuit(errormessages_e errormessage, int returncode)
     QMessageBox::critical(NULL, "Turquoise SuperStat",
                           GetMessage(errormessage),
                           QMessageBox::Ok | QMessageBox::Default, 0, 0);
-    cerr << "Program halted!" << endl;
+    cerr << GetMessage(program_halted) << endl;
     exit(returncode);
 }
 
@@ -127,7 +138,7 @@ void TDisplay::InternalErrorQuit(errormessages_e errormessage,
     QMessageBox::critical(NULL, qApp->translate("TDisplay", "Internal error"),
                           GetMessage(errormessage),
                           QMessageBox::Ok | QMessageBox::Default, 0, 0);
-    cerr << "Program halted!" << endl;
+    cerr << GetMessage(program_halted) << endl;
     exit(returncode);
 }
 

@@ -31,8 +31,12 @@ public:
     // Data types
     enum errormessages_e
     {
+        // Public error messages
         out_of_memory, area_not_allocated, message_base_mismatch,
-        out_of_memory_area
+        out_of_memory_area,
+
+        // Internal error messages
+        program_halted, cannot_allocate_tdisplay
     };
 
     // Message methods

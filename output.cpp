@@ -1,6 +1,6 @@
 // Copyright (c) 2000 Peter Karlsson
 //
-// $Id: output.cpp,v 1.2 2000/06/22 17:49:03 peter Exp $
+// $Id: output.cpp,v 1.2.2.1 2000/09/19 17:17:56 peter Exp $
 //
 // This program is free software; you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -19,6 +19,8 @@
 
 #include "output.h"
 
+static string GetMessage(TDisplay::errormessages_e);
+
 TDisplay *TDisplay::GetOutputObject()
 {
     static TDisplay *outputobject = NULL;
@@ -28,7 +30,7 @@ TDisplay *TDisplay::GetOutputObject()
         outputobject = new TDisplay();
         if (!outputobject)
         {
-            cerr << "Unable to allocate memory for output object!" << endl;
+            cerr << GetMessage(cannot_allocate_tdisplay) << endl;
             exit(255);
         }
     }
@@ -83,13 +85,21 @@ static string GetMessage(TDisplay::errormessages_e errormessage)
         case TDisplay::out_of_memory_area:
             s = "Out of memory allocating area object.";
             break;
+
+        case TDisplay::program_halted:
+            s = "Program halted!";
+            break;
+
+		case TDisplay::cannot_allocate_tdisplay:
+		    s = "Unable to allocate memory for output object!";
+		    break;
     }
 }
 
 void TDisplay::ErrorQuit(errormessages_e errormessage, int returncode)
 {
     ErrorMessage(GetMessage(errormessage));
-    cerr << "Program halted!" << endl;
+    cerr << GetMessage(program_halted) << endl;
     exit(returncode);
 }
 
@@ -97,7 +107,7 @@ void TDisplay::InternalErrorQuit(errormessages_e errormessage,
                                         int returncode)
 {
     ErrorMessage(string("Internal error: ") + GetMessage(errormessage));
-    cerr << "Program halted!" << endl;
+    cerr << GetMessage(program_halted) << endl;
     exit(returncode);
 }
 

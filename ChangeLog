@@ -1,3 +1,9 @@
+2000-09-25 - peter karlsson <peter@softwolves.pp.se>
+  output.cpp
+  outputqt.cpp
+  output.h
+    Removed some hardcoded strings.
+
 2000-09-20 - peter karlsson <peter@softwolves.pp.se>
   debian/
     Updated scripts to create a package with the Qt version. The package is
