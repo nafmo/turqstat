@@ -1,3 +1,32 @@
+2001-05-15 - peter karlsson <peter@softwolves.pp.se>
+  statengine.cpp
+    Corrected problems with conversion of names and subjects in gated news
+    messages.
+
+  statview.cpp
+  statview.h
+  turqstat.cpp
+  qtreport.cpp
+  qtreport.h
+    Make it possible to select wanted output character set.
+
+  qtbars.cpp
+  qtlist.cpp
+  qtgui.cpp
+  outputqt.cpp
+    Added missing includes.
+
+  utility.cpp
+  utility.h
+    Fixed problems when assigning a wstring to another.
+
+  convert.cpp
+  convert.h
+    Added a character set enumerator class.
+
+  Makefile.in
+    Updated dependencies.
+
 2001-05-05 - peter karlsson <peter@softwolves.pp.se>
   configure.in
   acconfig.h
