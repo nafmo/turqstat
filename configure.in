@@ -34,23 +34,19 @@ dnl OS/2, because we haven't detected EXEEXT yet, hack around it.
 dnl This probably only works with bash, though :-(
 if test "$OSTYPE" = "os2"; then
   ac_exeext=.exe
-  ac_cv_exeext=.exe
   EXEEXT=.exe
 fi
 
 AC_PROG_CC
 AC_PROG_CXX
 
-ac_exeext=
-EXEEXT=
+unset ac_exeext EXEEXT
 
 dnl Figure out whether or not we need .exe suffix (EMX, CygWin (AC_EXEEXT
 dnl normally only catches CygWin)), -lstdcpp instead of -lstdc++ (EMX), and
 dnl turqstat.def to set the application title (EMX)
 
-AC_EXEEXT
-
-AC_MSG_CHECKING([for EMX])
+AC_MSG_CHECKING([for EMX environment])
 AC_TRY_COMPILE(, [#ifndef __EMX__
 Syntax Error
 #endif ], have_emx=yes, have_emx=no)
@@ -78,6 +74,8 @@ fi
 
 AC_SUBST(DEF)
 
+AC_EXEEXT
+
 dnl Checks for libraries ---------------------------------------------------
 AC_LANG_CPLUSPLUS
 AC_CHECK_LIB($standardcpplib, cout)
@@ -93,6 +91,8 @@ if test "$ac_cv_header_limits_h" = "no"; then
   AC_MSG_ERROR(limits.h is needed to compile)
 fi
 AC_CHECK_HEADERS(stdint.h)
+AC_CHECK_HEADERS(locale.h)
+
 if test "$findfirst" = "no"; then
   AC_HEADER_DIRENT
 fi
@@ -127,7 +127,8 @@ AC_TRY_COMPILE([ #include <time.h> ], [ timezone = 0; ],
   AC_MSG_RESULT(no)
   AC_MSG_CHECKING(for _timezone in time.h)
   AC_TRY_COMPILE([ #include <time.h> ], [ _timezone = 0; ],
-    AC_DEFINE(HAVE_UTIMEZONE) AC_MSG_RESULT(yes),
+    AC_DEFINE(HAVE_UTIMEZONE) AC_MSG_RESULT(yes)
+    utimezone=yes,
     AC_MSG_RESULT(no)))
 
 AC_MSG_CHECKING(for daylight in time.h)
@@ -137,8 +138,14 @@ AC_TRY_COMPILE([ #include <time.h> ], [ daylight = 0; ],
   AC_MSG_RESULT(no)
   AC_MSG_CHECKING(for _daylight in time.h)
   AC_TRY_COMPILE([ #include <time.h> ], [ _daylight = 0; ],
-    AC_DEFINE(HAVE_UDAYLIGHT) AC_MSG_RESULT(yes),
+    AC_DEFINE(HAVE_UDAYLIGHT) AC_MSG_RESULT(yes)
+    udaylight=yes,
     AC_MSG_RESULT(no)))
+
+dnl Try figuring out if we can use tzset() and timezone GMT0 to turn off
+dnl timezone in the C library. Since we need to check the results, we need
+dnl two matches above, and since there are two different variables for each,
+dnl we need four tests.
 
 if test "$daylight" = "yes" && test "$timezone" = "yes"; then
 
@@ -151,6 +158,60 @@ int main()
  putenv("TZ=GMT0");
  tzset();
  if (timezone != 0 || daylight != 0) exit(1);
+ exit(0);
+}],
+  AC_DEFINE(FOOL_TZSET) AC_MSG_RESULT(yes),
+  AC_MSG_RESULT(no),
+  AC_MSG_RESULT(assuming not when cross-compiling))
+fi
+
+if test "$daylight" = "yes" && test "$utimezone" = "yes"; then
+
+  AC_MSG_CHECKING(if we can fool tzset)
+  AC_TRY_RUN([
+#include <time.h>
+#include <stdlib.h>
+int main()
+{
+ putenv("TZ=GMT0");
+ tzset();
+ if (_timezone != 0 || daylight != 0) exit(1);
+ exit(0);
+}],
+  AC_DEFINE(FOOL_TZSET) AC_MSG_RESULT(yes),
+  AC_MSG_RESULT(no),
+  AC_MSG_RESULT(assuming not when cross-compiling))
+fi
+
+if test "$udaylight" = "yes" && test "$utimezone" = "yes"; then
+
+  AC_MSG_CHECKING(if we can fool tzset)
+  AC_TRY_RUN([
+#include <time.h>
+#include <stdlib.h>
+int main()
+{
+ putenv("TZ=GMT0");
+ tzset();
+ if (_timezone != 0 || _daylight != 0) exit(1);
+ exit(0);
+}],
+  AC_DEFINE(FOOL_TZSET) AC_MSG_RESULT(yes),
+  AC_MSG_RESULT(no),
+  AC_MSG_RESULT(assuming not when cross-compiling))
+fi
+
+if test "$udaylight" = "yes" && test "$timezone" = "yes"; then
+
+  AC_MSG_CHECKING(if we can fool tzset)
+  AC_TRY_RUN([
+#include <time.h>
+#include <stdlib.h>
+int main()
+{
+ putenv("TZ=GMT0");
+ tzset();
+ if (timezone != 0 || _daylight != 0) exit(1);
  exit(0);
 }],
   AC_DEFINE(FOOL_TZSET) AC_MSG_RESULT(yes),
