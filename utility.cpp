@@ -27,7 +27,7 @@
 #if defined(USE_OWN_GETOPT)
 # include <string.h>
 #endif
-#if defined(HAVE_OS2_COUNYTRYINFO)
+#if defined(HAVE_OS2_COUNTRYINFO)
 # define INCL_DOSNLS
 # include <os2.h>
 #endif
@@ -544,7 +544,7 @@ void wstring::append(const wstring &s)
     if (newsize > size)
     {
         // Grow in increments of 32 characters.
-        size += (newsize / 32 + 1) * 32;
+        size = (newsize / 32 + 1) * 32;
         wchar_t *new_p = new wchar_t[size];
         wcscpy(new_p, data_p);
         delete[] data_p;
@@ -562,7 +562,7 @@ void wstring::append(wchar_t c)
     if (newsize > size)
     {
         // Grow in increments of 32 characters.
-        size += (newsize / 32 + 1) * 32;
+        size = (newsize / 32 + 1) * 32;
         wchar_t *new_p = new wchar_t[size];
         wcscpy(new_p, data_p);
         delete[] data_p;
