@@ -227,7 +227,7 @@ bool StatView::CreateReport(StatEngine *engine, string filename,
             else
                 tmp = "(none)";
 
-            report.form("%-35s%5u %-15s%7u",
+            report.form("%-35s%5u %-15s%8u",
                          tmp.c_str(), data.messageswritten,
                          data.address.c_str(), data.byteswritten);
             if (data.bytesquoted > 0)
