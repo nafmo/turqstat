@@ -108,3 +108,6 @@
 
 /* Define if you have the crtdll library (-lcrtdll).  */
 #undef HAVE_LIBCRTDLL
+
+/* Define if you have the w library (-lw).  */
+#undef HAVE_LIBW
