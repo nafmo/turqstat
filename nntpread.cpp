@@ -55,6 +55,9 @@ NntpRead::NntpRead(const char *_server, const char *_newsgroup)
     group = strdup(_newsgroup);
     sockfd = INVALID_SOCKET;
     articles = NULL;
+#if !defined(HAVE_WORKING_SOCKET_FDOPEN)
+    datainbuffer = 0;
+#endif
 }
 
 NntpRead::~NntpRead()
@@ -281,7 +284,7 @@ bool NntpRead::Transfer(time_t starttime, time_t endtime,
         posttime = time_t(0);
         string ctrlbuf, msgbuf;
 
-        while (NULL != (fgets(line, BUFSIZ, sock)))
+        while (GetLine(line, BUFSIZ))
         {
             // Leave loop if at end of header
             if ('.' == line[0] && ('\r' == line[1] || '\n' == line[1]))
@@ -342,7 +345,7 @@ bool NntpRead::Transfer(time_t starttime, time_t endtime,
 
         // Read data until we get "." on an otherwise empty line.
         // Store in msgbuf (raw).
-        while (NULL != fgets(line, BUFSIZ, sock))
+        while (GetLine(line, BUFSIZ))
         {
             // Leave loop if at end of body
             if ('.' == line[0] && ('\r' == line[1] || '\n' == line[1]))
@@ -403,18 +406,20 @@ int NntpRead::ConnectServer()
     nntpaddr.in.sin_family = AF_INET;
     if (-1 == (connect(sockfd, &nntpaddr.x, sizeof nntpaddr))) return -1;
 
+#if defined(HAVE_WORKING_SOCKET_FDOPEN)
     // Connect socket to a FILE *
     sock = fdopen(sockfd, "r+");
+#endif
     return GetResponse();
 }
 
 int NntpRead::SendCommand(const char *command)
 {
     // Send command
-    fflush(sock);
-    fputs(command, sock);
-    fflush(sock);
-
+    if (!SendLine(command))
+    {
+        return -1;
+    }
     return GetResponse();
 }
 
@@ -423,9 +428,136 @@ int NntpRead::GetResponse()
     // Retrieve response code
     char *p;
     fflush(sock);
-    fgets(buffer, sizeof buffer, sock);
+    GetLine(buffer, sizeof buffer);
     long int rc = strtol(buffer, &p, 10);
     if (p == buffer) rc = -1;
 
     return rc;
 }
+
+#if !defined(HAVE_WORKING_SOCKET_FDOPEN)
+// fdopen on a socket does not work reliably on Win32 and EMX, so I do
+// my own buffering on these platforms.
+
+bool SendLine(const char *line)
+{
+    size_t linelength = strlen(line);
+    unsigned tries = 0;
+
+    // Flush buffers
+    datainbuffer = 0;
+
+    // Iterate until entire line is sent
+    while (linelength)
+    {
+        ssize_t rc = write(sockfd, line, linelength);
+
+        // Check for possible errors
+        if (-1 == rc)
+        {
+            // Ignore "interrupted" and "try again" errors.
+            if (EINTR != errno && EAGAIN != errno)
+            {
+                return false;
+            }
+        }
+        else
+        {
+            assert(rc <= linelength);
+
+            // Remove the handled sent part of the buffer
+            linelength -= rc;
+            line += rc;
+
+            // If we fail too many times, give up
+            tries ++;
+            if (tries > 10)
+            {
+                return false;
+            }
+
+            // Pause a 100 microseconds before trying again
+            usleep(100);
+        }
+    }
+    return true;
+}
+
+bool GetLine(char *buffer, size_t maxlen)
+{
+    // Always leave space for null termination
+    count --;
+
+    bool foundlf = false;
+    bool copiedanything = false;
+    while (!foundlf)
+    {
+        // Copy any data in buffer until the LF
+        if (datainbuffer)
+        {
+            // Find LF or end-of-buffer
+            size_t endidx = datainbuffer;
+            for (size_t i = 0; i < datainbuffer && !foundlf; i ++)
+            {
+                if ('\n' == socketbuffer[i])
+                {
+                    endidx = i;
+                    foundlf = true;
+                }
+            }
+
+            // If there is any output buffer space left, copy data
+            if (count)
+            {
+                copiedanything = true;
+                size_t copylen = endidx <? count;
+                memcpy(buffer, socketbuffer, copylen);
+                buf += copylen;
+                count -= copylen;
+            }
+
+            // Move the rest of the buffer down
+            datainbuffer -= endidx;
+            if (datainbuffer)
+            {
+                memmove(socketbuffer, socketbuffer + endidx, datainbuffer);
+            }
+        }
+
+        // Read another chunk of data unless we found a LF already
+        if (0 == datainbuffer)
+        {
+            ssize_t rc = read(sockfd, socketbuffer, BUFSIZ);
+            if (-1 == rc)
+            {
+                // Ignore "interrupted" and "try again" errors.
+                if (EINTR != errno && EAGAIN != errno)
+                {
+                    return false;
+                }
+            }
+            else if (0 == rc)
+            {
+                // This indicates end-of-file
+                if (copiedanything)
+                {
+                    *buffer = 0;
+                    return true;
+                }
+                else
+                {
+                    return false;
+                }
+            }
+            else
+            {
+                datainbuffer = rc;
+            }
+        }
+    }
+
+    // Terminate buffer
+    *buffer = 0;
+    return true;
+}
+#endif

@@ -26,6 +26,10 @@
 # define SOCKET int
 #endif
 
+#if !defined(HAVE_WINSOCK_H) && !defined(__EMX__)
+# define HAVE_WORKING_SOCKET_FDOPEN
+#endif
+
 #include "arearead.h"
 
 class StatEngine;
@@ -85,17 +89,57 @@ protected:
      */
     int GetResponse();
 
+#if defined(HAVE_WORKING_SOCKET_FDOPEN)
+    /**
+     * Send data to the socket.
+     */
+    inline bool SendLine(const char *line)
+    { fflush(sock); int rc = fputs(line, sock); fflush(sock);
+      return rc != EOF; };
+
+    /**
+     * Receive a line of data from the socket.
+     * @param buffer Pointer to buffer to store data in.
+     * @param maxlen Maximum size of buffer.
+     * @return Whether any data was read.
+     */
+    inline bool GetLine(char *buffer, size_t maxlen)
+    { return fgets(buffer, maxlen, sock) ? true : false; };
+#else
+    /**
+     * Send data to the socket.
+     */
+    bool SendLine(const char *line);
+
+    /**
+     * Receive a line of data from the socket.
+     * @param buffer Pointer to buffer to store data in.
+     * @param maxlen Maximum size of buffer.
+     * @return Whether any data was read.
+     */
+    bool GetLine(char *buffer, size_t maxlen);
+#endif
+
     /** Name of server. */
     char    *server;
     /** Name of newsgroup. */
     char    *group;
     /** Communications socket. */
     SOCKET  sockfd;
+#if defined(HAVE_WORKING_SOCKET_FDOPEN)
+    /** Socket stream. */
     FILE    *sock;
+#endif
     /** Line buffer for NNTP response code. */
     char    buffer[512];
     /** Active articles in group. */
     bool    *articles;
+#if defined(HAVE_WORKING_SOCKET_FDOPEN)
+    /** Data buffer for socket communications. */
+    char    socketbuffer[BUFSIZ];
+    /** Data bytes in socketbuffer. */
+    size_t  datainbuffer;
+#endif
 };
 
 #endif
