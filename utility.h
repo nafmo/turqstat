@@ -50,7 +50,7 @@ struct stamp_s
 #endif
 
 /** Highest possible time_t value */
-#define INFINITY (1L << (8 * SIZEOF_TIME_T - 1))
+#define INFINITY ((1UL << (8 * SIZEOF_TIME_T - 1)) - 1)
 
 /**
  * Compare two strings case in-sensitively.
