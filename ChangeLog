@@ -22,6 +22,7 @@
 
   utility.cpp
     Extra security measure to avoid NULL pointer references.
+    Removed fprintf reference.
 
 2000-06-16 - peter karlsson <peter@softwolves.pp.se>
   acconfig.h

@@ -282,8 +282,8 @@ redo:
                 // No, next parameter is argument
                 if (curarg + 1 >= _argc)
                 {
-                    fprintf(stderr, "Option requires an argument: %c\n",
-                            (char) option);
+                    cerr << "Option requires an argument: "
+                         << (char) option << endl;
                     return (int) (unsigned char) '?';
                 }
                 optarg = _argv[curarg + 1];
