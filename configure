@@ -6731,19 +6731,22 @@ echo "$as_me: error: Cannot find Qt; either define QTDIR or use --without-qt" >&
 echo "${ECHO_T}$QTINCLUDE" >&6
   fi
 
-  ac_ext=cc
+  for lib in qt-mt qt; do
+    if test "$QTLIB" = ""; then
+      ac_ext=cc
 ac_cpp='$CXXCPP $CPPFLAGS'
 ac_compile='$CXX -c $CXXFLAGS $CPPFLAGS conftest.$ac_ext >&5'
 ac_link='$CXX -o conftest$ac_exeext $CXXFLAGS $CPPFLAGS $LDFLAGS conftest.$ac_ext $LIBS >&5'
 ac_compiler_gnu=$ac_cv_cxx_compiler_gnu
 
-  echo "$as_me:$LINENO: checking for qApp in -lqt" >&5
-echo $ECHO_N "checking for qApp in -lqt... $ECHO_C" >&6
-if test "${ac_cv_lib_qt_qApp+set}" = set; then
+      as_ac_Lib=`echo "ac_cv_lib_$lib''_qApp" | $as_tr_sh`
+echo "$as_me:$LINENO: checking for qApp in -l$lib" >&5
+echo $ECHO_N "checking for qApp in -l$lib... $ECHO_C" >&6
+if eval "test \"\${$as_ac_Lib+set}\" = set"; then
   echo $ECHO_N "(cached) $ECHO_C" >&6
 else
   ac_check_lib_save_LIBS=$LIBS
-LIBS="-lqt  $LIBS"
+LIBS="-l$lib  $LIBS"
 cat >conftest.$ac_ext <<_ACEOF
 #line $LINENO "configure"
 /* confdefs.h.  */
@@ -6779,51 +6782,55 @@ if { (eval echo "$as_me:$LINENO: \"$ac_link\"") >&5
   ac_status=$?
   echo "$as_me:$LINENO: \$? = $ac_status" >&5
   (exit $ac_status); }; }; then
-  ac_cv_lib_qt_qApp=yes
+  eval "$as_ac_Lib=yes"
 else
   echo "$as_me: failed program was:" >&5
 sed 's/^/| /' conftest.$ac_ext >&5
 
-ac_cv_lib_qt_qApp=no
+eval "$as_ac_Lib=no"
 fi
 rm -f conftest.$ac_objext conftest$ac_exeext conftest.$ac_ext
 LIBS=$ac_check_lib_save_LIBS
 fi
-echo "$as_me:$LINENO: result: $ac_cv_lib_qt_qApp" >&5
-echo "${ECHO_T}$ac_cv_lib_qt_qApp" >&6
-if test $ac_cv_lib_qt_qApp = yes; then
-  QTLIB='-lqt'
+echo "$as_me:$LINENO: result: `eval echo '${'$as_ac_Lib'}'`" >&5
+echo "${ECHO_T}`eval echo '${'$as_ac_Lib'}'`" >&6
+if test `eval echo '${'$as_ac_Lib'}'` = yes; then
+  QTLIB="-l$lib"
 fi
 
-  ac_ext=c
+      ac_ext=c
 ac_cpp='$CPP $CPPFLAGS'
 ac_compile='$CC -c $CFLAGS $CPPFLAGS conftest.$ac_ext >&5'
 ac_link='$CC -o conftest$ac_exeext $CFLAGS $CPPFLAGS $LDFLAGS conftest.$ac_ext $LIBS >&5'
 ac_compiler_gnu=$ac_cv_c_compiler_gnu
 
-  if test "$QTLIB" = ""; then
-    echo "$as_me:$LINENO: checking for Qt library path" >&5
-echo $ECHO_N "checking for Qt library path... $ECHO_C" >&6
-    if test -f $QTDIR'/lib/libqt.a'; then
-      QTLIB='-L'$QTDIR'/lib -lqt'
-    fi
-    if test "$QTLIB" = ""; then
-      if test -f '/usr/local/lib/libqt.a'; then
-        QTLIB='-L/usr/local/lib -lqt'
-      elif test -f '/usr/local/qt/lib/libqt.a'; then
-        QTLIB='-L/usr/local/qt/lib -lqt'
+      if test "$QTLIB" = ""; then
+        echo "$as_me:$LINENO: checking for $QTLIB library path" >&5
+echo $ECHO_N "checking for $QTLIB library path... $ECHO_C" >&6
+        if test -f $QTDIR'/lib/lib$lib.a'; then
+          QTLIB='-L'$QTDIR'/lib -l$lib'
+        fi
+        if test "$QTLIB" = ""; then
+          if test -f '/usr/local/lib/lib$lib.a'; then
+            QTLIB='-L/usr/local/lib -l$lib'
+          elif test -f '/usr/local/qt/lib/lib$lib.a'; then
+            QTLIB='-L/usr/local/qt/lib -l$lib'
+          fi
+        fi
+        if test "$QTLIB" = ""; then
+          echo "$as_me:$LINENO: result: no" >&5
+echo "${ECHO_T}no" >&6
+        else
+          echo "$as_me:$LINENO: result: $QTLIB" >&5
+echo "${ECHO_T}$QTLIB" >&6
+        fi
       fi
     fi
-    if test "$QTLIB" = ""; then
-      echo "$as_me:$LINENO: result: no" >&5
-echo "${ECHO_T}no" >&6
-      { { echo "$as_me:$LINENO: error: Cannot find libqt.a; either define QTDIR or use --without-qt" >&5
-echo "$as_me: error: Cannot find libqt.a; either define QTDIR or use --without-qt" >&2;}
+  done
+  if test "$QTLIB" = ""; then
+    { { echo "$as_me:$LINENO: error: Cannot find libqt-mt.a or libqt.a; either define QTDIR or use --without-qt" >&5
+echo "$as_me: error: Cannot find libqt-mt.a or libqt.a; either define QTDIR or use --without-qt" >&2;}
    { (exit 1); exit 1; }; }
-    else
-      echo "$as_me:$LINENO: result: $QTLIB" >&5
-echo "${ECHO_T}$QTLIB" >&6
-    fi
   fi
 
   # Extract the first word of "moc", so it can be a program name with args.
