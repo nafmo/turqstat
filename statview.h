@@ -97,7 +97,7 @@ protected:
 
     bool        showversions, showallnums;
 
-#if defined(HAVE_LOCALE_H) || defined(__EMX__)
+#if defined(HAVE_LOCALE_H) || defined(__EMX__) || defined(__WIN32__)
     bool        uselocale;
 #endif
 

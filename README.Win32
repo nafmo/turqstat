@@ -10,6 +10,5 @@ distributed in the CygWin distributions, which can be obtained from Cygnus,
 http://www.cygnus.com/ Turquoise SuperStat should be possible to compile with
 CygWin as well.
 
-Locale support seems to be lacking from both Mingw32 and CygWin at the moment.
-Mingw32 seems always to yield the US date format (DD/MM/YY) whereas CygWin
-gives a verbose date string.
+For Win32, the locale date format used is the one determined in your Windows
+system settings, and it should always be numeric.

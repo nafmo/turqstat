@@ -101,7 +101,7 @@ bool StatView::CreateReport(StatEngine *engine, string filename)
     time_t earliest = engine->GetEarliestReceived();
     struct tm *p1 = gmtime(&earliest);
     char date[64];
-#if defined(HAVE_LOCALE_H) || defined(__EMX__)
+#if defined(HAVE_LOCALE_H) || defined(__EMX__) || defined(__WIN32__)
     if (uselocale)
         localetimestring(p1, 64, date);
     else
@@ -112,7 +112,7 @@ bool StatView::CreateReport(StatEngine *engine, string filename)
 
     time_t latest = engine->GetLastReceived();
     struct tm *p2 = gmtime(&latest);
-#if defined(HAVE_LOCALE_H) || defined(__EMX__)
+#if defined(HAVE_LOCALE_H) || defined(__EMX__) || defined(__WIN32__)
     if (uselocale)
         localetimestring(p2, 64, date);
     else
@@ -127,7 +127,7 @@ bool StatView::CreateReport(StatEngine *engine, string filename)
 
         time_t wearliest = engine->GetEarliestWritten();
         struct tm *p3 = gmtime(&wearliest);
-#if defined(HAVE_LOCALE_H) || defined(__EMX__)
+#if defined(HAVE_LOCALE_H) || defined(__EMX__) || defined(__WIN32__)
         if (uselocale)
             localetimestring(p3, 64, date);
         else
@@ -138,7 +138,7 @@ bool StatView::CreateReport(StatEngine *engine, string filename)
 
         time_t wlatest = engine->GetLastWritten();
         struct tm *p4 = gmtime(&wlatest);
-#if defined(HAVE_LOCALE_H) || defined(__EMX__)
+#if defined(HAVE_LOCALE_H) || defined(__EMX__) || defined(__WIN32__)
         if (uselocale)
             localetimestring(p4, 64, date);
         else

@@ -27,6 +27,9 @@
 # define INCL_DOSNLS
 # include <os2.h>
 #endif
+#if defined(__WIN32__)
+# include <windows.h>
+#endif
 
 #include "utility.h"
 #include "mytime.h"
@@ -290,7 +293,38 @@ void localetimestring(const struct tm *time, size_t len, char *out)
              time->tm_min,
              ampm);
 }
-#else if defined(HAVE_LOCALE_H)
+#elif defined(__WIN32__)
+void localetimestring(const struct tm *time, size_t len, char *out)
+{
+    // Convert C time struct to WinAPI time struct
+    // (why Micro$oft had to re-invent the wheel and use another structure
+    //  is beyond me)
+    SYSTEMTIME wintime;
+    wintime.wHour       = time->tm_hour;
+    wintime.wMinute     = time->tm_min;
+    wintime.wSecond     = time->tm_sec;
+    wintime.wYear       = time->tm_year + 1900;
+    wintime.wMonth      = time->tm_mon + 1;
+    wintime.wDay        = time->tm_mday;
+
+    // First print date
+    int usedlength =
+        GetDateFormat(LOCALE_USER_DEFAULT, DATE_SHORTDATE, &wintime, NULL,
+                      out, len);
+
+    len -= usedlength;
+    out += usedlength;
+    if (usedlength)
+    {
+        // GetDateFormat null terminates and includes the null in the
+        // count
+        out[-1] = ' ';
+    }
+
+    // Then print time
+    GetTimeFormat(LOCALE_USER_DEFAULT, 0, &wintime, NULL, out, len);
+}
+#elif defined(HAVE_LOCALE_H)
 void localetimestring(const struct tm *time, size_t len, char *out)
 {
     strftime(out, len, "%x %X", time);

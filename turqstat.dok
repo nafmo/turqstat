@@ -276,7 +276,7 @@ HISTORIK
 2001-01-09 - v2.0.1 -
   Fixade fel som kraschade newsspoolst”det.
 2001-  -   - v2.1 -
-  Anv„ns OS/2-API-funktioner f”r att h„mta lokalt datumformat.
+  Anv„nd OS/2- och Win32-API-funktioner f”r att h„mta lokalt datumformat.
 
 
 BIFOGADE FILER

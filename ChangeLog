@@ -1,3 +1,12 @@
+2001-01-17 - peter karlsson <peter@softwolves.pp.se>
+  statview.cpp
+  statview.h
+  turqstat.cpp
+  utility.cpp
+  utility.h
+  README.Win32
+    Use Win32 API functions for locale dates, instead of strftime.
+
 2001-01-10 - peter karlsson <peter@softwolves.pp.se>
   Makefile.in
     Once and for all fixed the directory problems.

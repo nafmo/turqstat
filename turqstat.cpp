@@ -106,7 +106,7 @@ int main(int argc, char *argv[])
          topsubjects = true, topprograms = true, weekstats = true,
          daystats = true, versions = true, allnums = false,
          toporiginal = true, topnets = true, topdomains = true;
-#if defined(HAVE_LOCALE_H) || defined(__EMX__)
+#if defined(HAVE_LOCALE_H) || defined(__EMX__) || defined(__WIN32__)
     bool uselocale = false;
 #endif
 
@@ -125,7 +125,7 @@ int main(int argc, char *argv[])
 
     // Handle arguments
     int c;
-#if defined(HAVE_LOCALE_H) || defined(__EMX__)
+#if defined(HAVE_LOCALE_H) || defined(__EMX__) || defined(__WIN32__)
     while (EOF != (c = getopt(argc, argv, "d:n:a:smofjptuQWRSPOHDVNTAL?")))
 #else
     while (EOF != (c = getopt(argc, argv, "d:n:a:smofjptuQWRSPOHDVNTA?")))
@@ -160,7 +160,7 @@ int main(int argc, char *argv[])
             case 'V':   versions = false;                           break;
             case 'A':   allnums = true;                             break;
 
-#if defined(HAVE_LOCALE_H) || defined(__EMX__)
+#if defined(HAVE_LOCALE_H) || defined(__EMX__) || defined(__WIN32__)
             case 'L':   uselocale = true;                           break;
 #endif
 
@@ -207,7 +207,7 @@ int main(int argc, char *argv[])
     view.EnableTopPrograms(topprograms);
     view.EnableWeekStats(weekstats);
     view.EnableDayStats(daystats);
-#if defined(HAVE_LOCALE_H) || defined(__EMX__)
+#if defined(HAVE_LOCALE_H) || defined(__EMX__) || defined(__WIN32__)
     view.UseLocale(uselocale);
 #endif
 
@@ -337,7 +337,7 @@ void helpscreen(void)
     cout << "  -R  Receivers   -O  Original" << endl;
     cout << "  -V  No program version info   -A  Show all numbers in toplists"
          << endl;
-#if defined(HAVE_LOCALE_H) || defined(__EMX__)
+#if defined(HAVE_LOCALE_H) || defined(__EMX__) || defined(__WIN32__)
     cout << "  -L  Use locale's date format" << endl;
 #endif
     cout << "    * = turn off for Usenet, turn on for Fidonet" << endl;

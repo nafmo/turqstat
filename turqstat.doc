@@ -276,7 +276,7 @@ HISTORY
 2001-01-09 - v2.0.1 -
   Fix crasher bug in news spool support.
 2001-  -   - v2.1 -
-  Use OS/2 API functions to get locale date.
+  Use OS/2 and Win32 API functions to get locale date.
 
 
 INCLUDED FILES

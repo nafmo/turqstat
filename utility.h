@@ -89,7 +89,7 @@ time_t rfcToTimeT(string datetime);
  */
 void fixupctrlbuffer(char *body_p, char *ctrl_p);
 
-#if defined(HAVE_LOCALE_H) || defined(__EMX__)
+#if defined(HAVE_LOCALE_H) || defined(__EMX__) || defined(__WIN32__)
 /**
  * Create a string in the locale defined date format.
  * @param time Pointer to a structure containing the time to be created.
