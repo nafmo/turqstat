@@ -25,6 +25,7 @@
 #endif
 
 #include "utility.h"
+#include "mytime.h"
 
 // Compare two strings case in-sensitively
 // Why isn't this functionality available in ANSI C++? *sigh*
@@ -47,6 +48,7 @@ int fcompare(const string &s1, const string &s2, unsigned int max)
 
 // The following is from MsgEd 4.30:
 //  Written on 10-Jul-94 by John Dennis and released to the public domain.
+// Modified to use my_mktime to return a localtime time_t
 time_t stampToTimeT(struct stamp_s *st)
 {
     time_t tt;
@@ -62,16 +64,13 @@ time_t stampToTimeT(struct stamp_s *st)
     tms.tm_mon = st->date.mo - 1;
     tms.tm_year = st->date.yr + 80;
     tms.tm_isdst = 0;
-#ifdef HAS_TM_GMTOFF
-    tms.tm_gmtoff = 0;
-#endif
-    tt = mktime(&tms);
+    tt = my_mktime(&tms);
     return tt;
 }
 
 static const char months[] = "JanFebMarAprMayJunJulAugSepOctNovDec";
 
-// Convert FTSC style time-stamp to time_t
+// Convert FTSC style time-stamp to time_t (in local time)
 time_t asciiToTimeT(const char *datetime)
 {
     time_t tt;
@@ -105,15 +104,13 @@ time_t asciiToTimeT(const char *datetime)
     if (tms.tm_year < 80) tms.tm_year += 100;
 
     tms.tm_isdst = 0;
-#ifdef HAS_TM_GMTOFF
-    tms.tm_gmtoff = 0;
-#endif
 
-    tt = mktime(&tms);
+    tt = my_mktime(&tms);
     return tt;
 }
 
-// Convert RFC stype time-stamp to time_t
+// Convert RFC stype time-stamp to time_t (local time, ignores time zone
+// identifier)
 time_t rfcToTimeT(string datetime)
 {
     // "[Www, ]Dd Mmm [Yy]yy HH:MM:SS[ +ZZZZ]"
@@ -140,11 +137,8 @@ time_t rfcToTimeT(string datetime)
     tms.tm_mon = ((int) (c_p - months)) / 3;
 
     tms.tm_isdst = 0;
-#ifdef HAS_TM_GMTOFF
-    tms.tm_gmtoff = 0;
-#endif
 
-    tt = mktime(&tms);
+    tt = my_mktime(&tms);
     return tt;
 }
 
