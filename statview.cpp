@@ -1,4 +1,4 @@
-// Copyright (c) 1998-2001 Peter Karlsson
+// Copyright (c) 1998-2005 Peter Karlsson
 //
 // $Id$
 //
@@ -16,7 +16,11 @@
 // Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 
 #include <config.h>
-#include <fstream.h>
+#ifdef HAVE_FSTREAM
+# include <fstream>
+#else
+# include <fstream.h>
+#endif
 #include <limits.h>
 #include <time.h>
 #if !defined(HAVE_FSTREAM_FORM_METHOD)
