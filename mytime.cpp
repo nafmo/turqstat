@@ -8,7 +8,7 @@
 // and copy the emx library sources if you keep the copyright message
 // intact.
 //
-// Modifications for Turquoise SuperStat copyright (c) 2000-2001 Peter
+// Modifications for Turquoise SuperStat copyright (c) 2000-2005 Peter
 // Karlsson.
 
 #include <time.h>
@@ -54,7 +54,7 @@ time_t my_mktime(struct tm *t)
     x = t->tm_sec + 60 * t->tm_min + 60 * 60 * t->tm_hour;
 
     r += x;
-    if (r < 0 || r > INFINITY || r == (time_t)-1)
+    if (r < 0 || r > DISTANT_FUTURE || r == (time_t)-1)
         return (time_t) -1;
     return (time_t) r;
 }

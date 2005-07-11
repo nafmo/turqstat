@@ -266,7 +266,7 @@ int main(int argc, char *argv[])
     StatRetr s(engine, view,
                &argv[optind + 1], argc - optind - 1, argv[optind],
                basepath, basetype, range_start_p ? *range_start_p : time_t(0),
-               range_end_p ? *range_end_p : time_t(INFINITY));
+               range_end_p ? *range_end_p : time_t(DISTANT_FUTURE));
 
     delete range_start_p, range_end_p;
 
@@ -423,7 +423,7 @@ void evaluaterange(const char *rangespec,
             int charsleft = strlen(rangespec2);
             if (0 == charsleft)
             {
-                **range_end_pp = time_t(INFINITY);
+                **range_end_pp = time_t(DISTANT_FUTURE);
             }
             else
             {

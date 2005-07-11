@@ -4,7 +4,7 @@
 // Qt version.
 // Version 2.2
 //
-// Copyright (c) 2000-2002 Peter Karlsson
+// Copyright (c) 2000-2005 Peter Karlsson
 //
 // $Id$
 //
@@ -213,7 +213,7 @@ InfoWindow::InfoWindow()
 
     // Reset start date
     start = time_t(0);
-    end = time_t(INFINITY);
+    end = time_t(DISTANT_FUTURE);
     daysback = 0;
 };
 

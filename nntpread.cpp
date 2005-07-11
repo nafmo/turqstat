@@ -1,4 +1,4 @@
-// Copyright (c) 2001-2002 Peter Karlsson
+// Copyright (c) 2001-2005 Peter Karlsson
 //
 // $Id$
 //
@@ -227,7 +227,7 @@ bool NntpRead::Transfer(time_t starttime, time_t endtime,
         return false;
     }
 
-    if (starttime != time_t(0) || endtime != time_t(INFINITY))
+    if (starttime != time_t(0) || endtime != time_t(DISTANT_FUTURE))
     {
         // Use XPAT to retrieve the Date header of all active messages,
         // and filter out those not within range (RFC 2980 extension, might

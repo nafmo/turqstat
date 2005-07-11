@@ -30,6 +30,14 @@
   debian/
     Prepare entries for next release version.
 
+  mytime.cpp
+  nntpread.cpp
+  qtgui.cpp
+  turqstat.cpp
+  utility.h
+    Renamed macro "INFINITY" that clashed with a constant defined in the
+    GCC standard include files.
+
   configure
   turqstat.doc
   turqstat.dok

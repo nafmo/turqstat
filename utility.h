@@ -1,4 +1,4 @@
-// Copyright (c) 1998-2001 Peter Karlsson
+// Copyright (c) 1998-2005 Peter Karlsson
 //
 // $Id$
 //
@@ -58,7 +58,7 @@ struct stamp_s
 # define CHAR_BIT 8
 #endif
 
-#define INFINITY ((1UL << (CHAR_BIT * SIZEOF_TIME_T - 1)) - 1)
+#define DISTANT_FUTURE ((1UL << (CHAR_BIT * SIZEOF_TIME_T - 1)) - 1)
 
 /**
  * Compare two strings case in-sensitively.
