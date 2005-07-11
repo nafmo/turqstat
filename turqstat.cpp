@@ -3,7 +3,7 @@
 // A statistic collection program for Fidonet and Usenet systems
 // Version 2.2
 //
-// Copyright (c) 1998-2001 Peter Karlsson
+// Copyright (c) 1998-2005 Peter Karlsson
 //
 // $Id$
 //
@@ -21,7 +21,11 @@
 // Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 
 #include <config.h>
-#include <iostream.h>
+#ifdef HAVE_IOSTREAM
+# include <iostream>
+#else
+# include <iostream.h>
+#endif
 #include <string>
 #ifdef HAVE_GETOPT_IN_UNISTD
 # include <unistd.h>

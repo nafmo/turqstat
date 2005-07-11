@@ -1,4 +1,4 @@
-// Copyright (c) 2000-2001 Peter Karlsson
+// Copyright (c) 2000-2005 Peter Karlsson
 //
 // $Id$
 //
@@ -16,7 +16,11 @@
 // Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 
 #include <config.h>
-#include <iostream.h>
+#ifdef HAVE_IOSTREAM
+# include <iostream>
+#else
+# include <iostream.h>
+#endif
 #include <time.h>
 #include <string.h>
 #include <stdio.h>

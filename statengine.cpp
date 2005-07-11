@@ -1,4 +1,4 @@
-// Copyright (c) 1998-2001 Peter Karlsson
+// Copyright (c) 1998-2005 Peter Karlsson
 //
 // $Id$
 //
@@ -18,7 +18,11 @@
 #include <config.h>
 
 #include <limits.h>
-#include <iostream.h>
+#ifdef HAVE_IOSTREAM
+# include <iostream>
+#else
+# include <iostream.h>
+#endif
 #include <stdlib.h>
 #include <stdio.h>
 
