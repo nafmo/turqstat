@@ -1,4 +1,35 @@
 2005-07-11 - Peter Karlsson <peter@softwolves.pp.se>
+  configure.in
+    Updated for more modern versions of the autocrap tools.
+
+  fdapxread.cpp
+  jamread.cpp
+  mypointread.cpp
+  newsspoolread.cpp
+  sdmread.cpp
+  statengine.cpp
+  tanstaaflread.cpp
+  turqstat.cpp
+    Include <iostream> instead of <iostream.h> if using a modern C++.
+
+  statview.cpp
+    Include <fstream> instead of <fstream.h> if using a modern C++.
+
+  mappings/
+  mappings.cpp
+  mappings.h
+  convert.cpp
+    Updated mapping tables. Added ISO 8859-11.
+
+  version.h
+    Updated release year to 2005.
+
+  turqstat.doc
+  turqstat.dok
+  turqstat.def
+  debian/
+    Prepare entries for next release version.
+
   configure
   turqstat.doc
   turqstat.dok
