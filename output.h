@@ -1,4 +1,4 @@
-// Copyright (c) 2000-2001 Peter Karlsson
+// Copyright (c) 2000-2005 Peter Karlsson
 //
 // $Id$
 //
@@ -23,8 +23,6 @@
 #if !defined(HAVE_IMPLICIT_NAMESPACE)
 using namespace std;
 #endif
-
-class ostream;
 
 /**
  * Class used to display messages.

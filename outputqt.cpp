@@ -1,4 +1,4 @@
-// Copyright (c) 2000-2002 Peter Karlsson
+// Copyright (c) 2000-2005 Peter Karlsson
 //
 // $Id$
 //
@@ -130,8 +130,9 @@ void TDisplay::WarningMessage(errormessages_e errormessage, int data)
 }
 
 static QString GetMessage(TDisplay::errormessages_e errormessage)
-    return s;
 {
+	QString s;
+
     switch (errormessage)
     {
         case TDisplay::out_of_memory:
@@ -293,4 +294,6 @@ static QString GetMessage(TDisplay::errormessages_e errormessage)
             s = qApp->translate("TDisplay", "NNTP communication problem");
             break;
     }
+
+	return s;
 }

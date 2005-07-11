@@ -1,6 +1,6 @@
-// Copyright (c) 2000-2001 Peter Karlsson
+// Copyright (c) 2000-2005 Peter Karlsson
 //
-// $Id: output.cpp,v 1.6 2001/05/16 20:18:26 peter Exp $
+// $Id: output.cpp,v 1.7 2001/10/27 10:56:39 peterk Exp $
 //
 // This program is free software; you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -115,8 +115,9 @@ void TDisplay::WarningMessage(errormessages_e errormessage, int data)
 }
 
 static string GetMessage(TDisplay::errormessages_e errormessage)
-    return s;
 {
+	string s;
+
     switch (errormessage)
     {
         case TDisplay::out_of_memory:
@@ -255,4 +256,6 @@ static string GetMessage(TDisplay::errormessages_e errormessage)
             s = "NNTP communication problem";
             break;
     }
+
+	return s;
 }

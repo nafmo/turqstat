@@ -1,4 +1,4 @@
-// Copyright (c) 2000-2001 Peter Karlsson
+// Copyright (c) 2000-2005 Peter Karlsson
 //
 // $Id$
 //
@@ -409,11 +409,10 @@ QString TopListWindow::charConvert(wstring &inputstring)
 }
 
 QString TopListWindow::percentString(int numerator, int denumerator)
-    return s;
 {
     float percent =
         (100.0 * numerator) / (float) denumerator;
-    s = QString::number(percent, 'f', 2) + "%";
+    return QString::number(percent, 'f', 2) + "%";
 }
 
 void TopListWindow::saveToFile()
