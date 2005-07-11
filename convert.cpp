@@ -1,4 +1,4 @@
-// Copyright (c) 2001-2002 Peter Karlsson
+// Copyright (c) 2001-2005 Peter Karlsson
 //
 // $Id$
 //
@@ -103,6 +103,7 @@ const struct tablemap usenetcharsets[] =
     { "iso-8859-8", iso_8859_8, iso_8859_8_rev, iso_8859_8_rev_len },
     { "iso-8859-9", iso_8859_9, iso_8859_9_rev, iso_8859_9_rev_len },
     { "iso-8859-10", iso_8859_10, iso_8859_10_rev, iso_8859_10_rev_len },
+    { "iso-8859-11", iso_8859_11, iso_8859_11_rev, iso_8859_11_rev_len },
     { "iso-8859-13", iso_8859_13, iso_8859_13_rev, iso_8859_13_rev_len },
     { "iso-8859-14", iso_8859_14, iso_8859_14_rev, iso_8859_14_rev_len },
     { "iso-8859-15", iso_8859_15, iso_8859_15_rev, iso_8859_15_rev_len },
