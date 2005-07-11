@@ -1,3 +1,16 @@
+turqstat (2.2.2) unstable; urgency=low
+
+  * Use multi-threaded Qt library.
+   (Closes: Bug#184019)
+
+ -- Peter Karlsson <peterk@debian.org>  Mon, 17 Mar 2003 19:00:00 +0100
+
+turqstat (2.2.1.1) unstable; urgency=low
+
+  * Recompiled with new GNU C++ 3.2.
+
+ -- Peter Karlsson <peterk@debian.org>  Wed, 05 Mar 2003 20:00:00 +0100
+
 turqstat (2.2.1) unstable; urgency=low
 
   * Fix missing include which gave compile problems on hppa.

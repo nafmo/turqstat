@@ -405,22 +405,19 @@ dnl Locate Qt headers
     fi
   fi
   if test "$QTINCLUDE" = ""; then
-    if test -f '/usr/lib/qt3/include/qapp.h'; then
+    if test -f '/usr/lib/qt3/include/qapplication.h'; then
       QTINCLUDE='/usr/lib/qt3/include'
       QTDIR='/usr/lib/qt3'
-    elif test -f '/usr/lib/qt2/include/qapp.h'; then
-      QTINCLUDE='/usr/lib/qt2/include'
-      QTDIR='/usr/lib/qt2'
-    elif test -f '/usr/include/qt3/qapp.h'; then
+    elif test -f '/usr/include/qt3/qapplication.h'; then
       QTINCLUDE='/usr/include/qt3'
-    elif test -f '/usr/include/qt/qapp.h'; then
+    elif test -f '/usr/include/qt/qapplication.h'; then
       QTINCLUDE='/usr/include/qt'
-    elif test -f '/usr/local/include/qt/qapp.h'; then
+    elif test -f '/usr/local/include/qt/qapplication.h'; then
       QTINCLUDE='/usr/local/include/qt'
-    elif test -f '/usr/local/qt2/include/qapp.h'; then
-      QTINCLUDE='/usr/local/qt2/include'
-      QTDIR='/usr/local/qt2'
-    elif test -f '/usr/local/qt/include/qapp.h'; then
+    elif test -f '/usr/local/qt3/include/qapplication.h'; then
+      QTINCLUDE='/usr/local/qt3/include'
+      QTDIR='/usr/local/qt3'
+    elif test -f '/usr/local/qt/include/qapplication.h'; then
       QTINCLUDE='/usr/local/qt/include'
       QTDIR='/usr/local/qt'
     fi
@@ -433,28 +430,33 @@ dnl Locate Qt headers
   fi
 
 dnl Locate Qt lib
-  AC_LANG_CPLUSPLUS
-  AC_CHECK_LIB(qt-mt, qApp, [QTLIB='-lqt-mt'],
-    [AC_CHECK_LIB(qt, qApp, QTLIB='-lqt')])
-  AC_LANG_C
-  if test "$QTLIB" = ""; then
-    AC_MSG_CHECKING(for Qt library path)
-    if test -f $QTDIR'/lib/libqt.a'; then
-      QTLIB='-L'$QTDIR'/lib -lqt'
-    fi
+  for lib in qt-mt qt; do
     if test "$QTLIB" = ""; then
-      if test -f '/usr/local/lib/libqt.a'; then
-        QTLIB='-L/usr/local/lib -lqt'
-      elif test -f '/usr/local/qt/lib/libqt.a'; then
-        QTLIB='-L/usr/local/qt/lib -lqt'
+      AC_LANG_CPLUSPLUS
+      AC_CHECK_LIB($lib, qApp, QTLIB="-l$lib")
+      AC_LANG_C
+      if test "$QTLIB" = ""; then
+        AC_MSG_CHECKING(for $QTLIB library path)
+        if test -f $QTDIR'/lib/lib$lib.a'; then
+          QTLIB='-L'$QTDIR'/lib -l$lib'
+        fi
+        if test "$QTLIB" = ""; then
+          if test -f '/usr/local/lib/lib$lib.a'; then
+            QTLIB='-L/usr/local/lib -l$lib'
+          elif test -f '/usr/local/qt/lib/lib$lib.a'; then
+            QTLIB='-L/usr/local/qt/lib -l$lib'
+          fi
+        fi
+        if test "$QTLIB" = ""; then
+          AC_MSG_RESULT(no)
+        else
+          AC_MSG_RESULT($QTLIB)
+        fi
       fi
     fi
-    if test "$QTLIB" = ""; then
-      AC_MSG_RESULT(no)
-      AC_MSG_ERROR(Cannot find libqt.a; either define QTDIR or use --without-qt)
-    else
-      AC_MSG_RESULT($QTLIB)
-    fi
+  done
+  if test "$QTLIB" = ""; then
+    AC_MSG_ERROR(Cannot find libqt-mt.a or libqt.a; either define QTDIR or use --without-qt)
   fi
 
 dnl Locate moc

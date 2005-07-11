@@ -1,3 +1,10 @@
+2005-07-11 - Peter Karlsson <peter@softwolves.pp.se>
+  configure
+  turqstat.doc
+  turqstat.dok
+  debian/
+    Merged in changes from 2.2.1.1 and 2.2.2.
+
 2005-07-10 - Peter Karlsson <peter@softwolves.pp.se>
   output.cpp
   output.h
