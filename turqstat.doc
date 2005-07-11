@@ -1,6 +1,6 @@
 Turquoise SuperStat 2.2 - An area statistics program for Fidonet and Usenet
-(c) Copyright 1998-2003 Peter Karlsson.
-A Softwolves Software Release in 2003
+(c) Copyright 1998-2005 Peter Karlsson.
+A Softwolves Software Release in 2005
 
 http://www.softwolves.pp.se/sw/
 
@@ -318,6 +318,10 @@ HISTORY
   Support for Usenet news via NNTP.
 2001-12-27 - v2.2.1 -
   Fix compile error.
+2003-03-17 - v2.2.2 -
+  Compile with multi-threaded Qt library by default.
+2005-XX-YY - v2.2.3 -
+  Fix compile errors to build with modern tools.
 
 
 INCLUDED FILES

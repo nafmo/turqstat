@@ -318,6 +318,10 @@ HISTORIK
   Stöd för Usenet News över NNTP.
 2001-12-27 - v2.2.1 -
   Rättade kompileringsfel.
+2003-03-17 - v2.2.2 -
+  Kompilera med flertrådat Qt-bibliotek som standard.
+2005-XX-YY - v2.2.3 -
+  Rättade kompileringsfel för att bygga med moderna verktyg.
 
 
 BIFOGADE FILER

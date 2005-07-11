@@ -1,3 +1,11 @@
+turqstat (2.2.3-1) unstable; urgency=low
+
+  * New upstream version.
+  * Now compiles with modern tools.
+   (Closes: Bug#262759, #294391)
+
+ -- Peter Karlsson <peterk@debian.org>  UNRELEASED
+
 turqstat (2.2.2) unstable; urgency=low
 
   * Use multi-threaded Qt library.
