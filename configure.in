@@ -197,7 +197,7 @@ dnl Updated standards
 
 AC_LANG_CPLUSPLUS
 
-AC_CHECK_HEADERS(iostream iostream.h)
+AC_CHECK_HEADERS(iostream fstream iostream.h fstream.h)
 
 AC_LANG_C
 
@@ -264,13 +264,13 @@ AC_TRY_COMPILE([ #include <unistd.h> ],
       AC_DEFINE(USE_OWN_GETOPT, 1, [Define if no system getopt is available]))))
 
 AC_CHECK_FUNC(snprintf, AC_DEFINE(HAVE_SNPRINTF, 1, [Define if C library includes snprintf]),
-  AC_CHECK_FUNC(_snprintf, AC_DEFINE(HAVE_USNPRINTF, 1, [Define if C library includes _snprintf instead of snprint])))
+  [AC_CHECK_FUNC(_snprintf, AC_DEFINE(HAVE_USNPRINTF, 1, [Define if C library includes _snprintf instead of snprint]))])
 
 AC_CACHE_CHECK([for sleep in unistd.h], ac_cv_sleep,
-  AC_TRY_COMPILE([#include <unistd.h>
+  [AC_TRY_COMPILE([#include <unistd.h>
                   struct s *sleep(const char *);],
     [],
-    ac_cv_sleep=no, ac_cv_sleep=yes))
+    ac_cv_sleep=no, ac_cv_sleep=yes)])
 if test "$ac_cv_sleep" = "yes"; then
   AC_DEFINE(HAVE_SLEEP, 1, [Define if C library includes sleep])
 else
@@ -400,14 +400,19 @@ if test "$qt" = "yes"; then
 dnl Locate Qt headers
   AC_MSG_CHECKING(for Qt include files)
   if test "$QTDIR" != ""; then
-    if test -f $QTDIR'/include/qapp.h'; then
+    if test -f $QTDIR'/include/qapplication.h'; then
       QTINCLUDE=$QTDIR'/include'
     fi
   fi
   if test "$QTINCLUDE" = ""; then
-    if test -f '/usr/lib/qt2/include/qapp.h'; then
+    if test -f '/usr/lib/qt3/include/qapp.h'; then
+      QTINCLUDE='/usr/lib/qt3/include'
+      QTDIR='/usr/lib/qt3'
+    elif test -f '/usr/lib/qt2/include/qapp.h'; then
       QTINCLUDE='/usr/lib/qt2/include'
       QTDIR='/usr/lib/qt2'
+    elif test -f '/usr/include/qt3/qapp.h'; then
+      QTINCLUDE='/usr/include/qt3'
     elif test -f '/usr/include/qt/qapp.h'; then
       QTINCLUDE='/usr/include/qt'
     elif test -f '/usr/local/include/qt/qapp.h'; then
@@ -429,7 +434,8 @@ dnl Locate Qt headers
 
 dnl Locate Qt lib
   AC_LANG_CPLUSPLUS
-  AC_CHECK_LIB(qt, qApp, QTLIB='-lqt')
+  AC_CHECK_LIB(qt-mt, qApp, [QTLIB='-lqt-mt'],
+    [AC_CHECK_LIB(qt, qApp, QTLIB='-lqt')])
   AC_LANG_C
   if test "$QTLIB" = ""; then
     AC_MSG_CHECKING(for Qt library path)

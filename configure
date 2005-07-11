@@ -5117,7 +5117,9 @@ ac_compiler_gnu=$ac_cv_cxx_compiler_gnu
 
 
 
-for ac_header in iostream iostream.h
+
+
+for ac_header in iostream fstream iostream.h fstream.h
 do
 as_ac_Header=`echo "ac_cv_header_$ac_header" | $as_tr_sh`
 if eval "test \"\${$as_ac_Header+set}\" = set"; then
@@ -6423,7 +6425,92 @@ _ACEOF
 cat confdefs.h >>conftest.$ac_ext
 cat >>conftest.$ac_ext <<_ACEOF
 /* end confdefs.h.  */
-/* Define _snprintf to an innocuous variant
+/* Define _snprintf to an innocuous variant, in case <limits.h> declares _snprintf.
+   For example, HP-UX 11i <limits.h> declares gettimeofday.  */
+#define _snprintf innocuous__snprintf
+
+/* System header to define __stub macros and hopefully few prototypes,
+    which can conflict with char _snprintf (); below.
+    Prefer <limits.h> to <assert.h> if __STDC__ is defined, since
+    <limits.h> exists even on freestanding compilers.  */
+
+#ifdef __STDC__
+# include <limits.h>
+#else
+# include <assert.h>
+#endif
+
+#undef _snprintf
+
+/* Override any gcc2 internal prototype to avoid an error.  */
+#ifdef __cplusplus
+extern "C"
+{
+#endif
+/* We use char because int might match the return type of a gcc2
+   builtin and then its argument prototype would still apply.  */
+char _snprintf ();
+/* The GNU C library defines this for functions which it implements
+    to always fail with ENOSYS.  Some functions are actually named
+    something starting with __ and the normal name is an alias.  */
+#if defined (__stub__snprintf) || defined (__stub____snprintf)
+choke me
+#else
+char (*f) () = _snprintf;
+#endif
+#ifdef __cplusplus
+}
+#endif
+
+int
+main ()
+{
+return f != _snprintf;
+  ;
+  return 0;
+}
+_ACEOF
+rm -f conftest.$ac_objext conftest$ac_exeext
+if { (eval echo "$as_me:$LINENO: \"$ac_link\"") >&5
+  (eval $ac_link) 2>conftest.er1
+  ac_status=$?
+  grep -v '^ *+' conftest.er1 >conftest.err
+  rm -f conftest.er1
+  cat conftest.err >&5
+  echo "$as_me:$LINENO: \$? = $ac_status" >&5
+  (exit $ac_status); } &&
+	 { ac_try='test -z "$ac_c_werror_flag"			 || test ! -s conftest.err'
+  { (eval echo "$as_me:$LINENO: \"$ac_try\"") >&5
+  (eval $ac_try) 2>&5
+  ac_status=$?
+  echo "$as_me:$LINENO: \$? = $ac_status" >&5
+  (exit $ac_status); }; } &&
+	 { ac_try='test -s conftest$ac_exeext'
+  { (eval echo "$as_me:$LINENO: \"$ac_try\"") >&5
+  (eval $ac_try) 2>&5
+  ac_status=$?
+  echo "$as_me:$LINENO: \$? = $ac_status" >&5
+  (exit $ac_status); }; }; then
+  ac_cv_func__snprintf=yes
+else
+  echo "$as_me: failed program was:" >&5
+sed 's/^/| /' conftest.$ac_ext >&5
+
+ac_cv_func__snprintf=no
+fi
+rm -f conftest.err conftest.$ac_objext \
+      conftest$ac_exeext conftest.$ac_ext
+fi
+echo "$as_me:$LINENO: result: $ac_cv_func__snprintf" >&5
+echo "${ECHO_T}$ac_cv_func__snprintf" >&6
+if test $ac_cv_func__snprintf = yes; then
+
+cat >>confdefs.h <<\_ACEOF
+#define HAVE_USNPRINTF 1
+_ACEOF
+
+fi
+
 fi
 
 
@@ -7664,9 +7751,14 @@ echo $ECHO_N "checking for Qt include files... $ECHO_C" >&6
     fi
   fi
   if test "$QTINCLUDE" = ""; then
-    if test -f '/usr/lib/qt2/include/qapp.h'; then
+    if test -f '/usr/lib/qt3/include/qapp.h'; then
+      QTINCLUDE='/usr/lib/qt3/include'
+      QTDIR='/usr/lib/qt3'
+    elif test -f '/usr/lib/qt2/include/qapp.h'; then
       QTINCLUDE='/usr/lib/qt2/include'
       QTDIR='/usr/lib/qt2'
+    elif test -f '/usr/include/qt3/qapp.h'; then
+      QTINCLUDE='/usr/include/qt3'
     elif test -f '/usr/include/qt/qapp.h'; then
       QTINCLUDE='/usr/include/qt'
     elif test -f '/usr/local/include/qt/qapp.h'; then
@@ -7696,6 +7788,72 @@ ac_compile='$CXX -c $CXXFLAGS $CPPFLAGS conftest.$ac_ext >&5'
 ac_link='$CXX -o conftest$ac_exeext $CXXFLAGS $CPPFLAGS $LDFLAGS conftest.$ac_ext $LIBS >&5'
 ac_compiler_gnu=$ac_cv_cxx_compiler_gnu
 
+  echo "$as_me:$LINENO: checking for qApp in -lqt-mt" >&5
+echo $ECHO_N "checking for qApp in -lqt-mt... $ECHO_C" >&6
+if test "${ac_cv_lib_qt_mt_qApp+set}" = set; then
+  echo $ECHO_N "(cached) $ECHO_C" >&6
+else
+  ac_check_lib_save_LIBS=$LIBS
+LIBS="-lqt-mt  $LIBS"
+cat >conftest.$ac_ext <<_ACEOF
+/* confdefs.h.  */
+_ACEOF
+cat confdefs.h >>conftest.$ac_ext
+cat >>conftest.$ac_ext <<_ACEOF
+/* end confdefs.h.  */
+
+/* Override any gcc2 internal prototype to avoid an error.  */
+#ifdef __cplusplus
+extern "C"
+#endif
+/* We use char because int might match the return type of a gcc2
+   builtin and then its argument prototype would still apply.  */
+char qApp ();
+int
+main ()
+{
+qApp ();
+  ;
+  return 0;
+}
+_ACEOF
+rm -f conftest.$ac_objext conftest$ac_exeext
+if { (eval echo "$as_me:$LINENO: \"$ac_link\"") >&5
+  (eval $ac_link) 2>conftest.er1
+  ac_status=$?
+  grep -v '^ *+' conftest.er1 >conftest.err
+  rm -f conftest.er1
+  cat conftest.err >&5
+  echo "$as_me:$LINENO: \$? = $ac_status" >&5
+  (exit $ac_status); } &&
+	 { ac_try='test -z "$ac_cxx_werror_flag"			 || test ! -s conftest.err'
+  { (eval echo "$as_me:$LINENO: \"$ac_try\"") >&5
+  (eval $ac_try) 2>&5
+  ac_status=$?
+  echo "$as_me:$LINENO: \$? = $ac_status" >&5
+  (exit $ac_status); }; } &&
+	 { ac_try='test -s conftest$ac_exeext'
+  { (eval echo "$as_me:$LINENO: \"$ac_try\"") >&5
+  (eval $ac_try) 2>&5
+  ac_status=$?
+  echo "$as_me:$LINENO: \$? = $ac_status" >&5
+  (exit $ac_status); }; }; then
+  ac_cv_lib_qt_mt_qApp=yes
+else
+  echo "$as_me: failed program was:" >&5
+sed 's/^/| /' conftest.$ac_ext >&5
+
+ac_cv_lib_qt_mt_qApp=no
+fi
+rm -f conftest.err conftest.$ac_objext \
+      conftest$ac_exeext conftest.$ac_ext
+LIBS=$ac_check_lib_save_LIBS
+fi
+echo "$as_me:$LINENO: result: $ac_cv_lib_qt_mt_qApp" >&5
+echo "${ECHO_T}$ac_cv_lib_qt_mt_qApp" >&6
+if test $ac_cv_lib_qt_mt_qApp = yes; then
+  QTLIB='-lqt-mt'
+else
   echo "$as_me:$LINENO: checking for qApp in -lqt" >&5
 echo $ECHO_N "checking for qApp in -lqt... $ECHO_C" >&6
 if test "${ac_cv_lib_qt_qApp+set}" = set; then
@@ -7761,6 +7919,8 @@ echo "$as_me:$LINENO: result: $ac_cv_lib_qt_qApp" >&5
 echo "${ECHO_T}$ac_cv_lib_qt_qApp" >&6
 if test $ac_cv_lib_qt_qApp = yes; then
   QTLIB='-lqt'
+fi
+
 fi
 
   ac_ext=c
