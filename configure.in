@@ -1,6 +1,6 @@
 dnl Process this file with autoconf to produce a configure script.
 dnl
-dnl Copyright (c) 2000-2001 Peter Karlsson
+dnl Copyright (c) 2000-2005 Peter Karlsson
 dnl
 dnl $Id$
 dnl
@@ -94,7 +94,7 @@ if test "$ac_cv_emx" = "yes"; then
     [ struct _find s; int r = __findfirst("*.*", 0x2f, &s);
     r = __findnext(&s) ],
     findfirst=yes
-    AC_DEFINE(HAVE_EMX_FINDFIRST) AC_MSG_RESULT(yes),
+    AC_DEFINE(HAVE_EMX_FINDFIRST, 1, [Define if we are using EMX's implementation of findfirst/findnext]) AC_MSG_RESULT(yes),
     AC_MSG_RESULT(no))
 
 elif test "$ac_cv_djgpp" = "yes"; then
@@ -110,7 +110,7 @@ elif test "$ac_cv_djgpp" = "yes"; then
     [ struct ffblk f; int r = findfirst("*.*", &f, 0x2f);
     r = findnext(&f) ],
     findfirst=yes
-    AC_DEFINE(HAVE_DJGPP_FINDFIRST) AC_MSG_RESULT(yes),
+    AC_DEFINE(HAVE_DJGPP_FINDFIRST, 1, [Define if we are using DJGPP's implementation of findfirst/findnext]) AC_MSG_RESULT(yes),
     AC_MSG_RESULT(no))
 else
   standardcpplib=stdc++
@@ -122,7 +122,7 @@ AC_SUBST(DEF)
 AC_EXEEXT
 
 if test "$nntp" = "yes"; then
-  AC_DEFINE(HAVE_NNTP)
+  AC_DEFINE(HAVE_NNTP, 1, [Define if you want NNTP support])
   NONNTP=''
 else
   NONNTP='# '
@@ -169,7 +169,8 @@ if test "$ac_cv_header_wctype_h" = "no"; then
     ac_cv_have_towupper_in_ctype_h=no,
     ac_cv_have_towupper_in_ctype_h=yes))
   if test "$ac_cv_have_towupper_in_ctype_h" = "yes"; then
-    AC_DEFINE(HAVE_TOWUPPER_IN_CTYPE_H)
+    AC_DEFINE(HAVE_TOWUPPER_IN_CTYPE_H, 1,
+              [Define if ctype.h defines towupper])
   fi
 fi
 
@@ -181,7 +182,7 @@ if test "$nntp" = "yes"; then
       ac_cv_header_sys_socket_h=yes,
       ac_cv_header_sys_socket_h=no))
   if test "$ac_cv_header_sys_socket_h" = "yes"; then
-    AC_DEFINE(HAVE_SYS_SOCKET_H)
+    AC_DEFINE(HAVE_SYS_SOCKET_H, 1, [Define if you have the <sys/socket.h> header file.])
   fi
 
   if test "$ac_cv_header_sys_socket_h" = "no"; then
@@ -191,6 +192,14 @@ if test "$nntp" = "yes"; then
     fi
   fi
 fi
+
+dnl Updated standards
+
+AC_LANG_CPLUSPLUS
+
+AC_CHECK_HEADERS(iostream iostream.h)
+
+AC_LANG_C
 
 dnl Specialized headers and tests
 
@@ -203,7 +212,7 @@ AC_CACHE_CHECK([for CHAR_BIT in limits.h], ac_cv_have_char_bit,
     ac_cv_have_char_bit=yes,
     ac_cv_have_char_bit=no))
 if test "$ac_cv_have_char_bit" = "yes"; then
-  AC_DEFINE(HAVE_CHAR_BIT)
+  AC_DEFINE(HAVE_CHAR_BIT, 1, [Define if limits.h includes CHAR_BIT])
 fi
 
 dnl Check for typedefs, structures, and compiler characteristics -----------
@@ -211,7 +220,7 @@ AC_C_CONST
 
 AC_MSG_CHECKING(for tm_gmtoff in struct tm)
 AC_TRY_COMPILE([ #include <time.h> ], [  struct tm t; t.tm_gmtoff = 0; ],
-  AC_DEFINE(HAVE_TM_GMTOFF) AC_MSG_RESULT(yes),
+  AC_DEFINE(HAVE_TM_GMTOFF, 1, [Define if struct tm has tm_gmtoff]) AC_MSG_RESULT(yes),
   AC_MSG_RESULT(no))
 
 dnl This is mostly copied from the standard AC_CHECK_SIZEOF macro
@@ -227,7 +236,8 @@ main()
 }], ac_cv_sizeof_time_t=`cat conftestval`,
     ac_cv_sizeof_time_t=4,
     ac_cv_sizeof_time_t=4))
-AC_DEFINE_UNQUOTED(SIZEOF_TIME_T, $ac_cv_sizeof_time_t)
+AC_DEFINE_UNQUOTED(SIZEOF_TIME_T, $ac_cv_sizeof_time_t,
+                   [Define to size of time_t, in bytes])
 
 dnl Check for library functions --------------------------------------------
 AC_FUNC_STRFTIME
@@ -239,22 +249,22 @@ AC_CHECK_FUNC(memcmp, , AC_MSG_ERROR(memcmp is needed by this program))
 AC_MSG_CHECKING(for getopt in unistd.h)
 AC_TRY_COMPILE([ #include <unistd.h> ],
   [ int argc; char **argv; int c = getopt(argc, argv, "x"); int d = optarg; ],
-  AC_DEFINE(HAVE_GETOPT_IN_UNISTD) AC_MSG_RESULT(yes),
+  AC_DEFINE(HAVE_GETOPT_IN_UNISTD, 1, [Define if getopt is found in unistd.h]) AC_MSG_RESULT(yes),
   AC_MSG_RESULT(no)
   AC_MSG_CHECKING(for getopt in stdio.h)
   AC_TRY_COMPILE([ #include <stdio.h> ],
     [ int argc; char **argv; int c = getopt(argc, argv, "x"); int d = optarg; ],
-    AC_DEFINE(HAVE_GETOPT_IN_STDIO) AC_MSG_RESULT(yes),
+    AC_DEFINE(HAVE_GETOPT_IN_STDIO, 1, [Define if getopt is found in stdio.h]) AC_MSG_RESULT(yes),
     AC_MSG_RESULT(no)
     AC_MSG_CHECKING(for getopt in getopt.h)
     AC_TRY_COMPILE([ #include <getopt.h> ],
       [ int argc; char **argv; int c = getopt(argc, argv, "x"); int d = optarg; ],
-      AC_DEFINE(HAVE_GETOPT_IN_GETOPT) AC_MSG_RESULT(yes),
+      AC_DEFINE(HAVE_GETOPT_IN_GETOPT, 1, [Define if getopt is found in getopt.h]) AC_MSG_RESULT(yes),
       AC_MSG_RESULT(no)
-      AC_DEFINE(USE_OWN_GETOPT))))
+      AC_DEFINE(USE_OWN_GETOPT, 1, [Define if no system getopt is available]))))
 
-AC_CHECK_FUNC(snprintf, AC_DEFINE(HAVE_SNPRINTF),
-  AC_CHECK_FUNC(_snprintf, AC_DEFINE(HAVE_USNPRINTF)))
+AC_CHECK_FUNC(snprintf, AC_DEFINE(HAVE_SNPRINTF, 1, [Define if C library includes snprintf]),
+  AC_CHECK_FUNC(_snprintf, AC_DEFINE(HAVE_USNPRINTF, 1, [Define if C library includes _snprintf instead of snprint])))
 
 AC_CACHE_CHECK([for sleep in unistd.h], ac_cv_sleep,
   AC_TRY_COMPILE([#include <unistd.h>
@@ -262,7 +272,7 @@ AC_CACHE_CHECK([for sleep in unistd.h], ac_cv_sleep,
     [],
     ac_cv_sleep=no, ac_cv_sleep=yes))
 if test "$ac_cv_sleep" = "yes"; then
-  AC_DEFINE(HAVE_SLEEP)
+  AC_DEFINE(HAVE_SLEEP, 1, [Define if C library includes sleep])
 else
   AC_CACHE_CHECK([for _sleep in stdlib.h], ac_cv__sleep,
     AC_TRY_COMPILE([#include <stdlib.h>
@@ -270,15 +280,15 @@ else
       [],
       ac_cv__sleep=no, ac_cv__sleep=yes))
   if test "$ac_cv__sleep" = "yes"; then
-    AC_DEFINE(HAVE_U_SLEEP)
+    AC_DEFINE(HAVE_U_SLEEP, 1, [Define if C library includes _sleep instead of sleep])
   fi
 fi
 
-AC_CHECK_FUNC(strcasestr, AC_DEFINE(HAVE_STRCASESTR))
-AC_CHECK_FUNC(stristr,    AC_DEFINE(HAVE_STRISTR))
-AC_CHECK_FUNC(strcasecmp, AC_DEFINE(HAVE_STRCASECMP))
-AC_CHECK_FUNC(stricmp,    AC_DEFINE(HAVE_STRICMP))
-AC_CHECK_FUNC(strlwr,     AC_DEFINE(HAVE_STRLWR))
+AC_CHECK_FUNC(strcasestr, AC_DEFINE(HAVE_STRCASESTR, 1, [Define if C library includes strcasestr]))
+AC_CHECK_FUNC(stristr,    AC_DEFINE(HAVE_STRISTR,    1, [Define if C library includes stristr]))
+AC_CHECK_FUNC(strcasecmp, AC_DEFINE(HAVE_STRCASECMP, 1, [Define if C library includes strcasecmp]))
+AC_CHECK_FUNC(stricmp,    AC_DEFINE(HAVE_STRICMP,    1, [Define if C library includes stricmp]))
+AC_CHECK_FUNC(strlwr,     AC_DEFINE(HAVE_STRLWR,     1, [Define if C library includes strlwr]))
 
 if test "$locale" = "yes"; then
   AC_CACHE_CHECK([for DosQueryCtryInfo in os2.h], ac_cv_dosqueryctryinfo,
@@ -290,7 +300,8 @@ if test "$locale" = "yes"; then
       DosQueryCtryInfo(sizeof countryinfo, &country, &countryinfo, &datalength);
     ], ac_cv_dosqueryctryinfo=yes, ac_cv_dosqueryctryinfo=no))
   if test "$ac_cv_dosqueryctryinfo" = "yes"; then
-    AC_DEFINE(HAVE_OS2_COUNTRYINFO)
+    AC_DEFINE(HAVE_OS2_COUNTRYINFO, 1,
+              [Define if you have OS/2 DosQueryCtryInfo API])
   fi
 fi
 
@@ -301,7 +312,8 @@ if test "$locale" = "yes"; then
       GetDateFormat(LOCALE_USER_DEFAULT, DATE_SHORTDATE, &wintime, NULL, out, len);
     ], ac_cv_getdateformat=yes, ac_cv_getdateformat=no))
   if test "$ac_cv_getdateformat" = "yes"; then
-    AC_DEFINE(HAVE_WIN32_LOCALEINFO)
+    AC_DEFINE(HAVE_WIN32_LOCALEINFO, 1,
+              [Define if you have Win32 GetDateFormat API])
   fi
 fi
 
@@ -316,7 +328,8 @@ AC_CACHE_CHECK([if compiler needs explicit namespace], ac_cv_namespace,
       ac_cv_namespace=yes,
       AC_MSG_ERROR(Cannot instantiate the string class))))
 if test "$ac_cv_namespace" = "no"; then
-  AC_DEFINE(HAVE_IMPLICIT_NAMESPACE)
+  AC_DEFINE(HAVE_IMPLICIT_NAMESPACE, 1,
+            [Define if std namespace always is available])
 fi
 
 AC_CACHE_CHECK([for working wstring], ac_cv_wstring,
@@ -326,7 +339,8 @@ AC_CACHE_CHECK([for working wstring], ac_cv_wstring,
   [ wstring s; const wchar_t *p = s.c_str(); ],
   ac_cv_wstring=yes, ac_cv_wstring=no))
 if test "$ac_cv_wstring" = "yes"; then
-  AC_DEFINE(HAVE_WORKING_WSTRING)
+  AC_DEFINE(HAVE_WORKING_WSTRING, 1,
+            [Define if you have a working wstring implementation])
 fi
 
 if test "$ac_cv_wstring" = "no"; then
@@ -339,7 +353,8 @@ AC_CACHE_CHECK([for fstream::form], ac_cv_fstream_form,
     [ fstream f; f.form(""); ],
     ac_cv_fstream_form=yes, ac_cv_fstream_form=no))
 if test "$ac_cv_fstream_form" = "yes"; then
-  AC_DEFINE(HAVE_FSTREAM_FORM_METHOD)
+  AC_DEFINE(HAVE_FSTREAM_FORM_METHOD, 1,
+            [Define if the fstream class has the GNU extension fstream::form])
 fi
 
 AC_LANG_C
@@ -348,12 +363,12 @@ dnl Check for variables ----------------------------------------------------
 
 AC_MSG_CHECKING(for timezone in time.h)
 AC_TRY_COMPILE([ #include <time.h> ], [ timezone = 0; ],
-  AC_DEFINE(HAVE_TIMEZONE) AC_MSG_RESULT(yes)
+  AC_DEFINE(HAVE_TIMEZONE, 1, [Define if time.h defines timezone variable]) AC_MSG_RESULT(yes)
   timezone=yes,
   AC_MSG_RESULT(no)
   AC_MSG_CHECKING(for _timezone in time.h)
   AC_TRY_COMPILE([ #include <time.h> ], [ _timezone = 0; ],
-    AC_DEFINE(HAVE_UTIMEZONE) AC_MSG_RESULT(yes)
+    AC_DEFINE(HAVE_UTIMEZONE, 1, [Define if time.h defines _timezone variable]) AC_MSG_RESULT(yes)
     utimezone=yes,
     AC_MSG_RESULT(no)))
 
@@ -361,7 +376,7 @@ dnl Check for other stuff --------------------------------------------------
 AC_MSG_CHECKING(if platform uses backslashes in paths)
 if test "$ac_cv_emx" = "yes" || test "$ac_cv_mingw32" = "yes" || test "$ac_cv_cygwin" = "yes" || test "$ac_cv_djgpp" = "yes"; then
   AC_MSG_RESULT(yes)
-  AC_DEFINE(BACKSLASH_PATHS)
+  AC_DEFINE(BACKSLASH_PATHS, 1, [Define if platform primarily uses backslash as path separators])
 else
   AC_MSG_RESULT(no)
 fi
