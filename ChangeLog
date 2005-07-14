@@ -1,3 +1,14 @@
+2005-07-14 - Peter Karlsson <peter@softwolves.pp.se>
+  convert.h
+    Added virtual destructor to avoid compiler warnings.
+
+  convert.cpp
+  utility.cpp
+    Removed use of GNU C++ extensions.
+
+  turqstat.cpp
+    Fixed incorrect use of comma-separated list.
+
 2005-07-11 - Peter Karlsson <peter@softwolves.pp.se>
   configure.in
     Updated for more modern versions of the autocrap tools.

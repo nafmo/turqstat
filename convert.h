@@ -1,4 +1,4 @@
-// Copyright (c) 2001-2002 Peter Karlsson
+// Copyright (c) 2001-2005 Peter Karlsson
 //
 // $Id$
 //
@@ -69,6 +69,11 @@ public:
      * @return Unicode version of data.
      */
     virtual wstring Decode(const string &input) = 0;
+
+	/**
+	 * Virtual destructor to avoid compiler warnings.
+	 */
+	virtual ~Decoder() {}
 };
 
 struct reversemap;
@@ -96,6 +101,11 @@ public:
      * @return Legacy version of data.
      */
     virtual string Encode(const wstring &input) = 0;
+
+	/**
+	 * Virtual destructor to avoid compiler warnings.
+	 */
+	virtual ~Encoder() {}
 };
 
 struct tablemap;

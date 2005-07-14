@@ -268,7 +268,8 @@ int main(int argc, char *argv[])
                basepath, basetype, range_start_p ? *range_start_p : time_t(0),
                range_end_p ? *range_end_p : time_t(DISTANT_FUTURE));
 
-    delete range_start_p, range_end_p;
+    delete range_start_p;
+    delete range_end_p;
 
     return 0;
 }

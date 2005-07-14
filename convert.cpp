@@ -17,7 +17,6 @@
 
 #include <config.h>
 
-#define _GNU_SOURCE
 #include <string.h>
 
 #include "convert.h"
@@ -348,15 +347,18 @@ Decoder *Decoder::GetDecoderByMIMEHeaders(const char *headers)
     const char *p;
     if (NULL != (p = strchr(start, ' ')))
     {
-        next = next <? p;
+    	if (p < next)
+    		next = p;
     }
     if (NULL != (p = strchr(start, 1)))
     {
-        next = next <? p;
+    	if (p < next)
+    		next = p;
     }
     if (NULL != (p = strchr(start, ',')))
     {
-        next = next <? p;
+    	if (p < next)
+    		next = p;
     }
 
     string charsetstring(start, next - start);

@@ -1,4 +1,4 @@
-// Copyright (c) 1998-2001 Peter Karlsson
+// Copyright (c) 1998-2005 Peter Karlsson
 //
 // $Id$
 //
@@ -44,9 +44,15 @@
 // Why isn't this functionality available in ANSI C++? *sigh*
 int fcompare(const string &s1, const string &s2, unsigned int max)
 {
-    int ls1 = s1.length() <? max, ls2 = s2.length() <? max;
+	size_t ls1 = s1.length();
+	if (max < ls1)
+		ls1 = max;
 
-    for (int i = 0; i < ls1 && i < ls2; i ++)
+	size_t ls2 = s2.length();
+	if (max < ls2)
+		ls2 = max;
+
+    for (size_t i = 0; i < ls1 && i < ls2; i ++)
     {
         if (toupper(s1[i]) != toupper(s2[i]))
         {
@@ -56,7 +62,7 @@ int fcompare(const string &s1, const string &s2, unsigned int max)
 
     // If we fall out, the shortest one is smallest. If we have counted to
     // max, ls1 == ls2, which gives 0.
-    return ls1 - ls2;
+    return int(ls1) - int(ls2);
 }
 
 #if !defined(HAVE_WCTYPE_H) && !defined(HAVE_TOWUPPER_IN_CTYPE_H)
@@ -79,9 +85,15 @@ inline wchar_t towupper(wchar_t wc)
 // Why isn't this functionality available in ANSI C++? *sigh*
 int fcompare(const wstring &s1, const wstring &s2, unsigned int max)
 {
-    int ls1 = s1.length() <? max, ls2 = s2.length() <? max;
+	size_t ls1 = s1.length();
+	if (max < ls1)
+		ls1 = max;
 
-    for (int i = 0; i < ls1 && i < ls2; i ++)
+	size_t ls2 = s2.length();
+	if (max < ls2)
+		ls2 = max;
+
+    for (size_t i = 0; i < ls1 && i < ls2; i ++)
     {
         if (towupper(s1[i]) != towupper(s2[i]))
         {
@@ -91,7 +103,7 @@ int fcompare(const wstring &s1, const wstring &s2, unsigned int max)
 
     // If we fall out, the shortest one is smallest. If we have counted to
     // max, ls1 == ls2, which gives 0.
-    return ls1 - ls2;
+    return int(ls1) - int(ls2);
 }
 
 // The following is from MsgEd 4.30:
