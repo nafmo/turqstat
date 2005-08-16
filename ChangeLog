@@ -1,3 +1,9 @@
+2005-08-16 - Peter Karlsson <peter@softwolves.pp.se>
+  turqstat.doc
+  turqstat.dok
+  debian/
+    2.2.3 released. Yay!
+
 2005-07-14 - Peter Karlsson <peter@softwolves.pp.se>
   convert.h
     Added virtual destructor to avoid compiler warnings.

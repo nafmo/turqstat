@@ -320,7 +320,7 @@ HISTORY
   Fix compile error.
 2003-03-17 - v2.2.2 -
   Compile with multi-threaded Qt library by default.
-2005-XX-YY - v2.2.3 -
+2005-08-16 - v2.2.3 -
   Fix compile errors to build with modern tools.
 
 

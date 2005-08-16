@@ -4,7 +4,7 @@ turqstat (2.2.3-1) unstable; urgency=low
   * Now compiles with modern tools.
    (Closes: Bug#262759, #294391)
 
- -- Peter Karlsson <peterk@debian.org>  UNRELEASED
+ -- Peter Karlsson <peterk@debian.org>  Tue, 16 Aug 2005 18:30:00 +0100
 
 turqstat (2.2.2) unstable; urgency=low
 
