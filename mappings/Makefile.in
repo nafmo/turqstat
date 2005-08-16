@@ -16,6 +16,7 @@ clean:
 #	-rm $(OBJS)
 
 distclean: clean
+	-rm Makefile
 
 # Object files
 

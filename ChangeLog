@@ -4,6 +4,11 @@
   debian/
     2.2.3 released. Yay!
 
+  Makefile.in
+  po/Makefile.in
+  mappings/Makefile.in
+    Fixed distclean target
+
 2005-07-14 - Peter Karlsson <peter@softwolves.pp.se>
   convert.h
     Added virtual destructor to avoid compiler warnings.

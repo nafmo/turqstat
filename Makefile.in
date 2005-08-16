@@ -33,15 +33,18 @@ debian:
 @NOQT@clean:
 @NOQT@	-rm $(OBJS) $(TEALOBJS)
 @NOQT@	-rm $(EXE) $(TEALEXE)
+@NOQT@	-make -C mappings clean
 
 @QT@clean:
 @QT@	-rm $(OBJS) $(QTOBJS) $(TEALOBJS) moc_* *.moc
 @QT@	-rm $(EXE) $(TEALEXE)
 @QT@	-make -C po clean
+@QT@	-make -C mappings clean
 
 distclean: clean
-	-rm config.status config.log config.cache config.h Makefile
+	-rm config.status config.log config.cache config.h Makefile doxygen.conf
 	-make -C po distclean
+	-make -C mappings distclean
 
 debianclean:
 	fakeroot debian/rules clean

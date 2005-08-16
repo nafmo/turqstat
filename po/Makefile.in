@@ -17,8 +17,8 @@ install: @QT@$(QM)
 clean:
 @QT@	-rm $(QM)
 
-distclean:
-	-rm Makefile @QT@$(QM)
+distclean: clean
+	-rm Makefile
 
 # Template targets
 @QT@%.qm: %.po
