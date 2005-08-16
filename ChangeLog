@@ -5,9 +5,13 @@
     2.2.3 released. Yay!
 
   Makefile.in
+  debian/
+    Updates for modern Debian policy.
+
+  Makefile.in
   po/Makefile.in
   mappings/Makefile.in
-    Fixed distclean target
+    Fixed distclean target.
 
 2005-07-14 - Peter Karlsson <peter@softwolves.pp.se>
   convert.h

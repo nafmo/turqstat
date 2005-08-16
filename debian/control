@@ -1,13 +1,13 @@
 Source: turqstat
 Section: mail
-Priority: extra
+Priority: optional
 Maintainer: Peter Karlsson <peterk@debian.org>
-Standards-Version: 3.5.6
-Build-Depends: debhelper (>= 2), libqt3-mt-dev, qt3-dev-tools-compat
+Standards-Version: 3.6.2
+Build-Depends: debhelper (>= 4), libqt3-mt-dev, qt3-dev-tools-compat
 
 Package: turqstat
 Architecture: any
-Depends: ${shlibs:Depends}
+Depends: ${shlibs:Depends} ${misc:Depends}
 Suggests: crashmail | news-transport-system | slrnpull
 Description: Fidonet and Usenet statistics program
  Turquoise SuperStat is a simple but powerful Fidonet and Usenet
