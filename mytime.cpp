@@ -54,7 +54,7 @@ time_t my_mktime(struct tm *t)
     x = t->tm_sec + 60 * t->tm_min + 60 * 60 * t->tm_hour;
 
     r += x;
-    if (r < 0 || r > DISTANT_FUTURE || r == (time_t)-1)
+    if (r < 0 || r > DISTANT_FUTURE || r == (long long)(time_t)-1)
         return (time_t) -1;
     return (time_t) r;
 }

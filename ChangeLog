@@ -3,6 +3,9 @@
     Use proper data types for string lengths to avoid overflows on 64-bit
     architectures.
 
+  mytime.cpp
+    Fixed signedness mismatch on some platforms.
+
 2005-08-16 - Peter Karlsson <peter@softwolves.pp.se>
   turqstat.doc
   turqstat.dok
