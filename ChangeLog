@@ -1,3 +1,8 @@
+2005-08-17 - Peter Karlsson <peter@softwolves.pp.se>
+  statengine.cpp
+    Use proper data types for string lengths to avoid overflows on 64-bit
+    architectures.
+
 2005-08-16 - Peter Karlsson <peter@softwolves.pp.se>
   turqstat.doc
   turqstat.dok

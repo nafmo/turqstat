@@ -1046,7 +1046,7 @@ wstring StatEngine::DeQP(const string &qp, Decoder *maindecoder_p) const
     pos = qp.find("=?");
     while (pos != string::npos)
     {
-        unsigned qpos = qp.find('?', pos + 3);
+        string::size_type qpos = qp.find('?', pos + 3);
 
         if (string::npos != qpos && '?' == qp[qpos + 2])
         {
