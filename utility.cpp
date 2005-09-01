@@ -139,13 +139,13 @@ time_t asciiToTimeT(const char *datetime)
 
     if (' ' == datetime[2])
     { // "Dd Mmm Yy  HH:MM:SS"
-        sscanf(datetime, "%d %s %d %d:%d:%d",
+        sscanf(datetime, "%d %3s %d %d:%d:%d",
                &tms.tm_mday, month, &tms.tm_year,
                &tms.tm_hour, &tms.tm_min, &tms.tm_sec);
     }
     else if (' ' == datetime[3])
     { // "Www Dd Mmm Yy HH:MM"
-        sscanf(&datetime[4], "%d %s %d %d:%d",
+        sscanf(&datetime[4], "%d %3s %d %d:%d",
                &tms.tm_mday, month, &tms.tm_year,
                &tms.tm_hour, &tms.tm_min);
         tms.tm_sec = 0;
@@ -183,7 +183,7 @@ time_t rfcToTimeT(string datetime)
 
     // "[ ]Dd Mmm [Yy]yy HH:MM:SS[ +ZZZZ]"
     // Note: timezones are ignored!
-    rc = sscanf(datetime.c_str(), "%d %s %d %d:%d:%d",
+    rc = sscanf(datetime.c_str(), "%d %3s %d %d:%d:%d",
                 &tms.tm_mday, month, &tms.tm_year,
                 &tms.tm_hour, &tms.tm_min, &tms.tm_sec);
 
