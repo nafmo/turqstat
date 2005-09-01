@@ -141,6 +141,9 @@
 /* Define to 1 if you have the <sys/types.h> header file. */
 #undef HAVE_SYS_TYPES_H
 
+/* Define if C library includes timegm */
+#undef HAVE_TIMEGM
+
 /* Define if time.h defines timezone variable */
 #undef HAVE_TIMEZONE
 

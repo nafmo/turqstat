@@ -11,6 +11,9 @@
 // Modifications for Turquoise SuperStat copyright (c) 2000-2005 Peter
 // Karlsson.
 
+#include <config.h>
+
+#ifndef HAVE_TIMEGM
 #include <time.h>
 #include <limits.h>
 
@@ -76,3 +79,4 @@ static long day(long year, long month, long day)
     result += year / 4 - (3 * (year / 100 + 1)) / 4;
     return result;
 }
+#endif

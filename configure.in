@@ -289,6 +289,7 @@ AC_CHECK_FUNC(stristr,    AC_DEFINE(HAVE_STRISTR,    1, [Define if C library inc
 AC_CHECK_FUNC(strcasecmp, AC_DEFINE(HAVE_STRCASECMP, 1, [Define if C library includes strcasecmp]))
 AC_CHECK_FUNC(stricmp,    AC_DEFINE(HAVE_STRICMP,    1, [Define if C library includes stricmp]))
 AC_CHECK_FUNC(strlwr,     AC_DEFINE(HAVE_STRLWR,     1, [Define if C library includes strlwr]))
+AC_CHECK_FUNC(timegm,     AC_DEFINE(HAVE_TIMEGM,     1, [Define if C library includes timegm]))
 
 if test "$locale" = "yes"; then
   AC_CACHE_CHECK([for DosQueryCtryInfo in os2.h], ac_cv_dosqueryctryinfo,

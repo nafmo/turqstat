@@ -2,6 +2,12 @@
   utility.cpp
     Fixed buffer overrun condition.
 
+  mytime.cpp
+  mytime.h
+  config.h.in
+  configure.in
+    Use timegm() instead of my_mktime(), if available.
+
 2005-08-22 - Peter Karlsson <peter@softwolves.pp.se>
   convert.cpp
     Prohibit ill-formed UTF-8 sequences.

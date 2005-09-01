@@ -1,4 +1,4 @@
-// Written in 2000 by Peter Karlsson
+// Written in 2000-2005 by Peter Karlsson
 //
 // $Id$
 //
@@ -7,6 +7,10 @@
 #ifndef __MYTIME_H
 #define __MYTIME_H
 
+#ifdef HAVE_TIMEGM
+inline time_t my_mktime(struct tm *p)
+{ return timegm(p); }
+#else
 /**
  * Convert a tm structure to time_t, disregarding timezone.
  * This function behaves just like the standard C library function mktime,
@@ -16,5 +20,6 @@
  * not do any reliable timezone adjustments on the values we receive.
  */
 time_t my_mktime(struct tm *);
+#endif
 
 #endif
