@@ -347,18 +347,18 @@ Decoder *Decoder::GetDecoderByMIMEHeaders(const char *headers)
     const char *p;
     if (NULL != (p = strchr(start, ' ')))
     {
-    	if (p < next)
-    		next = p;
+        if (p < next)
+            next = p;
     }
     if (NULL != (p = strchr(start, 1)))
     {
-    	if (p < next)
-    		next = p;
+        if (p < next)
+            next = p;
     }
     if (NULL != (p = strchr(start, ',')))
     {
-    	if (p < next)
-    		next = p;
+        if (p < next)
+            next = p;
     }
 
     string charsetstring(start, next - start);
@@ -435,10 +435,10 @@ wstring UTF8Decoder::Decode(const string &input)
             // U+0080 - U+07FF
             ucs  = (*(i ++) & 0x1F) <<  6;
             ucs |=  *i      & 0x3F;
-			if (ucs < 0x80)
-			{
-				ucs = '?';
-			}
+            if (ucs < 0x80)
+            {
+                ucs = '?';
+            }
         }
         else if (0xE0 == (*i & 0xF0))
         {
@@ -446,10 +446,10 @@ wstring UTF8Decoder::Decode(const string &input)
             ucs  = (*(i ++) & 0x0F) << 12;
             ucs |= (*(i ++) & 0x3F) <<  6;
             ucs |=  *i      & 0x3F;
-			if (ucs < 0x800 || (ucs >= 0xD800 && ucs <= 0xDFFF))
-			{
-				ucs = '?';
-			}
+            if (ucs < 0x800 || (ucs >= 0xD800 && ucs <= 0xDFFF))
+            {
+                ucs = '?';
+            }
         }
         else if (0xF0 == (*i & 0xF8))
         {
@@ -458,10 +458,10 @@ wstring UTF8Decoder::Decode(const string &input)
             ucs |= (*(i ++) & 0x3F) << 12;
             ucs |= (*(i ++) & 0x3F) <<  6;
             ucs |=  *i      & 0x3F;
-			if (ucs < 0x10000)
-			{
-				ucs = '?';
-			}
+            if (ucs < 0x10000)
+            {
+                ucs = '?';
+            }
         }
         else if (0xF8 == (*i & 0xFC))
         {
@@ -471,10 +471,10 @@ wstring UTF8Decoder::Decode(const string &input)
             ucs |= (*(i ++) & 0x3F) << 12;
             ucs |= (*(i ++) & 0x3F) <<  6;
             ucs |=  *i      & 0x3F;
-			if (ucs < 0x200000)
-			{
-				ucs = '?';
-			}
+            if (ucs < 0x200000)
+            {
+                ucs = '?';
+            }
         }
         else if (0xFC == (*i & 0xFE))
         {
@@ -485,10 +485,10 @@ wstring UTF8Decoder::Decode(const string &input)
             ucs |= (*(i ++) & 0x3F) << 12;
             ucs |= (*(i ++) & 0x3F) <<  6;
             ucs |=  *i      & 0x3F;
-			if (ucs < 0x4000000)
-			{
-				ucs = '?';
-			}
+            if (ucs < 0x4000000)
+            {
+                ucs = '?';
+            }
         }
 
 #ifdef HAVE_WORKING_WSTRING

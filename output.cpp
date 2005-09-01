@@ -1,6 +1,6 @@
 // Copyright (c) 2000-2005 Peter Karlsson
 //
-// $Id: output.cpp,v 1.7 2001/10/27 10:56:39 peterk Exp $
+// $Id: output.cpp,v 1.8 2005/07/11 10:37:33 peterk Exp $
 //
 // This program is free software; you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -116,7 +116,7 @@ void TDisplay::WarningMessage(errormessages_e errormessage, int data)
 
 static string GetMessage(TDisplay::errormessages_e errormessage)
 {
-	string s;
+    string s;
 
     switch (errormessage)
     {
@@ -257,5 +257,5 @@ static string GetMessage(TDisplay::errormessages_e errormessage)
             break;
     }
 
-	return s;
+    return s;
 }

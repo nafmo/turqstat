@@ -70,10 +70,10 @@ public:
      */
     virtual wstring Decode(const string &input) = 0;
 
-	/**
-	 * Virtual destructor to avoid compiler warnings.
-	 */
-	virtual ~Decoder() {}
+    /**
+     * Virtual destructor to avoid compiler warnings.
+     */
+    virtual ~Decoder() {}
 };
 
 struct reversemap;
@@ -102,10 +102,10 @@ public:
      */
     virtual string Encode(const wstring &input) = 0;
 
-	/**
-	 * Virtual destructor to avoid compiler warnings.
-	 */
-	virtual ~Encoder() {}
+    /**
+     * Virtual destructor to avoid compiler warnings.
+     */
+    virtual ~Encoder() {}
 };
 
 struct tablemap;

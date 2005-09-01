@@ -44,13 +44,13 @@
 // Why isn't this functionality available in ANSI C++? *sigh*
 int fcompare(const string &s1, const string &s2, unsigned int max)
 {
-	size_t ls1 = s1.length();
-	if (max < ls1)
-		ls1 = max;
+    size_t ls1 = s1.length();
+    if (max < ls1)
+        ls1 = max;
 
-	size_t ls2 = s2.length();
-	if (max < ls2)
-		ls2 = max;
+    size_t ls2 = s2.length();
+    if (max < ls2)
+        ls2 = max;
 
     for (size_t i = 0; i < ls1 && i < ls2; i ++)
     {
@@ -85,13 +85,13 @@ inline wchar_t towupper(wchar_t wc)
 // Why isn't this functionality available in ANSI C++? *sigh*
 int fcompare(const wstring &s1, const wstring &s2, unsigned int max)
 {
-	size_t ls1 = s1.length();
-	if (max < ls1)
-		ls1 = max;
+    size_t ls1 = s1.length();
+    if (max < ls1)
+        ls1 = max;
 
-	size_t ls2 = s2.length();
-	if (max < ls2)
-		ls2 = max;
+    size_t ls2 = s2.length();
+    if (max < ls2)
+        ls2 = max;
 
     for (size_t i = 0; i < ls1 && i < ls2; i ++)
     {

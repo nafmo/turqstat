@@ -131,7 +131,7 @@ void TDisplay::WarningMessage(errormessages_e errormessage, int data)
 
 static QString GetMessage(TDisplay::errormessages_e errormessage)
 {
-	QString s;
+    QString s;
 
     switch (errormessage)
     {
@@ -295,5 +295,5 @@ static QString GetMessage(TDisplay::errormessages_e errormessage)
             break;
     }
 
-	return s;
+    return s;
 }
