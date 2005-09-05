@@ -1,6 +1,7 @@
 turqstat (2.2.2.1) stable-security; urgency=high
 
   * CAN-2005-2658: Fixed buffer overrun in date parser.
+  * Fixed build problems on some platforms.
 
  -- Peter Karlsson <peterk@debian.org>  Mon, 05 Sep 2005 15:54:00 +0100
 

@@ -409,11 +409,11 @@ QString TopListWindow::charConvert(wstring &inputstring)
 }
 
 QString TopListWindow::percentString(int numerator, int denumerator)
-    return s;
 {
     float percent =
         (100.0 * numerator) / (float) denumerator;
-    s = QString::number(percent, 'f', 2) + "%";
+    QString s = QString::number(percent, 'f', 2) + "%";
+    return s;
 }
 
 void TopListWindow::saveToFile()

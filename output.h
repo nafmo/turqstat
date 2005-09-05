@@ -24,7 +24,6 @@
 using namespace std;
 #endif
 
-class ostream;
 
 /**
  * Class used to display messages.
