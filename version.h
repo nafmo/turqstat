@@ -1,4 +1,4 @@
-// Copyright (c) 1998-2001 Peter Karlsson
+// Copyright (c) 1998-2005 Peter Karlsson
 //
 // $Id$
 //
@@ -25,12 +25,12 @@ using namespace std;
 #endif
 
 /** String describing the current version number. */
-const string version = "2.2.1";
+const string version = "2.2.2";
 
 /** String describing the copyright information. */
-const string copyright = "(c) Copyright 1998-2001 Peter Karlsson";
+const string copyright = "(c) Copyright 1998-2005 Peter Karlsson";
 
 /** String describing the release year for this version. */
-const string releaseyear = "2001";
+const string releaseyear = "2005";
 
 #endif
