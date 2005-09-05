@@ -1,3 +1,7 @@
+2005-09-05 - Peter Karlsson <peter@softwolves.pp.se>
+  utility.cpp
+    Fixed buffer overrun condition.
+
 2001-12-27 - peter karlsson <peter@softwolves.pp.se>
   version.h
   debian/
