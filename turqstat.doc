@@ -322,6 +322,8 @@ HISTORY
   Compile with multi-threaded Qt library by default.
 2005-08-16 - v2.2.3 -
   Fix compile errors to build with modern tools.
+2005-09-05 - v2.2.4 -
+  Fixed buffer overrun in date parser (CAN-2005-2658).
 
 
 INCLUDED FILES
