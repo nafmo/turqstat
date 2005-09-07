@@ -2,7 +2,7 @@ turqstat (2.2.1.woody1) oldstable-security; urgency=high
 
   * CAN-2005-2658: Fixed buffer overrun in date parser.
 
- -- Peter Karlsson <peterk@debian.org>  Mon, 05 Sep 2005 15:45:00 +0100
+ -- Peter Karlsson <peterk@debian.org>  Wed, 07 Sep 2005 15:30:00 +0100
 
 turqstat (2.2.1) unstable; urgency=low
 
