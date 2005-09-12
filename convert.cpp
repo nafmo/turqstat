@@ -296,9 +296,7 @@ Decoder *Decoder::GetDecoderByKludges(const char *kludges)
 Decoder *Decoder::GetDecoderByMIMEHeaders(const char *headers)
 {
     // Find charset identifier
-#if defined(HAVE_STRCASESTR)
-    char *charset = headers ? strcasestr(headers, "charset=") : NULL;
-#elif defined(HAVE_STRISTR)
+#if defined(HAVE_STRISTR)
     char *charset = headers ? stristr(headers, "charset=") : NULL;
 #else
     const char *charset = NULL;

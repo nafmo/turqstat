@@ -284,7 +284,6 @@ else
   fi
 fi
 
-AC_CHECK_FUNC(strcasestr, AC_DEFINE(HAVE_STRCASESTR, 1, [Define if C library includes strcasestr]))
 AC_CHECK_FUNC(stristr,    AC_DEFINE(HAVE_STRISTR,    1, [Define if C library includes stristr]))
 AC_CHECK_FUNC(strcasecmp, AC_DEFINE(HAVE_STRCASECMP, 1, [Define if C library includes strcasecmp]))
 AC_CHECK_FUNC(stricmp,    AC_DEFINE(HAVE_STRICMP,    1, [Define if C library includes stricmp]))
