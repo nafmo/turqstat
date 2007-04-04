@@ -18,6 +18,7 @@
 //                           ALL RIGHTS RESERVED.
 
 #include <config.h>
+#include <stdlib.h>
 #include <string>
 #ifdef HAVE_IOSTREAM
 # include <iostream>

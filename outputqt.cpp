@@ -15,6 +15,7 @@
 
 #include <config.h>
 
+#include <stdlib.h>
 #include <iostream>
 #include <qprogressdialog.h>
 #include <qmessagebox.h>

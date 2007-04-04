@@ -17,6 +17,7 @@
 #include <time.h>
 #include <string.h>
 #include <stdio.h>
+#include <stdlib.h>
 #include <string>
 
 #include "squishread.h"
