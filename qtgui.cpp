@@ -57,6 +57,7 @@
 #include "squishread.h"
 #include "fdapxread.h"
 #include "jamread.h"
+#include "smbread.h"
 #include "mypointread.h"
 #include "sdmread.h"
 #include "tanstaaflread.h"
@@ -276,7 +277,7 @@ InfoWindow *InfoWindow::getMainWindow()
 // Open a message base
 void InfoWindow::open()
 {
-#define NUMFILTERS 8
+#define NUMFILTERS 9
     const QString filter[NUMFILTERS] =
     {
 #define FTSCSDM 0
@@ -289,11 +290,13 @@ void InfoWindow::open()
         tr("FDAPX/w (msgstat.apx)"),
 #define JAM 4
         tr("JAM (*.jdt)"),
-#define MYPOINT 5
+#define SMB 5
+        tr("SMB (*.shd)"),
+#define MYPOINT 6
         tr("MyPoint (mypoint.*)"),
-#define TANSTAAFL 6
+#define TANSTAAFL 7
         tr("Tanstaafl (msgstat.tfl)"),
-#define USENET 7
+#define USENET 8
         tr("News (.overview)")
     };
 
@@ -388,6 +391,10 @@ void InfoWindow::open()
 
         case JAM:
             area = new JamRead(path);
+            break;
+
+        case SMB:
+            area = new SMBRead(path);
             break;
 
         case MYPOINT:

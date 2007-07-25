@@ -46,6 +46,7 @@
 #include "squishread.h"
 #include "fdapxread.h"
 #include "jamread.h"
+#include "smbread.h"
 #include "mypointread.h"
 #include "sdmread.h"
 #include "tanstaaflread.h"
@@ -77,6 +78,7 @@ public:
         opus,       ///< Opus SDM message base format.
         fdapx,      ///< FDAPX/w message base format.
         jam,        ///< JAM message base format.
+        smb,        ///< SMB message base format.
         mypoint,    ///< MyPoint message base format.
         tanstaafl,  ///< Tanstaafl message base format.
 #if defined(HAVE_NNTP)
@@ -153,9 +155,9 @@ int main(int argc, char *argv[])
     // Handle arguments
     int c;
 #if defined(HAVE_LOCALE_H) || defined(HAVE_OS2_COUNTRYINFO) || defined(HAVE_WIN32_LOCALEINFO)
-    while (EOF != (c = getopt(argc, argv, "d:n:a:r:C:smofjptuQWRSPOHDVNTALU?")))
+    while (EOF != (c = getopt(argc, argv, "d:n:a:r:C:smofjbptuQWRSPOHDVNTALU?")))
 #else
-    while (EOF != (c = getopt(argc, argv, "d:n:a:r:C:smofjptuQWRSPOHDVNTAU?")))
+    while (EOF != (c = getopt(argc, argv, "d:n:a:r:C:smofjbptuQWRSPOHDVNTAU?")))
 #endif
     {
         switch (c)
@@ -171,6 +173,7 @@ int main(int argc, char *argv[])
             case 'o':   basetype = StatRetr::opus;                  break;
             case 'f':   basetype = StatRetr::fdapx;                 break;
             case 'j':   basetype = StatRetr::jam;                   break;
+            case 'b':   basetype = StatRetr::smb;                   break;
             case 'p':   basetype = StatRetr::mypoint;               break;
             case 't':   basetype = StatRetr::tanstaafl;             break;
 #if defined(HAVE_NNTP)
@@ -307,6 +310,10 @@ StatRetr::StatRetr(StatEngine &engine, StatView &view,
                 area = new JamRead(areapath[counter]);
                 break;
 
+            case smb:
+                area = new SMBRead(areapath[counter]);
+                break;
+
             case mypoint:
                 areanum = strtoul(areapath[counter], NULL, 10);
                 area = new MyPointRead(basepath, areanum);
@@ -369,13 +376,12 @@ void helpscreen(void)
          << endl;
     cout << endl;
     cout << "Input selection options:" << endl;
-    cout << "  -s  Squish       -j  JAM          -p  MyPoint*" << endl;
-    cout << "  -m  FTSC *.MSG   -f  FDAPX/w*"
-#if defined(HAVE_NNTP)
-                                            "     -U  Usenet nntp server**"
-#endif
-         << endl;
+    cout << "  -s  Squish       -j  JAM          -b SMB" << endl;
+    cout << "  -p  MyPoint*     -m  FTSC *.MSG   -f  FDAPX/w*" << endl;
     cout << "  -o  Opus *.MSG   -t  Tanstaafl*   -u  Usenet news spool" << endl;
+#if defined(HAVE_NNTP)
+    cout << "     -U  Usenet nntp server**" << endl;
+#endif
     cout << "    * = requires -a parameter         ** = use -a for server" << endl;
     cout << endl;
     cout << "Output selection options (turns off respective list):" << endl;

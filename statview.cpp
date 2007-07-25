@@ -119,7 +119,7 @@ bool StatView::CreateReport(StatEngine *engine, string filename)
 #endif
         strftime(date, 64, "%Y-%m-%d %H:%M:%S", p1);
 
-    report << "between " << date << " and ";
+    report << "between " << endl << date << " and ";
 
     time_t latest = engine->GetLastReceived();
     struct tm *p2 = gmtime(&latest);
@@ -134,7 +134,7 @@ bool StatView::CreateReport(StatEngine *engine, string filename)
 
     if (engine->HasArrivalTime())
     {
-        report << " (written between ";
+        report << endl << "(written between ";
 
         time_t wearliest = engine->GetEarliestWritten();
         struct tm *p3 = gmtime(&wearliest);
@@ -250,7 +250,7 @@ bool StatView::CreateReport(StatEngine *engine, string filename)
             unsigned long long totalqbytes = engine->GetTotalQBytes();
 
             report << "A total of " << totalbytes << " bytes were written "
-                      "(message bodies only), of which " << totalqbytes
+                      "(message bodies only), " << endl << "of which " << totalqbytes
                    << ", or ";
 
             unsigned percentquotes =
@@ -380,7 +380,7 @@ bool StatView::CreateReport(StatEngine *engine, string filename)
                   "----------------------------------" << endl;
 
         report << "Toplist of original content per message (of people "
-                  "who have written at least three messages)" << endl;
+                  "who have written at least " << endl << "three messages)" << endl;
         report << endl;
 
         unsigned place = 1;
@@ -554,7 +554,7 @@ bool StatView::CreateReport(StatEngine *engine, string filename)
             {
                 restart = false;
 
-                report << "Place Domain Messages    Bytes" << endl;
+                report << "Place Domain                                                Messages    Bytes" << endl;
             }
 
             if (!showallnums && data.messages == oldcount)
@@ -571,13 +571,13 @@ bool StatView::CreateReport(StatEngine *engine, string filename)
             }
 
 #if defined(HAVE_FSTREAM_FORM_METHOD)
-            report.form("%-7.7s%8u %8u",
+            report.form("%-54.54s%8u %8u",
                         data.topdomain.c_str(), data.messages, data.bytes);
 #else
-            string tmp(data.topdomain, 0, 7);
-            report << left << setw(7) << tmp
+            string tmp(data.topdomain, 0, 54);
+            report << left << setw(54) << tmp
                    << right << setw(8) << data.messages << " "
-                   << setw(8) << data.bytes << endl;
+                   << setw(8) << data.bytes;
 #endif
 
             report << endl;
@@ -816,7 +816,7 @@ bool StatView::CreateReport(StatEngine *engine, string filename)
 
         report << "A total of " << engine->GetTotalPrograms()
                << " different programs (not counting different versions) "
-                  "were identified." << endl;
+               << endl << "were identified." << endl;
         report << endl;
     }
 
