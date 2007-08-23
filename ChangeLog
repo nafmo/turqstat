@@ -1,3 +1,10 @@
+2007-08-23 - Stephen Hurd <shurd@sasktel.net>
+  Makefile.in
+  qtgui.cpp
+  statview.cpp
+  turqstat.cpp
+    Preparations for Synchronet message base format support.
+
 2005-09-12 - Peter Karlsson <peter@softwolves.pp.se>
   config.h.in
   configure.in
