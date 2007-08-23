@@ -1,5 +1,4 @@
 @echo off
-rem $Id$
 
 setlocal
 unalias /q copy deltree make del

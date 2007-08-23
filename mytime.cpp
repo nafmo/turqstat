@@ -1,7 +1,5 @@
 // mktime.c (emx+gcc) -- Copyright (c) 1990-1996 by Eberhard Mattes
 //
-// $Id$
-//
 // The emx libraries are not distributed under the GPL.  Linking an
 // application with the emx libraries does not cause the executable to be
 // covered by the GNU General Public License.  You are allowed to change

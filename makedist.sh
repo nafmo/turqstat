@@ -1,5 +1,4 @@
 #!/bin/bash
-# $Id$
 
 if [ "$1" == "" ]; then
   echo -n "Ange versionsnummer: "

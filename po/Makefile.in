@@ -1,7 +1,5 @@
 # Makefile.in for Turquoise SuperStat
 # Install Qt translation files
-#
-# $Id$
 
 # Variables
 QM=sv.qm

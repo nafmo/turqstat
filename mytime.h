@@ -1,7 +1,5 @@
 // Written in 2000-2005 by Peter Karlsson
 //
-// $Id$
-//
 // This file is not copyrighted.
 
 #ifndef __MYTIME_H

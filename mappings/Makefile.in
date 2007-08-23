@@ -1,6 +1,4 @@
 # Makefile.in for the mapping tables
-#
-# $Id$
 
 # Variables
 CXXFLAGS=@CXXFLAGS@ -I.. -Wall
