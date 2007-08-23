@@ -1,3 +1,15 @@
+2007-08-23 - Martin Michlmayr <tbm@cyrius.com>
+  squishread.cpp
+  fdapxread.cpp
+  mypointread.cpp
+  sdmread.cpp
+  tanstaaflread.cpp
+  newsspoolread.cpp
+  output.cpp
+  nntpread.cpp
+  outputqt.cpp
+    Added missing includes for GCC 4.3.
+
 2005-09-12 - Peter Karlsson <peter@softwolves.pp.se>
   config.h.in
   configure.in
