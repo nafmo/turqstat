@@ -1,3 +1,10 @@
+turqstat (2.2.5-1) unstable; urgency=low
+
+  * Applied patch to fix include headers for GNU C++ 4.3.
+   (Closes: Bug#417734)
+
+ -- Peter Karlsson <peterk@debian.org>  UNRELEASED
+
 turqstat (2.2.4-1) unstable; urgency=high
 
   * CAN-2005-2658: Fixed buffer overrun in date parser.
