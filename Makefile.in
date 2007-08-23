@@ -18,6 +18,11 @@ TEALEXE=teal@EXEEXT@
 DEF=@DEF@
 prefix=@prefix@
 exec_prefix=@exec_prefix@
+ifeq (,$(findstring nostrip,$(DEB_BUILD_OPTIONS)))
+INSTALL_OPTS=-s
+else
+INSTALL_OPTS=
+endif
 
 # Magic targets
 all: $(EXE)
@@ -49,7 +54,7 @@ debianclean:
 @NOINST@
 @NOINST@install-text: turqstat@EXEEXT@
 @NOINST@	install -d $(DESTDIR)@bindir@ $(DESTDIR)@datadir@/doc/turqstat/ $(DESTDIR)@datadir@/doc/turqstat/sv/ $(DESTDIR)@mandir@/man1 $(DESTDIR)@mandir@/sv/man1/
-@NOINST@	install -s turqstat@EXEEXT@ $(DESTDIR)@bindir@
+@NOINST@	install $(INSTALL_OPTS) turqstat@EXEEXT@ $(DESTDIR)@bindir@
 @NOINST@	install -m 644 turqstat.doc $(DESTDIR)@datadir@/doc/turqstat/
 @NOINST@	install -m 644 turqstat.dok $(DESTDIR)@datadir@/doc/turqstat/sv/
 @NOINST@	install -m 644 turqstat.1   $(DESTDIR)@mandir@/man1/
@@ -57,7 +62,7 @@ debianclean:
 @NOINST@
 @NOINST@@QT@install-qt: xturqstat@EXEEXT@
 @NOINST@@QT@	install -d $(DESTDIR)@bindir@ $(DESTDIR)@datadir@/doc/xturqstat/ $(DESTDIR)@datadir@/doc/xturqstat/sv/ $(DESTDIR)@mandir@/man1/ $(DESTDIR)@mandir@/sv/man1/
-@NOINST@@QT@	install -s xturqstat@EXEEXT@ $(DESTDIR)@bindir@
+@NOINST@@QT@	install $(INSTALL_OPTS) xturqstat@EXEEXT@ $(DESTDIR)@bindir@
 @NOINST@@QT@	install -m 644 turqstat.doc $(DESTDIR)@datadir@/doc/xturqstat/
 @NOINST@@QT@	install -m 644 turqstat.dok $(DESTDIR)@datadir@/doc/xturqstat/sv/
 @NOINST@@QT@	install -m 644 xturqstat.1  $(DESTDIR)@mandir@/man1/

@@ -1,3 +1,9 @@
+2007-08-23 - Peter Karlsson <peterk@debian.org>
+  Makefile.in
+  debian/
+    Added support for installing unstripped binaries.
+    Debian bug#438227.
+
 2007-08-23 - Martin Michlmayr <tbm@cyrius.com>
   squishread.cpp
   fdapxread.cpp
@@ -8,7 +14,9 @@
   output.cpp
   nntpread.cpp
   outputqt.cpp
+  debian/
     Added missing includes for GCC 4.3.
+    Debian bug#417734.
 
 2005-09-12 - Peter Karlsson <peter@softwolves.pp.se>
   config.h.in
