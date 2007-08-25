@@ -24,6 +24,10 @@
 
 class StatEngine;
 
+#if defined(__GNUC__) || defined(__EMX__)
+# pragma pack(1)
+#endif
+
 /**
  * Class that reads "star-dot-MSG" message bases.
  * This class reads message bases stored in standard Fidonet *.MSG format,
@@ -102,7 +106,7 @@ protected:
 };
 
 #if defined(__GNUC__) || defined(__EMX__)
-# pragma pack()
+# pragma pack(pop)
 #endif
 
 #endif

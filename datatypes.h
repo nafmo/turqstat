@@ -124,7 +124,7 @@ private:
     uint8_t data[4]; ///< 32 bits in a byte field
 };
 # if defined(__GNUC__) || defined(__EMX__)
-#  pragma pack()
+#  pragma pack(pop)
 # endif
 #else
 # define le_uint16_t uint16_t

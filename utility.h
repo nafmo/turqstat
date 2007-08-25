@@ -48,7 +48,7 @@ struct stamp_s
 };
 
 #if defined(__GNUC__) || defined(__EMX__)
-# pragma pack()
+# pragma pack(pop)
 #endif
 
 /** Highest possible time_t value */

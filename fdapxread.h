@@ -112,7 +112,7 @@ protected:
 };
 
 #if defined(__GNUC__) || defined(__EMX__)
-# pragma pack()
+# pragma pack(pop)
 #endif
 
 #endif
