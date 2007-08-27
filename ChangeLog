@@ -1,4 +1,11 @@
 2007-08-27 - Peter Karlsson <peter@softwolves.pp.se>
+  lexer.h
+  lexer.cpp
+  templates/default.tpl
+    Fixed compile errors and made lexer able to parse the default
+    template.
+
+2007-08-27 - Peter Karlsson <peter@softwolves.pp.se>
   datatypes.h
   fdapxread.h
   jamread.h
