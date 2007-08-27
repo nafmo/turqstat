@@ -1,4 +1,4 @@
-// Copyright (c) 2002 Peter Karlsson
+// Copyright (c) 2002-2007 Peter Karlsson
 //
 // This program is free software; you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -18,19 +18,21 @@
 #include "utility.h"
 #include "lexer.h"
 
+#include <iostream>
+
 Token *Token::Parse(const string &line, bool &error)
 {
     if (';' == line[0])
     {
         if (';' == line[1])
         {
-cout << "DEBUG: DOUBLE SEMICOLON \"" << line << '"' << endl;
+std::cout << "DEBUG: DOUBLE SEMICOLON \"" << line << '"' << std::endl;
             // Double semi-colon means that line starts with a semi-colon
             return Parse2(line.substr(1), error);
         }
         else
         {
-cout << "DEBUG: COMMENT \"" << line << '"' << endl;
+std::cout << "DEBUG: COMMENT \"" << line << '"' << std::endl;
             // Line is a comment
             return NULL;
         }
@@ -41,13 +43,13 @@ cout << "DEBUG: COMMENT \"" << line << '"' << endl;
         string::size_type endbracket = line.find(']');
         if (string::npos == endbracket)
         {
-cout << "DEBUG: MALFORMED SECTION \"" << line << '"' << endl;
+std::cout << "DEBUG: MALFORMED SECTION \"" << line << '"' << std::endl;
             error = true;
             return NULL;
         }
         else
         {
-cout << "DEBUG: SECTION \"" << line << '"' << endl;
+std::cout << "DEBUG: SECTION \"" << line << '"' << std::endl;
             return new Section(line.substr(1, endbracket - 1), error);
         }
     }
@@ -58,7 +60,7 @@ cout << "DEBUG: SECTION \"" << line << '"' << endl;
 
 Token *Token::Parse2(string line, bool &error)
 {
-cout << "DEBUG: Parse2(\"" << line << "\", bool error = " << error << ")" << endl;
+std::cout << "DEBUG: Parse2(\"" << line << "\", bool error = " << error << ")" << std::endl;
 
     string::size_type pos = 0;
     Token *head = NULL;
@@ -118,11 +120,13 @@ cout << "DEBUG: Parse2(\"" << line << "\", bool error = " << error << ")" << end
 Section::Section(string s, bool &error)
     : Token()
 {
-cout << "DEBUG: Section::Section(\"" << s << "\", bool error = " << error << ")" << endl;
+std::cout << "DEBUG: Section::Section(\"" << s << "\", bool error = " << error << ")" << std::endl;
 
     if (0 == fcompare(s, "Common"))          m_section = Common;
-    else if (0 == fcompare(s, "IfEmpty"))    m_section = IfNotNews;
+    else if (0 == fcompare(s, "IfEmpty"))    m_section = IfEmpty;
+    else if (0 == fcompare(s, "IfNotNews"))  m_section = IfNotNews;
     else if (0 == fcompare(s, "IfNews"))     m_section = IfNews;
+    else if (0 == fcompare(s, "Original"))   m_section = Original;
     else if (0 == fcompare(s, "Quoters"))    m_section = Quoters;
     else if (0 == fcompare(s, "Writers"))    m_section = Writers;
     else if (0 == fcompare(s, "TopNets"))    m_section = TopNets;
@@ -134,14 +138,14 @@ cout << "DEBUG: Section::Section(\"" << s << "\", bool error = " << error << ")"
     else if (0 == fcompare(s, "Day"))        m_section = Day;
     else error = true;
 
-cout << "  ==> section == " << (int) m_section << "; error = " << error << endl;
+std::cout << "  ==> section == " << (int) m_section << "; error = " << error << std::endl;
 }
 
 Variable::Variable(string s, bool &error)
     : Token(),
       m_width(0)
 {
-cout << "DEBUG: Variable::Variable(\"" << s << "\", bool error = " << error << ")" << endl;
+std::cout << "DEBUG: Variable::Variable(\"" << s << "\", bool error = " << error << ")" << std::endl;
 
     string::size_type bracket1 = s.find('[');
     string::size_type bracket2 = s.find(']', bracket1 + 1);
@@ -174,25 +178,26 @@ cout << "DEBUG: Variable::Variable(\"" << s << "\", bool error = " << error << "
         SetVariable(s, error);
     }
 
-cout << "  ==> type = " << m_type << ", width = " << m_width << ", lang = " << m_languagetoken << ", error = " << error << ")" << endl;
+std::cout << "  ==> type = " << m_type << ", width = " << m_width << ", lang = " << m_languagetoken << ", error = " << error << ")" << std::endl;
 }
 
 void Variable::SetWidth(string s)
 {
-cout << " Variable::SetWidth(\"" << s << "\")" << endl;
+std::cout << " Variable::SetWidth(\"" << s << "\")" << std::endl;
     m_width = atoi(s.c_str());
 }
 
 void Variable::SetLanguage(string s)
 {
-cout << " Variable::SetLanguage(\"" << s << "\")" << endl;
+std::cout << " Variable::SetLanguage(\"" << s << "\")" << std::endl;
     m_languagetoken = s;
 }
 
 void Variable::SetVariable(string s, bool &error)
 {
-cout << " Variable::SetVariable(\"" << s << "\")" << endl;
-    if (0 == fcompare(s, "Totals"))                  m_type = Totals;
+std::cout << " Variable::SetVariable(\"" << s << "\")" << std::endl;
+    if (0 == fcompare(s, "Version"))                 m_type = Version;
+    else if (0 == fcompare(s, "Totals"))             m_type = Totals;
     else if (0 == fcompare(s, "Place"))              m_type = Place;
     else if (0 == fcompare(s, "Name"))               m_type = Name;
     else if (0 == fcompare(s, "Written"))            m_type = Written;
@@ -202,6 +207,10 @@ cout << " Variable::SetVariable(\"" << s << "\")" << endl;
     else if (0 == fcompare(s, "BytesQuoted"))        m_type = BytesQuoted;
     else if (0 == fcompare(s, "BytesQuotedPercent")) m_type = BytesQuotedPercent;
     else if (0 == fcompare(s, "TotalPeople"))        m_type = TotalPeople;
+    else if (0 == fcompare(s, "TotalNets"))          m_type = TotalNets;
+    else if (0 == fcompare(s, "TotalDomains"))       m_type = TotalDomains;
+    else if (0 == fcompare(s, "TotalSubjects"))      m_type = TotalSubjects;
+    else if (0 == fcompare(s, "TotalPrograms"))      m_type = TotalPrograms;
     else if (0 == fcompare(s, "BytesOriginal"))      m_type = BytesOriginal;
     else if (0 == fcompare(s, "PerMessage"))         m_type = PerMessage;
     else if (0 == fcompare(s, "Fidonet"))            m_type = Fidonet;

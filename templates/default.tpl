@@ -1,5 +1,5 @@
 ; Default template file for Turquoise SuperStat reports
-; © 2002 Peter Karlsson
+; © 2002-2007 Peter Karlsson
 ;
 ; Any line starting with a semi-colon will be ignored. To start a line with
 ; a semi-colon in the final report, start the line with two semi-colons. Empty
@@ -53,7 +53,7 @@ A total of @totalpeople@ people were idenetified.
 Toplist of original content per message (of people who have written at least three messages)
 
 Place Name                                        Orig. / Msgs = PrMsg Quoted
-@place[4]@. @name[43]@bytesoriginal[6]@ /@written[5] = @permessage[5]@ @ratio@
+@place[4]@. @name[43]@@bytesoriginal[6]@ /@written[5]@ = @permessage[5]@ @ratio@
 
 [TopNets]
 -----------------------------------------------------------------------------

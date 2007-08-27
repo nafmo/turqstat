@@ -96,8 +96,8 @@ public:
         // Common sections
         Common, IfEmpty, IfNotNews, IfNews,
         // Toplist sections
-        Quoters, Writers, TopNets, TopDomains, Received, Subjects, Programs,
-        Week, Day
+        Original, Quoters, Writers, TopNets, TopDomains, Received,
+        Subjects, Programs, Week, Day
     };
 
     /** Poor man's RTTI. Check if this is a section token. */
@@ -120,10 +120,11 @@ public:
     /** List of variable types known. */
     enum variabletype
     {
-        Totals, Place, Name, Written, BytesWritten, Ratio, BytesTotal,
-        BytesQuoted, BytesQuotedPercent, TotalPeople, BytesOriginal,
-        PerMessage, Fidonet, TopDomain, Received, ReceiveRatio, Subject,
-        Program, Day, Bar, Hour
+        Version, Totals, Place, Name, Written, BytesWritten, Ratio, BytesTotal,
+        BytesQuoted, BytesQuotedPercent, TotalPeople, TotalNets, TotalDomains,
+        TotalSubjects, TotalPrograms,
+        BytesOriginal, PerMessage, Fidonet, TopDomain, Received, ReceiveRatio,
+        Subject, Program, Day, Bar, Hour
     };
 
     /** Poor man's RTTI. Check if this is a variable token. */
