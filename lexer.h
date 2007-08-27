@@ -1,4 +1,4 @@
-// Copyright (c) 2002 Peter Karlsson
+// Copyright (c) 2002-2007 Peter Karlsson
 //
 // This program is free software; you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -13,7 +13,14 @@
 // along with this program; if not, write to the Free Software
 // Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 
+#ifndef __LEXER_H
+#define __LEXER_H
+
 #include <string>
+
+#if !defined(HAVE_IMPLICIT_NAMESPACE)
+using namespace std;
+#endif
 
 /**
  * Linked list of lexical token. This class describes a linked list of tokens
@@ -133,11 +140,11 @@ private:
     /** Constructor. Initialize the variable from the string describing it. */
     Variable(string s, bool &error);
     /** Helper method to the constructor. */
-    void Variable::SetWidth(string);
+    void SetWidth(string);
     /** Helper method to the constructor. */
-    void Variable::SetLanguage(string);
+    void SetLanguage(string);
     /** Helper method to the constructor. */
-    void Variable::SetVariable(string, bool &error);
+    void SetVariable(string, bool &error);
 
     /** Variable described by this token. */
     variabletype m_type;
@@ -146,3 +153,5 @@ private:
     /** Language set for this token. */
     string m_languagetoken;
 };
+
+#endif
