@@ -71,7 +71,7 @@
 #if defined(WORDS_BIGENDIAN)
 # include <string.h>
 # if defined(__GNUC__) || defined(__EMX__)
-#  pragma pack(1)
+#  pragma pack(push, 1)
 # endif
 
 // Little-endian emulation layer

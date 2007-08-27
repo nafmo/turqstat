@@ -23,7 +23,7 @@
 #include "utility.h"
 
 #if defined(__GNUC__) || defined(__EMX__)
-# pragma pack(1)
+# pragma pack(push, 1)
 #endif
 
 class StatEngine;
