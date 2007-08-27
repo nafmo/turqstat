@@ -1,0 +1,12 @@
+Makefile
+config.h
+config.log
+config.status
+doxygen.conf
+turqstat
+xturqstat
+teal
+*.o
+*.qm
+moc_*
+*.moc
