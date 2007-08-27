@@ -1,4 +1,16 @@
-2007-08-23 - Peter Karlsson <peterk@debian.org>
+2007-08-25 - Peter Karlsson <peter@softwolves.pp.se>
+  datatypes.h
+  fdapxread.h
+  jamread.h
+  mypointread.h
+  sdmread.h
+  squishread.h
+  tanstaaflread.h
+  utility.h
+    Fixed pragma pack(1)/pack(pop) directives. Fixes compile with Xcode
+    with GCC 4.0.
+
+2007-08-23 - Peter Karlsson <peter@softwolves.pp.se>
   Makefile.in
   debian/
     Added support for installing unstripped binaries.
