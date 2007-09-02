@@ -161,7 +161,7 @@ std::cout << "DEBUG: Variable::Variable(\"" << s << "\", bool error = " << error
         }
         else
         {
-            SetLanguage(s.substr(bracket1 + 1, bracket2 - bracket1 - 1));
+            error = true;
         }
 
         // Find next bracket, if any
@@ -178,7 +178,7 @@ std::cout << "DEBUG: Variable::Variable(\"" << s << "\", bool error = " << error
         SetVariable(s, error);
     }
 
-std::cout << "  ==> type = " << m_type << ", width = " << m_width << ", lang = " << m_languagetoken << ", error = " << error << ")" << std::endl;
+std::cout << "  ==> type = " << m_type << ", width = " << m_width << ", error = " << error << ")" << std::endl;
 }
 
 void Variable::SetWidth(string s)
@@ -187,17 +187,13 @@ std::cout << " Variable::SetWidth(\"" << s << "\")" << std::endl;
     m_width = atoi(s.c_str());
 }
 
-void Variable::SetLanguage(string s)
-{
-std::cout << " Variable::SetLanguage(\"" << s << "\")" << std::endl;
-    m_languagetoken = s;
-}
-
 void Variable::SetVariable(string s, bool &error)
 {
 std::cout << " Variable::SetVariable(\"" << s << "\")" << std::endl;
     if (0 == fcompare(s, "Version"))                 m_type = Version;
-    else if (0 == fcompare(s, "Totals"))             m_type = Totals;
+    else if (0 == fcompare(s, "Copyright"))          m_type = Copyright;
+    else if (0 == fcompare(s, "IfReceived"))         m_type = IfReceived;
+    else if (0 == fcompare(s, "IfAreas"))            m_type = IfAreas;
     else if (0 == fcompare(s, "Place"))              m_type = Place;
     else if (0 == fcompare(s, "Name"))               m_type = Name;
     else if (0 == fcompare(s, "Written"))            m_type = Written;
@@ -206,11 +202,17 @@ std::cout << " Variable::SetVariable(\"" << s << "\")" << std::endl;
     else if (0 == fcompare(s, "BytesTotal"))         m_type = BytesTotal;
     else if (0 == fcompare(s, "BytesQuoted"))        m_type = BytesQuoted;
     else if (0 == fcompare(s, "BytesQuotedPercent")) m_type = BytesQuotedPercent;
+    else if (0 == fcompare(s, "TotalMessages"))      m_type = TotalMessages;
+    else if (0 == fcompare(s, "TotalAreas"))         m_type = TotalAreas;
     else if (0 == fcompare(s, "TotalPeople"))        m_type = TotalPeople;
     else if (0 == fcompare(s, "TotalNets"))          m_type = TotalNets;
     else if (0 == fcompare(s, "TotalDomains"))       m_type = TotalDomains;
     else if (0 == fcompare(s, "TotalSubjects"))      m_type = TotalSubjects;
     else if (0 == fcompare(s, "TotalPrograms"))      m_type = TotalPrograms;
+    else if (0 == fcompare(s, "EarliestReceived"))   m_type = EarliestReceived;
+    else if (0 == fcompare(s, "LastReceived"))       m_type = LastReceived;
+    else if (0 == fcompare(s, "EarliestWritten"))    m_type = EarliestWritten;
+    else if (0 == fcompare(s, "LastWritten"))        m_type = LastWritten;
     else if (0 == fcompare(s, "BytesOriginal"))      m_type = BytesOriginal;
     else if (0 == fcompare(s, "PerMessage"))         m_type = PerMessage;
     else if (0 == fcompare(s, "Fidonet"))            m_type = Fidonet;

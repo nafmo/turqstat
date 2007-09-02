@@ -120,11 +120,12 @@ public:
     /** List of variable types known. */
     enum variabletype
     {
-        Version, Totals, Place, Name, Written, BytesWritten, Ratio, BytesTotal,
-        BytesQuoted, BytesQuotedPercent, TotalPeople, TotalNets, TotalDomains,
-        TotalSubjects, TotalPrograms,
-        BytesOriginal, PerMessage, Fidonet, TopDomain, Received, ReceiveRatio,
-        Subject, Program, Day, Bar, Hour
+        Version, Copyright, IfReceived, IfAreas, Place, Name, Written,
+        BytesWritten, Ratio, BytesTotal, BytesQuoted, BytesQuotedPercent,
+        TotalMessages, TotalAreas, TotalPeople, TotalNets, TotalDomains,
+        TotalSubjects, TotalPrograms, EarliestReceived, LastReceived,
+        EarliestWritten, LastWritten, BytesOriginal, PerMessage, Fidonet,
+        TopDomain, Received, ReceiveRatio, Subject, Program, Day, Bar, Hour
     };
 
     /** Poor man's RTTI. Check if this is a variable token. */
@@ -133,8 +134,6 @@ public:
     variabletype GetType() const { return m_type; }
     /** Retrieve display width set for this token, or zero if none. */
     size_t GetWidth() const { return m_width; }
-    /** Retrieve language set for this token, or empty string if none. */
-    string GetLanguageToken() const { return m_languagetoken; }
 
 private:
     friend class Token;
@@ -143,16 +142,12 @@ private:
     /** Helper method to the constructor. */
     void SetWidth(string);
     /** Helper method to the constructor. */
-    void SetLanguage(string);
-    /** Helper method to the constructor. */
     void SetVariable(string, bool &error);
 
     /** Variable described by this token. */
     variabletype m_type;
     /** Display width set for this token. */
     int m_width;
-    /** Language set for this token. */
-    string m_languagetoken;
 };
 
 #endif

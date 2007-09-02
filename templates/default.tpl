@@ -5,6 +5,9 @@
 ; a semi-colon in the final report, start the line with two semi-colons. Empty
 ; lines in the input will create empty lines in the output.
 ;
+; A trailing backslash means that the line will not be terminated with a line
+; break. To include a trailing backslash, end the line with two backslashes.
+;
 ; Special tokens are inserted using @keyword@. To insert a literal @, double it.
 ;
 ; The file is read sequentially.
@@ -14,6 +17,8 @@
 Turquoise SuperStat @version@ * Message area statistics
 =================================================
 
+@copyright@
+
 ;
 ; What to do if the message area is empty. The report engine will exit after
 ; the [IfEmpty] section or the first non-[Common] section.
@@ -21,10 +26,20 @@ Turquoise SuperStat @version@ * Message area statistics
 Message area is empty.
 ;
 ; If it is not empty, we continue.
+; @ifareas@ will cause the line to be included only if more than one message
+; area or newsgroup was scanned.
+[IfNews]
+This report covers @totalmessages@ \
+@ifareas@in @totalareas@ groups, \
+[IfNotNews]
+This report covers @totalmessages@ \
+@ifareas@in @totalareas@ areas, \
+; @ifreceived@ will cause the line to be included only if information about
+; reception dates are available.
 [Common]
-; Display total values. The string within the brackets is the language for the
-; string. Please note that the language must be supported for this to work.
-@totals[en]@
+that were \
+@ifreceived@received at this system between @earliestreceived@ and @lastreceived@ and \
+written between @earliestwritten@ and @lastwritten@.
 
 [Quoters]
 -----------------------------------------------------------------------------
@@ -46,7 +61,7 @@ Place Name                                               Msgs    Bytes Quoted
 [IfNotNews]
 A total of @totalpeople@ people were identified (senders and recipients).
 [IfNews]
-A total of @totalpeople@ people were idenetified.
+A total of @totalpeople@ people were identified.
 
 [Original]
 -----------------------------------------------------------------------------
@@ -105,7 +120,7 @@ A total of @totalprograms@ different programs (not counting different versions) 
 Postings per weekday
 
 Day        Msgs
-@day[en][9]@@written[6]@ @bar[60]@
+@day[9]@@written[6]@ @bar[60]@
 
 [Day]
 -----------------------------------------------------------------------------
