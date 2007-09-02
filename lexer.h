@@ -76,14 +76,18 @@ public:
     virtual bool IsLiteral() const { return true; }
     /** Retrieve the string literal described by this token. */
     string GetLiteral() const { return m_literal; }
+    /** Check if this literal token should be followed by a linebreak. */
+    bool HasLineBreak() const { return m_linebreak; }
 
 private:
     friend class Token;
     /** Constructor. Initialize the string literal. */
-    Literal(string s) : Token(), m_literal(s) {}
+    Literal(string s, bool lineend = false);
 
     /** String literal described by this token. */
-    string m_literal;    
+    string m_literal;
+    /** String literal ends with line break. */
+    bool m_linebreak;
 };
 
 /** Lexical token describing a report section. */

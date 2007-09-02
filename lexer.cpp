@@ -101,7 +101,7 @@ std::cout << "DEBUG: Parse2(\"" << line << "\", bool error = " << error << ")" <
         pos = line.find('@');
         if (string::npos == pos)
         {
-            head = new Literal(line);
+            head = new Literal(line, true);
         }
         else
         {
@@ -115,6 +115,26 @@ std::cout << "DEBUG: Parse2(\"" << line << "\", bool error = " << error << ")" <
     }
 
     return head;
+}
+
+Literal::Literal(string s, bool lineend)
+    : Token(),
+      m_literal(s),
+      m_linebreak(lineend)
+{
+    // If the line ends with a single backslash, remove the linebreak.
+    // If the line ends with double backslashes, change them into one.
+    if (lineend)
+    {
+        string::size_type len = s.length();
+        if (m_literal[len - 1] == '\\')
+        {
+            // No matter what we erase the last character if it was a
+            // backslash.
+            m_literal.erase(len - 1);
+            m_linebreak = m_literal[len - 2] == '\\';
+        }
+    }
 }
 
 Section::Section(string s, bool &error)
