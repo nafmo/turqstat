@@ -5,6 +5,9 @@
     Replaced magic "totals" token with separate tokens for reporting
     the totals.
 
+  turqstat.kdevelop
+    Added project file for KDevelop.
+
 2007-08-27 - Peter Karlsson <peter@softwolves.pp.se>
   lexer.h
   lexer.cpp
