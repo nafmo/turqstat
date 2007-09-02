@@ -1,3 +1,10 @@
+2007-09-02 - Peter Karlsson <peter@softwolves.pp.se>
+  lexer.h
+  lexer.cpp
+  templates/default.tpl
+    Replaced magic "totals" token with separate tokens for reporting
+    the totals.
+
 2007-08-27 - Peter Karlsson <peter@softwolves.pp.se>
   lexer.h
   lexer.cpp
