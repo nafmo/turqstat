@@ -1,6 +1,6 @@
-Turquoise SuperStat 2.2 - Ett mötesstatistikprogram för Fidonet och Usenet
-(c) Copyright 1998-2005 Peter Karlsson.
-A Softwolves Software Release in 2005
+Turquoise SuperStat 3.0 - Ett mötesstatistikprogram för Fidonet och Usenet
+(c) Copyright 1998-2007 Peter Karlsson.
+A Softwolves Software Release in 2007
 
 http://www.softwolves.pp.se/sw/
 
@@ -324,6 +324,8 @@ HISTORIK
   Rättade kompileringsfel för att bygga med moderna verktyg.
 2005-09-05 - v2.2.4 -
   Rättade buffertspill i datuminläsningen (CAN-2005-2658).
+????-??-?? - v3.0 -
+  Lade till stöd för mallar som beskriver utdataformatet.
 
 
 BIFOGADE FILER

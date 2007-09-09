@@ -1,4 +1,4 @@
-// Copyright (c) 1998-2005 Peter Karlsson
+// Copyright (c) 1998-2007 Peter Karlsson
 //
 // This program is free software; you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -23,12 +23,12 @@ using namespace std;
 #endif
 
 /** String describing the current version number. */
-const string version = "2.2";
+const string version = "3.0";
 
 /** String describing the copyright information. */
-const string copyright = "(c) Copyright 1998-2005 Peter Karlsson";
+const string copyright = "(c) Copyright 1998-2007 Peter Karlsson";
 
 /** String describing the release year for this version. */
-const string releaseyear = "2005";
+const string releaseyear = "2007";
 
 #endif

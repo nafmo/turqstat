@@ -1,5 +1,7 @@
-turqstat (2.2.5-1) unstable; urgency=low
+turqstat (3.0-1) unstable; urgency=low
 
+  * New upstream release.
+   - Adds support for templates.
   * Applied patch to fix include headers for GNU C++ 4.3.
    (Closes: Bug#417734)
   * Allow installing unstripped binaries.

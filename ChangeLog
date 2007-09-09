@@ -1,3 +1,13 @@
+2007-09-09 - Peter Karlsson <peter@softwolves.pp.se>
+  doxygen.conf.in
+  qtgui.cpp
+  turqstat.cpp
+  turqstat.doc
+  turqstat.dok
+  version.h
+  debian/
+    Bumped version to 3.0.
+
 2007-09-02 - Peter Karlsson <peter@softwolves.pp.se>
   lexer.h
   lexer.cpp

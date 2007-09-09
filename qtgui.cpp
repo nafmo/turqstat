@@ -2,9 +2,9 @@
 //
 // A statistic collection program for Fidonet and Usenet systems
 // Qt version.
-// Version 2.2
+// Version 3.0
 //
-// Copyright (c) 2000-2005 Peter Karlsson
+// Copyright (c) 2000-2007 Peter Karlsson
 //
 // This program is free software; you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
