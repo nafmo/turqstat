@@ -96,6 +96,9 @@ Data selection:
    everything before (not including) January 1st, 2001, and 20010101- is
    everything from (and including) January 1st, 2001.
 
+-F <file>
+   Selects the template file to use. The default is default.tpl
+
 Input selection:
 
 -a <path>

@@ -78,7 +78,7 @@ till den textfil som statistiken skall skrivas till.
 Dessa extra kommandoradsflaggor är tillgängliga (notera att alla flaggor måste
 föregå filnamn och sökvägar till meddelandebaser):
 
-Dataurval:
+Dataurval och -format:
 
 -d <dagar>
    Väljer det antal dagar tillbaka som meddelanden skall räknas från. Det
@@ -94,6 +94,9 @@ Dataurval:
    Exempel: 20000101T000000-20011231T235959 är hela 2000, -20010101 är allting
    före (exklusive) 1 januari 2001, och 20010101- är allting från (och med)
    1 januari 2001.
+
+-F <fil>
+   Väljer vilken utdatamall som skall användas. Standardvalet är default.tpl
 
 Val av indata:
 

@@ -1,4 +1,4 @@
-// Copyright (c) 1998-2001 Peter Karlsson
+// Copyright (c) 1998-2007 Peter Karlsson
 //
 // This program is free software; you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -34,6 +34,9 @@ class StatView
 public:
     /** Standard constructor. */
     StatView();
+
+	// Format selectors
+	void SetTempalte(const char *template);
 
     // Toggles for toplist selection
     /** Tell view whether or not to enable the quoters toplist. */

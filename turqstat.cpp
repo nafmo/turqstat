@@ -119,7 +119,7 @@ int main(int argc, char *argv[])
 {
     unsigned days = 0;
     unsigned maxnum = 15;
-    char *basepath = NULL;
+    char *basepath = NULL, *templatefile = NULL;
     StatRetr::basetype_e basetype = StatRetr::squish;
     bool quoters = true, topwritten = true, topreceived = true,
          topsubjects = true, topprograms = true, weekstats = true,
@@ -151,9 +151,9 @@ int main(int argc, char *argv[])
     // Handle arguments
     int c;
 #if defined(HAVE_LOCALE_H) || defined(HAVE_OS2_COUNTRYINFO) || defined(HAVE_WIN32_LOCALEINFO)
-    while (EOF != (c = getopt(argc, argv, "d:n:a:r:C:smofjptuQWRSPOHDVNTALU?")))
+    while (EOF != (c = getopt(argc, argv, "d:n:a:r:C:F:smofjptuQWRSPOHDVNTALU?")))
 #else
-    while (EOF != (c = getopt(argc, argv, "d:n:a:r:C:smofjptuQWRSPOHDVNTAU?")))
+    while (EOF != (c = getopt(argc, argv, "d:n:a:r:C:F:smofjptuQWRSPOHDVNTAU?")))
 #endif
     {
         switch (c)
@@ -163,6 +163,7 @@ int main(int argc, char *argv[])
             case 'a':   basepath = optarg;                          break;
             case 'r':   evaluaterange(optarg, &range_start_p, &range_end_p);
                                                                     break;
+            case 'F':   templatefile = optarg;                      break;
 
             case 's':   basetype = StatRetr::squish;                break;
             case 'm':   basetype = StatRetr::sdm;                   break;
@@ -219,11 +220,16 @@ int main(int argc, char *argv[])
         return 1;
     }
 
+    // Load template
+
     // Create engine object
     StatEngine engine;
 
     // Create view object
     StatView view;
+
+    // Select output format
+    view.SetTemplate(template;
 
     // Enable toplists we want
     view.EnableQuoters(quoters);
@@ -360,11 +366,12 @@ void helpscreen(void)
 {
     cout << "Usage: turqstat [options] outputfile areadef(s)" << endl;
     cout << endl;
-    cout << "Data selection options:" << endl;
+    cout << "Data selection and display options:" << endl;
     cout << "  -a path  Base path (see below)    -d days   Days back to count"
          << endl;
     cout << "  -n num   Maximum entries          -r range  Date range"
          << endl;
+    cout << "  -F file  Use template file (default: default.tpl)" << endl;
     cout << endl;
     cout << "Input selection options:" << endl;
     cout << "  -s  Squish       -j  JAM          -p  MyPoint*" << endl;

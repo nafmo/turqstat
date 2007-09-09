@@ -1,4 +1,11 @@
 2007-09-09 - Peter Karlsson <peter@softwolves.pp.se>
+  statview.h
+  turqstat.cpp
+  turqstat.doc
+  turqstat.dok
+    Began integrating template code.
+
+2007-09-09 - Peter Karlsson <peter@softwolves.pp.se>
   doxygen.conf.in
   qtgui.cpp
   turqstat.cpp
