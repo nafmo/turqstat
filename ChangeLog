@@ -1,4 +1,5 @@
 2007-09-10 - Peter Karlsson <peter@softwolves.pp.se>
+  Makefile.in
   statview.cpp
   statview.h
   template.cpp
