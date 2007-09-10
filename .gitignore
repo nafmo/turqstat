@@ -11,3 +11,4 @@ teal
 moc_*
 *.moc
 *~
+autom4te.cache
