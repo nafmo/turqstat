@@ -36,7 +36,7 @@ public:
     StatView();
 
 	// Format selectors
-	void SetTempalte(const char *template);
+	void SetTemplate(const char *template);
 
     // Toggles for toplist selection
     /** Tell view whether or not to enable the quoters toplist. */
