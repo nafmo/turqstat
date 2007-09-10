@@ -1,3 +1,11 @@
+2007-09-10 - Peter Karlsson <peter@softwolves.pp.se>
+  statview.cpp
+  statview.h
+  template.cpp
+  template.h
+  turqstat.cpp
+    Added class describing an entire parsed template file.
+
 2007-09-09 - Peter Karlsson <peter@softwolves.pp.se>
   statview.h
   turqstat.cpp

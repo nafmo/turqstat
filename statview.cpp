@@ -1,4 +1,4 @@
-// Copyright (c) 1998-2005 Peter Karlsson
+// Copyright (c) 1998-2007 Peter Karlsson
 //
 // This program is free software; you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -30,6 +30,8 @@
 #include "statengine.h"
 #include "utility.h"
 #include "version.h"
+#include "template.h"
+#include "token.h"
 
 static const char *days[] =
     { "Monday   ",
@@ -57,6 +59,8 @@ StatView::StatView()
     showversions = false;
     showallnums = false;
     maxnumber = 15;
+
+    m_template = NULL;
 }
 
 bool StatView::CreateReport(StatEngine *engine, string filename)

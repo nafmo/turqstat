@@ -23,6 +23,7 @@ using namespace std;
 #endif
 
 class StatEngine;
+class Template;
 
 /**
  * The class that saves the data. This is the class that saves the data
@@ -35,8 +36,9 @@ public:
     /** Standard constructor. */
     StatView();
 
-	// Format selectors
-	void SetTemplate(const char *template);
+    // Format selectors
+    /** Tell view which output template to use. */
+    void SetTemplate(Template *output_template) { m_template = output_template };
 
     // Toggles for toplist selection
     /** Tell view whether or not to enable the quoters toplist. */
@@ -112,6 +114,8 @@ protected:
     unsigned    maxnumber;
 
     string      charset;
+
+    Template    *m_template;
 };
 
 #endif

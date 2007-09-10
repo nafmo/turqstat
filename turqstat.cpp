@@ -221,6 +221,13 @@ int main(int argc, char *argv[])
     }
 
     // Load template
+    bool is_error = false;
+    Template *output_template = Template::Parse(templatefile, is_error);
+    if (is_error)
+    {
+        cerr << "Unable to parse template file " << templatefile << endl;
+        return 2;
+    }
 
     // Create engine object
     StatEngine engine;
@@ -229,7 +236,7 @@ int main(int argc, char *argv[])
     StatView view;
 
     // Select output format
-    view.SetTemplate(template;
+    view.SetTemplate(output_template);
 
     // Enable toplists we want
     view.EnableQuoters(quoters);
