@@ -3,6 +3,9 @@
   template.h
     Compile fixes.
 
+  lexer.cpp
+    Remove debug code.
+
 2007-09-10 - Peter Karlsson <peter@softwolves.pp.se>
   Makefile.in
   statview.cpp

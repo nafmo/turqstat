@@ -18,21 +18,18 @@
 #include "utility.h"
 #include "lexer.h"
 
-#include <iostream>
-
 Token *Token::Parse(const string &line, bool &error)
 {
+    // Parse a single line.
     if (';' == line[0])
     {
         if (';' == line[1])
         {
-std::cout << "DEBUG: DOUBLE SEMICOLON \"" << line << '"' << std::endl;
             // Double semi-colon means that line starts with a semi-colon
             return Parse2(line.substr(1), error);
         }
         else
         {
-std::cout << "DEBUG: COMMENT \"" << line << '"' << std::endl;
             // Line is a comment
             return NULL;
         }
@@ -43,13 +40,11 @@ std::cout << "DEBUG: COMMENT \"" << line << '"' << std::endl;
         string::size_type endbracket = line.find(']');
         if (string::npos == endbracket)
         {
-std::cout << "DEBUG: MALFORMED SECTION \"" << line << '"' << std::endl;
             error = true;
             return NULL;
         }
         else
         {
-std::cout << "DEBUG: SECTION \"" << line << '"' << std::endl;
             return new Section(line.substr(1, endbracket - 1), error);
         }
     }
@@ -60,8 +55,7 @@ std::cout << "DEBUG: SECTION \"" << line << '"' << std::endl;
 
 Token *Token::Parse2(string line, bool &error)
 {
-std::cout << "DEBUG: Parse2(\"" << line << "\", bool error = " << error << ")" << std::endl;
-
+    // Parse a regular line
     string::size_type pos = 0;
     Token *head = NULL;
 
@@ -140,8 +134,7 @@ Literal::Literal(string s, bool lineend)
 Section::Section(string s, bool &error)
     : Token()
 {
-std::cout << "DEBUG: Section::Section(\"" << s << "\", bool error = " << error << ")" << std::endl;
-
+    // Translate token string into enumeration value.
     if (0 == fcompare(s, "Common"))          m_section = Common;
     else if (0 == fcompare(s, "IfEmpty"))    m_section = IfEmpty;
     else if (0 == fcompare(s, "IfNotNews"))  m_section = IfNotNews;
@@ -157,16 +150,13 @@ std::cout << "DEBUG: Section::Section(\"" << s << "\", bool error = " << error <
     else if (0 == fcompare(s, "Week"))       m_section = Week;
     else if (0 == fcompare(s, "Day"))        m_section = Day;
     else error = true;
-
-std::cout << "  ==> section == " << (int) m_section << "; error = " << error << std::endl;
 }
 
 Variable::Variable(string s, bool &error)
     : Token(),
       m_width(0)
 {
-std::cout << "DEBUG: Variable::Variable(\"" << s << "\", bool error = " << error << ")" << std::endl;
-
+    // Find parameters
     string::size_type bracket1 = s.find('[');
     string::size_type bracket2 = s.find(']', bracket1 + 1);
     string::size_type namelen = bracket1;
@@ -197,19 +187,16 @@ std::cout << "DEBUG: Variable::Variable(\"" << s << "\", bool error = " << error
     {
         SetVariable(s, error);
     }
-
-std::cout << "  ==> type = " << m_type << ", width = " << m_width << ", error = " << error << ")" << std::endl;
 }
 
 void Variable::SetWidth(string s)
 {
-std::cout << " Variable::SetWidth(\"" << s << "\")" << std::endl;
     m_width = atoi(s.c_str());
 }
 
 void Variable::SetVariable(string s, bool &error)
 {
-std::cout << " Variable::SetVariable(\"" << s << "\")" << std::endl;
+    // Translate token string into enumeration value.
     if (0 == fcompare(s, "Version"))                 m_type = Version;
     else if (0 == fcompare(s, "Copyright"))          m_type = Copyright;
     else if (0 == fcompare(s, "IfReceived"))         m_type = IfReceived;
