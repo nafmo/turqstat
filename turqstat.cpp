@@ -55,6 +55,7 @@
 #include "utility.h"
 #include "mytime.h"
 #include "output.h"
+#include "template.h"
 
 /**
  * Wrapper class to retrieve data. This class is called from the main

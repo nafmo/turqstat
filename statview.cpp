@@ -31,7 +31,7 @@
 #include "utility.h"
 #include "version.h"
 #include "template.h"
-#include "token.h"
+#include "lexer.h"
 
 static const char *days[] =
     { "Monday   ",

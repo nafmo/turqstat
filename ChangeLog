@@ -10,6 +10,11 @@
   turqstat-sv.1
     Documented report template parameter.
 
+  turqstat.cpp
+  statview.cpp
+  statview.h
+    Compile fixes.
+
 2007-09-10 - Peter Karlsson <peter@softwolves.pp.se>
   Makefile.in
   statview.cpp
