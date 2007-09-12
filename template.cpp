@@ -17,13 +17,19 @@
 
 #include "template.h"
 #include "lexer.h"
+#ifdef HAVE_FSTREAM
+# include <fstream>
+#else
+# include <fstream.h>
+#endif
 
 /* static */
 Template *Template::Parse(const string &file, bool &error)
 {
-    // open file
+    // Open file
+    fstream templatefile(file.c_str(), ios::in);
 
-    if (/* could not open file */)
+    if (!(templatefile.is_open()))
     {
         error = true;
         return NULL;
@@ -33,9 +39,10 @@ Template *Template::Parse(const string &file, bool &error)
     Template *retval_p = NULL;      // The pointer to the whole template.
     Template **last_pp = &retval_p; // Next pointer to fill in.
 
-    while (/* !eof */ && !error)
+    while (!templatefile.eof() && !error)
     {
-        string line = /* read from file */
+        string line;
+        getline(templatefile, line);
         if (line != "")
         {
             Token *tokenlist = Token::Parse(line, error);
@@ -47,7 +54,7 @@ Template *Template::Parse(const string &file, bool &error)
         }
     }
 
-    // close file
-
+    // Close the file and exit
+    templatefile.close();
     return retval_p;
 }

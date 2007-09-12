@@ -20,6 +20,9 @@
 using namespace std;
 #endif
 
+#include <string>
+#include "lexer.h"
+
 class Token;
 
 /**
@@ -64,3 +67,5 @@ private:
         , m_token_p(token_p)
         {};
 };
+
+#endif

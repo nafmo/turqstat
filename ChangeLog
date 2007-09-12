@@ -1,3 +1,8 @@
+2007-09-12 - Peter Karlsson <peter@softwolves.pp.se>
+  template.cpp
+  template.h
+    Compile fixes.
+
 2007-09-10 - Peter Karlsson <peter@softwolves.pp.se>
   Makefile.in
   statview.cpp
