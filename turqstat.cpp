@@ -222,6 +222,18 @@ int main(int argc, char *argv[])
     }
 
     // Load template
+    if (!templatefile)
+    {
+        // Use default template if none was supplied.
+        templatefile = DATA
+#ifdef BACKSLASH_PATHS
+            "\\"
+#else
+            "/"
+#endif
+            "default.tpl";
+    }
+
     bool is_error = false;
     Template *output_template = Template::Parse(templatefile, is_error);
     if (is_error)

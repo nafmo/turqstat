@@ -1,7 +1,7 @@
 # Makefile.in for Turquoise SuperStat
 
 # Variables
-CXXFLAGS=@CXXFLAGS@ -I. -Wall
+CXXFLAGS=@CXXFLAGS@ -I. -Wall -DDATA=\"@datadir@/turqstat\"
 @QT@QTFLAGS=-I@QTINCLUDE@
 LDFLAGS=@LDFLAGS@
 srcdir=@srcdir@

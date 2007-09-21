@@ -1,3 +1,8 @@
+2007-09-21 - Peter Karlsson <peter@softwolves.pp.se>
+  Makefile.in
+  turqstat.cpp
+    Use default template file if none was supplied.
+
 2007-09-12 - Peter Karlsson <peter@softwolves.pp.se>
   template.cpp
   template.h
