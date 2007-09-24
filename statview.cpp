@@ -78,6 +78,42 @@ bool StatView::CreateReport(StatEngine *engine, string filename)
     // Include data as given from the statistics engine
     bool news = engine->IsNewsArea();
 
+    // Loop over template, outputting the requested sections
+    const Template *current_line_p = m_template;
+    bool include_section = false;
+    bool quit_after_section = false;
+    bool area_is_empty = 0 == engine->GetTotalNumber();
+    while (current_line_p)
+    {
+        // Loop over the tokens on this line
+        const Token *current_token_p = current_line_p->Line();
+        while (current_token_p)
+        {
+            if (current_token_p->IsSection())
+            {
+                const Section *section_p =
+                    static_cast<const Section *>(current_token_p);
+                if (area_is_empty &&
+                    (section_p->GetSection() != Section::Common
+                {
+                    quit_after_section = true;
+                }
+            
+            }
+            else if (include_section && !current_token_p->IsSection())
+            {
+                // This line contains information we should output.
+            }
+
+            current_token_p = current_token_p->Next();
+        }
+    
+        // Advance to the next line    
+        current_line_p = current_line_p->Next();
+    }
+
+
+
     report << "Turquoise SuperStat " << version << " * Message area statistics" << endl;
     report << "=================================================" << endl;
     report << endl;

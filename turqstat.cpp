@@ -235,7 +235,7 @@ int main(int argc, char *argv[])
     }
 
     bool is_error = false;
-    Template *output_template = Template::Parse(templatefile, is_error);
+    Template *output_template_p = Template::Parse(templatefile, is_error);
     if (is_error)
     {
         cerr << "Unable to parse template file " << templatefile << endl;
@@ -249,7 +249,7 @@ int main(int argc, char *argv[])
     StatView view;
 
     // Select output format
-    view.SetTemplate(output_template);
+    view.SetTemplate(output_template_p);
 
     // Enable toplists we want
     view.EnableQuoters(quoters);
@@ -294,6 +294,7 @@ int main(int argc, char *argv[])
 
     delete range_start_p;
     delete range_end_p;
+    delete output_template_p;
 
     return 0;
 }

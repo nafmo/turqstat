@@ -38,7 +38,7 @@ public:
 
     // Format selectors
     /** Tell view which output template to use. */
-    void SetTemplate(Template *output_template) { m_template = output_template; };
+    void SetTemplate(const Template *output_template) { m_template = output_template; };
 
     // Toggles for toplist selection
     /** Tell view whether or not to enable the quoters toplist. */
@@ -115,7 +115,7 @@ protected:
 
     string      charset;
 
-    Template    *m_template;
+    const Template *m_template;
 };
 
 #endif
