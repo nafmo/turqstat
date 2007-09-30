@@ -345,7 +345,16 @@ bool StatView::CreateReport(StatEngine *engine, string filename)
 							// Name of person.
 							if (current_person.name.length())
 							{
-								data << encoder_p->Encode(current_person.name);
+								string name = encoder_p->Encode(data.name);
+								if (name != data.address)
+								{
+									data << name << " <" <<
+									        current_person.address << ">";
+								}
+								else
+								{
+									data << name;
+								}
 							}
 							break;
 
@@ -413,12 +422,25 @@ bool StatView::CreateReport(StatEngine *engine, string filename)
 						case Variable::Ratio:
 							// Ratio between bytes written and bytes quoted.
 							{
+								// Total bytes written (person or total)
+								unsigned long long totalwrittenbytes =
+									(place > 0)
+									? current_person.byteswritten
+									: engine->GetTotalBytes();
+
+								// Total bytes quoted (person or total)
+								unsigned long long totalqoutedbytes =
+									(place > 0)
+									? current_person.bytesquoted
+									: engine->GetTotalQBytes();
+
+								// Percent x 1000
 								unsigned int percentquotes =
 									current_person.byteswritten
-									? ((100000 * (unsigned long long) current_person.bytesquoted) /
-									   (unsigned long long) current_person.byteswritten)
+									? ((100000 * totalquotedbytes) / totalwrittenbytes)
 									: 0;
 
+								// Calculate integer and fraction percent
 								unsigned int integ = percentquotes / 1000;
 								unsigned int fract =
 									(percentquotes - integ * 1000 + 5) / 10;
@@ -428,16 +450,35 @@ bool StatView::CreateReport(StatEngine *engine, string filename)
 									integ ++;
 								}
 
+								// Percent string
 								data << setw(3) << integ << '.'
 								     << setfill('0') << setw(2) << fract << '%';
-								break;
 							}
 							report << right;
 							break;
 
 						case Variable::BytesTotal:
+							if (place > 0)
+							{
+								data << current_person.byteswritten;
+							}
+							else
+							{
+								data << engine->GetTotalBytes();
+							}
+							break;
+
 						case Variable::BytesQuoted:
-						case Variable::BytesQuotedPercent:
+							if (place > 0)
+							{
+								data << current_person.bytesquoted;
+							}
+							else
+							{
+								data << engine->GetTotalQBytes();
+							}
+							break;
+
 						case Variable::TotalMessages:
 						case Variable::TotalAreas:
 						case Variable::TotalPeople:

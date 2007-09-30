@@ -53,7 +53,7 @@ Place Name                                                       Msgs   Ratio
 ; Numbers in brackets denote field width. The ratio is always seven characters.
 @place[4]@. @name[58]@@written[5]@ @ratio@
 
-A total of @bytestotal@ bytes were written (message bodies only), of which @bytesquoted@, or @bytesquotedpercent@ were quotes.
+A total of @bytestotal@ bytes were written (message bodies only), of which @bytesquoted@, or @ratio@ were quotes.
 
 [Writers]
 -----------------------------------------------------------------------------

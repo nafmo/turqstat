@@ -125,7 +125,7 @@ public:
     enum variabletype
     {
         Version, Copyright, IfReceived, IfAreas, Place, Name, Written,
-        BytesWritten, Ratio, BytesTotal, BytesQuoted, BytesQuotedPercent,
+        BytesWritten, Ratio, BytesTotal, BytesQuoted,
         TotalMessages, TotalAreas, TotalPeople, TotalNets, TotalDomains,
         TotalSubjects, TotalPrograms, EarliestReceived, LastReceived,
         EarliestWritten, LastWritten, BytesOriginal, PerMessage, Fidonet,
