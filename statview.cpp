@@ -390,6 +390,11 @@ bool StatView::CreateReport(StatEngine *engine, string filename)
 							case Section::Day:
 								data << current_day_or_hour;
 								break;
+
+							default:
+								// No top-list, return totals
+								data << engine->GetTotalNumber();
+								break;
 							}
 							report << right;
 							break;
@@ -480,7 +485,6 @@ bool StatView::CreateReport(StatEngine *engine, string filename)
 							}
 							break;
 
-						case Variable::TotalMessages:
 						case Variable::TotalAreas:
 						case Variable::TotalPeople:
 						case Variable::TotalNets:

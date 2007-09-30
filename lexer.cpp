@@ -208,7 +208,6 @@ void Variable::SetVariable(string s, bool &error)
     else if (0 == fcompare(s, "Ratio"))              m_type = Ratio;
     else if (0 == fcompare(s, "BytesTotal"))         m_type = BytesTotal;
     else if (0 == fcompare(s, "BytesQuoted"))        m_type = BytesQuoted;
-    else if (0 == fcompare(s, "TotalMessages"))      m_type = TotalMessages;
     else if (0 == fcompare(s, "TotalAreas"))         m_type = TotalAreas;
     else if (0 == fcompare(s, "TotalPeople"))        m_type = TotalPeople;
     else if (0 == fcompare(s, "TotalNets"))          m_type = TotalNets;

@@ -126,7 +126,7 @@ public:
     {
         Version, Copyright, IfReceived, IfAreas, Place, Name, Written,
         BytesWritten, Ratio, BytesTotal, BytesQuoted,
-        TotalMessages, TotalAreas, TotalPeople, TotalNets, TotalDomains,
+        TotalAreas, TotalPeople, TotalNets, TotalDomains,
         TotalSubjects, TotalPrograms, EarliestReceived, LastReceived,
         EarliestWritten, LastWritten, BytesOriginal, PerMessage, Fidonet,
         TopDomain, Received, ReceiveRatio, Subject, Program, Bar
