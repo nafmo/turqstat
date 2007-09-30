@@ -83,32 +83,159 @@ bool StatView::CreateReport(StatEngine *engine, string filename)
     bool include_section = false;
     bool quit_after_section = false;
     bool area_is_empty = 0 == engine->GetTotalNumber();
+
+	// Remember toplist position, non-zero for looped lines
+	unsigned int place = 0;
     while (current_line_p)
     {
         // Loop over the tokens on this line
-        const Token *current_token_p = current_line_p->Line();
-        while (current_token_p)
-        {
-            if (current_token_p->IsSection())
-            {
-                const Section *section_p =
-                    static_cast<const Section *>(current_token_p);
-                if (area_is_empty &&
-                    (section_p->GetSection() != Section::Common
-                {
-                    quit_after_section = true;
+		do
+		{
+			const Token *current_token_p = current_line_p->Line();
+			while (current_token_p)
+			{
+				if (current_token_p->IsSection())
+				{
+					// Stop processing if requested
+					if (quit_after_section)
+					{
+						current_line_p = NULL;
+						break;
+					}
+
+					// Get section number
+					const Section *section_p =
+						static_cast<const Section *>(current_token_p);
+
+					// If area is empty, we quit after the first non-"Common",
+					// non-"IfEmpty" section.
+					if (area_is_empty &&
+					   (section_p->GetSection() != Section::Common &&
+					    section_p->GetSection() != Section::IfEmpty))
+					{
+						quit_after_section = true;
+					}
+
+					// Check if we should include this section or not. We always
+					// include Common sections.
+					switch (section_p->GetSection())
+					{
+					case Section::Common:		include_section = true; break;
+					case Section::IfEmpty:		include_section = area_is_empty; break;
+					case Section::IfNews:		include_section = news; break;
+					case Section::IfNotNews:	include_section = !news; break;
+					case Section::Quoters:		include_section = quoters; break;
+					case Section::Writers:		include_section = topwritten; break;
+					case Section::Original:		include_section = toporiginal; break;
+					case Section::TopNets:		include_section = topnets && !news; break;
+					case Section::TopDomains:	include_section = topdomains && (news || engine->GetTotalDomains()); break;
+					case Section::Received:		include_section = topreceived && !news; break;
+					case Section::Subjects:		include_section = topsubjects; break;
+					case Section::Programs:		include_section = topprograms; break;
+					case Section::Week:			include_section = weekstats; break;
+					case Section::Day:			include_section = daystats; break;
+					default:
+						// Unknown section.
+						TDisplay::GetOutputObject()->InternalErrorQuit(TDisplay::program_halted, 1);
+					}
                 }
-            
-            }
-            else if (include_section && !current_token_p->IsSection())
-            {
-                // This line contains information we should output.
-            }
+                else if (include_section && !current_token_p->IsSection())
+                {
+					// This line contains information we should output.
+
+					if (current_token_p->IsLiteral())
+					{
+						// Get literal string
+						const Literal *literal_p =
+							static_cast<const Literal *>(current_token_p);
+						report << literal_p->GetLiteral();
+						if (literal_p->HasLineBreak())
+						{
+							report << endl;
+						}
+					}
+					else if (current_token-p->IsVariable())
+					{
+						// If we encounter a "place" variable, we start
+						// counting the toplist position. If place is
+						// non-zero, we will continue outputting this
+						// line until we have output enough entries.
+						// Most of the other variables depend on the
+						// current section context.
+						const Variable *variable_p =
+							static_cast<const Variable *>(current_token_p);
+
+						// Default to unknown data, left justification and given width
+						string data = "?";
+						report << left << setw(width);
+
+						// Extract data.
+						switch (variable_p->GetType())
+						{
+						case Variable::Version:
+							data = version;
+							break;
+
+						case Variable::Copyright:
+							data = copyright;
+							break;
+
+						case Variable::IfReceived:
+						case Variable::IfAreas:
+
+						case Variable::Place:
+							// Start counting the top-list position.
+							// Triggers repetition.
+							++ place;
+							data << place << ".";
+							report << right;
+							break;
+
+						case Variable::Name:
+						case Variable::Written:
+						case Variable::BytesWritten:
+						case Variable::Ratio:
+						case Variable::BytesTotal:
+						case Variable::BytesQuoted:
+						case Variable::BytesQuotedPercent:
+						case Variable::TotalMessages:
+						case Variable::TotalAreas:
+						case Variable::TotalPeople:
+						case Variable::TotalNets:
+						case Variable::TotalDomains:
+						case Variable::TotalSubjects:
+						case Variable::TotalPrograms:
+						case Variable::EarliestReceived:
+						case Variable::LastReceived:
+						case Variable::EarliestWritten:
+						case Variable::LastWritten:
+						case Variable::BytesOriginal:
+						case Variable::PerMessage:
+						case Variable::Fidonet:
+						case Variable::TopDomain:
+						case Variable::Received:
+						case Variable::ReceiveRatio:
+						case Variable::Subject:
+						case Variable::Program:
+						case Variable::Day:
+						case Variable::Bar:
+						case Variable::Hour:
+						}
+
+						report << data;
+					}
+					else
+					{
+						// This cannot happen, there are no more token types.
+						TDisplay::GetOutputOjbect()->InternalErrorQuit(TDisplay::program_halted, 1);
+					}
+	            }
+			} while (place > 0 && place <= maxnumber);
 
             current_token_p = current_token_p->Next();
         }
-    
-        // Advance to the next line    
+
+        // Advance to the next line
         current_line_p = current_line_p->Next();
     }
 
