@@ -122,11 +122,11 @@ bool StatView::CreateReport(StatEngine *engine, string filename)
 					{
 					case Section::Common:		include_section = true; break;
 					case Section::IfEmpty:		include_section = area_is_empty; break;
-					case Section::IfNews:		include_section = news; break;
 					case Section::IfNotNews:	include_section = !news; break;
+					case Section::IfNews:		include_section = news; break;
+					case Section::Original:		include_section = toporiginal; break;
 					case Section::Quoters:		include_section = quoters; break;
 					case Section::Writers:		include_section = topwritten; break;
-					case Section::Original:		include_section = toporiginal; break;
 					case Section::TopNets:		include_section = topnets && !news; break;
 					case Section::TopDomains:	include_section = topdomains && (news || engine->GetTotalDomains()); break;
 					case Section::Received:		include_section = topreceived && !news; break;
