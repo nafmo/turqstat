@@ -486,11 +486,28 @@ bool StatView::CreateReport(StatEngine *engine, string filename)
 							break;
 
 						case Variable::TotalAreas:
+							data << engine->GetTotalAreas();
+							break;
+
 						case Variable::TotalPeople:
+							data << engine->GetTotalPeople();
+							break;
+
 						case Variable::TotalNets:
+							data << engine->GetTotalNets();
+							break;
+
 						case Variable::TotalDomains:
+							data << engine->GetTotalDomains();
+							break;
+
 						case Variable::TotalSubjects:
+							data << engine->GetTotalSubjects();
+							break;
+
 						case Variable::TotalPrograms:
+							data << engine->GetTotalPrograms();
+							break;
 
 						case Variable::EarliestReceived:
 						case Variable::LastReceived:
@@ -534,7 +551,17 @@ bool StatView::CreateReport(StatEngine *engine, string filename)
 							break;
 
 						case Variable::BytesOriginal:
+							data <<
+								current_person.byteswritten -
+								current_person.bytesquoted;
+							break;
+
 						case Variable::PerMessage:
+							data <<
+								(current_person.byteswritten - current_person.bytesquoted)
+								/ current_person.messageswritten;
+							break;
+
 						case Variable::Fidonet:
 						case Variable::TopDomain:
 						case Variable::Received:
