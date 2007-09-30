@@ -129,7 +129,7 @@ public:
         TotalMessages, TotalAreas, TotalPeople, TotalNets, TotalDomains,
         TotalSubjects, TotalPrograms, EarliestReceived, LastReceived,
         EarliestWritten, LastWritten, BytesOriginal, PerMessage, Fidonet,
-        TopDomain, Received, ReceiveRatio, Subject, Program, Day, Bar, Hour
+        TopDomain, Received, ReceiveRatio, Subject, Program, Bar
     };
 
     /** Poor man's RTTI. Check if this is a variable token. */

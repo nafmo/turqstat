@@ -12,6 +12,10 @@
 ;
 ; The file is read sequentially.
 ;
+; Any line with a @place@ variable will create a top-list, repeating the
+; pattern of the line. The statistics is only initialized for variables
+; following the @place@ variable.
+;
 ; First comes the header
 [Common]
 Turquoise SuperStat @version@ * Message area statistics
@@ -116,18 +120,20 @@ Place Program                              Msgs
 A total of @totalprograms@ different programs (not counting different versions) were identified.
 
 [Week]
+; @place@ contains the day token.
 -----------------------------------------------------------------------------
 Postings per weekday
 
 Day        Msgs
-@day[9]@@written[6]@ @bar[60]@
+@place[9]@@written[6]@ @bar[60]@
 
 [Day]
+; @place@ contains the hour token.
 -----------------------------------------------------------------------------
 Postings per hour
 
 Hour       Msgs
-@hour@@written[6]@ @bar[60]@
+@place@ @written[6]@ @bar[60]@
 
 [Common]
 -----------------------------------------------------------------------------

@@ -228,8 +228,6 @@ void Variable::SetVariable(string s, bool &error)
     else if (0 == fcompare(s, "ReceiveRatio"))       m_type = ReceiveRatio;
     else if (0 == fcompare(s, "Subject"))            m_type = Subject;
     else if (0 == fcompare(s, "Program"))            m_type = Program;
-    else if (0 == fcompare(s, "Day"))                m_type = Day;
     else if (0 == fcompare(s, "Bar"))                m_type = Bar;
-    else if (0 == fcompare(s, "Hour"))               m_type = Hour;
     else error = true;
 }

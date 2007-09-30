@@ -83,11 +83,21 @@ bool StatView::CreateReport(StatEngine *engine, string filename)
     bool include_section = false;
     bool quit_after_section = false;
     bool area_is_empty = 0 == engine->GetTotalNumber();
+	Section::sectiontype current_section = Section::Common;
 
 	// Remember toplist position, non-zero for looped lines
 	unsigned int place = 0;
+	unsigned int toplist_length = 0;
     while (current_line_p)
     {
+		StatEngine::persstat_s current_person;
+		StatEngine::netstat_s current_net;
+		StatEngine::domainstat_s current_domain;
+		StatEngine::subjstat_s current_subject;
+		StatEngine::progstat_s current_program;
+		unsigned int current_day_or_hour;
+		unsigned int maxposts = 1; // Max posts for week/daystat bars
+
         // Loop over the tokens on this line
 		do
 		{
@@ -106,19 +116,20 @@ bool StatView::CreateReport(StatEngine *engine, string filename)
 					// Get section number
 					const Section *section_p =
 						static_cast<const Section *>(current_token_p);
+					current_section = section_p->GetSection();
 
 					// If area is empty, we quit after the first non-"Common",
 					// non-"IfEmpty" section.
 					if (area_is_empty &&
-					   (section_p->GetSection() != Section::Common &&
-					    section_p->GetSection() != Section::IfEmpty))
+					   (current_section != Section::Common &&
+					    current_section != Section::IfEmpty))
 					{
 						quit_after_section = true;
 					}
 
 					// Check if we should include this section or not. We always
 					// include Common sections.
-					switch (section_p->GetSection())
+					switch (current_section)
 					{
 					case Section::Common:		include_section = true; break;
 					case Section::IfEmpty:		include_section = area_is_empty; break;
@@ -170,6 +181,8 @@ bool StatView::CreateReport(StatEngine *engine, string filename)
 						report << left << setw(width);
 
 						// Extract data.
+						bool end_iteration = false; // End iteration now.
+						bool next_iteration = false; // Skip to next iteration.
 						switch (variable_p->GetType())
 						{
 						case Variable::Version:
@@ -181,7 +194,24 @@ bool StatView::CreateReport(StatEngine *engine, string filename)
 							break;
 
 						case Variable::IfReceived:
+							if (!engine->HasArrivalTime())
+							{
+								// Break out of current line if there is no
+								// arrival time information available.
+								current_token_p = NULL;
+								data = "";
+							}
+							break;
+
 						case Variable::IfAreas:
+							if (engine->GetTotalAreas() <= 1)
+							{
+								// Break out of current line if there is
+								// only one (or no) areas scanned.
+								current_token_p = NULL;
+								data = "";
+							}
+							break;
 
 						case Variable::Place:
 							// Start counting the top-list position.
@@ -189,6 +219,111 @@ bool StatView::CreateReport(StatEngine *engine, string filename)
 							++ place;
 							data << place << ".";
 							report << right;
+							toplist_length = maxnumber;
+
+							// Fetch the appropriate data record
+							switch (current_section)
+							{
+							case Section::Original:
+								end_iteration =
+									!engine->GetTopOriginalPerMsg(1 == place, current_person);
+								break;
+
+							case Section::Quoters:
+								end_iteration =
+									!engine->GetTopQuoters(1 == place, current_person);
+								break;
+
+							case Section::Writers:
+								end_iteration =
+									!engine->GetTopWriters(1 == place, current_person);
+								break;
+
+							case Section::TopNets:
+								end_iteration =
+									!engine->GetTopNets(1 == place, current_net);
+								break;
+
+							case Section::TopDomains:
+								end_iteration =
+									!engine->GetTopDomains(1 == place, current_domain);
+								break;
+
+							case Section::Received:
+								end_iteration =
+									!engine->GetTopReceived(1 == place, current_person);
+								break;
+
+							case Section::Subjects:
+								end_iteration =
+									!engine->GetTopSubjects(1 == place, current_subject);
+								break;
+
+							case Section::Programs:
+								end_iteration =
+									!engine->GetTopPrograms(1 == place, current_program);
+								break;
+
+							case Section::Week:
+								// This toplist is always seven entries
+								toplist_length = 7;
+								data << day[place - 1];
+								current_day_or_hour =
+									engine->GetDayMsgs(place - 1);
+
+								// Find max width
+								if (1 == place)
+								{
+									maxposts = current_day_or_hour;
+									for (int i = 1; i < 7; ++ i)
+									{
+										unsigned int posts = engine->GetDayMsgs(i);
+										if (posts > maxposts)
+										{
+											maxposts = posts;
+										}
+									}
+								}
+
+								if (!showallnums && !current_day_or_hour)
+								{
+									next_iteration = true;
+								}
+								break;
+
+							case Section::Day:
+								// This toplist is always 24 entries
+								toplist_length = 24;
+								data << setfill('0') << setw(2) << (place - 1)
+								     << "00-" << setw(2) << (place - 1);
+								current_day_or_hour =
+									engine->GetHourMsgs(place - 1);
+
+								// Find max width
+								if (1 == place)
+								{
+									maxposts = current_day_or_hour;
+									for (int i = 1; i < 24; ++ i)
+									{
+										unsigned int posts = engine->GetHourMsgs(i);
+										if (posts > maxposts)
+										{
+											maxposts = posts;
+										}
+									}
+								}
+
+								if (!showallnums && !current_day_or_hour)
+								{
+									next_iteration = true;
+								}
+								break;
+
+							default:
+								// Section without a toplist.
+								end_iteration = true;
+								break;
+							}
 							break;
 
 						case Variable::Name:
@@ -205,10 +340,48 @@ bool StatView::CreateReport(StatEngine *engine, string filename)
 						case Variable::TotalDomains:
 						case Variable::TotalSubjects:
 						case Variable::TotalPrograms:
+
 						case Variable::EarliestReceived:
 						case Variable::LastReceived:
 						case Variable::EarliestWritten:
 						case Variable::LastWritten:
+							// Timestamp, formatted according to the supplied
+							// options.
+							{
+								// Get the appropriate timestamp
+								time_t timestamp = reinterpret_cast<time_t>(-1);
+								switch (variable_p->GetType())
+								{
+								case Variable::EarliestReceived:
+									timestamp = engine->GetEarliestReceived();
+									break;
+
+								case Variable::LastReceived:
+									timestamp = engine->GetLastReceived();
+									break;
+
+								case Variable::EarliestWritten:
+									timestamp = engine->GetEarliestWritten();
+									break;
+
+								case Variable::LastWritten:
+									timestamp = engine->GetLastWritten();
+									break;
+								}
+
+								struct tm *p1 = gmtime(&timestamp);
+								char date[64];
+#if defined(HAVE_LOCALE_H) || defined(HAVE_OS2_COUNTRYINFO) || defined(HAVE_WIN32_LOCALEINFO)
+								if (uselocale)
+									localetimestring(p1, 64, date);
+								else
+#endif
+									strftime(date, 64, "%Y-%m-%d %H:%M:%S", p1);
+
+								data = date;
+							}
+							break;
+
 						case Variable::BytesOriginal:
 						case Variable::PerMessage:
 						case Variable::Fidonet:
@@ -217,12 +390,26 @@ bool StatView::CreateReport(StatEngine *engine, string filename)
 						case Variable::ReceiveRatio:
 						case Variable::Subject:
 						case Variable::Program:
-						case Variable::Day:
 						case Variable::Bar:
-						case Variable::Hour:
 						}
 
-						report << data;
+						if (end_iteration)
+						{
+							// No more data to output, either not a top-list
+							// section, or we ran out of data early.
+							place = 0;
+							current_token_p = NULL;
+						}
+						else if (next_iteration)
+						{
+							// No data to show for this iteration (a day or
+							// hour without postings).
+							current_token_p = NULL;
+						}
+						else
+						{
+							report << data;
+						}
 					}
 					else
 					{
@@ -230,10 +417,19 @@ bool StatView::CreateReport(StatEngine *engine, string filename)
 						TDisplay::GetOutputOjbect()->InternalErrorQuit(TDisplay::program_halted, 1);
 					}
 	            }
-			} while (place > 0 && place <= maxnumber);
+			}
 
-            current_token_p = current_token_p->Next();
-        }
+			// Advance to next token
+			if (current_token_p)
+			{
+				current_token_p = current_token_p->Next();
+			}
+		} while (place > 0 && place <= toplist_length);
+
+		if (place > 0)
+		{
+			// Close the iterator
+		}
 
         // Advance to the next line
         current_line_p = current_line_p->Next();
@@ -241,93 +437,6 @@ bool StatView::CreateReport(StatEngine *engine, string filename)
 
 
 
-    report << "Turquoise SuperStat " << version << " * Message area statistics" << endl;
-    report << "=================================================" << endl;
-    report << endl;
-    report << copyright << endl;
-    report << endl;
-
-    if (0 == engine->GetTotalNumber())
-    {
-        report << "Message area is empty." << endl;
-        report.close();
-    }
-
-    report << "This report covers " << engine->GetTotalNumber()
-           <<" messages ";
-
-    if (engine->GetTotalAreas() > 1)
-    {
-        report << "in " << engine->GetTotalAreas();
-        if (news)
-            report << " groups, ";
-        else
-            report << " areas, ";
-    }
-
-    if (engine->HasArrivalTime())
-    {
-        report << "that were received at this system ";
-    }
-    else
-    {
-        report << "written ";
-    }
-
-    time_t earliest = engine->GetEarliestReceived();
-    struct tm *p1 = gmtime(&earliest);
-    char date[64];
-#if defined(HAVE_LOCALE_H) || defined(HAVE_OS2_COUNTRYINFO) || defined(HAVE_WIN32_LOCALEINFO)
-    if (uselocale)
-        localetimestring(p1, 64, date);
-    else
-#endif
-        strftime(date, 64, "%Y-%m-%d %H:%M:%S", p1);
-
-    report << "between " << date << " and ";
-
-    time_t latest = engine->GetLastReceived();
-    struct tm *p2 = gmtime(&latest);
-#if defined(HAVE_LOCALE_H) || defined(HAVE_OS2_COUNTRYINFO) || defined(HAVE_WIN32_LOCALEINFO)
-    if (uselocale)
-        localetimestring(p2, 64, date);
-    else
-#endif
-        strftime(date, 64, "%Y-%m-%d %H:%M:%S", p2);
-
-    report << date;
-
-    if (engine->HasArrivalTime())
-    {
-        report << " (written between ";
-
-        time_t wearliest = engine->GetEarliestWritten();
-        struct tm *p3 = gmtime(&wearliest);
-#if defined(HAVE_LOCALE_H) || defined(HAVE_OS2_COUNTRYINFO) || defined(HAVE_WIN32_LOCALEINFO)
-        if (uselocale)
-            localetimestring(p3, 64, date);
-        else
-#endif
-            strftime(date, 64, "%Y-%m-%d %H:%M:%S", p3);
-
-        report << date << " and ";
-
-        time_t wlatest = engine->GetLastWritten();
-        struct tm *p4 = gmtime(&wlatest);
-#if defined(HAVE_LOCALE_H) || defined(HAVE_OS2_COUNTRYINFO) || defined(HAVE_WIN32_LOCALEINFO)
-        if (uselocale)
-            localetimestring(p4, 64, date);
-        else
-#endif
-            strftime(date, 64, "%Y-%m-%d %H:%M:%S", p4);
-
-        report << date << ")";
-    }
-
-    report << endl;
-    report << endl;
-
-    string tmp;
 
     if (quoters)
     {

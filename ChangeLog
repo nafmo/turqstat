@@ -1,5 +1,8 @@
 2007-09-30 - Peter Karlsson <peter@softwolves.pp.se>
   statview.cpp
+  lexer.cpp
+  lexer.h
+  templates/default.tpl
     Continued to flesh out template support.
 
 2007-09-21 - Peter Karlsson <peter@softwolves.pp.se>
