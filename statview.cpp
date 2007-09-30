@@ -216,6 +216,10 @@ bool StatView::CreateReport(StatEngine *engine, string filename)
 						case Variable::Place:
 							// Start counting the top-list position.
 							// Triggers repetition.
+							// FIXME: Reimplement check if this entry has the
+							// same primary-key value as previous entry,
+							// and then hide number unless showallnums is
+							// enabled.
 							++ place;
 							data << place << ".";
 							report << right;
@@ -267,6 +271,7 @@ bool StatView::CreateReport(StatEngine *engine, string filename)
 							case Section::Week:
 								// This toplist is always seven entries
 								toplist_length = 7;
+								report << left;
 								data << day[place - 1];
 								current_day_or_hour =
 									engine->GetDayMsgs(place - 1);
@@ -294,6 +299,7 @@ bool StatView::CreateReport(StatEngine *engine, string filename)
 							case Section::Day:
 								// This toplist is always 24 entries
 								toplist_length = 24;
+								report << left;
 								data << setfill('0') << setw(2) << (place - 1)
 								     << "00-" << setw(2) << (place - 1);
 								current_day_or_hour =
@@ -327,9 +333,100 @@ bool StatView::CreateReport(StatEngine *engine, string filename)
 							break;
 
 						case Variable::Name:
+							// Name of person.
+							if (current_person.name.length())
+							{
+								data = encoder_p->Encode(data.name);
+							}
+							break;
+
 						case Variable::Written:
+							// Number of messages written.
+							switch (current_section)
+							{
+							case Section::Original:
+							case Section::Quoters:
+							case Section::Writers:
+							case Section::Received:
+								data << current_person.messageswritten;
+								break;
+
+							case Section::TopNets:
+								data << current_net.messages;
+								break;
+
+							case Section::TopDomains:
+								data << current_domain.messages;
+								break;
+
+							case Section::Subjects:
+								data << current_subject.count;
+								break;
+
+							case Section::Programs:
+								data << current_program.count;
+								break;
+
+							case Section::Week:
+							case Section::Day:
+								data << current_day_or_hour;
+								break;
+							}
+							report << right;
+							break;
+
 						case Variable::BytesWritten:
+							// Number of bytes written.
+							switch (current_section)
+							{
+							case Section::Original:
+							case Section::Quoters:
+							case Section::Writers:
+							case Section::Received:
+								data << current_person.byteswritten;
+								break;
+
+							case Section::TopNets:
+								data << current_net.bytes;
+								break;
+
+							case Section::TopDomains:
+								data << current_domain.bytes;
+								break;
+
+							case Section::Subjects:
+								data << current_subject.bytes;
+								break;
+							}
+							report << right;
+							break;
+
 						case Variable::Ratio:
+							// Ratio between bytes written and bytes quoted.
+							{
+								unsigned int percentquotes =
+									current_person.byteswritten
+									? ((100000 * (unsigned long long) data.bytesquoted) /
+									   (unsigned long long) data.byteswritten)
+									: 0;
+
+								unsigned int integ = percentquotes / 1000;
+								unsigned int fract =
+									(percentquotes - integ * 1000 + 5) / 10;
+								if (100 == fract)
+								{
+									fract = 0;
+									integ ++;
+								}
+
+								string name = encoder_p->Encode(data.name);
+								data << setw(3) << integ << '.'
+								     << setfill('0') << setw(2) << fract << '%';
+								break;
+							}
+							report << right;
+							break;
+
 						case Variable::BytesTotal:
 						case Variable::BytesQuoted:
 						case Variable::BytesQuotedPercent:
