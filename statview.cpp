@@ -25,6 +25,7 @@
 # include <ios>
 # include <iomanip>
 #endif
+#include <sstream>
 
 #include "statview.h"
 #include "statengine.h"
@@ -32,6 +33,7 @@
 #include "version.h"
 #include "template.h"
 #include "lexer.h"
+#include "output.h"
 
 static const char *days[] =
     { "Monday   ",
@@ -165,7 +167,7 @@ bool StatView::CreateReport(StatEngine *engine, string filename)
 							report << endl;
 						}
 					}
-					else if (current_token-p->IsVariable())
+					else if (current_token_p->IsVariable())
 					{
 						// If we encounter a "place" variable, we start
 						// counting the toplist position. If place is
@@ -177,8 +179,15 @@ bool StatView::CreateReport(StatEngine *engine, string filename)
 							static_cast<const Variable *>(current_token_p);
 
 						// Default to unknown data, left justification and given width
-						string data = "?";
-						report << left << setw(width);
+						stringstream data;
+						data << "?";
+
+						report << left;
+						size_t width = variable_p->GetWidth();
+						if (width > 0)
+						{
+							report << setw(width);
+						}
 
 						// Extract data.
 						bool end_iteration = false; // End iteration now.
@@ -186,11 +195,11 @@ bool StatView::CreateReport(StatEngine *engine, string filename)
 						switch (variable_p->GetType())
 						{
 						case Variable::Version:
-							data = version;
+							data << version;
 							break;
 
 						case Variable::Copyright:
-							data = copyright;
+							data << copyright;
 							break;
 
 						case Variable::IfReceived:
@@ -199,7 +208,7 @@ bool StatView::CreateReport(StatEngine *engine, string filename)
 								// Break out of current line if there is no
 								// arrival time information available.
 								current_token_p = NULL;
-								data = "";
+								data << "";
 							}
 							break;
 
@@ -209,7 +218,7 @@ bool StatView::CreateReport(StatEngine *engine, string filename)
 								// Break out of current line if there is
 								// only one (or no) areas scanned.
 								current_token_p = NULL;
-								data = "";
+								data << "";
 							}
 							break;
 
@@ -255,7 +264,7 @@ bool StatView::CreateReport(StatEngine *engine, string filename)
 
 							case Section::Received:
 								end_iteration =
-									!engine->GetTopReceived(1 == place, current_person);
+									!engine->GetTopReceivers(1 == place, current_person);
 								break;
 
 							case Section::Subjects:
@@ -272,7 +281,7 @@ bool StatView::CreateReport(StatEngine *engine, string filename)
 								// This toplist is always seven entries
 								toplist_length = 7;
 								report << left;
-								data << day[place - 1];
+								data << days[place - 1];
 								current_day_or_hour =
 									engine->GetDayMsgs(place - 1);
 
@@ -336,7 +345,7 @@ bool StatView::CreateReport(StatEngine *engine, string filename)
 							// Name of person.
 							if (current_person.name.length())
 							{
-								data = encoder_p->Encode(data.name);
+								data << encoder_p->Encode(current_person.name);
 							}
 							break;
 
@@ -406,8 +415,8 @@ bool StatView::CreateReport(StatEngine *engine, string filename)
 							{
 								unsigned int percentquotes =
 									current_person.byteswritten
-									? ((100000 * (unsigned long long) data.bytesquoted) /
-									   (unsigned long long) data.byteswritten)
+									? ((100000 * (unsigned long long) current_person.bytesquoted) /
+									   (unsigned long long) current_person.byteswritten)
 									: 0;
 
 								unsigned int integ = percentquotes / 1000;
@@ -419,7 +428,6 @@ bool StatView::CreateReport(StatEngine *engine, string filename)
 									integ ++;
 								}
 
-								string name = encoder_p->Encode(data.name);
 								data << setw(3) << integ << '.'
 								     << setfill('0') << setw(2) << fract << '%';
 								break;
@@ -446,7 +454,7 @@ bool StatView::CreateReport(StatEngine *engine, string filename)
 							// options.
 							{
 								// Get the appropriate timestamp
-								time_t timestamp = reinterpret_cast<time_t>(-1);
+								time_t timestamp = static_cast<time_t>(-1);
 								switch (variable_p->GetType())
 								{
 								case Variable::EarliestReceived:
@@ -475,7 +483,7 @@ bool StatView::CreateReport(StatEngine *engine, string filename)
 #endif
 									strftime(date, 64, "%Y-%m-%d %H:%M:%S", p1);
 
-								data = date;
+								data << date;
 							}
 							break;
 
@@ -488,6 +496,7 @@ bool StatView::CreateReport(StatEngine *engine, string filename)
 						case Variable::Subject:
 						case Variable::Program:
 						case Variable::Bar:
+							break;
 						}
 
 						if (end_iteration)
@@ -505,13 +514,13 @@ bool StatView::CreateReport(StatEngine *engine, string filename)
 						}
 						else
 						{
-							report << data;
+							report << data.str();
 						}
 					}
 					else
 					{
 						// This cannot happen, there are no more token types.
-						TDisplay::GetOutputOjbect()->InternalErrorQuit(TDisplay::program_halted, 1);
+						TDisplay::GetOutputObject()->InternalErrorQuit(TDisplay::program_halted, 1);
 					}
 	            }
 			}
