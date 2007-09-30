@@ -345,8 +345,9 @@ bool StatView::CreateReport(StatEngine *engine, string filename)
 							// Name of person.
 							if (current_person.name.length())
 							{
-								string name = encoder_p->Encode(data.name);
-								if (name != data.address)
+								string name =
+									encoder_p->Encode(current_person.name);
+								if (name != current_person.address)
 								{
 									data << name << " <" <<
 									        current_person.address << ">";
@@ -429,14 +430,14 @@ bool StatView::CreateReport(StatEngine *engine, string filename)
 									: engine->GetTotalBytes();
 
 								// Total bytes quoted (person or total)
-								unsigned long long totalqoutedbytes =
+								unsigned long long totalquotedbytes =
 									(place > 0)
 									? current_person.bytesquoted
 									: engine->GetTotalQBytes();
 
 								// Percent x 1000
 								unsigned int percentquotes =
-									current_person.byteswritten
+									totalwrittenbytes
 									? ((100000 * totalquotedbytes) / totalwrittenbytes)
 									: 0;
 
