@@ -578,6 +578,42 @@ bool StatView::CreateReport(StatEngine *engine, string filename)
 							// section, or we ran out of data early.
 							place = 0;
 							current_token_p = NULL;
+
+							// Close the iterator
+							switch (current_section)
+							{
+							case Section::Original:
+							case Section::Quoters:
+							case Section::Writers:
+							case Section::Received:
+								engine->DoneTopPeople();
+								break;
+
+							case Section::TopNets:
+								engine->DoneTopNets();
+								break;
+
+							case Section::TopDomains:
+								engine->DoneTopDomains();
+								break;
+
+							case Section::Subjects:
+								engine->DoneTopSubjects();
+								break;
+
+							case Section::Programs:
+								engine->DoneTopPrograms();
+								break;
+
+							case Section::Week:
+							case Section::Day:
+								// Nothing to do
+								break;
+
+							default:
+								// Section without a toplist.
+								break;
+							}
 						}
 						else if (next_iteration)
 						{
@@ -616,7 +652,7 @@ bool StatView::CreateReport(StatEngine *engine, string filename)
 
 
 
-
+#if 0
     if (quoters)
     {
         report << "-------------------------------------------"
@@ -1349,6 +1385,7 @@ bool StatView::CreateReport(StatEngine *engine, string filename)
 
     report << "-------------------------------------------"
               "----------------------------------" << endl;
+#endif // 0
 
     report.close();
 
