@@ -1,3 +1,7 @@
+2007-10-17 - Peter Karlsson <peter@softwolves.pp.se>
+  statview.cpp
+    Close iterators when done. Silence compiler warnings.
+
 2007-09-30 - Peter Karlsson <peter@softwolves.pp.se>
   statview.cpp
   lexer.cpp

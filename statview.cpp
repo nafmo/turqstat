@@ -97,7 +97,7 @@ bool StatView::CreateReport(StatEngine *engine, string filename)
 		StatEngine::domainstat_s current_domain;
 		StatEngine::subjstat_s current_subject;
 		StatEngine::progstat_s current_program;
-		unsigned int current_day_or_hour;
+		unsigned int current_day_or_hour = UINT_MAX;
 		unsigned int maxposts = 1; // Max posts for week/daystat bars
 
         // Loop over the tokens on this line
@@ -388,7 +388,10 @@ bool StatView::CreateReport(StatEngine *engine, string filename)
 
 							case Section::Week:
 							case Section::Day:
-								data << current_day_or_hour;
+								if (current_day_or_hour != UINT_MAX)
+								{
+									data << current_day_or_hour;
+								}
 								break;
 
 							default:
@@ -420,6 +423,9 @@ bool StatView::CreateReport(StatEngine *engine, string filename)
 
 							case Section::Subjects:
 								data << current_subject.bytes;
+								break;
+
+							default:
 								break;
 							}
 							report << right;
@@ -535,18 +541,25 @@ bool StatView::CreateReport(StatEngine *engine, string filename)
 								case Variable::LastWritten:
 									timestamp = engine->GetLastWritten();
 									break;
+
+								default:
+									break;
 								}
 
-								struct tm *p1 = gmtime(&timestamp);
-								char date[64];
+								if (timestamp != static_cast<time_t>(-1))
+								{
+									// Format the timestamp accoding to the locale
+									struct tm *p1 = gmtime(&timestamp);
+									char date[64];
 #if defined(HAVE_LOCALE_H) || defined(HAVE_OS2_COUNTRYINFO) || defined(HAVE_WIN32_LOCALEINFO)
-								if (uselocale)
-									localetimestring(p1, 64, date);
-								else
+									if (uselocale)
+										localetimestring(p1, 64, date);
+									else
 #endif
-									strftime(date, 64, "%Y-%m-%d %H:%M:%S", p1);
+										strftime(date, 64, "%Y-%m-%d %H:%M:%S", p1);
 
-								data << date;
+									data << date;
+								}
 							}
 							break;
 
