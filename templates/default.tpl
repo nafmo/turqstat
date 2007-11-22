@@ -33,10 +33,10 @@ Message area is empty.
 ; @ifareas@ will cause the line to be included only if more than one message
 ; area or newsgroup was scanned.
 [IfNews]
-This report covers @written@ \
+This report covers @written@ messages \
 @ifareas@in @totalareas@ groups, \
 [IfNotNews]
-This report covers @written@ \
+This report covers @written@ messages \
 @ifareas@in @totalareas@ areas, \
 ; @ifreceived@ will cause the line to be included only if information about
 ; reception dates are available.

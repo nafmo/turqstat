@@ -8,6 +8,9 @@
   turqstat.cpp
     Fixed constness.
 
+  templates/default.tpl
+    Added some missing words.
+
 2007-10-17 - Peter Karlsson <peter@softwolves.pp.se>
   statview.cpp
     Close iterators when done. Silence compiler warnings.
