@@ -645,12 +645,12 @@ bool StatView::CreateReport(StatEngine *engine, string filename)
 						TDisplay::GetOutputObject()->InternalErrorQuit(TDisplay::program_halted, 1);
 					}
 	            }
-			}
 
-			// Advance to next token
-			if (current_token_p)
-			{
-				current_token_p = current_token_p->Next();
+				// Advance to next token
+				if (current_token_p)
+				{
+					current_token_p = current_token_p->Next();
+				}
 			}
 		} while (place > 0 && place <= toplist_length);
 
