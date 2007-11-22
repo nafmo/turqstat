@@ -238,18 +238,47 @@ bool StatView::CreateReport(StatEngine *engine, string filename)
 							switch (current_section)
 							{
 							case Section::Original:
-								end_iteration =
-									!engine->GetTopOriginalPerMsg(1 == place, current_person);
+								{
+									// Constraint: Only people having posted
+									// at least three messages are considered.
+									bool first = 1 == place;
+									do
+									{
+										end_iteration =
+											!engine->GetTopOriginalPerMsg(first, current_person);
+										first = false;
+									} while (!end_iteration && current_person.messageswritten < 3);
+								}
 								break;
 
 							case Section::Quoters:
-								end_iteration =
-									!engine->GetTopQuoters(1 == place, current_person);
+								{
+									// Constraint: Only people having quoted
+									// and having posted at least three
+									// messages are listed.
+									bool first = 1 == place;
+									do
+									{
+										end_iteration =
+												!engine->GetTopQuoters(first, current_person);
+										first = false;
+									} while (!end_iteration &&
+									         (current_person.messageswritten < 3 || current_person.bytesquoted <= 0));
+								}
 								break;
 
 							case Section::Writers:
-								end_iteration =
-									!engine->GetTopWriters(1 == place, current_person);
+								{
+									// Constraint: Must have written at least
+									// one message.
+									bool first = 1 == place;
+									do
+									{
+										end_iteration =
+											!engine->GetTopWriters(first, current_person);
+										first = false;
+									} while (!end_iteration && current_person.messageswritten == 0);
+								}
 								break;
 
 							case Section::TopNets:

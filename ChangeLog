@@ -2,6 +2,8 @@
   statview.cpp
     Fixed infinite loop.
     Fixed toplist termination and reset.
+    Added back constraints for toplists for original content, quoters and
+    writers.
 
   lexer.cpp
     Fixed linebreak when line ends with variable token.
