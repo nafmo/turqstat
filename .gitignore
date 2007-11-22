@@ -2,7 +2,7 @@ Makefile
 config.h
 config.log
 config.status
-doxygen.conf
+Doxyfile
 turqstat
 xturqstat
 teal

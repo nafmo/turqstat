@@ -18,6 +18,9 @@
   turqstat.kdevelop
     Updated project file.
 
+  Doxyfile.in
+    Renamed doxygen.conf.in to Doxyfile.in.
+
 2007-10-17 - Peter Karlsson <peter@softwolves.pp.se>
   statview.cpp
     Close iterators when done. Silence compiler warnings.
