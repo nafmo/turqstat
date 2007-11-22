@@ -120,7 +120,8 @@ int main(int argc, char *argv[])
 {
     unsigned days = 0;
     unsigned maxnum = 15;
-    char *basepath = NULL, *templatefile = NULL;
+    char *basepath = NULL;
+	const char *templatefile = NULL;
     StatRetr::basetype_e basetype = StatRetr::squish;
     bool quoters = true, topwritten = true, topreceived = true,
          topsubjects = true, topprograms = true, weekstats = true,

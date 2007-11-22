@@ -5,6 +5,9 @@
   lexer.cpp
     Fixed linebreak when line ends with variable token.
 
+  turqstat.cpp
+    Fixed constness.
+
 2007-10-17 - Peter Karlsson <peter@softwolves.pp.se>
   statview.cpp
     Close iterators when done. Silence compiler warnings.
