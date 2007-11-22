@@ -69,7 +69,7 @@ Token *Token::Parse2(string line, bool &error)
             pos = line.find('@', 2);
             if (string::npos == pos)
             {
-                head = new Literal(line.substr(1));
+                head = new Literal(line.substr(1), true);
             }
             else
             {
@@ -107,6 +107,15 @@ Token *Token::Parse2(string line, bool &error)
     {
         head->m_next_p = Parse2(line.substr(pos), error);
     }
+	else
+	{
+		if (head->IsVariable())
+		{
+			// If the last token on a line is a variable, add a final
+			// linebreak token
+			head->m_next_p = new Literal("", true);
+		}
+	}
 
     return head;
 }
