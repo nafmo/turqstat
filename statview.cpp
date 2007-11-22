@@ -180,7 +180,7 @@ bool StatView::CreateReport(StatEngine *engine, string filename)
 
 						// Default to unknown data, left justification and given width
 						stringstream data;
-						data << "?";
+						bool known_data = false;
 
 						report << left;
 						size_t width = variable_p->GetWidth();
@@ -195,10 +195,12 @@ bool StatView::CreateReport(StatEngine *engine, string filename)
 						switch (variable_p->GetType())
 						{
 						case Variable::Version:
+							known_data = true;
 							data << version;
 							break;
 
 						case Variable::Copyright:
+							known_data = true;
 							data << copyright;
 							break;
 
@@ -210,6 +212,7 @@ bool StatView::CreateReport(StatEngine *engine, string filename)
 								current_token_p = NULL;
 								data << "";
 							}
+							known_data = true;
 							break;
 
 						case Variable::IfAreas:
@@ -220,6 +223,7 @@ bool StatView::CreateReport(StatEngine *engine, string filename)
 								current_token_p = NULL;
 								data << "";
 							}
+							known_data = true;
 							break;
 
 						case Variable::Place:
@@ -230,9 +234,10 @@ bool StatView::CreateReport(StatEngine *engine, string filename)
 							// and then hide number unless showallnums is
 							// enabled.
 							++ place;
-							data << place << ".";
+							data << place;
 							report << right;
 							toplist_length = maxnumber;
+							known_data = true;
 
 							// Fetch the appropriate data record
 							switch (current_section)
@@ -385,6 +390,7 @@ bool StatView::CreateReport(StatEngine *engine, string filename)
 								{
 									data << name;
 								}
+								known_data = true;
 							}
 							break;
 
@@ -397,22 +403,27 @@ bool StatView::CreateReport(StatEngine *engine, string filename)
 							case Section::Writers:
 							case Section::Received:
 								data << current_person.messageswritten;
+								known_data = true;
 								break;
 
 							case Section::TopNets:
 								data << current_net.messages;
+								known_data = true;
 								break;
 
 							case Section::TopDomains:
 								data << current_domain.messages;
+								known_data = true;
 								break;
 
 							case Section::Subjects:
 								data << current_subject.count;
+								known_data = true;
 								break;
 
 							case Section::Programs:
 								data << current_program.count;
+								known_data = true;
 								break;
 
 							case Section::Week:
@@ -421,11 +432,13 @@ bool StatView::CreateReport(StatEngine *engine, string filename)
 								{
 									data << current_day_or_hour;
 								}
+								known_data = true;
 								break;
 
 							default:
 								// No top-list, return totals
 								data << engine->GetTotalNumber();
+								known_data = true;
 								break;
 							}
 							report << right;
@@ -440,18 +453,22 @@ bool StatView::CreateReport(StatEngine *engine, string filename)
 							case Section::Writers:
 							case Section::Received:
 								data << current_person.byteswritten;
+								known_data = true;
 								break;
 
 							case Section::TopNets:
 								data << current_net.bytes;
+								known_data = true;
 								break;
 
 							case Section::TopDomains:
 								data << current_domain.bytes;
+								known_data = true;
 								break;
 
 							case Section::Subjects:
 								data << current_subject.bytes;
+								known_data = true;
 								break;
 
 							default:
@@ -496,6 +513,7 @@ bool StatView::CreateReport(StatEngine *engine, string filename)
 								     << setfill('0') << setw(2) << fract << '%';
 							}
 							report << right;
+							known_data = true;
 							break;
 
 						case Variable::BytesTotal:
@@ -507,6 +525,7 @@ bool StatView::CreateReport(StatEngine *engine, string filename)
 							{
 								data << engine->GetTotalBytes();
 							}
+							known_data = true;
 							break;
 
 						case Variable::BytesQuoted:
@@ -518,30 +537,37 @@ bool StatView::CreateReport(StatEngine *engine, string filename)
 							{
 								data << engine->GetTotalQBytes();
 							}
+							known_data = true;
 							break;
 
 						case Variable::TotalAreas:
 							data << engine->GetTotalAreas();
+							known_data = true;
 							break;
 
 						case Variable::TotalPeople:
 							data << engine->GetTotalPeople();
+							known_data = true;
 							break;
 
 						case Variable::TotalNets:
 							data << engine->GetTotalNets();
+							known_data = true;
 							break;
 
 						case Variable::TotalDomains:
 							data << engine->GetTotalDomains();
+							known_data = true;
 							break;
 
 						case Variable::TotalSubjects:
 							data << engine->GetTotalSubjects();
+							known_data = true;
 							break;
 
 						case Variable::TotalPrograms:
 							data << engine->GetTotalPrograms();
+							known_data = true;
 							break;
 
 						case Variable::EarliestReceived:
@@ -588,6 +614,7 @@ bool StatView::CreateReport(StatEngine *engine, string filename)
 										strftime(date, 64, "%Y-%m-%d %H:%M:%S", p1);
 
 									data << date;
+									known_data = true;
 								}
 							}
 							break;
@@ -596,12 +623,14 @@ bool StatView::CreateReport(StatEngine *engine, string filename)
 							data <<
 								current_person.byteswritten -
 								current_person.bytesquoted;
+							known_data = true;
 							break;
 
 						case Variable::PerMessage:
 							data <<
 								(current_person.byteswritten - current_person.bytesquoted)
 								/ current_person.messageswritten;
+							known_data = true;
 							break;
 
 						case Variable::Fidonet:
@@ -629,6 +658,10 @@ bool StatView::CreateReport(StatEngine *engine, string filename)
 						}
 						else
 						{
+							if (!known_data)
+							{
+								data << "?";
+							}
 							report << data.str();
 						}
 					}

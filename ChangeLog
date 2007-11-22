@@ -2,6 +2,7 @@
   statview.cpp
     Fixed infinite loop.
     Fixed toplist termination and reset.
+    Fixed placeholder for unknown data/incorrect variable use.
     Added back constraints for toplists for original content, quoters and
     writers.
 
