@@ -589,44 +589,8 @@ bool StatView::CreateReport(StatEngine *engine, string filename)
 						{
 							// No more data to output, either not a top-list
 							// section, or we ran out of data early.
-							place = 0;
+							toplist_length = place - 1;
 							current_token_p = NULL;
-
-							// Close the iterator
-							switch (current_section)
-							{
-							case Section::Original:
-							case Section::Quoters:
-							case Section::Writers:
-							case Section::Received:
-								engine->DoneTopPeople();
-								break;
-
-							case Section::TopNets:
-								engine->DoneTopNets();
-								break;
-
-							case Section::TopDomains:
-								engine->DoneTopDomains();
-								break;
-
-							case Section::Subjects:
-								engine->DoneTopSubjects();
-								break;
-
-							case Section::Programs:
-								engine->DoneTopPrograms();
-								break;
-
-							case Section::Week:
-							case Section::Day:
-								// Nothing to do
-								break;
-
-							default:
-								// Section without a toplist.
-								break;
-							}
 						}
 						else if (next_iteration)
 						{
@@ -652,11 +616,50 @@ bool StatView::CreateReport(StatEngine *engine, string filename)
 					current_token_p = current_token_p->Next();
 				}
 			}
+
+		// Repeat the current line if in a toplist.
 		} while (place > 0 && place <= toplist_length);
 
 		if (place > 0)
 		{
+			// Reset
+			place = 0;
+
 			// Close the iterator
+			switch (current_section)
+			{
+				case Section::Original:
+				case Section::Quoters:
+				case Section::Writers:
+				case Section::Received:
+					engine->DoneTopPeople();
+					break;
+
+				case Section::TopNets:
+					engine->DoneTopNets();
+					break;
+
+				case Section::TopDomains:
+					engine->DoneTopDomains();
+					break;
+
+				case Section::Subjects:
+					engine->DoneTopSubjects();
+					break;
+
+				case Section::Programs:
+					engine->DoneTopPrograms();
+					break;
+
+				case Section::Week:
+				case Section::Day:
+								// Nothing to do
+					break;
+
+				default:
+								// Section without a toplist.
+					break;
+			}
 		}
 
         // Advance to the next line

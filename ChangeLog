@@ -1,6 +1,7 @@
 2007-11-22 - Peter Karlsson <peter@softwolves.pp.se>
   statview.cpp
     Fixed infinite loop.
+    Fixed toplist termination and reset.
 
   lexer.cpp
     Fixed linebreak when line ends with variable token.
