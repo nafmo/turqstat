@@ -51,7 +51,7 @@ Blacklist of quoters (of people who have written at least three messages)
 
 Place Name                                                       Msgs   Ratio
 ; Numbers in brackets denote field width. The ratio is always seven characters.
-@place[4]@. @name[58]@@written[5]@ @ratio@
+@place[5]@ @name[58]@@written[5]@ @ratio@
 
 A total of @bytestotal@ bytes were written (message bodies only), of which @bytesquoted@, or @ratio@ were quotes.
 
@@ -60,7 +60,7 @@ A total of @bytestotal@ bytes were written (message bodies only), of which @byte
 Toplist of writers
 
 Place Name                                               Msgs    Bytes Quoted
-@place[4]@. @name[50]@@written[5]@ @byteswritten[8]@ @ratio@
+@place[5]@ @name[50]@@written[5]@ @byteswritten[8]@ @ratio@
 
 [IfNotNews]
 A total of @totalpeople@ people were identified (senders and recipients).
@@ -73,7 +73,7 @@ A total of @totalpeople@ people were identified.
 Toplist of original content per message (of people who have written at least three messages)
 
 Place Name                                        Orig. / Msgs = PrMsg Quoted
-@place[4]@. @name[43]@@bytesoriginal[6]@ /@written[5]@ = @permessage[5]@ @ratio@
+@place[5]@ @name[43]@@bytesoriginal[6]@ /@written[5]@ = @permessage[5]@ @ratio@
 
 [TopNets]
 -----------------------------------------------------------------------------
@@ -82,7 +82,7 @@ Toplist of nets
 Place  Zone:Net   Messages    Bytes
 ; The @fidonet@ token is special. The width specifies the width of both the
 ; zone and net fields, so the total width of @fidonet[5]@ will be 11.
-@place[4]@. @fidonet[5]@ @written[8]@ @byteswritten[8]@
+@place[5]@ @fidonet[5]@ @written[8]@ @byteswritten[8]@
 
 Messages from @totalnets@ different nets were found.
 
@@ -91,7 +91,7 @@ Messages from @totalnets@ different nets were found.
 Toplist of topdomains
 
 Place Domain Messages    Bytes
-@place[4]@. @topdomain[7]@@written[8]@ @byteswritten[8]@
+@place[5]@ @topdomain[7]@@written[8]@ @byteswritten[8]@
 
 Messages from @totaldomains@ different top domains were found
 
@@ -100,14 +100,14 @@ Messages from @totaldomains@ different top domains were found
 Toplist of receivers
 
 Place Name                                Rcvd  Sent  Ratio
-@place[4]@. @name[35]@@received[5]@ @written[5]@ @receiveratio[6]@
+@place[5]@ @name[35]@@received[5]@ @written[5]@ @receiveratio[6]@
 
 [Subjects]
 -----------------------------------------------------------------------------
 Toplist of subjects
 
 Place Subject                                                    Msgs   Bytes
-@place[4]@. @subject[57]@@written[6]@ @byteswritten[7]@
+@place[5]@ @subject[57]@@written[6]@ @byteswritten[7]@
 
 A total of @totalsubjects@ subjects were identified.
 
@@ -116,7 +116,7 @@ A total of @totalsubjects@ subjects were identified.
 Toplist of programs
 
 Place Program                              Msgs
-@place[4]@. @program[35]@@written[6]@
+@place[5]@ @program[35]@@written[6]@
 
 A total of @totalprograms@ different programs (not counting different versions) were identified.
 

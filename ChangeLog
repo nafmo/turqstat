@@ -6,6 +6,7 @@
     Fixed number of entries in each top list.
     Implemented remaining top list variables.
     Removed old code.
+    Fixed support for removing entry numbers for shared places.
 
   default.tpl
     Some cosmetic fixes.

@@ -180,6 +180,9 @@ bool StatView::CreateReport(StatEngine *engine, string filename)
 						stringstream data;
 						bool known_data = false;
 
+						// Default to entry not being identical to last
+						bool identical_entry = false;
+
 						report << left;
 						size_t width = variable_p->GetWidth();
 						if (width > 0)
@@ -232,7 +235,7 @@ bool StatView::CreateReport(StatEngine *engine, string filename)
 							// and then hide number unless showallnums is
 							// enabled.
 							++ place;
-							data << place;
+							data << place << '.';
 							report << right;
 							toplist_length = maxnumber;
 							known_data = true;
@@ -242,6 +245,13 @@ bool StatView::CreateReport(StatEngine *engine, string filename)
 							{
 							case Section::Original:
 								{
+									// Cache
+									unsigned long bytesoriginal =
+										current_person.byteswritten -
+										current_person.bytesquoted;
+									unsigned long messageswritten =
+										current_person.messageswritten;
+
 									// Constraint: Only people having posted
 									// at least three messages are considered.
 									bool first = 1 == place;
@@ -251,11 +261,22 @@ bool StatView::CreateReport(StatEngine *engine, string filename)
 											!engine->GetTopOriginalPerMsg(first, current_person);
 										first = false;
 									} while (!end_iteration && current_person.messageswritten < 3);
+
+									// Compare ratio (bytesoriginal / messageswritten)
+									identical_entry =
+										(bytesoriginal * current_person.messageswritten) ==
+										(current_person.byteswritten - current_person.bytesquoted) * messageswritten;
 								}
 								break;
 
 							case Section::Quoters:
 								{
+									// Cache
+									unsigned long bytesquoted =
+										current_person.bytesquoted;
+									unsigned long byteswritten =
+											current_person.byteswritten;
+
 									// Constraint: Only people having quoted
 									// and having posted at least three
 									// messages are listed.
@@ -267,11 +288,20 @@ bool StatView::CreateReport(StatEngine *engine, string filename)
 										first = false;
 									} while (!end_iteration &&
 									         (current_person.messageswritten < 3 || current_person.bytesquoted <= 0));
+
+									// Compare ratio (bytesquoted / byteswritten)
+									identical_entry =
+										(bytesquoted * current_person.byteswritten) ==
+										(current_person.bytesquoted * byteswritten);
 								}
 								break;
 
 							case Section::Writers:
 								{
+									// Cache
+									unsigned long messageswritten =
+										current_person.messageswritten;
+
 									// Constraint: Must have written at least
 									// one message.
 									bool first = 1 == place;
@@ -281,35 +311,79 @@ bool StatView::CreateReport(StatEngine *engine, string filename)
 											!engine->GetTopWriters(first, current_person);
 										first = false;
 									} while (!end_iteration && current_person.messageswritten == 0);
+
+									// Compare messages written
+									identical_entry =
+										messageswritten == current_person.messageswritten;
 								}
 								break;
 
 							case Section::TopNets:
-								end_iteration =
-									!engine->GetTopNets(1 == place, current_net);
+								{
+									unsigned long messages =
+										current_net.messages;
+
+									end_iteration =
+										!engine->GetTopNets(1 == place, current_net);
+
+									identical_entry =
+										messages == current_net.messages;
+								}
 								break;
 
 							case Section::TopDomains:
-								end_iteration =
-									!engine->GetTopDomains(1 == place, current_domain);
+								{
+									unsigned long messages =
+										current_domain.messages;
+								
+									end_iteration =
+										!engine->GetTopDomains(1 == place, current_domain);
+
+									identical_entry =
+										messages == current_domain.messages;
+								}
 								break;
 
 							case Section::Received:
-								end_iteration =
-									!engine->GetTopReceivers(1 == place, current_person);
+								{
+									unsigned long messagesreceived =
+										current_person.messagesreceived;
+
+									end_iteration =
+										!engine->GetTopReceivers(1 == place, current_person);
+
+									identical_entry =
+										messagesreceived == current_person.messagesreceived;
+								}
 								break;
 
 							case Section::Subjects:
-								end_iteration =
-									!engine->GetTopSubjects(1 == place, current_subject);
+								{
+									unsigned long count =
+										current_subject.count;
+
+									end_iteration =
+										!engine->GetTopSubjects(1 == place, current_subject);
+
+									identical_entry =
+										count == current_subject.count;
+								}
 								break;
 
 							case Section::Programs:
 								// FIXME: In the old format, this toplist
 								// included version information. This is not
 								// in the templatized form. See below.
-								end_iteration =
-									!engine->GetTopPrograms(1 == place, current_program);
+								{
+									unsigned long count =
+										current_program.count;
+
+									end_iteration =
+										!engine->GetTopPrograms(1 == place, current_program);
+
+									identical_entry =
+										count == current_program.count;
+								}
 								break;
 
 							case Section::Week:
@@ -381,6 +455,12 @@ bool StatView::CreateReport(StatEngine *engine, string filename)
 								// Section without a toplist.
 								end_iteration = true;
 								break;
+							}
+
+							// Clear token if entry is identical to last
+							if (identical_entry && !showallnums && place > 1)
+							{
+								data.str(string());
 							}
 							break;
 
