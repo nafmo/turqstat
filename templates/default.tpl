@@ -134,7 +134,7 @@ Day        Msgs
 Postings per hour
 
 Hour       Msgs
-@place@ @written[6]@ @bar[60]@
+@place[9]@@written[6]@ @bar[60]@
 
 [Common]
 -----------------------------------------------------------------------------

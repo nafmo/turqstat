@@ -351,7 +351,7 @@ bool StatView::CreateReport(StatEngine *engine, string filename)
 								// Replace place number with hour string
 								data.str(string());
 								data << setfill('0') << setw(2) << (place - 1)
-								     << "00-" << setw(2) << (place - 1);
+								     << "00-" << setw(2) << (place - 1) << "59";
 
 								current_day_or_hour =
 									engine->GetHourMsgs(place - 1);
@@ -731,11 +731,12 @@ bool StatView::CreateReport(StatEngine *engine, string filename)
 						}
 						else
 						{
-							if (!known_data)
+							string s(known_data ? data.str() : "?");
+							if (width && data.str().length() > width)
 							{
-								data << "?";
+								s.erase(width);
 							}
-							report << data.str();
+							report << s;
 						}
 					}
 					else

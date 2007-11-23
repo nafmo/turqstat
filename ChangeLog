@@ -6,6 +6,9 @@
     Fixed number of entries in each top list.
     Implemented remaining top list variables.
 
+  default.tpl
+    Some cosmetic fixes.
+
 2007-11-22 - Peter Karlsson <peter@softwolves.pp.se>
   statview.cpp
     Fixed infinite loop.
