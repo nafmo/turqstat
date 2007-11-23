@@ -315,7 +315,11 @@ bool StatView::CreateReport(StatEngine *engine, string filename)
 								// This toplist is always seven entries
 								toplist_length = 7;
 								report << left;
+
+								// Replace place number with name of day
+								data.str(string());
 								data << days[place - 1];
+
 								current_day_or_hour =
 									engine->GetDayMsgs(place - 1);
 
@@ -343,8 +347,12 @@ bool StatView::CreateReport(StatEngine *engine, string filename)
 								// This toplist is always 24 entries
 								toplist_length = 24;
 								report << left;
+
+								// Replace place number with hour string
+								data.str(string());
 								data << setfill('0') << setw(2) << (place - 1)
 								     << "00-" << setw(2) << (place - 1);
+
 								current_day_or_hour =
 									engine->GetHourMsgs(place - 1);
 
@@ -634,12 +642,77 @@ bool StatView::CreateReport(StatEngine *engine, string filename)
 							break;
 
 						case Variable::Fidonet:
+							// This variable is special, the width defines
+							// the right-aligned zone and the left-aligned
+							// network field. We output the first part here,
+							// and put the rest in data.
+							report << right << current_net.zone << ':';
+							report << setw(width) << left;
+							data << current_net.net;
+							known_data = true;
+							break;
+						
 						case Variable::TopDomain:
+							data << current_domain.topdomain;
+							known_data = true;
+							break;
+
 						case Variable::Received:
+							report << right;
+							data << current_person.messagesreceived;
+							known_data = true;
+							break;
+
 						case Variable::ReceiveRatio:
+							report << right;
+							if (current_person.messageswritten)
+							{
+								data <<
+									(100 * current_person.messagesreceived) /
+									current_person.messageswritten << "%";
+							}
+							else if (showallnums)
+							{
+								data << "N/A";
+							}
+							known_data = true;
+							break;
+							
 						case Variable::Subject:
+							{
+								string subject = encoder_p->Encode(current_subject.subject);
+								if (subject != "")
+								{
+									data << subject;
+								}
+								else
+								{
+									data << "(none)";
+								}
+								known_data = true;
+							}
+
 						case Variable::Program:
+							{
+								string program = encoder_p->Encode(current_program.program);
+								data << program;
+								known_data = true;
+							}
+							break;
+
 						case Variable::Bar:
+							{
+								unsigned int len = width;
+								if (maxposts)
+								{
+									len = (60 * current_day_or_hour) / maxposts;
+								}
+								for (unsigned int i = 0; i < len; i ++)
+								{
+									data << '*';
+								}
+								known_data = true;
+							}
 							break;
 						}
 
@@ -680,7 +753,7 @@ bool StatView::CreateReport(StatEngine *engine, string filename)
 			}
 
 		// Repeat the current line if in a toplist.
-		} while (place > 0 && place <= toplist_length);
+		} while (place > 0 && place < toplist_length);
 
 		if (place > 0)
 		{

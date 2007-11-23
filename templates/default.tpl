@@ -99,8 +99,8 @@ Messages from @totaldomains@ different top domains were found
 -----------------------------------------------------------------------------
 Toplist of receivers
 
-Place Name                                Rcvd  Sent   Ratio
-@place[4]@. @name[35]@@received[5]@ @written[5]@ @receiveratio@
+Place Name                                Rcvd  Sent  Ratio
+@place[4]@. @name[35]@@received[5]@ @written[5]@ @receiveratio[6]@
 
 [Subjects]
 -----------------------------------------------------------------------------
@@ -116,7 +116,7 @@ A total of @totalsubjects@ subjects were identified.
 Toplist of programs
 
 Place Program                              Msgs
-@place[4]@ @program[35]@@written[6]@
+@place[4]@. @program[35]@@written[6]@
 
 A total of @totalprograms@ different programs (not counting different versions) were identified.
 

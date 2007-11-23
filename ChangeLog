@@ -2,6 +2,10 @@
   template.cpp
     Allow empty lines in the template.
 
+  statview.cpp
+    Fixed number of entries in each top list.
+    Implemented remaining top list variables.
+
 2007-11-22 - Peter Karlsson <peter@softwolves.pp.se>
   statview.cpp
     Fixed infinite loop.
