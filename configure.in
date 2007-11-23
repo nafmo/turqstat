@@ -345,16 +345,6 @@ if test "$ac_cv_wstring" = "no"; then
   AC_CHECK_LIB(w, wcscat)
 fi
 
-AC_CACHE_CHECK([for fstream::form], ac_cv_fstream_form,
-  AC_TRY_COMPILE([#include <fstream>
-    using namespace std;],
-    [ fstream f; f.form(""); ],
-    ac_cv_fstream_form=yes, ac_cv_fstream_form=no))
-if test "$ac_cv_fstream_form" = "yes"; then
-  AC_DEFINE(HAVE_FSTREAM_FORM_METHOD, 1,
-            [Define if the fstream class has the GNU extension fstream::form])
-fi
-
 AC_LANG_C
 
 dnl Check for variables ----------------------------------------------------

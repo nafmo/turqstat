@@ -5,9 +5,13 @@
   statview.cpp
     Fixed number of entries in each top list.
     Implemented remaining top list variables.
+    Removed old code.
 
   default.tpl
     Some cosmetic fixes.
+
+  configure.in
+    Removed obsolete tests.
 
 2007-11-22 - Peter Karlsson <peter@softwolves.pp.se>
   statview.cpp

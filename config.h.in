@@ -22,9 +22,6 @@
 /* Define to 1 if you have the <fstream> header file. */
 #undef HAVE_FSTREAM
 
-/* Define if the fstream class has the GNU extension fstream::form */
-#undef HAVE_FSTREAM_FORM_METHOD
-
 /* Define to 1 if you have the <fstream.h> header file. */
 #undef HAVE_FSTREAM_H
 
