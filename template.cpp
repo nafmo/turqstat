@@ -43,15 +43,12 @@ Template *Template::Parse(const string &file, bool &error)
     {
         string line;
         getline(templatefile, line);
-        if (line != "")
-        {
-            Token *tokenlist = Token::Parse(line, error);
-            if (tokenlist)
-            {
-                *last_pp = new Template(tokenlist);
-                last_pp = &((*last_pp)->m_next_p);
-            }
-        }
+		Token *tokenlist = Token::Parse(line, error);
+		if (tokenlist)
+		{
+			*last_pp = new Template(tokenlist);
+			last_pp = &((*last_pp)->m_next_p);
+		}
     }
 
     // Close the file and exit

@@ -1,3 +1,7 @@
+2007-11-23 - Peter Karlsson <peter@softwolves.pp.se>
+  template.cpp
+    Allow empty lines in the template.
+
 2007-11-22 - Peter Karlsson <peter@softwolves.pp.se>
   statview.cpp
     Fixed infinite loop.

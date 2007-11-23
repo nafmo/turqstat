@@ -64,6 +64,7 @@ Place Name                                               Msgs    Bytes Quoted
 
 [IfNotNews]
 A total of @totalpeople@ people were identified (senders and recipients).
+
 [IfNews]
 A total of @totalpeople@ people were identified.
 
