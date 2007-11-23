@@ -396,12 +396,12 @@ bool StatView::CreateReport(StatEngine *engine, string filename)
 								data << days[place - 1];
 
 								current_day_or_hour =
-									engine->GetDayMsgs(place - 1);
+									engine->GetDayMsgs(place % 7);
 
 								// Find max width
 								if (1 == place)
 								{
-									maxposts = current_day_or_hour;
+									maxposts = engine->GetDayMsgs(0);
 									for (int i = 1; i < 7; ++ i)
 									{
 										unsigned int posts = engine->GetDayMsgs(i);

@@ -7,6 +7,7 @@
     Implemented remaining top list variables.
     Removed old code.
     Fixed support for removing entry numbers for shared places.
+    Fixed off-by-one error in weekday top list.
 
   default.tpl
     Some cosmetic fixes.
