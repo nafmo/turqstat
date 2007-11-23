@@ -98,9 +98,13 @@ bool StatView::CreateReport(StatEngine *engine, string filename)
 		unsigned int current_day_or_hour = UINT_MAX;
 		unsigned int maxposts = 1; // Max posts for week/daystat bars
 
-        // Loop over the tokens on this line
+        // Possibly repeat the current line
 		do
 		{
+			stringstream reportline;
+			bool have_linebreak = false;
+
+			// Loop over the tokens on this line
 			const Token *current_token_p = current_line_p->Line();
 			while (current_token_p)
 			{
@@ -159,10 +163,10 @@ bool StatView::CreateReport(StatEngine *engine, string filename)
 						// Get literal string
 						const Literal *literal_p =
 							static_cast<const Literal *>(current_token_p);
-						report << literal_p->GetLiteral();
+						reportline << literal_p->GetLiteral();
 						if (literal_p->HasLineBreak())
 						{
-							report << endl;
+							have_linebreak = true;
 						}
 					}
 					else if (current_token_p->IsVariable())
@@ -183,11 +187,11 @@ bool StatView::CreateReport(StatEngine *engine, string filename)
 						// Default to entry not being identical to last
 						bool identical_entry = false;
 
-						report << left;
+						reportline << left;
 						size_t width = variable_p->GetWidth();
 						if (width > 0)
 						{
-							report << setw(width);
+							reportline << setw(width);
 						}
 
 						// Extract data.
@@ -230,13 +234,9 @@ bool StatView::CreateReport(StatEngine *engine, string filename)
 						case Variable::Place:
 							// Start counting the top-list position.
 							// Triggers repetition.
-							// FIXME: Reimplement check if this entry has the
-							// same primary-key value as previous entry,
-							// and then hide number unless showallnums is
-							// enabled.
 							++ place;
 							data << place << '.';
-							report << right;
+							reportline << right;
 							toplist_length = maxnumber;
 							known_data = true;
 
@@ -389,7 +389,7 @@ bool StatView::CreateReport(StatEngine *engine, string filename)
 							case Section::Week:
 								// This toplist is always seven entries
 								toplist_length = 7;
-								report << left;
+								reportline << left;
 
 								// Replace place number with name of day
 								data.str(string());
@@ -421,7 +421,7 @@ bool StatView::CreateReport(StatEngine *engine, string filename)
 							case Section::Day:
 								// This toplist is always 24 entries
 								toplist_length = 24;
-								report << left;
+								reportline << left;
 
 								// Replace place number with hour string
 								data.str(string());
@@ -531,7 +531,7 @@ bool StatView::CreateReport(StatEngine *engine, string filename)
 								known_data = true;
 								break;
 							}
-							report << right;
+							reportline << right;
 							break;
 
 						case Variable::BytesWritten:
@@ -564,7 +564,7 @@ bool StatView::CreateReport(StatEngine *engine, string filename)
 							default:
 								break;
 							}
-							report << right;
+							reportline << right;
 							break;
 
 						case Variable::Ratio:
@@ -609,7 +609,7 @@ bool StatView::CreateReport(StatEngine *engine, string filename)
 									data << "0%";
 								}
 							}
-							report << right;
+							reportline << right;
 							known_data = true;
 							break;
 
@@ -720,7 +720,7 @@ bool StatView::CreateReport(StatEngine *engine, string filename)
 							data <<
 								current_person.byteswritten -
 								current_person.bytesquoted;
-							report << right;
+							reportline << right;
 							known_data = true;
 							break;
 
@@ -728,7 +728,7 @@ bool StatView::CreateReport(StatEngine *engine, string filename)
 							data <<
 								(current_person.byteswritten - current_person.bytesquoted)
 								/ current_person.messageswritten;
-							report << right;
+							reportline << right;
 							known_data = true;
 							break;
 
@@ -737,8 +737,8 @@ bool StatView::CreateReport(StatEngine *engine, string filename)
 							// the right-aligned zone and the left-aligned
 							// network field. We output the first part here,
 							// and put the rest in data.
-							report << right << current_net.zone << ':';
-							report << setw(width) << left;
+							reportline << right << current_net.zone << ':';
+							reportline << setw(width) << left;
 							data << current_net.net;
 							known_data = true;
 							break;
@@ -749,13 +749,13 @@ bool StatView::CreateReport(StatEngine *engine, string filename)
 							break;
 
 						case Variable::Received:
-							report << right;
+							reportline << right;
 							data << current_person.messagesreceived;
 							known_data = true;
 							break;
 
 						case Variable::ReceiveRatio:
-							report << right;
+							reportline << right;
 							if (current_person.messageswritten)
 							{
 								data <<
@@ -827,7 +827,7 @@ bool StatView::CreateReport(StatEngine *engine, string filename)
 							{
 								s.erase(width);
 							}
-							report << s;
+							reportline << s;
 						}
 					}
 					else
@@ -842,6 +842,18 @@ bool StatView::CreateReport(StatEngine *engine, string filename)
 				{
 					current_token_p = current_token_p->Next();
 				}
+			}
+
+			// Remove any trailing spaces from the report line
+			string trimmedline = reportline.str();
+			string::size_type lastnonspace = reportline.str().find_last_not_of(" ");
+			if (lastnonspace != string::npos)
+			{
+				report << reportline.str().substr(0, lastnonspace + 1);
+			}
+			if (have_linebreak)
+			{
+				report << endl;
 			}
 
 		// Repeat the current line if in a toplist.
