@@ -51,16 +51,16 @@ Blacklist of quoters (of people who have written at least three messages)
 
 Place Name                                                       Msgs   Ratio
 ; Numbers in brackets denote field width. The ratio is always seven characters.
-@place[5]@ @name[58]@@written[5]@ @ratio@
+@place[5]@ @name[58]@@written[5]@ @ratio[7]@
 
-A total of @bytestotal@ bytes were written (message bodies only), of which @bytesquoted@, or @ratio@ were quotes.
+A total of @bytestotal@ bytes were written (message bodies only), of which @bytesquoted@, or @ratio@, were quotes.
 
 [Writers]
 -----------------------------------------------------------------------------
 Toplist of writers
 
 Place Name                                               Msgs    Bytes Quoted
-@place[5]@ @name[50]@@written[5]@ @byteswritten[8]@ @ratio@
+@place[5]@ @name[50]@@written[5]@ @byteswritten[8]@ @ratio[7]@
 
 [IfNotNews]
 A total of @totalpeople@ people were identified (senders and recipients).
@@ -73,7 +73,7 @@ A total of @totalpeople@ people were identified.
 Toplist of original content per message (of people who have written at least three messages)
 
 Place Name                                        Orig. / Msgs = PrMsg Quoted
-@place[5]@ @name[43]@@bytesoriginal[6]@ /@written[5]@ = @permessage[5]@ @ratio@
+@place[5]@ @name[43]@@bytesoriginal[6]@ /@written[5]@ = @permessage[5]@ @ratio[7]@
 
 [TopNets]
 -----------------------------------------------------------------------------

@@ -470,7 +470,8 @@ bool StatView::CreateReport(StatEngine *engine, string filename)
 							{
 								string name =
 									encoder_p->Encode(current_person.name);
-								if (name != current_person.address)
+								if (name != current_person.address &&
+								    current_section != Section::Received)
 								{
 									data << name << " <" <<
 									        current_person.address << ">";
@@ -479,8 +480,8 @@ bool StatView::CreateReport(StatEngine *engine, string filename)
 								{
 									data << name;
 								}
-								known_data = true;
 							}
+							known_data = true;
 							break;
 
 						case Variable::Written:
@@ -581,25 +582,32 @@ bool StatView::CreateReport(StatEngine *engine, string filename)
 									? current_person.bytesquoted
 									: engine->GetTotalQBytes();
 
-								// Percent x 1000
-								unsigned int percentquotes =
-									totalwrittenbytes
-									? ((100000 * totalquotedbytes) / totalwrittenbytes)
-									: 0;
-
-								// Calculate integer and fraction percent
-								unsigned int integ = percentquotes / 1000;
-								unsigned int fract =
-									(percentquotes - integ * 1000 + 5) / 10;
-								if (100 == fract)
+								if (totalquotedbytes)
 								{
-									fract = 0;
-									integ ++;
-								}
+									// Percent x 1000
+									unsigned int percentquotes =
+										totalwrittenbytes
+										? ((100000 * totalquotedbytes) / totalwrittenbytes)
+										: 0;
 
-								// Percent string
-								data << setw(3) << integ << '.'
-								     << setfill('0') << setw(2) << fract << '%';
+									// Calculate integer and fraction percent
+									unsigned int integ = percentquotes / 1000;
+									unsigned int fract =
+										(percentquotes - integ * 1000 + 5) / 10;
+									if (100 == fract)
+									{
+										fract = 0;
+										integ ++;
+									}
+
+									// Percent string
+									data << integ << '.'
+									     << setfill('0') << setw(2) << fract << '%';
+								}
+								else
+								{
+									data << "0%";
+								}
 							}
 							report << right;
 							known_data = true;
@@ -712,6 +720,7 @@ bool StatView::CreateReport(StatEngine *engine, string filename)
 							data <<
 								current_person.byteswritten -
 								current_person.bytesquoted;
+							report << right;
 							known_data = true;
 							break;
 
@@ -719,6 +728,7 @@ bool StatView::CreateReport(StatEngine *engine, string filename)
 							data <<
 								(current_person.byteswritten - current_person.bytesquoted)
 								/ current_person.messageswritten;
+							report << right;
 							known_data = true;
 							break;
 

@@ -8,6 +8,7 @@
     Removed old code.
     Fixed support for removing entry numbers for shared places.
     Fixed off-by-one error in weekday top list.
+    Do not list address in receivers top list.
 
   default.tpl
     Some cosmetic fixes.
