@@ -88,7 +88,8 @@ bool StatView::CreateReport(StatEngine *engine, string filename)
 	// Remember toplist position, non-zero for looped lines
 	unsigned int place = 0;
 	unsigned int toplist_length = 0;
-    while (current_line_p)
+	stringstream reportline;
+	while (current_line_p)
     {
 		StatEngine::persstat_s current_person;
 		StatEngine::netstat_s current_net;
@@ -101,7 +102,6 @@ bool StatView::CreateReport(StatEngine *engine, string filename)
         // Possibly repeat the current line
 		do
 		{
-			stringstream reportline;
 			bool have_linebreak = false;
 
 			// Loop over the tokens on this line
@@ -844,16 +844,18 @@ bool StatView::CreateReport(StatEngine *engine, string filename)
 				}
 			}
 
-			// Remove any trailing spaces from the report line
-			string trimmedline = reportline.str();
-			string::size_type lastnonspace = reportline.str().find_last_not_of(" ");
-			if (lastnonspace != string::npos)
-			{
-				report << reportline.str().substr(0, lastnonspace + 1);
-			}
 			if (have_linebreak)
 			{
+				// Remove any trailing spaces from the report line
+				string::size_type lastnonspace = reportline.str().find_last_not_of(" ");
+				if (lastnonspace != string::npos)
+				{
+					report << reportline.str().substr(0, lastnonspace + 1);
+				}
 				report << endl;
+
+				// Clear line
+				reportline.str(string());
 			}
 
 		// Repeat the current line if in a toplist.
