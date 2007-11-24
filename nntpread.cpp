@@ -1,4 +1,4 @@
-// Copyright (c) 2001-2005 Peter Karlsson
+// Copyright (c) 2001-2007 Peter Karlsson
 //
 // This program is free software; you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -17,7 +17,9 @@
 #include <stdlib.h>
 #include <time.h>
 #include <string.h>
-#include <unistd.h>
+#if defined(HAVE_UNISTD_H)
+# include <unistd.h>
+#endif
 #include <sys/types.h>
 #if defined(HAVE_NETDB_H)
 # include <netdb.h>
@@ -26,11 +28,13 @@
 # include <sys/socket.h>
 #elif defined(HAVE_WINSOCK_H)
 # include <winsock.h>
+#elif defined(HAVE_WINSOCK2_H)
+# include <winsock2.h>
 #endif
 #if defined(HAVE_NETINET_IN_H)
 # include <netinet/in.h>
 #endif
-#if !defined(HAVE_WORKING_SOCKET_FDOPEN) && !defined(HAVE_WINSOCK_H)
+#if !defined(HAVE_WORKING_SOCKET_FDOPEN) && !defined(HAVE_WINSOCK_H) && !defined(HAVE_WINSOCK2_H)
 # if defined(HAVE_ERRNO_H)
 #  include <errno.h>
 # elif defined(HAVE_SYS_ERRNO_H)

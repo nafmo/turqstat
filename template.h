@@ -16,12 +16,12 @@
 #ifndef __TEMPLATE_H
 #define __TEMPLATE_H
 
+#include <string>
+#include "lexer.h"
+
 #if !defined(HAVE_IMPLICIT_NAMESPACE)
 using namespace std;
 #endif
-
-#include <string>
-#include "lexer.h"
 
 class Token;
 

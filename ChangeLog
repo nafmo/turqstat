@@ -1,3 +1,21 @@
+2007-11-24 - Peter Karlsson <peter@softwolves.pp.se>
+  visualc/
+    Added project files for Visual C++ 2005 Express Edition.
+
+  convert.cpp
+  lexer.h
+  mappings.h
+  mypointread.cpp
+  newsspoolread.cpp
+  nntpread.cpp
+  nntpread.h
+  output.cpp
+  sdmread.cpp
+  statengine.cpp
+  statview.cpp
+  template.h
+    Compile fixes for Visual C++
+
 2007-11-23 - Peter Karlsson <peter@softwolves.pp.se>
   template.cpp
     Allow empty lines in the template.

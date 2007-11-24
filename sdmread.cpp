@@ -1,4 +1,4 @@
-// Copyright (c) 1999-2001 Peter Karlsson
+// Copyright (c) 1999-2007 Peter Karlsson
 //
 // This program is free software; you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -102,8 +102,8 @@ bool SdmRead::Transfer(time_t starttime, time_t endtime,
     int rc = findfirst(searchpath.c_str(), FA_RDONLY | FA_ARCH);
 # else
     struct _finddata_t sdmdir;
-    int sdmhandle = _findfirst(searchpath.c_str(), &sdmdir);
-    int rc = sdmhandle;
+    intptr_t sdmhandle = _findfirst(searchpath.c_str(), &sdmdir);
+    intptr_t rc = sdmhandle;
 # endif
 
     if (-1 == rc)

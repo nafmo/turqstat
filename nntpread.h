@@ -1,4 +1,4 @@
-// Copyright (c) 2001 Peter Karlsson
+// Copyright (c) 2001-2007 Peter Karlsson
 //
 // This program is free software; you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -20,11 +20,13 @@
 #include <config.h>
 #if defined(HAVE_WINSOCK_H)
 # include <winsock.h>
+#elif defined(HAVE_WINSOCK2_H)
+# include <winsock2.h>
 #else
 # define SOCKET int
 #endif
 
-#if !defined(HAVE_WINSOCK_H) && !defined(__EMX__)
+#if !defined(HAVE_WINSOCK_H) && !defined(HAVE_WINSOCK2_H) && !defined(__EMX__)
 # define HAVE_WORKING_SOCKET_FDOPEN
 #endif
 

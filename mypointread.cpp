@@ -1,4 +1,4 @@
-// Copyright (c) 1999-2005 Peter Karlsson
+// Copyright (c) 1999-2007 Peter Karlsson
 //
 // This program is free software; you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -125,13 +125,13 @@ bool MyPointRead::Transfer(time_t starttime, time_t endtime,
     }
 
     // Seek past dummy message trailer
-    fseek(areaf, sizeof_ltrtrl, SEEK_CUR);
+    fseek(areaf, static_cast<long>(sizeof_ltrtrl), SEEK_CUR);
 
     // Read messages one by one
     bool stay = true;
     flags_s flags;
     unsigned msgnum = 0;
-    unsigned tosize, fromsize, subjsize, bodysize;
+    size_t tosize, fromsize, subjsize, bodysize;
     char *ctrlbuf, *buf, *to_p, *from_p, *sub_p;
     uint16_t fromp, subjp, textp, ltrsiz, ltrtrl_ltrsiz;
     uint32_t delim, arrtim, ltrtim;
@@ -253,7 +253,7 @@ bool MyPointRead::Transfer(time_t starttime, time_t endtime,
         else
         {
             // Seek past letter structure
-            fseek(areaf, ltrsiz - sizeof_ltrhdr, SEEK_CUR);
+            fseek(areaf, static_cast<long>(ltrsiz - sizeof_ltrhdr), SEEK_CUR);
         }
     out:;
     }

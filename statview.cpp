@@ -188,7 +188,7 @@ bool StatView::CreateReport(StatEngine *engine, string filename)
 						bool identical_entry = false;
 
 						reportline << left;
-						size_t width = variable_p->GetWidth();
+						streamsize width = variable_p->GetWidth();
 						if (width > 0)
 						{
 							reportline << setw(width);
@@ -585,14 +585,14 @@ bool StatView::CreateReport(StatEngine *engine, string filename)
 								if (totalquotedbytes)
 								{
 									// Percent x 1000
-									unsigned int percentquotes =
+									unsigned long long percentquotes =
 										totalwrittenbytes
 										? ((100000 * totalquotedbytes) / totalwrittenbytes)
 										: 0;
 
 									// Calculate integer and fraction percent
-									unsigned int integ = percentquotes / 1000;
-									unsigned int fract =
+									unsigned long long integ = percentquotes / 1000;
+									unsigned long long fract =
 										(percentquotes - integ * 1000 + 5) / 10;
 									if (100 == fract)
 									{
@@ -823,7 +823,7 @@ bool StatView::CreateReport(StatEngine *engine, string filename)
 						else
 						{
 							string s(known_data ? data.str() : "?");
-							if (width && data.str().length() > width)
+							if (width && static_cast<streamsize>(data.str().length()) > width)
 							{
 								s.erase(width);
 							}
