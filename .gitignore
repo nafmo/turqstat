@@ -11,4 +11,6 @@ teal
 moc_*
 *.moc
 *~
+*.exe
+*.obj
 autom4te.cache
