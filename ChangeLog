@@ -1,3 +1,10 @@
+2007-12-08 - Peter Karlsson <peter@softwolves.pp.se>
+  lexer.cpp
+  lexer.h
+  template.cpp
+  templates/default.tpl
+    Began adding support for localized day names in top lists.
+
 2007-11-23 - Peter Karlsson <peter@softwolves.pp.se>
   template.cpp
     Allow empty lines in the template.

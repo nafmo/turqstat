@@ -26,6 +26,8 @@
 /* static */
 Template *Template::Parse(const string &file, bool &error)
 {
+	bool in_settings = false;
+
     // Open file
     fstream templatefile(file.c_str(), ios::in);
 
@@ -43,9 +45,18 @@ Template *Template::Parse(const string &file, bool &error)
     {
         string line;
         getline(templatefile, line);
-		Token *tokenlist = Token::Parse(line, error);
+		Token *tokenlist = Token::Parse(line, in_settings, error);
 		if (tokenlist)
 		{
+			// Check if a new section found is a settings section
+			if (tokenlist->IsSection())
+			{
+				in_settings =
+					static_cast<Section *>(tokenlist)->GetSection()
+					== Section::makLocalization;
+			}
+
+			// Add line to template
 			*last_pp = new Template(tokenlist);
 			last_pp = &((*last_pp)->m_next_p);
 		}

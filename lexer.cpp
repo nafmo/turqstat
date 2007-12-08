@@ -18,12 +18,12 @@
 #include "utility.h"
 #include "lexer.h"
 
-Token *Token::Parse(const string &line, bool &error)
+Token *Token::Parse(const string &line, bool in_settings, bool &error)
 {
     // Parse a single line.
     if (';' == line[0])
     {
-        if (';' == line[1])
+        if (';' == line[1] && !in_settings)
         {
             // Double semi-colon means that line starts with a semi-colon
             return Parse2(line.substr(1), error);
@@ -48,6 +48,13 @@ Token *Token::Parse(const string &line, bool &error)
             return new Section(line.substr(1, endbracket - 1), error);
         }
     }
+	else if (in_settings)
+	{
+		if (line != "")
+		{
+			return new Setting(line, error);
+		}
+	}
 
     // Call real parser
     return Parse2(line, error);
@@ -158,6 +165,7 @@ Section::Section(string s, bool &error)
     else if (0 == fcompare(s, "Programs"))   m_section = Programs;
     else if (0 == fcompare(s, "Week"))       m_section = Week;
     else if (0 == fcompare(s, "Day"))        m_section = Day;
+	else if (0 == fcompare(s, "Localization")) m_section = Localization;
     else error = true;
 }
 
@@ -237,4 +245,32 @@ void Variable::SetVariable(string s, bool &error)
     else if (0 == fcompare(s, "Program"))            m_type = Program;
     else if (0 == fcompare(s, "Bar"))                m_type = Bar;
     else error = true;
+}
+
+Setting::Setting(string s, bool &error)
+{
+	// Find divider
+	string::size_type equals = s.find('=');
+	if (equals == string::npos)
+	{
+		error = true;
+	}
+	else
+	{
+		SetType(s.substr(0, equals), error);
+		SetValue(s.substr(equals + 1));
+	}	
+}
+
+void Setting::SetType(string s, bool &error)
+{
+	// Translate setting string into enumeration value
+	if (0 == fcompare(s, "Mon"))			m_type = Monday;
+	else if (0 == fcompare(s, "Tue"))		m_type = Tuesday;
+	else if (0 == fcompare(s, "Wed"))		m_type = Wednesday;
+	else if (0 == fcompare(s, "Thu"))		m_type = Thursday;
+	else if (0 == fcompare(s, "Fri"))		m_type = Friday;
+	else if (0 == fcompare(s, "Sat"))		m_type = Saturday;
+	else if (0 == fcompare(s, "Sun"))		m_type = Sunday;
+	else error = true;
 }

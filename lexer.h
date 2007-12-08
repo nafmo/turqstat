@@ -23,7 +23,7 @@ using namespace std;
 #endif
 
 /**
- * Linked list of lexical token. This class describes a linked list of tokens
+ * Linked list of lexical tokens. This class describes a linked list of tokens
  * returned from the lexical analyzer, which is run on the template files.
  * This class will never be instantiated by itself, only subclasses of it will
  * ever be instantiated.
@@ -42,6 +42,8 @@ public:
     virtual bool IsSection() const { return false; }
     /** Poor man's RTTI. Check if this is a variable token. */
     virtual bool IsVariable() const { return false; }
+	/** Poor man's RTTI. Check if this is a setting token. */
+	virtual bool IsSetting() const { return false; }
 
     /** Retrieve pointer to next token in the list. */
     Token *Next() const { return m_next_p; }
@@ -49,10 +51,11 @@ public:
     /** Parse a line. To parse a template line, this method is called.
       *
       * @param line A line of the template file to parse.
+	  * @param in_settings Set to true if parsing a settings section.
       * @param error Set to true if a parsing error occurs.
       * @return A linked list of tokens describing this line.
       */
-    static Token *Parse(const string &line, bool &error);
+    static Token *Parse(const string &line, bool in_settings, bool &error);
 
 protected:
     /** Standard constructor. Not accessible to any class, except for its
@@ -101,7 +104,9 @@ public:
         Common, IfEmpty, IfNotNews, IfNews,
         // Toplist sections
         Original, Quoters, Writers, TopNets, TopDomains, Received,
-        Subjects, Programs, Week, Day
+        Subjects, Programs, Week, Day,
+		// Configuration sections
+		Localization
     };
 
     /** Poor man's RTTI. Check if this is a section token. */
@@ -118,6 +123,7 @@ private:
     sectiontype m_section;
 };
 
+/** Lexical token describing a report variable. */
 class Variable : public Token
 {
 public:
@@ -152,6 +158,38 @@ private:
     variabletype m_type;
     /** Display width set for this token. */
     int m_width;
+};
+
+/** Lexical token describing a setting. */
+class Setting : public Token
+{
+public:
+	/** List of settings known. */
+	enum settingtype
+	{
+		Monday, Tuesday, Wednesday, Thursday, Friday, Saturday, Sunday
+	};
+
+	/** Poor man's RTTI. Check if this is a setting token. */
+	virtual bool IsSetting() const { return true; }
+	/** Retrieve setting type described by this token. */
+	settingtype GetType() const { return m_type; }
+	/** Retrieve setting data described by this token. */
+	string GetValue() const { return m_value; }
+
+private:
+    friend class Token;
+    /** Constructor. Initialize the setting from the string describing it. */
+    Setting(string s, bool &error);
+    /** Helper method to the constructor. */
+    void SetType(string, bool &error);
+    /** Helper method to the constructor. */
+    void SetValue(string s) { m_value = s; }
+
+    /** Setting described by this token. */
+    settingtype m_type;
+    /** Value of the setting. */
+    string m_value;
 };
 
 #endif

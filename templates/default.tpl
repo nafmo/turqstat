@@ -16,7 +16,19 @@
 ; pattern of the line. The statistics is only initialized for variables
 ; following the @place@ variable.
 ;
-; First comes the header
+; First some localization support. This section is not replicated in the output,
+; rather its contents is used to configure the output engine.
+[Localization]
+; Weekday names
+Mon=Monday
+Tue=Tuesday
+Wed=Wednesday
+Thu=Thursday
+Fri=Friday
+Sat=Saturday
+Sun=Sunday
+
+; Then comes the header.
 [Common]
 Turquoise SuperStat @version@ * Message area statistics
 =================================================
