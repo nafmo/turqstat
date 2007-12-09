@@ -5,6 +5,13 @@
   templates/default.tpl
     Began adding support for localized day names in top lists.
 
+2007-12-01 - Peter Karlsson <peter@softwolves.pp.se>
+  templates/default.tpl
+    Rewrote some commentary. Fixed some minor issues.
+
+  templates/svenska.tpl
+    Added Swedish template.
+
 2007-11-23 - Peter Karlsson <peter@softwolves.pp.se>
   template.cpp
     Allow empty lines in the template.
@@ -18,7 +25,7 @@
     Do not list address in receivers top list.
     Trim trailing spaces from the generated file.
 
-  default.tpl
+  templates/default.tpl
     Some cosmetic fixes.
 
   configure.in
