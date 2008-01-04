@@ -85,6 +85,12 @@ bool StatView::CreateReport(StatEngine *engine, string filename)
     bool area_is_empty = 0 == engine->GetTotalNumber();
 	Section::sectiontype current_section = Section::Common;
 
+	// Default to English day names
+	for (int i = 0; i < 7; ++ i)
+	{
+		m_dayname[i] = days[i];
+	}
+
 	// Remember toplist position, non-zero for looped lines
 	unsigned int place = 0;
 	unsigned int toplist_length = 0;
@@ -149,6 +155,7 @@ bool StatView::CreateReport(StatEngine *engine, string filename)
 					case Section::Programs:		include_section = topprograms; break;
 					case Section::Week:			include_section = weekstats; break;
 					case Section::Day:			include_section = daystats; break;
+					case Section::Localization:	include_section = true; break;
 					default:
 						// Unknown section.
 						TDisplay::GetOutputObject()->InternalErrorQuit(TDisplay::program_halted, 1);
@@ -393,7 +400,7 @@ bool StatView::CreateReport(StatEngine *engine, string filename)
 
 								// Replace place number with name of day
 								data.str(string());
-								data << days[place - 1];
+								data << m_dayname[place - 1];
 
 								current_day_or_hour =
 									engine->GetDayMsgs(place % 7);
@@ -828,6 +835,35 @@ bool StatView::CreateReport(StatEngine *engine, string filename)
 								s.erase(width);
 							}
 							reportline << s;
+						}
+					}
+					else if (current_token_p->IsSetting())
+					{
+						const Setting *setting_p =
+							static_cast<const Setting *>(current_token_p);
+						int idx = 0;
+						switch (setting_p->GetType())
+						{
+							case Setting::Sunday:
+								++ idx;
+							case Setting::Saturday:
+								++ idx;
+							case Setting::Friday:
+								++ idx;
+							case Setting::Thursday:
+								++ idx;
+							case Setting::Wednesday:
+								++ idx;
+							case Setting::Tuesday:
+								++ idx;
+							case Setting::Monday:
+								m_dayname[idx] = setting_p->GetValue();
+								break;
+
+							default:
+								// This cannot happen, there are no more settings types.
+								TDisplay::GetOutputObject()->InternalErrorQuit(TDisplay::program_halted, 1);
+								break;
 						}
 					}
 					else

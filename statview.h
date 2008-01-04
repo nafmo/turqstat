@@ -114,6 +114,7 @@ protected:
     unsigned    maxnumber;
 
     string      charset;
+	string		m_dayname[7];
 
     const Template *m_template;
 };

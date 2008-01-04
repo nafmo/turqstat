@@ -1,3 +1,4 @@
+
 2008-01-04 - Peter Karlsson <peter@softwolves.pp.se>
   visualc/
     Added project files for Visual C++ 2008 Express Edition.
@@ -20,6 +21,11 @@
 
   lexer.cpp
     Fixed access outside buffer.
+
+  statview.cpp
+  statview.h
+  template.cpp
+    Use localized day names in generated reports.
 
 2007-12-08 - Peter Karlsson <peter@softwolves.pp.se>
   lexer.cpp
