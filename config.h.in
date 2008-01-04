@@ -165,8 +165,14 @@
 /* Define to 1 if you have the <wctype.h> header file. */
 #undef HAVE_WCTYPE_H
 
+/* Define if you have Win32 GetModuleFileName API */
+#undef HAVE_WIN32_GETMODULEFILENAME
+
 /* Define if you have Win32 GetDateFormat API */
 #undef HAVE_WIN32_LOCALEINFO
+
+/* Define to 1 if you have the <winsock2.h> header file. */
+#undef HAVE_WINSOCK2_H
 
 /* Define to 1 if you have the <winsock.h> header file. */
 #undef HAVE_WINSOCK_H

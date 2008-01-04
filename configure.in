@@ -183,10 +183,17 @@ if test "$nntp" = "yes"; then
     AC_DEFINE(HAVE_SYS_SOCKET_H, 1, [Define if you have the <sys/socket.h> header file.])
   fi
 
-  if test "$ac_cv_header_sys_socket_h" = "no"; then
-    AC_CHECK_HEADERS(winsock.h)
-    if test "$ac_cv_header_winsock_h" = "yes"; then
-      LIBS="-lwsock32 $LIBS"
+  if test "$ac_cv_header_sys_socket2_h" = "no"; then
+    AC_CHECK_HEADERS(winsock2.h)
+    if test "$ac_cv_header_winsock2_h" = "yes"; then
+      LIBS="-lws2_32 $LIBS"
+    else
+      if test "$ac_cv_header_sys_socket_h" = "no"; then
+        AC_CHECK_HEADERS(winsock.h)
+        if test "$ac_cv_header_winsock_h" = "yes"; then
+          LIBS="-lwsock32 $LIBS"
+        fi
+      fi
     fi
   fi
 fi
