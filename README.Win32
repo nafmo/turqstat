@@ -3,12 +3,13 @@ Softwolves Software, and there might be things that do not work properly.
 If you have any ideas on how to improve this version, please contact the
 author.
 
-This executable is compiled using Mingw32, and should not require any extra
-DLLs to run. To compile your own version, you will need a Bourne shell
-compatible shell to run the configure script via. The bash shell is
-distributed in the CygWin distributions, which can be obtained from Cygnus,
-http://www.cygnus.com/ Turquoise SuperStat should be possible to compile with
-CygWin as well.
+This executable is compiled using Visual C++ 2008 Express Edition. It should
+also be possible to compile using Mingw32. In that case you will need a
+Bourne shell compatible shell to run the configure script via. The bash shell
+is distributed in the CygWin distributions, which can be obtained from
+http://www.cygwin.com/ You can also compile Turquoise SuperStat with
+CygWin, but that will produce a Unix-like version, not a Windows-like
+version.
 
 For Win32, the locale date format used is the one determined in your Windows
 system settings, and it should always be numeric.
