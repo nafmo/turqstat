@@ -666,7 +666,7 @@ bool StatView::CreateReport(StatEngine *engine, string filename)
 								}
 								else
 								{
-									data << "0%";
+									data << "";
 								}
 							}
 							reportline << right;

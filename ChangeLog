@@ -29,6 +29,7 @@
 
   statview.cpp
     Avoid using uninitialized variables.
+    Mimic old behaviour of not showing ratio if nothing quoted.
 
 2007-12-08 - Peter Karlsson <peter@softwolves.pp.se>
   lexer.cpp
