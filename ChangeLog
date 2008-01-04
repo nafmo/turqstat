@@ -1,3 +1,13 @@
+2008-01-04 - Peter Karlsson <peter@softwolves.pp.se>
+  visualc/
+    Upgraded project files to Visual C++ 2008 Express Edition.
+
+  configure.in
+  nntpread.cpp
+  turqstat.cpp
+  utility.cpp
+    Compile fixes for Visual C++.
+
 2007-11-24 - Peter Karlsson <peter@softwolves.pp.se>
   visualc/
     Added project files for Visual C++ 2005 Express Edition.
@@ -14,7 +24,7 @@
   statengine.cpp
   statview.cpp
   template.h
-    Compile fixes for Visual C++
+    Compile fixes for Visual C++.
 
 2007-11-23 - Peter Karlsson <peter@softwolves.pp.se>
   template.cpp

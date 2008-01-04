@@ -48,6 +48,7 @@
 # define sleep(x) _sleep(x)
 #endif
 #include <ctype.h>
+#include <assert.h>
 
 #include "nntpread.h"
 #include "statengine.h"
@@ -92,7 +93,7 @@ NntpRead::~NntpRead()
         fclose(sock);
 #endif
         shutdown(sockfd, 2);
-#if defined(HAVE_WINSOCK_H)
+#if defined(HAVE_WINSOCK_H) || defined(HAVE_WINSOCK2_H)
         closesocket(sockfd);
 #else
         close(sockfd);
@@ -100,7 +101,7 @@ NntpRead::~NntpRead()
     }
     delete[] articles;
 
-#if defined(HAVE_WINSOCK_H)
+#if defined(HAVE_WINSOCK_H) || defined(HAVE_WINSOCK2_H)
     WSACleanup();
 #endif
 }
@@ -123,7 +124,7 @@ bool NntpRead::Transfer(time_t starttime, time_t endtime,
     // We are unable to retrieve information on arrival times
     destination.NoArrivalTime();
 
-#if defined(HAVE_WINSOCK_H)
+#if defined(HAVE_WINSOCK_H) || defined(HAVE_WINSOCK2_H)
     WORD versionrequest = MAKEWORD(1, 1);
     WSADATA wsadata;
     int err = WSAStartup(versionrequest, &wsadata);
@@ -480,13 +481,13 @@ bool NntpRead::SendLine(const char *line)
     // Iterate until entire line is sent
     while (linelength)
     {
-        int rc = send(sockfd, line, linelength, 0);
+        int rc = send(sockfd, line, static_cast<int>(linelength), 0);
 
         // Check for possible errors
         if (-1 == rc)
         {
             // Ignore "interrupted", "try again" and "would block" errors.
-# if defined(HAVE_WINSOCK_H)
+# if defined(HAVE_WINSOCK_H) || defined(HAVE_WINSOCK2_H)
             int wsa_errno = WSAGetLastError();
             if (WSAEINTR != wsa_errno &&
 #  if defined(WSAEAGAIN)
@@ -506,7 +507,7 @@ bool NntpRead::SendLine(const char *line)
         }
         else
         {
-            assert(rc <= linelength);
+            assert(rc <= static_cast<int>(linelength));
 
             // Remove the handled sent part of the buffer
             linelength -= rc;
@@ -520,7 +521,13 @@ bool NntpRead::SendLine(const char *line)
             }
 
             // Pause a second before trying again
-            sleep(1);
+#if defined(HAVE_SLEEP)
+			sleep(1);
+#elif defined(HAVE_U_SLEEP)
+			_sleep(1);
+#else
+# error "Port me"
+#endif
         }
     }
     return true;
@@ -553,7 +560,15 @@ bool NntpRead::GetLine(char *outbuffer, size_t maxlen)
             if (maxlen)
             {
                 copiedanything = true;
+#ifdef __GNUC__
                 size_t copylen = bytes <? maxlen;
+#else
+                size_t copylen = bytes;
+				if (maxlen < copylen)
+				{
+					copylen = maxlen;
+				}
+#endif
                 memcpy(outbuffer, socketbuffer, copylen);
                 outbuffer += copylen;
                 maxlen -= copylen;
@@ -574,7 +589,7 @@ bool NntpRead::GetLine(char *outbuffer, size_t maxlen)
             if (-1 == rc)
             {
                 // Ignore "interrupted" and "try again" errors.
-# if defined(HAVE_WINSOCK_H)
+# if defined(HAVE_WINSOCK_H) || defined(HAVE_WINSOCK2_H)
                 int wsa_errno = WSAGetLastError();
                 if (WSAEINTR != wsa_errno
 #  if defined(WSAEAGAIN)

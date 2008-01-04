@@ -157,7 +157,7 @@
 #undef HAVE_UTIMEZONE
 
 /* Define if C library includes _sleep instead of sleep */
-#undef HAVE_U_SLEEP
+#define HAVE_U_SLEEP
 
 /* Define to 1 if you have the <wchar.h> header file. */
 #define HAVE_WCHAR_H
@@ -167,6 +167,9 @@
 
 /* Define if you have Win32 GetDateFormat API */
 #define HAVE_WIN32_LOCALEINFO
+
+/* Define if you have Win32 GetModuleFileName API */
+#define HAVE_WIN32_GETMODULEFILENAME
 
 /* Define to 1 if you have the <winsock.h> header file. */
 #undef HAVE_WINSOCK_H
