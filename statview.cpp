@@ -254,14 +254,22 @@ bool StatView::CreateReport(StatEngine *engine, string filename)
 								{
 									// Cache
 									unsigned long bytesoriginal =
-										current_person.byteswritten -
-										current_person.bytesquoted;
+										static_cast<unsigned long>(-1);
 									unsigned long messageswritten =
-										current_person.messageswritten;
+										static_cast<unsigned long>(-1);
+
+									bool first = 1 == place;
+									if (!first)
+									{
+										bytesoriginal =
+											current_person.byteswritten -
+											current_person.bytesquoted;
+										messageswritten =
+											current_person.messageswritten;
+									}
 
 									// Constraint: Only people having posted
 									// at least three messages are considered.
-									bool first = 1 == place;
 									do
 									{
 										end_iteration =
@@ -280,14 +288,22 @@ bool StatView::CreateReport(StatEngine *engine, string filename)
 								{
 									// Cache
 									unsigned long bytesquoted =
-										current_person.bytesquoted;
+										static_cast<unsigned long>(-1);
 									unsigned long byteswritten =
+										static_cast<unsigned long>(-1);
+
+									bool first = 1 == place;
+									if (!first)
+									{
+										bytesquoted =
+											current_person.bytesquoted;
+										byteswritten =
 											current_person.byteswritten;
+									}
 
 									// Constraint: Only people having quoted
 									// and having posted at least three
 									// messages are listed.
-									bool first = 1 == place;
 									do
 									{
 										end_iteration =
@@ -307,11 +323,17 @@ bool StatView::CreateReport(StatEngine *engine, string filename)
 								{
 									// Cache
 									unsigned long messageswritten =
-										current_person.messageswritten;
+										static_cast<unsigned long>(-1);
+
+									bool first = 1 == place;
+									if (!first)
+									{
+										messageswritten =
+											current_person.messageswritten;
+									}
 
 									// Constraint: Must have written at least
 									// one message.
-									bool first = 1 == place;
 									do
 									{
 										end_iteration =
@@ -328,10 +350,16 @@ bool StatView::CreateReport(StatEngine *engine, string filename)
 							case Section::TopNets:
 								{
 									unsigned long messages =
-										current_net.messages;
+										static_cast<unsigned long>(-1);
+
+									bool first = 1 == place;
+									if (!first)
+									{
+										messages = current_net.messages;
+									}
 
 									end_iteration =
-										!engine->GetTopNets(1 == place, current_net);
+										!engine->GetTopNets(first, current_net);
 
 									identical_entry =
 										messages == current_net.messages;
@@ -341,10 +369,16 @@ bool StatView::CreateReport(StatEngine *engine, string filename)
 							case Section::TopDomains:
 								{
 									unsigned long messages =
-										current_domain.messages;
-								
+										static_cast<unsigned long>(-1);
+
+									bool first = 1 == place;
+									if (!first)
+									{
+										messages = current_domain.messages;
+									}
+
 									end_iteration =
-										!engine->GetTopDomains(1 == place, current_domain);
+										!engine->GetTopDomains(first, current_domain);
 
 									identical_entry =
 										messages == current_domain.messages;
@@ -354,10 +388,17 @@ bool StatView::CreateReport(StatEngine *engine, string filename)
 							case Section::Received:
 								{
 									unsigned long messagesreceived =
-										current_person.messagesreceived;
+										static_cast<unsigned long>(-1);
+
+									bool first = 1 == place;
+									if (!first)
+									{
+										messagesreceived =
+											current_person.messagesreceived;
+									}
 
 									end_iteration =
-										!engine->GetTopReceivers(1 == place, current_person);
+										!engine->GetTopReceivers(first, current_person);
 
 									identical_entry =
 										messagesreceived == current_person.messagesreceived;
@@ -367,10 +408,16 @@ bool StatView::CreateReport(StatEngine *engine, string filename)
 							case Section::Subjects:
 								{
 									unsigned long count =
-										current_subject.count;
+										static_cast<unsigned long>(-1);
+
+									bool first = 1 == place;
+									if (!first)
+									{
+										count = current_subject.count;
+									}
 
 									end_iteration =
-										!engine->GetTopSubjects(1 == place, current_subject);
+										!engine->GetTopSubjects(first, current_subject);
 
 									identical_entry =
 										count == current_subject.count;
@@ -383,7 +430,13 @@ bool StatView::CreateReport(StatEngine *engine, string filename)
 								// in the templatized form. See below.
 								{
 									unsigned long count =
-										current_program.count;
+										static_cast<unsigned long>(-1);
+
+									bool first = 1 == place;
+									if (!first)
+									{
+										count = current_program.count;
+									}
 
 									end_iteration =
 										!engine->GetTopPrograms(1 == place, current_program);

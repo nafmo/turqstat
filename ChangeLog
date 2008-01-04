@@ -27,6 +27,9 @@
   template.cpp
     Use localized day names in generated reports.
 
+  statview.cpp
+    Avoid using uninitialized variables.
+
 2007-12-08 - Peter Karlsson <peter@softwolves.pp.se>
   lexer.cpp
   lexer.h
