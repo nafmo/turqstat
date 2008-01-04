@@ -53,7 +53,7 @@ Template *Template::Parse(const string &file, bool &error)
 			{
 				in_settings =
 					static_cast<Section *>(tokenlist)->GetSection()
-					== Section::makLocalization;
+					== Section::Localization;
 			}
 
 			// Add line to template
