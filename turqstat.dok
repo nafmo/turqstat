@@ -50,8 +50,8 @@ mktime.c (emx+gcc) -- Copyright (c) 1990-1996 by Eberhard Mattes.
 ANVÄNDNING (KOMMANDORADSVERSIONEN)
 
 Turquoise SuperStat läser innehållet i en Fidonetmeddelandebas i något av de
-stödda formaten, eller Usenetgrupper i det vanliga "news spool"-formatet, och
-skapar statistik inom följande områden:
+stödda formaten, eller Usenetgrupper över NNTP eller i det vanliga "spool"-
+formatet, och skapar statistik inom följande områden:
 
  * Svartlista över citatvolym.
  * Topplista över avsändare.
@@ -94,9 +94,6 @@ Dataurval och -format:
    Exempel: 20000101T000000-20011231T235959 är hela 2000, -20010101 är allting
    före (exklusive) 1 januari 2001, och 20010101- är allting från (och med)
    1 januari 2001.
-
--F <fil>
-   Väljer vilken utdatamall som skall användas. Standardvalet är default.tpl
 
 Val av indata:
 
@@ -164,6 +161,9 @@ Val av topplistor:
    på).
 
 Utseende på utdata:
+
+-F <fil>
+   Väljer vilken utdatamall som skall användas. Standardvalet är default.tpl
 
 -A Visar alla siffror i topplistorna (förinställt värde är av).
 
@@ -333,23 +333,24 @@ HISTORIK
 
 BIFOGADE FILER
 
-OS/2- och Win32-distribution:
+Dokumentation:
 
-turqstat.doc  - Dokumentation på engelska
-turqstat.dok  - Denna dokumentation
-turqstat.1    - Unixmanualsida
-turqstat-sv.1 - Unixmanualsida på svenska
-xturqstat.1   - Unixmanualsida, grafisk version
-xturqstat-sv.1- Unixmanualsida på svenska, grafisk version
-COPYING       - GNU General Public License, version 2
+  turqstat.doc  - Dokumentation på engelska
+  turqstat.dok  - Denna dokumentation
+  turqstat.1    - Unixmanualsida
+  turqstat-sv.1 - Unixmanualsida på svenska
+  xturqstat.1   - Unixmanualsida, grafisk version
+  xturqstat-sv.1- Unixmanualsida på svenska, grafisk version
+  COPYING       - GNU General Public License, version 2
 
-src/-katalogen:
+Källkod:
+
   ChangeLog       - Logg över ändringar i källkoden
   configure       - Konfigureringsskript (kräver sh-kompatibelt skal)
   Makefile.in     - Indatafil för Makefile (används av configure)
   configure.in    - Indatafil för configure (används av autoconf)
   config.h.in     - Indatafil för config.h (används av configure)
-  acconfig.h      - Indatafil för config.h.in (används av autoconf)
+  turqstat.kdevelop Projektfil för KDevelop
   turqstat.cpp    - Huvudkällkod för Turquoise
   arearead.h      - Prototypfil som beskriver den abstrakta överklassen för
                     meddelandebasläsarna
@@ -375,6 +376,10 @@ src/-katalogen:
   mappings.h      - Prototypfil för ovanstående
   mytime.cpp      - Källkod med tidsfunktioner
   mytime.h        - Prototypfil för ovanstående
+  lexer.cpp       - Tokeniserare för mallar
+  lexer.h         - Prototypfil för ovanstående
+  template.cpp    - Parser för mallar
+  template.h      - Prototypfil för ovanstående
   output.cpp      - Funktioner för att visa felmeddelanden
   output.h        - Prototypfil för ovanstående
   statengine.cpp  - Statistiksinläsningsmotorn
@@ -398,43 +403,53 @@ src/-katalogen:
   qtreport.h      - Prototypfil för ovanstående
   teal.cpp        - Enkelt teckenkonverteringsprogram
 
-src/mappings/-katalogen:
+Katalogen mappings:
+
   Makefile.in     - Indatafil för Makefile (används av configure)
   makemappings.pl - Perlprogram som skapar C-kod från tabellfiler
   *.txt           - Officiella konverteringstabeller
 
-src/po/-katalogen:
+Katalogen po:
+
   Makefile.in     - Indatafil för Makefile (används av configure)
   update-po.sh    - Skalprogram som uppdaterar PO-filerna
   xturqstat.po    - Källfil för översättningarna (Qt)
   *.po            - Översättningar (Qt)
 
-os2/-katalogen:
+Katalogen visualc:
+
+  turqstat.sln    - Arbetsyta för Visual C++
+  turqstat.vcproj - Projektfil för Visual C++
+
+OS/2 distribution:
+
   config.h        - config.h att använda om du inte kan köra configure (EMX)
   Makefile        - Makefile att använda om du inte kan köra configure (EMX)
   turqstat.exe    - Körbar fil (OS/2, EMX)
   README.os2      - Information om OS/2-versionen
 
-win32/-katalogen:
-  turqstat.exe    - Körbar fil (Win32 i386, Mingw32)
+Win32 distribution:
+
+  turqstat.exe    - Körbar fil (Win32 i386, Visual C++ Express)
   README.Win32    - Information om Win32-versionen
 
-Unixdistributionen består av en .tar.gz-fil med all källkod listad ovan, plus
-dokumentationsfilerna. Inga exekverbara filer medföljer. Den innehåller även
-en underkatalog debian, vilken innehåller kontrollfiler för att skapa ett
-binärpaket för Debian.
+Underkatalogen debian innehåller kontrollfiler för att skapa ett binärpaket för
+Debian.
 
 
-CREDITS
+TACK
 
 Tack till Dan Gohman <gohmandj@mrs.umn.edu> för hjälp med anpassning till
-GNU C++ 3.0.
+GNU C++ 3.0. Tack till Martin Michlmayr <tbm@cyrius.com> för hjälp med
+anpassning till GNU C++ 4.3.
 
 
 KRAV FÖR KOMPILERING
 
-Programmet utvecklades under OS/2 med EMX 0.9d/GNU C/C++ 2.8.1, Debian 2.2
-med gcc 2.95.4 och Win32 med Mingw32 (gcc 2.95.2).
+Programmet utvecklades under Debian 4.0 med gcc 4.1, Mac OS X 10.5 med gcc 4.0
+och Win32 med Visual C++ 2008 Express Edition. Programmet har tidigare
+utvecklats under OS/2 med EMX 0.9d/GNU C/C++ 2.8.1 och Win32 med Mingw32
+(gcc 2.95.2).
 
 Den grafiska versionen kräver att Qt version 2.3 eller senare finns
 installerat.
@@ -448,6 +463,6 @@ dpkg-buildpackage.
 
 KONTAKT
 
-Författaren, Peter Karlsson, kan nås via nätpost på 2:204/254.222, eller via
-Internet-e-post på peter@softwolves.pp.se. Information om detta program finns
-på webben på http://www.softwolves.pp.se/sw/
+Författaren, Peter Karlsson, kan nås via Internet-e-post på
+peter@softwolves.pp.se och kanske på nätpost på 2:204/254.222. Information om
+programmet finns på webben på http://www.softwolves.pp.se/sw/

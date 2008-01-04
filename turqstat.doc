@@ -49,8 +49,8 @@ mktime.c (emx+gcc) -- Copyright (c) 1990-1996 by Eberhard Mattes.
 USAGE (COMMAND LINE VERSION)
 
 Turquoise SuperStat reads the contents of a Fidonet message area in one of its
-supported formats, or standard Usenet news spools, and creates statistics
-about this:
+supported formats, or Usenet news over NNTP or in standard spool format, and
+creates statistics about this:
 
  * Quoter blacklist.
  * Toplist of senders.
@@ -95,9 +95,6 @@ Data selection:
    Examples: 20000101T000000-20001231T235959 is all of 2000, -20010101 is
    everything before (not including) January 1st, 2001, and 20010101- is
    everything from (and including) January 1st, 2001.
-
--F <file>
-   Selects the template file to use. The default is default.tpl
 
 Input selection:
 
@@ -164,6 +161,9 @@ Toplist selection:
    on).
 
 Output options:
+
+-F <file>
+   Selects the template file to use. The default is default.tpl
 
 -A Display all numbers in toplists (default is off).
 
@@ -333,23 +333,24 @@ HISTORY
 
 INCLUDED FILES
 
-OS/2 and Win32 distribution:
+Documentation:
 
-turqstat.doc  - This documentation
-turqstat.dok  - Documentation in Swedish
-turqstat.1    - Unix manual page
-turqstat-sv.1 - Unix manual page in Swedish
-xturqstat.1   - Unix manual page, GUI version
-xturqstat-sv.1- Unix manual page in Swedish, GUI version
-COPYING       - The GNU General Public License, version 2
+  turqstat.doc  - This documentation
+  turqstat.dok  - Documentation in Swedish
+  turqstat.1    - Unix manual page
+  turqstat-sv.1 - Unix manual page in Swedish
+  xturqstat.1   - Unix manual page, GUI version
+  xturqstat-sv.1- Unix manual page in Swedish, GUI version
+  COPYING       - The GNU General Public License, version 2
 
-src/ directory:
+Sources:
+
   ChangeLog       - Log of source code changes
   configure       - Configuration script (requires sh compatible shell)
   Makefile.in     - Input file for Makefile (used by configure)
   configure.in    - Input file for configure (used by autoconf)
   config.h.in     - Input file for config.h (used by configure)
-  acconfig.h      - Input file for config.h.in (used by autoconf)
+  turqstat.kdevelop Project file for KDevelop
   turqstat.cpp    - Main Turquoise source
   arearead.h      - Header defining the abstract superclass for the message
                     base readers
@@ -375,6 +376,10 @@ src/ directory:
   mappings.h      - Header file for the above
   mytime.cpp      - Time function sources
   mytime.h        - Header file for the above
+  lexer.cpp       - Tokenizer for templates
+  lexer.h         - Header file for the above
+  template.cpp    - Parser for templates
+  template.h      - Header file for the above
   output.cpp      - Functions to display error messages
   output.h        - Header file for the above
   statengine.cpp  - The statistics gathering engine
@@ -398,43 +403,53 @@ src/ directory:
   qtreport.h      - Header file for the above
   teal.cpp        - Simple character conversion application
 
-src/mappings/ directory:
+The mappings directory:
+
   Makefile.in     - Input file for Makefile (used by configure)
   makemappings.pl - Perl script that creates C code from mapping tables
   *.txt           - Official conversion tables
 
-src/po/ directory:
+The po directory:
+
   Makefile.in     - Input file for Makefile (used by configure)
   update-po.sh    - Shell skript that updates the PO files
   xturqstat.po    - Master file for the translations (Qt)
   *.po            - Translations (Qt)
 
-os2/ directory:
+The visualc directory:
+
+  turqstat.sln    - Workspace Visual C++
+  turqstat.vcproj - Project file Visual C++
+
+OS/2 distribution:
+
   config.h        - config.h to use if you cannot run configure (EMX)
   Makefile        - Makefile to use if you cannot run configure (EMX)
   turqstat.exe    - Main executable file (OS/2, EMX)
   README.os2      - OS/2 release notes
 
-win32/ directory:
-  turqstat.exe    - Main executable file (Win32 i386, Mingw32)
+Win32 distribution:
+
+  turqstat.exe    - Main executable file (Win32 i386, Visual C++ Express)
   README.Win32    - Win32 release notes
 
-The Unix distribution consists of a .tar.gz containing all the sources listed
-above, plus the documentation files. No binaries are included. It also
-contains a debian subdirectory which has control files for creating a Debian
-binary package.
+The debian directory contains control files for creating a Debian binary
+package.
 
 
 CREDITS
 
 Thanks to Dan Gohman <gohmandj@mrs.umn.edu> for help with porting to GNU C++
-3.0.
+3.0. Thanks to Martin Michlmayr <tbm@cyrius.com> for help with porting to
+GNU C++ 4.3.
 
 
 REQUIREMENTS FOR COMPILATION
 
-The program was developed under OS/2 using EMX 0.9d/GNU C/C++ 2.8.1, Debian
-2.2 with gcc 2.95.4 and Win32 with Mingw32 (gcc 2.95.2).
+The program was developed under Debian 4.0 with gcc 4.1, Mac OS X 10.5 with gcc
+4.0 and Win32 with Visual C++ 2008 Express Edition. The program has previously
+been developed under OS/2 using EMX 0.9d/GNU C/C++ 2.8.1 and Win32 with Mingw32
+(gcc 2.95.2).
 
 The GUI version requires Qt version 2.3 or later to be installed.
 
@@ -446,6 +461,7 @@ also want to create Debian's archive control files, use dpkg-buildpackage.
 
 CONTACT
 
-The author, Peter Karlsson, can be contacted via netmail at 2:204/254.222, or
-via Internet e-mail at peter@softwolves.pp.se. Information about this program
-is available on the world wide web at http://www.softwolves.pp.se/sw/
+The author, Peter Karlsson, can be contacted via Internet e-mail at
+peter@softwolves.pp.se, or possibly via netmail at 2:204/254.222. Information
+about this program is available on the world wide web at
+http://www.softwolves.pp.se/sw/
