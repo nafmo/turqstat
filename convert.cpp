@@ -1,4 +1,4 @@
-// Copyright (c) 2001-2005 Peter Karlsson
+// Copyright (c) 2001-2007 Peter Karlsson
 //
 // This program is free software; you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -229,7 +229,7 @@ Decoder *Decoder::GetDecoderByName(const char *charset)
 Decoder *Decoder::GetDecoderByKludges(const char *kludges)
 {
     // Find CHRS kludge
-    char *chrs = kludges ? strstr(kludges, "\x01""CHRS: ") : NULL;
+    const char *chrs = kludges ? strstr(kludges, "\x01""CHRS: ") : NULL;
     if (!chrs)
     {
         // Return first in Fido table
@@ -252,7 +252,7 @@ Decoder *Decoder::GetDecoderByKludges(const char *kludges)
     // Test for special case: IBMPC may have CODEPAGE specifier (FDAPX/w)
     if (0 == fcompare(charset, "IBMPC"))
     {
-        char *codepage = kludges ? strstr(kludges, "\x01""CODEPAGE: ") : NULL;
+        const char *codepage = kludges ? strstr(kludges, "\x01""CODEPAGE: ") : NULL;
         if (codepage)
         {
             // Isolate codepage number
@@ -581,7 +581,7 @@ string SBCSEncoder::Encode(const wstring &input)
             // ASCII always map to ASCII, even for 7-bit character sets
             // (this means that a backslash in input will look wrong in
             // output for iso-ir-11, but we can live with that)
-            s += char(ucs);
+            s += static_cast<char>(ucs);
         }
         else
         {
@@ -595,7 +595,7 @@ string SBCSEncoder::Encode(const wstring &input)
                 mid = low + (high - low) / 2;
                 if (ucs == outmap[mid].unicode)
                 {
-                    result = outmap[mid].legacy;
+                    result = static_cast<char>(outmap[mid].legacy);
                 }
                 else if (ucs < outmap[mid].unicode)
                 {

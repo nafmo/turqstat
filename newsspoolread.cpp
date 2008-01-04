@@ -1,4 +1,4 @@
-// Copyright (c) 2000-2005 Peter Karlsson
+// Copyright (c) 2000-2007 Peter Karlsson
 //
 // This program is free software; you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -101,8 +101,8 @@ bool NewsSpoolRead::Transfer(time_t starttime, time_t endtime,
     int rc = findfirst(searchpath.c_str(), FA_RDONLY | FA_ARCH);
 # else
     struct _finddata_t spooldir;
-    int spoolhandle = _findfirst(searchpath.c_str(), &spooldir);
-    int rc = spoolhandle;
+    intptr_t spoolhandle = _findfirst(searchpath.c_str(), &spooldir);
+    intptr_t rc = spoolhandle;
 # endif
 
     if (-1 == rc)
@@ -130,7 +130,8 @@ bool NewsSpoolRead::Transfer(time_t starttime, time_t endtime,
     char *msgbuf = NULL, *ctrlbuf = NULL, *p;
     time_t arrived;
     unsigned long msgn = 0;
-    long length, thislength;
+    long length;
+	size_t thislength;
     string from, subject;
 #if !defined(HAVE_LIBCRTDLL) && !defined(HAVE_DJGPP_FINDFIRST)
     struct stat msgstat;
@@ -228,7 +229,7 @@ bool NewsSpoolRead::Transfer(time_t starttime, time_t endtime,
 
             // Point past newline marker (which will be overwritten)
             p += thislength;
-            length -= thislength;
+            length -= static_cast<long>(thislength);
         }
 
         if (!p)

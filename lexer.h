@@ -143,7 +143,7 @@ public:
     /** Retrieve variable type described by this token. */
     variabletype GetType() const { return m_type; }
     /** Retrieve display width set for this token, or zero if none. */
-    size_t GetWidth() const { return m_width; }
+    streamsize GetWidth() const { return m_width; }
 
 private:
     friend class Token;
@@ -157,7 +157,7 @@ private:
     /** Variable described by this token. */
     variabletype m_type;
     /** Display width set for this token. */
-    int m_width;
+    streamsize m_width;
 };
 
 /** Lexical token describing a setting. */

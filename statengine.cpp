@@ -1,4 +1,4 @@
-// Copyright (c) 1998-2005 Peter Karlsson
+// Copyright (c) 1998-2007 Peter Karlsson
 //
 // This program is free software; you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -323,9 +323,10 @@ void StatEngine::AddData(string in_fromname, string in_toname, string in_subject
     // Loop over the message body and count:
     //  number of lines and bytes in message
     //  number of quoted lines and bytes in message
-    unsigned lines = 0, bytes = 0, qlines = 0, qbytes = 0;
-    unsigned lastlinebytes = 0;
-    unsigned currindex = 0;
+	unsigned lines = 0, qlines = 0;
+	string::size_type bytes = 0, qbytes = 0;
+	string::size_type lastlinebytes = 0;
+	string::size_type currindex = 0;
     bool isquoted = false, foundtear = false;
     do
     {
@@ -388,14 +389,14 @@ void StatEngine::AddData(string in_fromname, string in_toname, string in_subject
         bytes -= lastlinebytes;
     }
 
-    persfound_p->byteswritten += bytes;
+    persfound_p->byteswritten += static_cast<unsigned int>(bytes);
     persfound_p->lineswritten += lines;
-    persfound_p->bytesquoted += qbytes;
+    persfound_p->bytesquoted += static_cast<unsigned int>(qbytes);
     persfound_p->linesquoted += qlines;
 
-    totalbytes  += bytes;
+    totalbytes  += static_cast<unsigned int>(bytes);
     totallines  += lines;
-    totalqbytes += qbytes;
+    totalqbytes += static_cast<unsigned int>(qbytes);
     totalqlines += qlines;
     msgcount ++;
 
@@ -486,7 +487,7 @@ void StatEngine::AddData(string in_fromname, string in_toname, string in_subject
             }
 
             netfound_p->count ++;
-            netfound_p->bytes += bytes;
+            netfound_p->bytes += static_cast<unsigned int>(bytes);
         }
     }
 
@@ -563,7 +564,7 @@ void StatEngine::AddData(string in_fromname, string in_toname, string in_subject
             }
 
             domainfound_p->count ++;
-            domainfound_p->bytes += bytes;
+            domainfound_p->bytes += static_cast<unsigned int>(bytes);
         }
     }
 
@@ -694,7 +695,7 @@ void StatEngine::AddData(string in_fromname, string in_toname, string in_subject
     }
 
     subfound_p->count ++;
-    subfound_p->bytes += bytes;
+    subfound_p->bytes += static_cast<unsigned int>(bytes);
 
     // Locate program name and version in database, and update statistics
     string program = "";
@@ -707,14 +708,14 @@ void StatEngine::AddData(string in_fromname, string in_toname, string in_subject
         string::size_type where;
         if ((where = controldata.find("X-Newsreader:")) != string::npos)
         {
-            int howfar = controldata.find((char) 1, where);
+			string::size_type howfar = controldata.find('\1', where);
             where += 14;
             while (isspace(controldata[where])) where ++;
             program = controldata.substr(where, howfar - where);
         }
         else if ((where = controldata.find("User-Agent:")) != string::npos)
         {
-            int howfar = controldata.find((char) 1, where);
+			string::size_type howfar = controldata.find('\1', where);
             where += 11;
             while (isspace(controldata[where])) where ++;
             program = controldata.substr(where, howfar - where);
@@ -1074,11 +1075,11 @@ wstring StatEngine::DeQP(const string &qp, Decoder *maindecoder_p) const
                     "ABCDEFGHIJKLMNOPQRSTUVWXYZ" // 0-25
                     "abcdefghijklmnopqrstuvwxyz" // 26-51
                     "0123456789+/=";             // 52-63 + pad
-                int b64buf = 0, b64count = 0, c;
-                for (unsigned i = qpos + 3; i < endpos; i ++)
+                unsigned int b64buf = 0, b64count = 0, c;
+				for (string::size_type i = qpos + 3; i < endpos; i ++)
                 {
-                    char *p = strchr(base64, qp[i]);
-                    int b64val = p ? (p - base64) : 0;
+                    const char *p = strchr(base64, qp[i]);
+                    size_t b64val = p ? (p - base64) : 0;
                     if (64 == b64val) b64val = 0;
                     b64buf = (b64buf << 6) | b64val;
                     switch (++ b64count)
@@ -1106,7 +1107,7 @@ wstring StatEngine::DeQP(const string &qp, Decoder *maindecoder_p) const
             else
             {            
                 // Convert QP code to bytestream
-                for (unsigned i = qpos + 3; i < endpos; i ++)
+				for (string::size_type i = qpos + 3; i < endpos; i ++)
                 {
                     if ('=' == qp[i])
                     {

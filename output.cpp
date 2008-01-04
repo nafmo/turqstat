@@ -1,4 +1,4 @@
-// Copyright (c) 2000-2005 Peter Karlsson
+// Copyright (c) 2000-2007 Peter Karlsson
 //
 // $Id: output.cpp,v 1.8 2005/07/11 10:37:33 peterk Exp $
 //
@@ -15,10 +15,10 @@
 // along with this program; if not, write to the Free Software
 // Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 
+#include <config.h>
 #include <stdlib.h>
 #include <iostream>
 #include <stdio.h>
-#include <config.h>
 
 #include "output.h"
 

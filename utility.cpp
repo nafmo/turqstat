@@ -1,4 +1,4 @@
-// Copyright (c) 1998-2005 Peter Karlsson
+// Copyright (c) 1998-2007 Peter Karlsson
 //
 // This program is free software; you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -30,6 +30,9 @@
 #if defined(HAVE_OS2_COUNTRYINFO)
 # define INCL_DOSNLS
 # include <os2.h>
+#endif
+#ifdef USE_OWN_GETOPT
+# include <iostream>
 #endif
 #if defined(HAVE_WIN32_LOCALEINFO)
 # include <windows.h>
@@ -113,7 +116,7 @@ time_t stampToTimeT(struct stamp_s *st)
     struct tm tms;
     if (0 == st->date.da || 0 == st->date.mo)
     {
-        return time_t(-1);
+        return static_cast<time_t>(-1);
     }
     tms.tm_sec = st->time.ss << 1;
     tms.tm_min = st->time.mm;
@@ -149,11 +152,11 @@ time_t asciiToTimeT(const char *datetime)
         tms.tm_sec = 0;
     }
     else
-        return time_t(-1);
+        return static_cast<time_t>(-1);
 
     // Check month
-    char *c_p = strstr(months, month);
-    if (!c_p) return time_t(-1);
+    const char *c_p = strstr(months, month);
+    if (!c_p) return static_cast<time_t>(-1);
     tms.tm_mon = int(c_p - months) / 3;
 
     // Check year
@@ -176,7 +179,7 @@ time_t rfcToTimeT(string datetime)
     int rc;
 
     // Chop weekday (if any)
-    int pos = datetime.find(',');
+    size_t pos = datetime.find(',');
     if (pos >= 0 && pos < 10) datetime = datetime.substr(pos + 1);
 
     // "[ ]Dd Mmm [Yy]yy HH:MM:SS[ +ZZZZ]"
@@ -187,15 +190,15 @@ time_t rfcToTimeT(string datetime)
 
     if (rc != 6)
     {
-        return time_t(-1);
+        return static_cast<time_t>(-1);
     }
 
     // RFC years should be four-digit
     if (tms.tm_year >= 1900) tms.tm_year -= 1900;
 
     // Check month
-    char *c_p = strstr(months, month);
-    if (!c_p) return time_t(-1);
+    const char *c_p = strstr(months, month);
+    if (!c_p) return static_cast<time_t>(-1);
     tms.tm_mon = ((int) (c_p - months)) / 3;
 
     tt = my_mktime(&tms);
@@ -216,7 +219,7 @@ time_t timespecToTimeT(const string &datetime)
                     &tms.tm_year, &tms.tm_mon, &tms.tm_mday);
         if (rc != 3)
         {
-            return time_t(-1);
+            return static_cast<time_t>(-1);
         }
         tms.tm_hour = 0;
         tms.tm_min  = 0;
@@ -229,12 +232,12 @@ time_t timespecToTimeT(const string &datetime)
                     &tms.tm_hour, &tms.tm_min, &tms.tm_sec);
         if (rc != 6)
         {
-            return time_t(-1);
+            return static_cast<time_t>(-1);
         }
     }
     else
     {
-        return time_t(-1);
+        return static_cast<time_t>(-1);
     }
 
     // Years are always four digit here
@@ -407,7 +410,7 @@ void localetimestring(const struct tm *time, size_t len, char *out)
     // First print date
     int usedlength =
         GetDateFormat(LOCALE_USER_DEFAULT, DATE_SHORTDATE, &wintime, NULL,
-                      out, len);
+                      out, static_cast<int>(len));
 
     len -= usedlength;
     out += usedlength;
@@ -419,7 +422,7 @@ void localetimestring(const struct tm *time, size_t len, char *out)
     }
 
     // Then print time
-    GetTimeFormat(LOCALE_USER_DEFAULT, 0, &wintime, NULL, out, len);
+    GetTimeFormat(LOCALE_USER_DEFAULT, 0, &wintime, NULL, out, static_cast<int>(len));
 }
 #elif defined(HAVE_LOCALE_H)
 void localetimestring(const struct tm *time, size_t len, char *out)
@@ -467,7 +470,7 @@ redo:
     // Check this option
     int option = (int) (unsigned char) _argv[curarg][curind];
 
-    char *p;
+    const char *p;
     if (NULL != (p = strchr(opts, option)))
     {
         // Does it take an argument?

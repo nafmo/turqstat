@@ -1,3 +1,26 @@
+2008-01-04 - Peter Karlsson <peter@softwolves.pp.se>
+  visualc/
+    Added project files for Visual C++ 2008 Express Edition.
+
+  configure.in
+  convert.cpp
+  mappings.h
+  mypointread.cpp
+  newsspoolread.cpp
+  nntpread.cpp
+  nntpread.h
+  output.cpp
+  sdmread.cpp
+  statengine.cpp
+  statview.cpp
+  template.h
+  turqstat.cpp
+  utility.cpp
+    Compile fixes for Visual C++.
+
+  lexer.cpp
+    Fixed access outside buffer.
+
 2007-12-08 - Peter Karlsson <peter@softwolves.pp.se>
   lexer.cpp
   lexer.h

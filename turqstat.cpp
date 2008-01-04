@@ -37,6 +37,12 @@
 #ifdef HAVE_LOCALE_H
 # include <locale.h>
 #endif
+#ifdef HAVE_WINSOCK2_H
+# include <winsock2.h>
+#endif
+#ifdef HAVE_WIN32_GETMODULEFILENAME
+# include <windows.h>
+#endif
 
 #include "statengine.h"
 #include "statview.h"
@@ -136,6 +142,9 @@ int main(int argc, char *argv[])
 #if defined(HAVE_LOCALE_H) || defined(HAVE_OS2_COUNTRYINFO) || defined(HAVE_WIN32_LOCALEINFO)
     bool uselocale = false;
 #endif
+#if defined(HAVE_WIN32_GETMODULEFILENAME)
+	char defaulttemplate[_MAX_PATH];
+#endif
 
     // Setup locale
 #ifdef HAVE_LOCALE_H
@@ -226,6 +235,18 @@ int main(int argc, char *argv[])
     if (!templatefile)
     {
         // Use default template if none was supplied.
+#if defined(HAVE_WIN32_GETMODULEFILENAME)
+		// Windows: Template is in the same directory as the EXE file.
+		GetModuleFileNameA(NULL, defaulttemplate, _MAX_PATH);
+		char *p = strrchr(defaulttemplate, '\\');
+		if (p && p < defaulttemplate + _MAX_PATH - 13)
+		{
+			strcpy(p + 1, "default.tpl");
+			templatefile = defaulttemplate;
+		}
+#else
+		// Unix-like environment: Template is in a pre-defined installation
+		// directory.
         templatefile = DATA
 #ifdef BACKSLASH_PATHS
             "\\"
@@ -233,6 +254,7 @@ int main(int argc, char *argv[])
             "/"
 #endif
             "default.tpl";
+#endif
     }
 
     bool is_error = false;
@@ -448,7 +470,7 @@ void evaluaterange(const char *rangespec,
         if (time_t(-1) != **range_start_pp)
         {
             const char *rangespec2 = separator + 1;
-            int charsleft = strlen(rangespec2);
+            size_t charsleft = strlen(rangespec2);
             if (0 == charsleft)
             {
                 **range_end_pp = time_t(DISTANT_FUTURE);

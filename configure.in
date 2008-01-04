@@ -315,6 +315,15 @@ if test "$locale" = "yes"; then
   fi
 fi
 
+AC_CACHE_CHECK([for GetModuleFileName in windows.h], ac_cv_getmodulefilename,
+  AC_TRY_COMPILE([#include <windows.h>],
+  [ char s[256]; GetModuleFileNameA(NULL, s, 256);
+  ], ac_cv_getmodulefilename=yes, ac_cv_getmodulefilename=no))
+if test "$ac_cv_getmodulefilename" = "yes"; then
+  AC_DEFINE(HAVE_WIN32_GETMODULEFILENAME, 1,
+            [Define if you have Win32 GetModuleFileName API])
+fi
+
 AC_LANG_CPLUSPLUS
 AC_CACHE_CHECK([if compiler needs explicit namespace], ac_cv_namespace,
   AC_TRY_COMPILE([#include <string>],

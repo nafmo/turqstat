@@ -137,7 +137,7 @@ Literal::Literal(string s, bool lineend)
     if (lineend)
     {
         string::size_type len = s.length();
-        if (m_literal[len - 1] == '\\')
+        if (len && m_literal[len - 1] == '\\')
         {
             // No matter what we erase the last character if it was a
             // backslash.
