@@ -1,20 +1,8 @@
 2008-01-04 - Peter Karlsson <peter@softwolves.pp.se>
   visualc/
-    Upgraded project files to Visual C++ 2008 Express Edition.
+    Added project files for Visual C++ 2008 Express Edition.
 
   configure.in
-  nntpread.cpp
-  turqstat.cpp
-  utility.cpp
-    Compile fixes for Visual C++.
-
-  lexer.cpp
-    Fixed access outside buffer.
-
-2007-11-24 - Peter Karlsson <peter@softwolves.pp.se>
-  visualc/
-    Added project files for Visual C++ 2005 Express Edition.
-
   convert.cpp
   lexer.h
   mappings.h
@@ -27,7 +15,19 @@
   statengine.cpp
   statview.cpp
   template.h
+  turqstat.cpp
+  utility.cpp
     Compile fixes for Visual C++.
+
+  lexer.cpp
+    Fixed access outside buffer.
+
+2007-12-01 - Peter Karlsson <peter@softwolves.pp.se>
+  templates/default.tpl
+    Rewrote some commentary. Fixed some minor issues.
+
+  templates/svenska.tpl
+    Added Swedish template.
 
 2007-11-23 - Peter Karlsson <peter@softwolves.pp.se>
   template.cpp
@@ -42,7 +42,7 @@
     Do not list address in receivers top list.
     Trim trailing spaces from the generated file.
 
-  default.tpl
+  templates/default.tpl
     Some cosmetic fixes.
 
   configure.in

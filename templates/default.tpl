@@ -1,20 +1,23 @@
 ; Default template file for Turquoise SuperStat reports
 ; © 2002-2007 Peter Karlsson
 ;
-; Any line starting with a semi-colon will be ignored. To start a line with
-; a semi-colon in the final report, start the line with two semi-colons. Empty
-; lines in the input will create empty lines in the output.
+; Any line starting with a semi-colon (like this one) will be ignored. To
+; output a line with an initial semi-colon in the final report, start the
+; line with two semi-colons (;;). Empty lines in the template will create
+; empty lines in the output.
 ;
-; A trailing backslash means that the line will not be terminated with a line
-; break. To include a trailing backslash, end the line with two backslashes.
+; A trailing backslash (\) means that the line will not be terminated with
+; a line break. To include a trailing backslash, terminate line with two
+; backslashes (\\).
 ;
-; Special tokens are inserted using @keyword@. To insert a literal @, double it.
+; Variables are inserted using @keyword@. To insert a literal @, write two
+; at signs (@@).
 ;
 ; The file is read sequentially.
 ;
-; Any line with a @place@ variable will create a top-list, repeating the
-; pattern of the line. The statistics is only initialized for variables
-; following the @place@ variable.
+; Any line starting with a @place@ variable will create a top-list, repeating
+; the pattern of that line. The variables that are dependent on the position
+; in the top-list are initialized by the @place@ variable.
 ;
 ; First comes the header
 [Common]
@@ -50,10 +53,11 @@ written between @earliestwritten@ and @lastwritten@.
 Blacklist of quoters (of people who have written at least three messages)
 
 Place Name                                                       Msgs   Ratio
-; Numbers in brackets denote field width. The ratio is always seven characters.
+; Numbers in brackets denote field width.
 @place[5]@ @name[58]@@written[5]@ @ratio[7]@
 
-A total of @bytestotal@ bytes were written (message bodies only), of which @bytesquoted@, or @ratio@, were quotes.
+A total of @bytestotal@ bytes were written (message bodies only), of which \
+@bytesquoted@, or @ratio@, were quotes.
 
 [Writers]
 -----------------------------------------------------------------------------
@@ -70,7 +74,8 @@ A total of @totalpeople@ people were identified.
 
 [Original]
 -----------------------------------------------------------------------------
-Toplist of original content per message (of people who have written at least three messages)
+Toplist of original content per message (of people who have written at \
+least three messages)
 
 Place Name                                        Orig. / Msgs = PrMsg Quoted
 @place[5]@ @name[43]@@bytesoriginal[6]@ /@written[5]@ = @permessage[5]@ @ratio[7]@
@@ -93,7 +98,7 @@ Toplist of topdomains
 Place Domain Messages    Bytes
 @place[5]@ @topdomain[7]@@written[8]@ @byteswritten[8]@
 
-Messages from @totaldomains@ different top domains were found
+Messages from @totaldomains@ different top domains were found.
 
 [Received]
 -----------------------------------------------------------------------------
@@ -118,7 +123,8 @@ Toplist of programs
 Place Program                              Msgs
 @place[5]@ @program[35]@@written[6]@
 
-A total of @totalprograms@ different programs (not counting different versions) were identified.
+A total of @totalprograms@ different programs (not counting different \
+versions) were identified.
 
 [Week]
 ; @place@ contains the day token.
