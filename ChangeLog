@@ -8,6 +8,9 @@
   utility.cpp
     Compile fixes for Visual C++.
 
+  lexer.cpp
+    Fixed access outside buffer.
+
 2007-11-24 - Peter Karlsson <peter@softwolves.pp.se>
   visualc/
     Added project files for Visual C++ 2005 Express Edition.
