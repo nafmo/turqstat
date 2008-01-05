@@ -20,6 +20,12 @@
   qtreport.h
     Renamed class and instance variables.
 
+  turqstat.doc
+  turqstat.dok
+  xturqstat.1
+  xturqstat-sv.1
+    Updated documentation on xturqstat.
+
 2008-01-04 - Peter Karlsson <peter@softwolves.pp.se>
   visualc/
     Added project files for Visual C++ 2008 Express Edition.

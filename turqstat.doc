@@ -1,6 +1,6 @@
 Turquoise SuperStat 3.0 - An area statistics program for Fidonet and Usenet
-(c) Copyright 1998-2007 Peter Karlsson.
-A Softwolves Software Release in 2007
+(c) Copyright 1998-2008 Peter Karlsson.
+A Softwolves Software Release in 2008
 
 http://www.softwolves.pp.se/sw/
 
@@ -215,8 +215,8 @@ Clears all loaded data and resets the displayed statistics.
 
  File - Save report
 
-Saves a report of the currently loaded set of statistics to a text file, in
-the same format as the command line version uses.
+Saves a report of the currently loaded set of statistics to a text file,
+using a template of your choice.
 
  File - Exit
 

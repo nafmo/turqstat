@@ -1,6 +1,6 @@
 Turquoise SuperStat 3.0 - Ett mötesstatistikprogram för Fidonet och Usenet
-(c) Copyright 1998-2007 Peter Karlsson.
-A Softwolves Software Release in 2007
+(c) Copyright 1998-2008 Peter Karlsson.
+A Softwolves Software Release in 2008
 
 http://www.softwolves.pp.se/sw/
 
@@ -216,7 +216,7 @@ Tömmer all inläst data och återställer den visade statistiken.
  Arkiv - Spara rapport
 
 Sparar en rapport för den för tillfället inlästa uppsättningen statistik till
-en textfil, i samma format som kommandoradsversionen använder.
+en textfil, med hjälp av en mall som du väljer.
 
  Arkiv - Avsluta
 
