@@ -7708,7 +7708,7 @@ cat >>conftest.$ac_ext <<_ACEOF
 int
 main ()
 {
- char s256; GetModuleFileNameA(NULL, s, 256);
+ char *s; GetModuleFileNameA(NULL, s, 256);
 
   ;
   return 0;
