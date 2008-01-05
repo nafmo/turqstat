@@ -1,3 +1,13 @@
+2008-01-05 - Peter Karlsson <peter@softwolves.pp.se>
+  output.cpp
+  output.h
+  outputqt.cpp
+    Added parse error message to output object.
+
+  qtreport.cpp
+  qtreport.h
+    Added template browser to report generator dialogue.
+
 2008-01-04 - Peter Karlsson <peter@softwolves.pp.se>
   visualc/
     Added project files for Visual C++ 2008 Express Edition.

@@ -1,4 +1,4 @@
-// Copyright (c) 2000-2001 Peter Karlsson
+// Copyright (c) 2000-2008 Peter Karlsson
 //
 // This program is free software; you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -22,11 +22,14 @@
 #include <qpushbutton.h>
 #include <qcombobox.h>
 #include <qlabel.h>
+#include <qlineedit.h>
 #include <limits.h>
 
 #include "qtreport.h"
 #include "statview.h"
 #include "convert.h"
+#include "template.h"
+#include "output.h"
 
 bool ReportSelectWindow::doquoters = true;
 bool ReportSelectWindow::dotopwritten = true;
@@ -42,8 +45,9 @@ bool ReportSelectWindow::dodaystats = true;
 bool ReportSelectWindow::douselocale = true;
 #endif
 QString ReportSelectWindow::docharset = "iso-8859-1";
-
 int ReportSelectWindow::defaultmaxnum = 15;
+QString ReportSelectWindow::templfile;
+Template *ReportSelectWindow::templ = NULL;
 
 ReportSelectWindow::ReportSelectWindow(QWidget *parent, const char *name,
                                        StatEngine *engine_p)
@@ -132,9 +136,56 @@ ReportSelectWindow::ReportSelectWindow(QWidget *parent, const char *name,
         }
     }
 
+	// Template file browser
+	if (!templ)
+	{
+		// Load default template on first call
+		string templatefile;
+#if defined(HAVE_WIN32_GETMODULEFILENAME)
+		// Windows: Template is in the same directory as the EXE file.
+		char defaulttemplate[_MAX_PATH];
+		GetModuleFileNameA(NULL, defaulttemplate, _MAX_PATH);
+		char *p = strrchr(defaulttemplate, '\\');
+		if (p && p < defaulttemplate + _MAX_PATH - 13)
+		{
+			strcpy(p + 1, "default.tpl");
+			templatefile = defaulttemplate;
+		}
+#else
+		// Unix-like environment: Template is in a pre-defined installation
+		// directory.
+		templatefile = DATA
+#ifdef BACKSLASH_PATHS
+				"\\"
+#else
+				"/"
+#endif
+				"default.tpl";
+#endif
+
+		bool is_error = false;
+		templ = Template::Parse(templatefile, is_error);
+		if (!is_error)
+		{
+			templfile = templatefile;
+		}
+	}
+	QLabel *templatelabel = new QLabel(tr("Template file to use"), this);
+	layout->addWidget(templatelabel);
+
+	QHBoxLayout *filebrowselayout = new QHBoxLayout(layout);
+
+	templatefilename = new QLineEdit(this, "templatefile");
+	templatefilename->setReadOnly(true);
+	templatefilename->setText(templfile);
+	filebrowselayout->addWidget(templatefilename);
+	filebrowsebutton = new QPushButton(tr("&Browse"), this);
+	filebrowselayout->addWidget(filebrowsebutton);
+	connect(filebrowsebutton, SIGNAL(clicked()), SLOT(browseForTemplate()));
+
     // Add buttons
     QHBoxLayout *buttonlayout = new QHBoxLayout(layout);
-    
+
     QPushButton *save = new QPushButton(tr("&Save"), this);
     buttonlayout->addWidget(save);
     connect(save, SIGNAL(clicked()), SLOT(saveToFile()));
@@ -150,6 +201,12 @@ ReportSelectWindow::~ReportSelectWindow()
 
 void ReportSelectWindow::saveToFile()
 {
+	if (!templ)
+	{
+		TDisplay *display = TDisplay::GetOutputObject();
+		display->ErrorMessage(TDisplay::template_parse_error);
+	}
+
     // Browse for filename
     QString filename =
         QFileDialog::getSaveFileName(tr("report.txt"),
@@ -199,8 +256,38 @@ void ReportSelectWindow::saveToFile()
     view.SetCharset(docharset.latin1());
 
     // Write output
+	view.SetTemplate(templ);
     view.CreateReport(engine, string(filename.local8Bit()));
 
     // Close
     accept();
+}
+
+void ReportSelectWindow::browseForTemplate()
+{
+	// Browse for filename
+	QString filename =
+		QFileDialog::getSaveFileName(tr("default.tpl"),
+		                             tr("Template files (*.tpl)"),
+		                             this, "browsefortemplate", tr("Browse for template"));
+	if (filename.isEmpty()) return; // Cancel
+
+	// Load template if possible
+	bool error = false;
+	Template *new_template =
+		Template::Parse(string(filename.local8Bit()), error);
+	if (!new_template || error)
+	{
+		TDisplay *display = TDisplay::GetOutputObject();
+		display->ErrorMessage(TDisplay::template_parse_error);
+
+		delete new_template;
+	}
+	else
+	{
+		// Remember template
+		templ = new_template;
+		templfile = filename;
+		templatefilename->setText(templfile);
+	}
 }

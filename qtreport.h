@@ -1,4 +1,4 @@
-// Copyright (c) 2000-2001 Peter Karlsson
+// Copyright (c) 2000-2008 Peter Karlsson
 //
 // This program is free software; you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -22,6 +22,9 @@ class StatEngine;
 class QCheckBox;
 class QSpinBox;
 class QComboBox;
+class QLineEdit;
+class QPushButton;
+class Template;
 
 /**
  * Class describing a window asking what to save to file. This class is used
@@ -66,6 +69,8 @@ protected:
     // Input boxes
     QSpinBox *maxnum;
     QComboBox *charset;
+	QLineEdit *templatefilename;
+	QPushButton *filebrowsebutton;
 
 protected slots:
     /**
@@ -73,6 +78,10 @@ protected slots:
      * button is pressed.
      */
     void saveToFile();
+	/**
+	 * Slot for browsing for a template file.
+	 */
+	void browseForTemplate();
 
 private:
     // Static members to remember values
@@ -93,6 +102,8 @@ private:
 
     static int defaultmaxnum;   ///< Remember number of entries in toplists.
     static QString docharset;   ///< Remember character set to use.
+	static QString templfile;	///< Remember path to template file.
+	static Template *templ;		///< Remember parsed template file.
 };
 
 #endif
