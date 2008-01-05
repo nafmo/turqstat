@@ -14,3 +14,6 @@ moc_*
 *.exe
 *.obj
 autom4te.cache
+build-stamp
+*.kdevelop.pcs
+*.kdevses
