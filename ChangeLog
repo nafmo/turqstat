@@ -24,9 +24,11 @@
 
   turqstat.doc
   turqstat.dok
+  turqstat.1
+  turqstat-sv.1
   xturqstat.1
   xturqstat-sv.1
-    Updated documentation on xturqstat.
+    Updated documentation.
 
   version.h
   debian/

@@ -96,6 +96,11 @@ Data selection:
    everything before (not including) January 1st, 2001, and 20010101- is
    everything from (and including) January 1st, 2001.
 
+Output format:
+
+-F <file>
+   Selects the template file to use. The default is default.tpl
+
 Input selection:
 
 -a <path>
@@ -161,9 +166,6 @@ Toplist selection:
    on).
 
 Output options:
-
--F <file>
-   Selects the template file to use. The default is default.tpl
 
 -A Display all numbers in toplists (default is off).
 

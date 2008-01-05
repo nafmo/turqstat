@@ -95,6 +95,11 @@ Dataurval och -format:
    före (exklusive) 1 januari 2001, och 20010101- är allting från (och med)
    1 januari 2001.
 
+Utdataformat:
+
+-F <fil>
+   Väljer vilken utdatamall som skall användas. Standardvalet är default.tpl
+
 Val av indata:
 
 -a <sökväg>
@@ -161,9 +166,6 @@ Val av topplistor:
    på).
 
 Utseende på utdata:
-
--F <fil>
-   Väljer vilken utdatamall som skall användas. Standardvalet är default.tpl
 
 -A Visar alla siffror i topplistorna (förinställt värde är av).
 
