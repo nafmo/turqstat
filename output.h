@@ -1,4 +1,4 @@
-// Copyright (c) 2000-2005 Peter Karlsson
+// Copyright (c) 2000-2008 Peter Karlsson
 //
 // This program is free software; you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -55,6 +55,7 @@ public:
         illegal_fdapx_version,
         illegal_mypoint_version, mypoint_area_garbled, mypoint_area_garbled_2,
         nntp_unexpected_result, nntp_communication_problem,
+		template_parse_error,
 
         // Public warning messages
         abnormal_squish_frame,

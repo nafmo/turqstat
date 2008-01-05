@@ -1,6 +1,4 @@
-// Copyright (c) 2000-2007 Peter Karlsson
-//
-// $Id: output.cpp,v 1.8 2005/07/11 10:37:33 peterk Exp $
+// Copyright (c) 2000-2008 Peter Karlsson
 //
 // This program is free software; you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -256,6 +254,10 @@ static string GetMessage(TDisplay::errormessages_e errormessage)
         case TDisplay::nntp_communication_problem:
             s = "NNTP communication problem";
             break;
+
+		case TDisplay::template_parse_error:
+			s = "Could not parse template file";
+			break;
     }
 
     return s;

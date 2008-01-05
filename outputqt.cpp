@@ -1,4 +1,4 @@
-// Copyright (c) 2000-2005 Peter Karlsson
+// Copyright (c) 2000-2008 Peter Karlsson
 //
 // This program is free software; you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -292,6 +292,10 @@ static QString GetMessage(TDisplay::errormessages_e errormessage)
         case TDisplay::nntp_communication_problem:
             s = qApp->translate("TDisplay", "NNTP communication problem");
             break;
+
+		case TDisplay::template_parse_error:
+			s = qApp->translate("TDisplay", "Could not parse template file");
+			break;
     }
 
     return s;
