@@ -1,6 +1,6 @@
 #!/usr/bin/make -f
 # GNU copyright 1997 to 1999 by Joey Hess.
-# Copyright 1999-2005 Peter Karlsson <peterk@debian.org>
+# Copyright 1999-2008 Peter Karlsson <peterk@debian.org>
 
 # Uncomment this to turn on verbose mode.
 #export DH_VERBOSE=1
@@ -38,6 +38,9 @@ install: build
 	cp -a debian/changelog debian/turqstat/usr/share/doc/turqstat/changelog.Debian
 	# Install X version ("xturqstat")
 	$(MAKE) install-qt prefix=`pwd`/debian/xturqstat/usr
+	# Remove common files
+	rm debian/xturqstat/usr/share/turqstat/*.tpl
+	rmdir debian/xturqstat/usr/share/turqstat/
 	cp -a ChangeLog debian/xturqstat/usr/share/doc/xturqstat/changelog
 	cp -a debian/changelog debian/xturqstat/usr/share/doc/xturqstat/changelog.Debian
 

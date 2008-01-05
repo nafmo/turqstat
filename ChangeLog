@@ -7,6 +7,7 @@
 
   qtreport.cpp
   qtreport.h
+  Makefile.in
     Added template browser to report generator dialogue.
 
   qtbars.cpp
@@ -28,10 +29,15 @@
     Updated documentation on xturqstat.
 
   version.h
+  debian/
     Updated year to 2008.
 
   po/
     Updated messages.
+
+  Makefile.in
+  debian/
+    Added template files to install procedure.
 
 2008-01-04 - Peter Karlsson <peter@softwolves.pp.se>
   visualc/

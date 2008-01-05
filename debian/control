@@ -20,8 +20,8 @@ Description: Fidonet and Usenet statistics program
 
 Package: xturqstat
 Architecture: any
-Depends: ${shlibs:Depends}
-Suggests: crashmail | news-transport-system | slrnpull, turqstat
+Depends: ${shlibs:Depends}, turqstat
+Suggests: crashmail | news-transport-system | slrnpull
 Description: Fidonet and Usenet statistics program for X
  Turquoise SuperStat is a simple but powerful Fidonet and Usenet
  message base statistics program that can read messages that are
