@@ -1,4 +1,4 @@
-// Copyright (c) 1998-2007 Peter Karlsson
+// Copyright (c) 1998-2008 Peter Karlsson
 //
 // This program is free software; you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -13,8 +13,8 @@
 // along with this program; if not, write to the Free Software
 // Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 
-#ifndef __VERSION_H
-#define __VERSION_H
+#ifndef VERSION_H
+#define VERSION_H
 
 #include <string>
 
@@ -26,9 +26,9 @@ using namespace std;
 const string version = "3.0";
 
 /** String describing the copyright information. */
-const string copyright = "(c) Copyright 1998-2007 Peter Karlsson";
+const string copyright = "(c) Copyright 1998-2008 Peter Karlsson";
 
 /** String describing the release year for this version. */
-const string releaseyear = "2007";
+const string releaseyear = "2008";
 
 #endif

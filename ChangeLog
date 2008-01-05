@@ -27,6 +27,9 @@
   xturqstat-sv.1
     Updated documentation on xturqstat.
 
+  version.h
+    Updated year to 2008.
+
   po/
     Updated messages.
 
