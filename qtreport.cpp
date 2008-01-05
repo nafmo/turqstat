@@ -267,7 +267,7 @@ void ReportSelectWindow::browseForTemplate()
 {
 	// Browse for filename
 	QString filename =
-		QFileDialog::getSaveFileName(tr("default.tpl"),
+		QFileDialog::getSaveFileName("default.tpl",
 		                             tr("Template files (*.tpl)"),
 		                             this, "browsefortemplate", tr("Browse for template"));
 	if (filename.isEmpty()) return; // Cancel

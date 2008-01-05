@@ -26,6 +26,9 @@
   xturqstat-sv.1
     Updated documentation on xturqstat.
 
+  po/
+    Updated messages.
+
 2008-01-04 - Peter Karlsson <peter@softwolves.pp.se>
   visualc/
     Added project files for Visual C++ 2008 Express Edition.
