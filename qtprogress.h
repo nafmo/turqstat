@@ -46,7 +46,7 @@ public:
      * Update the progress indicator.
      * @param number Number of messages read so far.
      */
-    void setProgress(int number) { progress->setNum(number); }
+    void setProgress(int number) { m_progress_p->setNum(number); }
 };
 
 #endif
