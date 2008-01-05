@@ -6,6 +6,7 @@ Doxyfile
 turqstat
 xturqstat
 teal
+lexertest
 *.o
 *.qm
 moc_*

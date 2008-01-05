@@ -1,0 +1,11 @@
+lexertest: lexerdriver.o lexer.o utility.o
+	g++ -o lexertest lexerdriver.o lexer.o utility.o -lstdc++
+
+lexerdriver.o: lexerdriver.cpp lexer.h
+	g++ -I. -c -o lexerdriver.o lexerdriver.cpp
+
+lexer.o: lexer.cpp lexer.h utility.h
+	g++ -I. -c -o lexer.o lexer.cpp
+
+#utility.o: utility.cpp utility.h
+#	g++ -c -o utility.o utility.coo
