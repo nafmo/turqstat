@@ -2,6 +2,7 @@
   output.cpp
   output.h
   outputqt.cpp
+  turqstat.cpp
     Added parse error message to output object.
 
   qtreport.cpp

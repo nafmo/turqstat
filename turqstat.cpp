@@ -3,7 +3,7 @@
 // A statistic collection program for Fidonet and Usenet systems
 // Version 3.0
 //
-// Copyright (c) 1998-2007 Peter Karlsson
+// Copyright (c) 1998-2008 Peter Karlsson
 //
 // This program is free software; you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -259,10 +259,10 @@ int main(int argc, char *argv[])
 
     bool is_error = false;
     Template *output_template_p = Template::Parse(templatefile, is_error);
-    if (is_error)
+    if (!output_template_p || is_error)
     {
-        cerr << "Unable to parse template file " << templatefile << endl;
-        return 2;
+		TDisplay *display = TDisplay::GetOutputObject();
+		display->ErrorQuit(TDisplay::template_parse_error, 2);
     }
 
     // Create engine object
