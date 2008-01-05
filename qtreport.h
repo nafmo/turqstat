@@ -13,8 +13,8 @@
 // along with this program; if not, write to the Free Software
 // Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 
-#ifndef __QTREPORT_H
-#define __QTREPORT_H
+#ifndef QTREPORT_H
+#define QTREPORT_H
 
 #include <qdialog.h>
 
@@ -49,28 +49,28 @@ public:
 
 protected:
     /** Statistics engine. */
-    StatEngine *engine;
+    StatEngine *m_engine_p;
 
     // Checkboxes
-    QCheckBox *quoters;
-    QCheckBox *topwritten;
-    QCheckBox *toporiginal;
-    QCheckBox *topnets;
-    QCheckBox *topdomains;
-    QCheckBox *topreceived;
-    QCheckBox *topsubjects;
-    QCheckBox *topprograms;
-    QCheckBox *weekstats;
-    QCheckBox *daystats;
+	QCheckBox *m_quoters_p;
+	QCheckBox *m_topwritten_p;
+	QCheckBox *m_toporiginal_p;
+	QCheckBox *m_topnets_p;
+	QCheckBox *m_topdomains_p;
+	QCheckBox *m_topreceived_p;
+	QCheckBox *m_topsubjects_p;
+	QCheckBox *m_topprograms_p;
+	QCheckBox *m_weekstats_p;
+	QCheckBox *m_daystats_p;
 #if defined(HAVE_LOCALE_H) || defined(HAVE_OS2_COUNTRYINFO) || defined(HAVE_WIN32_LOCALEINFO)
-    QCheckBox *uselocale;
+	QCheckBox *m_uselocale_p;
 #endif
 
     // Input boxes
-    QSpinBox *maxnum;
-    QComboBox *charset;
-	QLineEdit *templatefilename;
-	QPushButton *filebrowsebutton;
+	QSpinBox *m_maxnum_p;
+    QComboBox *m_charset_p;
+	QLineEdit *m_templatefilename_p;
+	QPushButton *m_filebrowsebutton_p;
 
 protected slots:
     /**
@@ -85,25 +85,25 @@ protected slots:
 
 private:
     // Static members to remember values
-    static bool doquoters;      ///< Remember if we want quoter toplist.
-    static bool dotopwritten;   ///< Remember if we want sender toplist.
-    static bool dotoporiginal;  ///< Remember if we want original content
+	static bool g_doquoters;	///< Remember if we want quoter toplist.
+	static bool g_dotopwritten;	///< Remember if we want sender toplist.
+	static bool g_dotoporiginal;///< Remember if we want original content
                                 ///< toplist.
-    static bool dotopnets;      ///< Remember if we want Fidonet toplist.
-    static bool dotopdomains;   ///< Remember if we want topdomain toplist.
-    static bool dotopreceived;  ///< Remember if we want receiver toplist.
-    static bool dotopsubjects;  ///< Remember if we want subjects toplist.
-    static bool dotopprograms;  ///< Remember if we want programs toplist.
-    static bool doweekstats;    ///< Remember if we want weekday statistics.
-    static bool dodaystats;     ///< Remember if we want hour statistics.
+	static bool g_dotopnets;	///< Remember if we want Fidonet toplist.
+	static bool g_dotopdomains;	///< Remember if we want topdomain toplist.
+	static bool g_dotopreceived;///< Remember if we want receiver toplist.
+	static bool g_dotopsubjects;///< Remember if we want subjects toplist.
+	static bool g_dotopprograms;///< Remember if we want programs toplist.
+	static bool g_doweekstats;	///< Remember if we want weekday statistics.
+	static bool g_dodaystats;	///< Remember if we want hour statistics.
 #if defined(HAVE_LOCALE_H) || defined(HAVE_OS2_COUNTRYINFO) || defined(HAVE_WIN32_LOCALEINFO)
-    static bool douselocale;    ///< Remember if we want local date formats.
+	static bool g_douselocale;	///< Remember if we want local date formats.
 #endif
 
-    static int defaultmaxnum;   ///< Remember number of entries in toplists.
-    static QString docharset;   ///< Remember character set to use.
-	static QString templfile;	///< Remember path to template file.
-	static Template *templ;		///< Remember parsed template file.
+	static int g_defaultmaxnum;	///< Remember number of entries in toplists.
+	static QString g_docharset;	///< Remember character set to use.
+	static QString g_templpath;	///< Remember path to template file.
+	static Template *g_template;///< Remember parsed template file.
 };
 
 #endif

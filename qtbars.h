@@ -1,4 +1,4 @@
-// Copyright (c) 2000 Peter Karlsson
+// Copyright (c) 2000-2008 Peter Karlsson
 //
 // This program is free software; you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -13,8 +13,8 @@
 // along with this program; if not, write to the Free Software
 // Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 
-#ifndef __QTBARS_H
-#define __QTBARS_H
+#ifndef QTBARS_H
+#define QTBARS_H
 
 #include <qdialog.h>
 
@@ -60,13 +60,13 @@ public:
 
 protected:
     /** Array of progress bars (ab)used to display frequencies. */
-    QProgressBar **bars;
+    QProgressBar **m_bars_pp;
 
     /** The kind of frequencies associated with this object. */
     enum bar_e type;
 
     /** Number of entries in the QProgressBar array. */
-    int numentries;
+    int m_numentries;
 };
 
 #endif

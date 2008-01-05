@@ -1,4 +1,4 @@
-// Copyright (c) 2000-2002 Peter Karlsson
+// Copyright (c) 2000-2008 Peter Karlsson
 //
 // This program is free software; you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -77,11 +77,11 @@ BarWindow::BarWindow(QWidget *parent, const char *name, bar_e bartype)
 
     // Determine number of bars and create the pointer array
     type = bartype;
-    numentries = (Days == type) ? 7 : 24;
-    bars = new QProgressBar *[numentries];
+	m_numentries = (Days == type) ? 7 : 24;
+	m_bars_pp = new QProgressBar *[m_numentries];
 
     // Create layout
-    QGridLayout *layout = new QGridLayout(this, numentries + 1, 2);
+	QGridLayout *layout = new QGridLayout(this, m_numentries + 1, 2);
 
     if (Days == type)
     {
@@ -93,11 +93,11 @@ BarWindow::BarWindow(QWidget *parent, const char *name, bar_e bartype)
         {
             // Create data label and bar
             QLabel *l = new QLabel(tr(days[i]), this);
-            bars[i] = new DataBar(this);
-            bars[i]->setCenterIndicator(false);
-            bars[i]->setMinimumSize(200, 5);
+			m_bars_pp[i] = new DataBar(this);
+			m_bars_pp[i]->setCenterIndicator(false);
+			m_bars_pp[i]->setMinimumSize(200, 5);
             layout->addWidget(l, i, 0);
-            layout->addWidget(bars[i], i, 1);
+			layout->addWidget(m_bars_pp[i], i, 1);
         }
     }
     else
@@ -113,23 +113,23 @@ BarWindow::BarWindow(QWidget *parent, const char *name, bar_e bartype)
             // Create data label and bar
             s.sprintf("%02d:00-%02d:00", i, i + 1);
             QLabel *l = new QLabel(s, this);
-            bars[i] = new DataBar(this);
-            bars[i]->setCenterIndicator(false);
-            bars[i]->setMinimumSize(200, 5);
+			m_bars_pp[i] = new DataBar(this);
+			m_bars_pp[i]->setCenterIndicator(false);
+			m_bars_pp[i]->setMinimumSize(200, 5);
             layout->addWidget(l, i, 0);
-            layout->addWidget(bars[i], i, 1);
+			layout->addWidget(m_bars_pp[i], i, 1);
         }
     }
 
     // Add close button
     QPushButton *ok = new QPushButton(tr("Dismiss"), this);
-    layout->addMultiCellWidget(ok, numentries, numentries, 0, 1);
+	layout->addMultiCellWidget(ok, m_numentries, m_numentries, 0, 1);
     connect(ok, SIGNAL(clicked()), SLOT(accept()));
 }
 
 BarWindow::~BarWindow()
 {
-    delete[] bars;
+	delete[] m_bars_pp;
 }
 
 void BarWindow::fillOut(StatEngine *engine)
@@ -137,9 +137,9 @@ void BarWindow::fillOut(StatEngine *engine)
     int maximum = 1;
 
     // Load data
-    int *data = new int[numentries];
+	int *data = new int[m_numentries];
 
-    for (int i = 0; i < numentries; i ++)
+	for (int i = 0; i < m_numentries; i ++)
     {
         if (Days == type)
         {
@@ -157,10 +157,10 @@ void BarWindow::fillOut(StatEngine *engine)
     }
 
     // Setup the bars
-    for (int i = 0; i < numentries; i ++)
+	for (int i = 0; i < m_numentries; i ++)
     {
-        bars[i]->setTotalSteps(maximum);
-        bars[i]->setProgress(data[i]);
+		m_bars_pp[i]->setTotalSteps(maximum);
+		m_bars_pp[i]->setProgress(data[i]);
     }
 
     delete[] data;

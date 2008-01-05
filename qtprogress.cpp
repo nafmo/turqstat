@@ -1,4 +1,4 @@
-// Copyright (c) 2002 Peter Karlsson
+// Copyright (c) 2002-2008 Peter Karlsson
 //
 // This program is free software; you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -31,8 +31,8 @@ ProgressText::ProgressText(QWidget *parent, const char *name,
 
     // Create horizontal layout
     QBoxLayout *hlayout = new QHBoxLayout(vlayout);
-    progress = new QLabel("0", this);
-    hlayout->addWidget(progress);
+	m_progress_p = new QLabel("0", this);
+    hlayout->addWidget(m_progress_p);
     QLabel *l = new QLabel(tr("message(s) read"), this);
     hlayout->addWidget(l);
 }

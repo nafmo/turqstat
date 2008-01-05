@@ -1,4 +1,4 @@
-// Copyright (c) 2000-2001 Peter Karlsson
+// Copyright (c) 2000-2008 Peter Karlsson
 //
 // This program is free software; you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -13,8 +13,8 @@
 // along with this program; if not, write to the Free Software
 // Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 
-#ifndef __QTLIST_H
-#define __QTLIST_H
+#ifndef QTLIST_H
+#define QTLIST_H
 
 #include <config.h>
 #include <qdialog.h>
@@ -102,7 +102,7 @@ protected:
     QString percentString(int, int);
 
     /** List view used to display the actual toplist. */
-    QListView   *listview;
+	QListView *m_listview_p;
 
     /** The kind of toplist associated with this object. */
     enum toplist_e toplist;

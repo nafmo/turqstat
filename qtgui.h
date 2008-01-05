@@ -1,4 +1,4 @@
-// Copyright (c) 2000-2002 Peter Karlsson
+// Copyright (c) 2000-2008 Peter Karlsson
 //
 // This program is free software; you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -13,8 +13,8 @@
 // along with this program; if not, write to the Free Software
 // Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 
-#ifndef __QTGUI_H
-#define __QTGUI_H
+#ifndef QTGUI_H
+#define QTGUI_H
 
 #include <qobject.h>
 #include <qmainwindow.h>
@@ -68,35 +68,35 @@ public:
 
 private:
     /** Main menubar. */
-    QMenuBar *menu;
+	QMenuBar *m_menu_p;
 
     // Data displayers
-    QLineEdit *numareas;
-    QLineEdit *numtexts;
-    QLineEdit *numbytes;
-    QLineEdit *numlines;
-    QLineEdit *numqbytes;
-    QLineEdit *numqlines;
-    QLineEdit *numpeople;
-    QLineEdit *numsubjects;
-    QLineEdit *numprograms;
-    QLineEdit *numnets;
-    QLineEdit *numdomains;
-    QLineEdit *earliestwritten;
-    QLineEdit *latestwritten;
+	QLineEdit *m_numareas_p;
+	QLineEdit *m_numtexts_p;
+	QLineEdit *m_numbytes_p;
+	QLineEdit *m_numlines_p;
+	QLineEdit *m_numqbytes_p;
+	QLineEdit *m_numqlines_p;
+	QLineEdit *m_numpeople_p;
+	QLineEdit *m_numsubjects_p;
+	QLineEdit *m_numprograms_p;
+	QLineEdit *m_numnets_p;
+	QLineEdit *m_numdomains_p;
+	QLineEdit *m_earliestwritten_p;
+	QLineEdit *m_latestwritten_p;
 
     /** Progress bar dialog. */
-    QProgressDialog *progressdialog;
+	QProgressDialog *m_progressdialog_p;
     /** Progress text dialog. */
-    ProgressText *progresstext;
+	ProgressText *m_progresstext_p;
 
     // Internal state
-    bool hasnews,   ///< State variable indicating if we have seen news areas.
-         hasany;    ///< State variable indicating if we have seen any areas.
-    QString defaultserver; ///< Last selected news server.
+	bool m_hasnews,	///< State variable indicating if we have seen news areas.
+	     m_hasany;	///< State variable indicating if we have seen any areas.
+	QString m_defaultserver;	///< Last selected news server.
 
     // Statistics
-    StatEngine *engine; ///< Engine containing all collected data.
+	StatEngine *m_engine_p; ///< Engine containing all collected data.
 
     /**
      * Display a message saying that area types are incompatible. Internal.
@@ -114,9 +114,9 @@ private:
     void transfer(AreaRead *, bool);
 
     // Start date
-    time_t start;   ///< Earliest time to collect statistics from.
-    time_t end;     ///< Last time to collect statistics to.
-    int daysback;   ///< Number of days back to collect statistics from.
+	time_t m_start;	///< Earliest time to collect statistics from.
+	time_t m_end;	///< Last time to collect statistics to.
+	int m_daysback;	///< Number of days back to collect statistics from.
 
 public slots:
     void open();            ///< Slot handling File|Open message base.

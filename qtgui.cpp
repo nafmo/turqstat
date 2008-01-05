@@ -4,7 +4,7 @@
 // Qt version.
 // Version 3.0
 //
-// Copyright (c) 2000-2007 Peter Karlsson
+// Copyright (c) 2000-2008 Peter Karlsson
 //
 // This program is free software; you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -68,11 +68,11 @@
 #define MENU_FIDOTOPLIST 1000
 
 InfoWindow::InfoWindow()
-    : hasnews(false), hasany(false)
+	: m_hasnews(false), m_hasany(false)
 {
     // Construct menu
-    menu = new QMenuBar(this);
-    QPopupMenu *filemenu = new QPopupMenu(menu);
+	m_menu_p = new QMenuBar(this);
+	QPopupMenu *filemenu = new QPopupMenu(m_menu_p);
     filemenu->insertItem(tr("&Open message base"), this, SLOT(open()),
                          CTRL+Key_O);
 #if defined(HAVE_NNTP)
@@ -83,14 +83,14 @@ InfoWindow::InfoWindow()
     filemenu->insertItem(tr("&Save report"), this, SLOT(report()), CTRL+Key_S);
     filemenu->insertSeparator();
     filemenu->insertItem(tr("&Exit"), qApp, SLOT(quit()), CTRL+Key_Q);
-    menu->insertItem(tr("&File"), filemenu);
+	m_menu_p->insertItem(tr("&File"), filemenu);
 
-    QPopupMenu *editmenu = new QPopupMenu(menu);
+	QPopupMenu *editmenu = new QPopupMenu(m_menu_p);
     editmenu->insertItem(tr("&Set start date"), this, SLOT(startdate()),
                          CTRL+Key_Home);
-    menu->insertItem(tr("&Edit"), editmenu);
+	m_menu_p->insertItem(tr("&Edit"), editmenu);
 
-    QPopupMenu *showmenu = new QPopupMenu(menu);
+	QPopupMenu *showmenu = new QPopupMenu(m_menu_p);
     showmenu->insertItem(tr("&Quoter blacklist"), this, SLOT(quotelist()),
                          CTRL+Key_1);
     showmenu->insertItem(tr("&Sender toplist"), this, SLOT(senderlist()),
@@ -112,7 +112,7 @@ InfoWindow::InfoWindow()
                          CTRL+Key_T);
     showmenu->insertItem(tr("Postings per &day"), this, SLOT(daylist()),
                          CTRL+Key_D);
-    menu->insertItem(tr("&Show"), showmenu);
+	m_menu_p->insertItem(tr("&Show"), showmenu);
 
     // Add information boxes
     QGrid *grid = new QGrid(2, this);
@@ -120,82 +120,82 @@ InfoWindow::InfoWindow()
     grid->setMargin(5);
 
     QLabel *labelAreas = new QLabel(tr("&Areas loaded"), grid);
-    numareas = new QLineEdit(grid, "numareas");
-    numareas->setReadOnly(true);
-    numareas->setAlignment(AlignRight);
-    labelAreas->setBuddy(numareas);
+	m_numareas_p = new QLineEdit(grid, "numareas");
+	m_numareas_p->setReadOnly(true);
+	m_numareas_p->setAlignment(AlignRight);
+	labelAreas->setBuddy(m_numareas_p);
 
     QLabel *labelTexts = new QLabel(tr("&Texts examined"), grid);
-    numtexts = new QLineEdit(grid, "numtexts");
-    numtexts->setReadOnly(true);
-    numtexts->setAlignment(AlignRight);
-    labelTexts->setBuddy(numtexts);
+	m_numtexts_p = new QLineEdit(grid, "numtexts");
+	m_numtexts_p->setReadOnly(true);
+	m_numtexts_p->setAlignment(AlignRight);
+	labelTexts->setBuddy(m_numtexts_p);
 
     QLabel *labelBytes = new QLabel(tr("&Bytes written"), grid);
-    numbytes = new QLineEdit(grid, "numbytes");
-    numbytes->setReadOnly(true);
-    numbytes->setAlignment(AlignRight);
-    labelBytes->setBuddy(numbytes);
+	m_numbytes_p = new QLineEdit(grid, "numbytes");
+	m_numbytes_p->setReadOnly(true);
+	m_numbytes_p->setAlignment(AlignRight);
+	labelBytes->setBuddy(m_numbytes_p);
 
     QLabel *labelLines = new QLabel(tr("&Lines examined"), grid);
-    numlines = new QLineEdit(grid, "numlines");
-    numlines->setReadOnly(true);
-    numlines->setAlignment(AlignRight);
-    labelLines->setBuddy(numlines);
+	m_numlines_p = new QLineEdit(grid, "numlines");
+	m_numlines_p->setReadOnly(true);
+	m_numlines_p->setAlignment(AlignRight);
+	labelLines->setBuddy(m_numlines_p);
 
     QLabel *labelQBytes = new QLabel(tr("Bytes &quoted"), grid);
-    numqbytes = new QLineEdit(grid, "numqbytes");
-    numqbytes->setReadOnly(true);
-    numqbytes->setAlignment(AlignRight);
-    labelQBytes->setBuddy(numqbytes);
+	m_numqbytes_p = new QLineEdit(grid, "numqbytes");
+	m_numqbytes_p->setReadOnly(true);
+	m_numqbytes_p->setAlignment(AlignRight);
+	labelQBytes->setBuddy(m_numqbytes_p);
 
     QLabel *labelQLines = new QLabel(tr("L&ines quoted"), grid);
-    numqlines = new QLineEdit(grid, "numqlines");
-    numqlines->setReadOnly(true);
-    numqlines->setAlignment(AlignRight);
-    labelQLines->setBuddy(numqlines);
+	m_numqlines_p = new QLineEdit(grid, "numqlines");
+	m_numqlines_p->setReadOnly(true);
+	m_numqlines_p->setAlignment(AlignRight);
+	labelQLines->setBuddy(m_numqlines_p);
 
     QLabel *labelPeople = new QLabel(tr("&People identified"), grid);
-    numpeople = new QLineEdit(grid, "numpeople");
-    numpeople->setReadOnly(true);
-    numpeople->setAlignment(AlignRight);
-    labelPeople->setBuddy(numpeople);
+	m_numpeople_p = new QLineEdit(grid, "numpeople");
+	m_numpeople_p->setReadOnly(true);
+	m_numpeople_p->setAlignment(AlignRight);
+	labelPeople->setBuddy(m_numpeople_p);
 
     QLabel *labelSubjects = new QLabel(tr("S&ubjects found"), grid);
-    numsubjects = new QLineEdit(grid, "subjects");
-    numsubjects->setReadOnly(true);
-    numsubjects->setAlignment(AlignRight);
-    labelSubjects->setBuddy(numsubjects);
+	m_numsubjects_p = new QLineEdit(grid, "subjects");
+	m_numsubjects_p->setReadOnly(true);
+	m_numsubjects_p->setAlignment(AlignRight);
+	labelSubjects->setBuddy(m_numsubjects_p);
 
     QLabel *labelPrograms = new QLabel(tr("P&rograms used"), grid);
-    numprograms = new QLineEdit(grid, "numprograms");
-    numprograms->setReadOnly(true);
-    numprograms->setAlignment(AlignRight);
-    labelPrograms->setBuddy(numprograms);
+	m_numprograms_p = new QLineEdit(grid, "numprograms");
+	m_numprograms_p->setReadOnly(true);
+	m_numprograms_p->setAlignment(AlignRight);
+	labelPrograms->setBuddy(m_numprograms_p);
 
     QLabel *labelNets = new QLabel(tr("Fidonet &nets represented"), grid);
-    numnets = new QLineEdit(grid, "numnets");
-    numnets->setReadOnly(true);
-    numnets->setAlignment(AlignRight);
-    labelNets->setBuddy(numnets);
+	m_numnets_p = new QLineEdit(grid, "numnets");
+	m_numnets_p->setReadOnly(true);
+	m_numnets_p->setAlignment(AlignRight);
+	labelNets->setBuddy(m_numnets_p);
 
     QLabel *labelDomains = new QLabel(tr("Top &domains represented"), grid);
-    numdomains = new QLineEdit(grid, "numdomains");
-    numdomains->setReadOnly(true);
-    numdomains->setAlignment(AlignRight);
-    labelDomains->setBuddy(numdomains);
+	m_numdomains_p = new QLineEdit(grid, "numdomains");
+	m_numdomains_p->setReadOnly(true);
+	m_numdomains_p->setAlignment(AlignRight);
+	labelDomains->setBuddy(m_numdomains_p);
 
     QLabel *labelEarliest = new QLabel(tr("&Earliest text written"), grid);
-    earliestwritten = new QLineEdit(grid, "earliestwritten");
-    earliestwritten->setReadOnly(true);
-    earliestwritten->setAlignment(AlignRight);
-    labelEarliest->setBuddy(earliestwritten);
+	m_earliestwritten_p = new QLineEdit(grid, "earliestwritten");
+	m_earliestwritten_p->setReadOnly(true);
+	m_earliestwritten_p->setAlignment(AlignRight);
+	labelEarliest->setBuddy(m_earliestwritten_p);
 
     QLabel *labelLatest = new QLabel(tr("Latest text &written"), grid);
-    latestwritten = new QLineEdit(grid, "latestwritten");
-    latestwritten->setReadOnly(true);
-    latestwritten->setAlignment(AlignRight);
-    labelLatest->setBuddy(latestwritten);
+	m_latestwritten_p = new QLineEdit(grid, "latestwritten");
+	m_latestwritten_p->setReadOnly(true);
+	m_latestwritten_p->setAlignment(AlignRight);
+	labelLatest->setBuddy(m_latestwritten_p);
 
     // Fill data fields with zeroes
     zeroFill();
@@ -205,59 +205,59 @@ InfoWindow::InfoWindow()
     connect(this, SIGNAL(newdata()), SLOT(update()));
 
     // Objects owned
-    engine = new StatEngine;
-    progressdialog = NULL;
-    progresstext = NULL;
+	m_engine_p = new StatEngine;
+	m_progressdialog_p = NULL;
+	m_progresstext_p = NULL;
 
     // Reset start date
-    start = time_t(0);
-    end = time_t(DISTANT_FUTURE);
-    daysback = 0;
+	m_start = time_t(0);
+	m_end = time_t(DISTANT_FUTURE);
+	m_daysback = 0;
 };
 
 InfoWindow::~InfoWindow()
 {
-    delete engine;
+	delete m_engine_p;
 }
 
 QProgressDialog *InfoWindow::getProgressDialog(int maximum)
 {
-    if (!progressdialog)
+	if (!m_progressdialog_p)
     {
-        if (progresstext)
+		if (m_progresstext_p)
         {
             return NULL; // Error condition
         }
 
-        progressdialog =
-            new QProgressDialog(hasnews ? tr("Reading news group")
-                                        : tr("Reading message base"),
+		m_progressdialog_p =
+			new QProgressDialog(m_hasnews ? tr("Reading news group")
+			                              : tr("Reading message base"),
                                 0, maximum, this, "progress", true);
-        progressdialog->setCaption("Turquoise SuperStat");
-        progressdialog->setMinimumDuration(1000);
+		m_progressdialog_p->setCaption("Turquoise SuperStat");
+		m_progressdialog_p->setMinimumDuration(1000);
     }
 
-    return progressdialog;
+	return m_progressdialog_p;
 }
 
 ProgressText *InfoWindow::getProgressText()
 {
-    if (!progresstext)
+	if (!m_progresstext_p)
     {
-        if (progressdialog)
+		if (m_progressdialog_p)
         {
             return NULL; // Error condition
         }
 
-        progresstext =
+		m_progresstext_p =
             new ProgressText(this, "progress2",
-                             hasnews ? tr("Reading news group")
-                                     : tr("Reading message base"));
-        progresstext->setCaption("Turquoise SuperStat");
-        progresstext->show();
+			                 m_hasnews ? tr("Reading news group")
+			                           : tr("Reading message base"));
+		m_progresstext_p->setCaption("Turquoise SuperStat");
+		m_progresstext_p->show();
     }
 
-    return progresstext;
+	return m_progresstext_p;
 }
 
 InfoWindow *InfoWindow::getMainWindow()
@@ -329,8 +329,8 @@ void InfoWindow::open()
     }
 
     // Make sure we do not try to mix incompatible area types
-    if ((hasany &&  hasnews && USENET != filternum) ||
-        (hasany && !hasnews && USENET == filternum))
+	if ((m_hasany &&  m_hasnews && USENET != filternum) ||
+	    (m_hasany && !m_hasnews && USENET == filternum))
     {
         incompatible();
         return;
@@ -425,7 +425,7 @@ void InfoWindow::opennews()
     bool ok;
     QString server = QInputDialog::getText("Turquoise SuperStat",
                                            tr("Please enter the news (NNTP) server you want to use:"),
-                                           QLineEdit::Normal, defaultserver,
+	                                       QLineEdit::Normal, m_defaultserver,
                                            &ok, this, "serverselect");
     if (!ok)
     {
@@ -445,7 +445,7 @@ void InfoWindow::opennews()
     }
 
     // Transfer data
-    defaultserver = server;
+	m_defaultserver = server;
     NntpRead *area = new NntpRead(server, group);
     if (area)
     {
@@ -465,14 +465,14 @@ void InfoWindow::opennews()
 
 void InfoWindow::transfer(AreaRead *area, bool isnews)
 {
-    hasnews = isnews;
-    hasany = true;
+	m_hasnews = isnews;
+	m_hasany = true;
 
-    area->Transfer(start, end, *engine);
-    engine->AreaDone();
+	area->Transfer(m_start, m_end, *m_engine_p);
+	m_engine_p->AreaDone();
 
-    delete progressdialog; progressdialog = NULL;
-    delete progresstext;   progresstext   = NULL;
+	delete m_progressdialog_p; m_progressdialog_p = NULL;
+	delete m_progresstext_p;   m_progresstext_p   = NULL;
 }
 
 void InfoWindow::incompatible()
@@ -485,37 +485,37 @@ void InfoWindow::update()
 {
     // Update information in all boxes
 
-    numareas->setText(QString::number(engine->GetTotalAreas()));
-    numtexts->setText(QString::number(engine->GetTotalNumber()));
-    numbytes->setText(QString::number(engine->GetTotalBytes()));
-    numlines->setText(QString::number(engine->GetTotalLines()));
-    numqbytes->setText(QString::number(engine->GetTotalQBytes()));
-    numqlines->setText(QString::number(engine->GetTotalQLines()));
-    numpeople->setText(QString::number(engine->GetTotalPeople()));
-    numsubjects->setText(QString::number(engine->GetTotalSubjects()));
-    numprograms->setText(QString::number(engine->GetTotalPrograms()));
-    if (hasnews)
+	m_numareas_p->setText(QString::number(m_engine_p->GetTotalAreas()));
+	m_numtexts_p->setText(QString::number(m_engine_p->GetTotalNumber()));
+	m_numbytes_p->setText(QString::number(m_engine_p->GetTotalBytes()));
+	m_numlines_p->setText(QString::number(m_engine_p->GetTotalLines()));
+	m_numqbytes_p->setText(QString::number(m_engine_p->GetTotalQBytes()));
+	m_numqlines_p->setText(QString::number(m_engine_p->GetTotalQLines()));
+	m_numpeople_p->setText(QString::number(m_engine_p->GetTotalPeople()));
+	m_numsubjects_p->setText(QString::number(m_engine_p->GetTotalSubjects()));
+	m_numprograms_p->setText(QString::number(m_engine_p->GetTotalPrograms()));
+	if (m_hasnews)
     {
-        numnets->setEnabled(false);
-        numnets->setText(tr("N/A"));
-        menu->setItemEnabled(MENU_FIDOTOPLIST, false);
+		m_numnets_p->setEnabled(false);
+		m_numnets_p->setText(tr("N/A"));
+		m_menu_p->setItemEnabled(MENU_FIDOTOPLIST, false);
     }
     else
     {
-        numnets->setText(QString::number(engine->GetTotalNets()));
+		m_numnets_p->setText(QString::number(m_engine_p->GetTotalNets()));
     }
-    numdomains->setText(QString::number(engine->GetTotalDomains()));
+	m_numdomains_p->setText(QString::number(m_engine_p->GetTotalDomains()));
 
     char timebuf[64];
-    time_t earliest = engine->GetEarliestWritten();
+	time_t earliest = m_engine_p->GetEarliestWritten();
     struct tm *p1 = localtime(&earliest);
     strftime(timebuf, 64, "%x", p1);
-    earliestwritten->setText(timebuf);
+	m_earliestwritten_p->setText(timebuf);
 
-    time_t latest = engine->GetLastWritten();
+	time_t latest = m_engine_p->GetLastWritten();
     struct tm *p2 = localtime(&latest);
     strftime(timebuf, 64, "%x", p2);
-    latestwritten->setText(timebuf);
+	m_latestwritten_p->setText(timebuf);
 }
 
 void InfoWindow::quotelist()
@@ -524,7 +524,7 @@ void InfoWindow::quotelist()
         new TopListWindow(this, "quotelist", TopListWindow::Quoters);
     if (quotedialog)
     {
-        quotedialog->fillOut(engine);
+		quotedialog->fillOut(m_engine_p);
         quotedialog->show();
     }
 }
@@ -535,7 +535,7 @@ void InfoWindow::senderlist()
         new TopListWindow(this, "senderlist", TopListWindow::Senders);
     if (senderdialog)
     {
-        senderdialog->fillOut(engine);
+		senderdialog->fillOut(m_engine_p);
         senderdialog->show();
     }
 }
@@ -546,7 +546,7 @@ void InfoWindow::contentlist()
         new TopListWindow(this, "contentlist", TopListWindow::OrigContent);
     if (contentdialog)
     {
-        contentdialog->fillOut(engine);
+		contentdialog->fillOut(m_engine_p);
         contentdialog->show();
     }
 }
@@ -557,7 +557,7 @@ void InfoWindow::fidonetlist()
         new TopListWindow(this, "netlist", TopListWindow::FidoNets);
     if (fidonetsdialog)
     {
-        fidonetsdialog->fillOut(engine);
+		fidonetsdialog->fillOut(m_engine_p);
         fidonetsdialog->show();
     }
 }
@@ -568,7 +568,7 @@ void InfoWindow::domainlist()
         new TopListWindow(this, "domainlist", TopListWindow::Domains);
     if (domaindialog)
     {
-        domaindialog->fillOut(engine);
+		domaindialog->fillOut(m_engine_p);
         domaindialog->show();
     }
 }
@@ -579,7 +579,7 @@ void InfoWindow::receiverlist()
         new TopListWindow(this, "receiverlist", TopListWindow::Receivers);
     if (receiverdialog)
     {
-        receiverdialog->fillOut(engine);
+		receiverdialog->fillOut(m_engine_p);
         receiverdialog->show();
     }
 }
@@ -590,7 +590,7 @@ void InfoWindow::subjectlist()
         new TopListWindow(this, "subjectlist", TopListWindow::Subjects);
     if (subjectdialog)
     {
-        subjectdialog->fillOut(engine);
+		subjectdialog->fillOut(m_engine_p);
         subjectdialog->show();
     }
 }
@@ -601,7 +601,7 @@ void InfoWindow::softwarelist()
         new TopListWindow(this, "softwaredialog", TopListWindow::Software);
     if (softwaredialog)
     {
-        softwaredialog->fillOut(engine);
+		softwaredialog->fillOut(m_engine_p);
         softwaredialog->show();
     }
 }
@@ -612,7 +612,7 @@ void InfoWindow::timelist()
         new BarWindow(this, "timedialog", BarWindow::Hours);
     if (timedialog)
     {
-        timedialog->fillOut(engine);
+		timedialog->fillOut(m_engine_p);
         timedialog->show();
     }
 }
@@ -623,7 +623,7 @@ void InfoWindow::daylist()
         new BarWindow(this, "daydialog", BarWindow::Days);
     if (daydialog)
     {
-        daydialog->fillOut(engine);
+		daydialog->fillOut(m_engine_p);
         daydialog->show();
     }
 }
@@ -631,11 +631,11 @@ void InfoWindow::daylist()
 void InfoWindow::clear()
 {
     // Remove the old statistics engine and create a new one
-    if (engine) delete engine;
-    engine = new StatEngine;
+	if (m_engine_p) delete m_engine_p;
+	m_engine_p = new StatEngine;
 
-    hasnews = false;
-    hasany = false;
+	m_hasnews = false;
+	m_hasany = false;
 
     zeroFill();  
 }
@@ -643,28 +643,28 @@ void InfoWindow::clear()
 void InfoWindow::report()
 {
     ReportSelectWindow *reportwindow =
-        new ReportSelectWindow(this, "reportselect", engine);
+		new ReportSelectWindow(this, "reportselect", m_engine_p);
     reportwindow->exec();
 }
 
 void InfoWindow::zeroFill()
 {
-    numareas->setText("0");
-    numtexts->setText("0");
-    numbytes->setText("0");
-    numlines->setText("0");
-    numqbytes->setText("0");
-    numqlines->setText("0");
-    numpeople->setText("0");
-    numsubjects->setText("0");
-    numprograms->setText("0");
-    numnets->setText("0");
-    numdomains->setText("0");
-    earliestwritten->setText(tr("None loaded"));
-    latestwritten->setText(tr("None loaded"));
+	m_numareas_p->setText("0");
+	m_numtexts_p->setText("0");
+	m_numbytes_p->setText("0");
+	m_numlines_p->setText("0");
+	m_numqbytes_p->setText("0");
+	m_numqlines_p->setText("0");
+	m_numpeople_p->setText("0");
+	m_numsubjects_p->setText("0");
+	m_numprograms_p->setText("0");
+	m_numnets_p->setText("0");
+	m_numdomains_p->setText("0");
+	m_earliestwritten_p->setText(tr("None loaded"));
+	m_latestwritten_p->setText(tr("None loaded"));
 
-    numnets->setEnabled(true);
-    menu->setItemEnabled(MENU_FIDOTOPLIST, true);
+	m_numnets_p->setEnabled(true);
+	m_menu_p->setItemEnabled(MENU_FIDOTOPLIST, true);
 }
 
 void InfoWindow::startdate()
@@ -674,22 +674,22 @@ void InfoWindow::startdate()
         QInputDialog::getInteger(tr("Start date"),
                                  tr("Enter number of days back to take "
                                     "statistics for (0 = no restriction):"),
-                                 daysback, 0, INT_MAX, 1,
+		                         m_daysback, 0, INT_MAX, 1,
                                  &ok, this, "timeselect");
     if (ok)
     {
         // Compute starting time
         if (0 == days)
-            start = 0;
+			m_start = 0;
         else
-            start = time(NULL) - days * 86400L;
-        struct tm *fromtm = localtime(&start);
+			m_start = time(NULL) - days * 86400L;
+		struct tm *fromtm = localtime(&m_start);
         fromtm->tm_hour = 0;
         fromtm->tm_min  = 0;
         fromtm->tm_sec  = 0;
-        start = my_mktime(fromtm);
+		m_start = my_mktime(fromtm);
 
-        daysback = days;
+		m_daysback = days;
     }
 }
 

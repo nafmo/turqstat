@@ -8,6 +8,18 @@
   qtreport.h
     Added template browser to report generator dialogue.
 
+  qtbars.cpp
+  qtbars.h
+  qtgui.cpp
+  qtgui.h
+  qtlist.cpp
+  qtlist.h
+  qtprogress.cpp
+  qtprogress.h
+  qtreport.cpp
+  qtreport.h
+    Renamed class and instance variables.
+
 2008-01-04 - Peter Karlsson <peter@softwolves.pp.se>
   visualc/
     Added project files for Visual C++ 2008 Express Edition.

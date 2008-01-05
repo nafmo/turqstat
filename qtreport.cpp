@@ -31,113 +31,113 @@
 #include "template.h"
 #include "output.h"
 
-bool ReportSelectWindow::doquoters = true;
-bool ReportSelectWindow::dotopwritten = true;
-bool ReportSelectWindow::dotoporiginal = true;
-bool ReportSelectWindow::dotopnets = true;
-bool ReportSelectWindow::dotopdomains = true;
-bool ReportSelectWindow::dotopreceived = true;
-bool ReportSelectWindow::dotopsubjects = true;
-bool ReportSelectWindow::dotopprograms = true;
-bool ReportSelectWindow::doweekstats = true;
-bool ReportSelectWindow::dodaystats = true;
+bool ReportSelectWindow::g_doquoters = true;
+bool ReportSelectWindow::g_dotopwritten = true;
+bool ReportSelectWindow::g_dotoporiginal = true;
+bool ReportSelectWindow::g_dotopnets = true;
+bool ReportSelectWindow::g_dotopdomains = true;
+bool ReportSelectWindow::g_dotopreceived = true;
+bool ReportSelectWindow::g_dotopsubjects = true;
+bool ReportSelectWindow::g_dotopprograms = true;
+bool ReportSelectWindow::g_doweekstats = true;
+bool ReportSelectWindow::g_dodaystats = true;
 #if defined(HAVE_LOCALE_H) || defined(HAVE_OS2_COUNTRYINFO) || defined(HAVE_WIN32_LOCALEINFO)
-bool ReportSelectWindow::douselocale = true;
+bool ReportSelectWindow::g_douselocale = true;
 #endif
-QString ReportSelectWindow::docharset = "iso-8859-1";
-int ReportSelectWindow::defaultmaxnum = 15;
-QString ReportSelectWindow::templfile;
-Template *ReportSelectWindow::templ = NULL;
+QString ReportSelectWindow::g_docharset = "iso-8859-1";
+int ReportSelectWindow::g_defaultmaxnum = 15;
+QString ReportSelectWindow::g_templpath;
+Template *ReportSelectWindow::g_template = NULL;
 
 ReportSelectWindow::ReportSelectWindow(QWidget *parent, const char *name,
                                        StatEngine *engine_p)
-    : QDialog(parent, name, true), engine(engine_p)
+    : QDialog(parent, name, true), m_engine_p(engine_p)
 {
     // Create layout
     QVBoxLayout *layout = new QVBoxLayout(this);
 
     // Add checkboxes
-    quoters =
-        new QCheckBox(tr("Enable &blacklist of quoters"), this);
-    topwritten =
-        new QCheckBox(tr("Enable toplist of &writers"), this);
-    toporiginal =
-        new QCheckBox(tr("Enable toplist of &original content"), this);
-    topnets =
-        new QCheckBox(tr("Enable toplist of Fidonet &nets"), this);
-    topdomains =
-        new QCheckBox(tr("Enable toplist of Internet &domains"), this);
-    topreceived =
-        new QCheckBox(tr("Enable toplist of &receivers"), this);
-    topsubjects =
-        new QCheckBox(tr("Enable toplist of &subjects"), this);
-    topprograms =
-        new QCheckBox(tr("Enable toplist of &programs"), this);
-    weekstats =
-        new QCheckBox(tr("&Enable posting by weekday statistics"), this);
-    daystats =
-        new QCheckBox(tr("Enable posting by &hour statiscs"), this);
+	m_quoters_p =
+		new QCheckBox(tr("Enable &blacklist of quoters"), this);
+	m_topwritten_p =
+		new QCheckBox(tr("Enable toplist of &writers"), this);
+	m_toporiginal_p =
+		new QCheckBox(tr("Enable toplist of &original content"), this);
+	m_topnets_p =
+		new QCheckBox(tr("Enable toplist of Fidonet &nets"), this);
+	m_topdomains_p =
+		new QCheckBox(tr("Enable toplist of Internet &domains"), this);
+	m_topreceived_p =
+		new QCheckBox(tr("Enable toplist of &receivers"), this);
+	m_topsubjects_p =
+		new QCheckBox(tr("Enable toplist of &subjects"), this);
+	m_topprograms_p =
+		new QCheckBox(tr("Enable toplist of &programs"), this);
+	m_weekstats_p =
+		new QCheckBox(tr("&Enable posting by weekday statistics"), this);
+	m_daystats_p =
+		new QCheckBox(tr("Enable posting by &hour statiscs"), this);
 #if defined(HAVE_LOCALE_H) || defined(HAVE_OS2_COUNTRYINFO) || defined(HAVE_WIN32_LOCALEINFO)
-    uselocale =
-        new QCheckBox(tr("&Use locale date format"), this);
+	m_uselocale_p =
+		new QCheckBox(tr("&Use locale date format"), this);
 #endif
 
     // Check all checkboxes
-    quoters->setChecked(doquoters);
-    topwritten->setChecked(dotopwritten);
-    toporiginal->setChecked(dotoporiginal);
-    topnets->setChecked(dotopnets);
-    topdomains->setChecked(dotopdomains);
-    topreceived->setChecked(dotopreceived);
-    topsubjects->setChecked(dotopsubjects);
-    topprograms->setChecked(dotopprograms);
-    weekstats->setChecked(doweekstats);
-    daystats->setChecked(dodaystats);
+	m_quoters_p->setChecked(g_doquoters);
+	m_topwritten_p->setChecked(g_dotopwritten);
+	m_toporiginal_p->setChecked(g_dotoporiginal);
+	m_topnets_p->setChecked(g_dotopnets);
+	m_topdomains_p->setChecked(g_dotopdomains);
+	m_topreceived_p->setChecked(g_dotopreceived);
+	m_topsubjects_p->setChecked(g_dotopsubjects);
+	m_topprograms_p->setChecked(g_dotopprograms);
+	m_weekstats_p->setChecked(g_doweekstats);
+	m_daystats_p->setChecked(g_dodaystats);
 #if defined(HAVE_LOCALE_H) || defined(HAVE_OS2_COUNTRYINFO) || defined(HAVE_WIN32_LOCALEINFO)
-    uselocale->setChecked(douselocale);
+	m_uselocale_p->setChecked(g_douselocale);
 #endif
 
     // Place in dialog
-    layout->addWidget(quoters);
-    layout->addWidget(topwritten);
-    layout->addWidget(toporiginal);
-    layout->addWidget(topnets);
-    layout->addWidget(topdomains);
-    layout->addWidget(topreceived);
-    layout->addWidget(topsubjects);
-    layout->addWidget(topprograms);
-    layout->addWidget(weekstats);
-    layout->addWidget(daystats);
+	layout->addWidget(m_quoters_p);
+	layout->addWidget(m_topwritten_p);
+	layout->addWidget(m_toporiginal_p);
+	layout->addWidget(m_topnets_p);
+	layout->addWidget(m_topdomains_p);
+	layout->addWidget(m_topreceived_p);
+	layout->addWidget(m_topsubjects_p);
+	layout->addWidget(m_topprograms_p);
+	layout->addWidget(m_weekstats_p);
+	layout->addWidget(m_daystats_p);
 #if defined(HAVE_LOCALE_H) || defined(HAVE_OS2_COUNTRYINFO) || defined(HAVE_WIN32_LOCALEINFO)
-    layout->addWidget(uselocale);
+	layout->addWidget(m_uselocale_p);
 #endif
 
     // Input boxes
-    maxnum = new QSpinBox(1, INT_MAX, 1, this);
-    maxnum->setValue(defaultmaxnum);
-    maxnum->setSuffix(tr(" entries"));
-    layout->addWidget(maxnum);
+	m_maxnum_p = new QSpinBox(1, INT_MAX, 1, this);
+	m_maxnum_p->setValue(g_defaultmaxnum);
+	m_maxnum_p->setSuffix(tr(" entries"));
+	layout->addWidget(m_maxnum_p);
 
     QLabel *charsetlabel = new QLabel(tr("&Character set for report"), this);
     layout->addWidget(charsetlabel);
 
-    charset = new QComboBox(false, this);
-    layout->addWidget(charset);
-    charsetlabel->setBuddy(charset);
+	m_charset_p = new QComboBox(false, this);
+	layout->addWidget(m_charset_p);
+	charsetlabel->setBuddy(m_charset_p);
 
     CharsetEnumerator charsets(CharsetEnumerator::Usenet);
     const char *charsetname;
     while (NULL != (charsetname = charsets.Next()))
     {
-        charset->insertItem(charsetname);
-        if (docharset == charsetname)
+		m_charset_p->insertItem(charsetname);
+		if (g_docharset == charsetname)
         {
-            charset->setCurrentItem(charset->count() - 1);
+			m_charset_p->setCurrentItem(m_charset_p->count() - 1);
         }
     }
 
 	// Template file browser
-	if (!templ)
+	if (!g_template)
 	{
 		// Load default template on first call
 		string templatefile;
@@ -164,10 +164,10 @@ ReportSelectWindow::ReportSelectWindow(QWidget *parent, const char *name,
 #endif
 
 		bool is_error = false;
-		templ = Template::Parse(templatefile, is_error);
+		g_template = Template::Parse(templatefile, is_error);
 		if (!is_error)
 		{
-			templfile = templatefile;
+			g_templpath = templatefile;
 		}
 	}
 	QLabel *templatelabel = new QLabel(tr("Template file to use"), this);
@@ -175,13 +175,13 @@ ReportSelectWindow::ReportSelectWindow(QWidget *parent, const char *name,
 
 	QHBoxLayout *filebrowselayout = new QHBoxLayout(layout);
 
-	templatefilename = new QLineEdit(this, "templatefile");
-	templatefilename->setReadOnly(true);
-	templatefilename->setText(templfile);
-	filebrowselayout->addWidget(templatefilename);
-	filebrowsebutton = new QPushButton(tr("&Browse"), this);
-	filebrowselayout->addWidget(filebrowsebutton);
-	connect(filebrowsebutton, SIGNAL(clicked()), SLOT(browseForTemplate()));
+	m_templatefilename_p = new QLineEdit(this, "templatefile");
+	m_templatefilename_p->setReadOnly(true);
+	m_templatefilename_p->setText(g_templpath);
+	filebrowselayout->addWidget(m_templatefilename_p);
+	m_filebrowsebutton_p = new QPushButton(tr("&Browse"), this);
+	filebrowselayout->addWidget(m_filebrowsebutton_p);
+	connect(m_filebrowsebutton_p, SIGNAL(clicked()), SLOT(browseForTemplate()));
 
     // Add buttons
     QHBoxLayout *buttonlayout = new QHBoxLayout(layout);
@@ -201,7 +201,7 @@ ReportSelectWindow::~ReportSelectWindow()
 
 void ReportSelectWindow::saveToFile()
 {
-	if (!templ)
+	if (!g_template)
 	{
 		TDisplay *display = TDisplay::GetOutputObject();
 		display->ErrorMessage(TDisplay::template_parse_error);
@@ -218,46 +218,46 @@ void ReportSelectWindow::saveToFile()
     StatView view;
 
     // Save data
-    doquoters = quoters->isChecked();
-    dotopwritten = topwritten->isChecked();
-    dotoporiginal = toporiginal->isChecked();
-    dotopnets = topnets->isChecked();
-    dotopdomains = topdomains->isChecked();
-    dotopreceived = topreceived->isChecked();
-    dotopsubjects = topsubjects->isChecked();
-    dotopprograms = topprograms->isChecked();
-    doweekstats = weekstats->isChecked();
-    dodaystats = daystats->isChecked();
+	g_doquoters = m_quoters_p->isChecked();
+	g_dotopwritten = m_topwritten_p->isChecked();
+	g_dotoporiginal = m_toporiginal_p->isChecked();
+	g_dotopnets = m_topnets_p->isChecked();
+	g_dotopdomains = m_topdomains_p->isChecked();
+	g_dotopreceived = m_topreceived_p->isChecked();
+	g_dotopsubjects = m_topsubjects_p->isChecked();
+	g_dotopprograms = m_topprograms_p->isChecked();
+	g_doweekstats = m_weekstats_p->isChecked();
+	g_dodaystats = m_daystats_p->isChecked();
 #if defined(HAVE_LOCALE_H) || defined(HAVE_OS2_COUNTRYINFO) || defined(HAVE_WIN32_LOCALEINFO)
-    douselocale = uselocale->isChecked();
+	g_douselocale = m_uselocale_p->isChecked();
 #endif
-    defaultmaxnum = maxnum->value();
-    docharset = charset->currentText();
+	g_defaultmaxnum = m_maxnum_p->value();
+	g_docharset = m_charset_p->currentText();
 
     // Enable toplists we want
-    view.EnableQuoters(doquoters);
-    view.EnableTopWritten(dotopwritten);
-    view.EnableTopOriginal(dotoporiginal);
-    view.EnableTopNets(dotopnets);
-    view.EnableTopDomains(dotopdomains);
-    view.EnableTopReceived(dotopreceived);
-    view.EnableTopSubjects(dotopsubjects);
-    view.EnableTopPrograms(dotopprograms);
-    view.EnableWeekStats(doweekstats);
-    view.EnableDayStats(dodaystats);
+	view.EnableQuoters(g_doquoters);
+	view.EnableTopWritten(g_dotopwritten);
+	view.EnableTopOriginal(g_dotoporiginal);
+	view.EnableTopNets(g_dotopnets);
+	view.EnableTopDomains(g_dotopdomains);
+	view.EnableTopReceived(g_dotopreceived);
+	view.EnableTopSubjects(g_dotopsubjects);
+	view.EnableTopPrograms(g_dotopprograms);
+	view.EnableWeekStats(g_doweekstats);
+	view.EnableDayStats(g_dodaystats);
 #if defined(HAVE_LOCALE_H) || defined(HAVE_OS2_COUNTRYINFO) || defined(HAVE_WIN32_LOCALEINFO)
-    view.UseLocale(douselocale);
+	view.UseLocale(g_douselocale);
 #endif
 
     // Set toplist parameters
     view.ShowVersions(true);
     view.ShowAllNums(false);
-    view.SetMaxEntries(defaultmaxnum);
-    view.SetCharset(docharset.latin1());
+	view.SetMaxEntries(g_defaultmaxnum);
+	view.SetCharset(g_docharset.latin1());
 
     // Write output
-	view.SetTemplate(templ);
-    view.CreateReport(engine, string(filename.local8Bit()));
+	view.SetTemplate(g_template);
+	view.CreateReport(m_engine_p, string(filename.local8Bit()));
 
     // Close
     accept();
@@ -286,8 +286,8 @@ void ReportSelectWindow::browseForTemplate()
 	else
 	{
 		// Remember template
-		templ = new_template;
-		templfile = filename;
-		templatefilename->setText(templfile);
+		g_template = new_template;
+		g_templpath = filename;
+		m_templatefilename_p->setText(g_templpath);
 	}
 }

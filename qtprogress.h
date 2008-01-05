@@ -1,4 +1,4 @@
-// Copyright (c) 2002-2007 Peter Karlsson
+// Copyright (c) 2002-2008 Peter Karlsson
 //
 // This program is free software; you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -30,7 +30,7 @@ class ProgressText : public QDialog
 
 protected:
     /** The label used to display the progress. */
-    QLabel *progress;
+	QLabel *m_progress_p;
 
 public:
     /**
