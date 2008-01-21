@@ -43,7 +43,7 @@ debian:
 @QT@	-make -C mappings clean
 
 distclean: clean
-	-rm config.status config.log config.cache config.h Makefile doxygen.conf
+	-rm config.status config.log config.cache config.h Makefile Doxyfile
 	-make -C po distclean
 	-make -C mappings distclean
 
