@@ -294,6 +294,7 @@ HISTORIK
   Använder Mingw32 i stället för CygWin för Win32-versionen.
   Förbättrat stöd för news.
   Diverse felrättelser.
+
 2000-11-26 - v2.0 -
   Egna tidsfunktioner för att motverka tidszonsproblem i C-biblioteket.
   Gjorde hjälpskärmen mer lättläslig.
@@ -329,7 +330,8 @@ HISTORIK
   Rättade kompileringsfel för att bygga med moderna verktyg.
 2005-09-05 - v2.2.4 -
   Rättade buffertspill i datuminläsningen (CAN-2005-2658).
-????-??-?? - v3.0 -
+
+2008-01-21 - v3.0 -
   Lade till stöd för mallar som beskriver utdataformatet.
 
 

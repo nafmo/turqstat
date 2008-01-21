@@ -294,6 +294,7 @@ HISTORY
   Use Mingw32 instead of CygWin for Win32 version.
   Improved news support.
   Various bugfixes.
+
 2000-11-26 - v2.0 -
   Uses own time functions to work around timezone problems in C library.
   Re-designed help screen for clarity.
@@ -329,7 +330,8 @@ HISTORY
   Fix compile errors to build with modern tools.
 2005-09-05 - v2.2.4 -
   Fixed buffer overrun in date parser (CAN-2005-2658).
-????-??-?? - v3.0 -
+
+2008-01-21 - v3.0 -
   Added support for templates describing the output format.
 
 
