@@ -1,4 +1,4 @@
-// Copyright (c) 1998-2007 Peter Karlsson
+// Copyright (c) 1998-2008 Peter Karlsson
 //
 // This program is free software; you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -56,7 +56,11 @@ struct stamp_s
 # define CHAR_BIT 8
 #endif
 
-#define DISTANT_FUTURE ((1UL << (CHAR_BIT * SIZEOF_TIME_T - 1)) - 1)
+#if SIZEOF_TIME_T > 4
+# define DISTANT_FUTURE ((1ULL << (CHAR_BIT * SIZEOF_TIME_T - 1)) - 1)
+#else
+# define DISTANT_FUTURE ((1UL << (CHAR_BIT * SIZEOF_TIME_T - 1)) - 1)
+#endif
 
 /**
  * Compare two strings case in-sensitively.

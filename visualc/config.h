@@ -196,7 +196,11 @@
 #undef PACKAGE_VERSION
 
 /* Define to size of time_t, in bytes */
+#ifdef _USE_32BIT_TIME_T
 #define SIZEOF_TIME_T 4
+#else
+#define SIZEOF_TIME_T 8
+#endif
 
 /* Define to 1 if you have the ANSI C header files. */
 #define STDC_HEADERS
