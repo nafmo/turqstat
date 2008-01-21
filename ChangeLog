@@ -1,3 +1,14 @@
+2008-01-21 - Peter Karlsson <peter@softwolves.pp.se>
+  utility.h
+    Handle 64-bit time_t without causing overflows.
+
+  turqstat.doc
+  turqstat.dok
+  makedist.sh
+  visualc/
+  debian/
+    Released 3.0. Finally!
+
 2008-01-06 - Peter Karlsson <peter@softwolves.pp.se>
   configure.in
     Fixed typo in test.
