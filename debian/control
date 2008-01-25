@@ -2,7 +2,7 @@ Source: turqstat
 Section: mail
 Priority: optional
 Maintainer: Peter Karlsson <peterk@debian.org>
-Standards-Version: 3.6.2
+Standards-Version: 3.7.3
 Build-Depends: debhelper (>= 4), libqt3-mt-dev, qt3-dev-tools-compat
 
 Package: turqstat

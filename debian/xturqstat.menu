@@ -1,4 +1,4 @@
-?package(xturqstat):needs=X11 section=Apps/Net \
-  title="Turquoise SuperStat" hints="Fidonet" \
+?package(xturqstat):needs=X11 section=Applications/Network/Communication \
+  title="Turquoise SuperStat" hints="Fidonet,Usenet,Statistics" \
   longtitle="Fidonet/Usenet statistics program Turquoise SuperStat" \
   command="/usr/X11R6/bin/xturqstat"
