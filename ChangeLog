@@ -1,3 +1,7 @@
+2008-01-25 - Peter Karlsson <peter@softwolves.pp.se>
+  debian/
+    Silence lintian warnings.
+
 2008-01-21 - Peter Karlsson <peter@softwolves.pp.se>
   utility.h
     Handle 64-bit time_t without causing overflows.
