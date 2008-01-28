@@ -1,4 +1,4 @@
-// Copyright (c) 1999-2005 Peter Karlsson
+// Copyright (c) 1999-2008 Peter Karlsson
 //
 // This program is free software; you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -23,6 +23,7 @@
 #endif
 #include <time.h>
 #include <stdio.h>
+#include <string.h>
 
 #include "tanstaaflread.h"
 #include "utility.h"

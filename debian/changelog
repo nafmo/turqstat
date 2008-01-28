@@ -1,8 +1,10 @@
-turqstat (3.0-2) UNRELEASED unstable; urgency=low
+turqstat (3.0-2) unstable; urgency=low
 
+  * Added more missing headers to fix GNU C++ 4.3 compatibility.
+   (Closes: Bug#417734)
   * Updated to current menu policy and updated conformance to policy 3.7.3.
 
- -- Peter Karlsson <peterk@debian.org>  Fri, 25 Jan 2008 07:30:00 +0100
+ -- Peter Karlsson <peterk@debian.org>  Mon, 28 Jan 2008 21:00:00 +0100
 
 turqstat (3.0-1) unstable; urgency=low
 

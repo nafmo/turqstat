@@ -1,4 +1,4 @@
-// Copyright (c) 2001-2007 Peter Karlsson
+// Copyright (c) 2001-2008 Peter Karlsson
 //
 // This program is free software; you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -16,6 +16,7 @@
 #include <config.h>
 
 #include <string.h>
+#include <stdlib.h>
 
 #include "convert.h"
 #include "mappings.h"

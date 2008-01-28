@@ -1,4 +1,4 @@
-// Copyright (c) 1998-2007 Peter Karlsson
+// Copyright (c) 1998-2008 Peter Karlsson
 //
 // This program is free software; you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -23,6 +23,7 @@
 #endif
 #include <stdlib.h>
 #include <stdio.h>
+#include <string.h>
 
 #include "statengine.h"
 #include "output.h"

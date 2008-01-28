@@ -43,6 +43,7 @@
 #ifdef HAVE_WIN32_GETMODULEFILENAME
 # include <windows.h>
 #endif
+#include <string.h>
 
 #include "statengine.h"
 #include "statview.h"

@@ -4,7 +4,7 @@
 // using Turquoise SuperStat conversion routines
 // Version 1.0
 //
-// Copyright (c) 2001 Peter Karlsson
+// Copyright (c) 2001-2008 Peter Karlsson
 //
 // This program is free software; you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -22,6 +22,7 @@
 #include <config.h>
 #include <iostream>
 #include <stdio.h>
+#include <string.h>
 #ifdef HAVE_GETOPT_IN_UNISTD
 # include <unistd.h>
 #elif defined(HAVE_GETOPT_IN_GETOPT)

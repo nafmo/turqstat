@@ -1,3 +1,15 @@
+2008-01-28 - Peter Karlsson <peter@softwolves.pp.se>
+  convert.cpp
+  turqstat.cpp
+  fdapxread.cpp
+  jamread.cpp
+  mypointread.cpp
+  statengine.cpp
+  tanstaaflread.cpp
+  teal.cpp
+  utility.cpp
+    Added more missing standard include files.
+
 2008-01-25 - Peter Karlsson <peter@softwolves.pp.se>
   debian/
     Silence lintian warnings.
