@@ -1,4 +1,4 @@
-// Copyright (c) 2001-2007 Peter Karlsson
+// Copyright (c) 2001-2008 Peter Karlsson
 //
 // This program is free software; you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -265,7 +265,7 @@ bool NntpRead::Transfer(time_t starttime, time_t endtime,
             while ((unsigned int) -1 !=
                    (article = (unsigned int) GetResponse()))
             {
-                if (article >= first || article <= last &&
+                if (article >= first && article <= last &&
                     articles[article - first])
                 {
                     // Article is within bounds, and is flagged as active

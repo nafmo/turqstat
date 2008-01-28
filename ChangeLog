@@ -10,6 +10,10 @@
   utility.cpp
     Added more missing standard include files.
 
+  nntpread.cpp
+  statengine.cpp
+    Fixed logic operator precedence.
+
 2008-01-25 - Peter Karlsson <peter@softwolves.pp.se>
   debian/
     Silence lintian warnings.

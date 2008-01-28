@@ -342,8 +342,8 @@ void StatEngine::AddData(string in_fromname, string in_toname, string in_subject
         // Break when we find a tear or Origin line
         if (!newsarea)
         {
-            if (("--- " == thisline.substr(0, 4) ||
-                thisline.length() == 3 && "---" == thisline))
+            if ("--- " == thisline.substr(0, 4) ||
+                (thisline.length() == 3 && "---" == thisline))
             {
                 foundtear = true;
             }
