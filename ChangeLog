@@ -3,6 +3,9 @@
     Avoid outputting the text before the @place@ token if the toplist ends
     early.
 
+  templates/html.tpl
+    Began working on an HTML output template.
+
 2008-01-28 - Peter Karlsson <peter@softwolves.pp.se>
   convert.cpp
   turqstat.cpp
