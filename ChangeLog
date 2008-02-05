@@ -1,3 +1,8 @@
+2008-02-05 - Peter Karlsson <peter@softwolves.pp.se>
+  statview.cpp
+    Avoid outputting the text before the @place@ token if the toplist ends
+    early.
+
 2008-01-28 - Peter Karlsson <peter@softwolves.pp.se>
   convert.cpp
   turqstat.cpp

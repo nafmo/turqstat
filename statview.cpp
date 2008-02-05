@@ -1,4 +1,4 @@
-// Copyright (c) 1998-2007 Peter Karlsson
+// Copyright (c) 1998-2008 Peter Karlsson
 //
 // This program is free software; you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -873,6 +873,7 @@ bool StatView::CreateReport(StatEngine *engine, string filename)
 							// section, or we ran out of data early.
 							toplist_length = place - 1;
 							current_token_p = NULL;
+							reportline.str(string());
 						}
 						else if (next_iteration)
 						{
