@@ -1,4 +1,4 @@
-// Copyright (c) 2007 Peter Karlsson
+// Copyright (c) 2007-2008 Peter Karlsson
 //
 // This program is free software; you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -26,7 +26,7 @@
 /* static */
 Template *Template::Parse(const string &file, bool &error)
 {
-	bool in_settings = false;
+	Section *current_section = NULL;
 
     // Open file
     fstream templatefile(file.c_str(), ios::in);
@@ -45,15 +45,13 @@ Template *Template::Parse(const string &file, bool &error)
     {
         string line;
         getline(templatefile, line);
-		Token *tokenlist = Token::Parse(line, in_settings, error);
+		Token *tokenlist = Token::Parse(line, current_section, error);
 		if (tokenlist)
 		{
 			// Check if a new section found is a settings section
 			if (tokenlist->IsSection())
 			{
-				in_settings =
-					static_cast<Section *>(tokenlist)->GetSection()
-					== Section::Localization;
+				current_section = static_cast<Section *>(tokenlist);
 			}
 
 			// Add line to template

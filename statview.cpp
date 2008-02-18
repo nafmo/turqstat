@@ -61,6 +61,7 @@ StatView::StatView()
     maxnumber = 15;
 
     m_template = NULL;
+	m_html = false;
 }
 
 bool StatView::CreateReport(StatEngine *engine, string filename)
@@ -155,7 +156,9 @@ bool StatView::CreateReport(StatEngine *engine, string filename)
 					case Section::Programs:		include_section = topprograms; break;
 					case Section::Week:			include_section = weekstats; break;
 					case Section::Day:			include_section = daystats; break;
-					case Section::Localization:	include_section = true; break;
+					case Section::Settings:
+					case Section::Localization:
+						include_section = true; break;
 					default:
 						// Unknown section.
 						TDisplay::GetOutputObject()->InternalErrorQuit(TDisplay::program_halted, 1);
@@ -195,7 +198,7 @@ bool StatView::CreateReport(StatEngine *engine, string filename)
 						bool identical_entry = false;
 
 						reportline << left;
-						streamsize width = variable_p->GetWidth();
+						string::size_type width = variable_p->GetWidth();
 						if (width > 0)
 						{
 							reportline << setw(width);
@@ -883,10 +886,36 @@ bool StatView::CreateReport(StatEngine *engine, string filename)
 						}
 						else
 						{
+							// Set to "?" if we do not have known data.
 							string s(known_data ? data.str() : "?");
-							if (width && static_cast<streamsize>(data.str().length()) > width)
+
+							// Trim string if a maximum width was set.
+							if (width && s.length() > width)
 							{
 								s.erase(width);
+							}
+
+							// In HTML mode, we need to replace "dangerous"
+							// characters.
+							if (m_html)
+							{
+								string::size_type idx;
+								while ((idx = s.find('&')) != string::npos)
+								{
+									s.replace(idx, 1, "&amp;");
+								}
+								while ((idx = s.find('<')) != string::npos)
+								{
+									s.replace(idx, 1, "&lt;");
+								}
+								while ((idx = s.find('>')) != string::npos)
+								{
+									s.replace(idx, 1, "&gt;");
+								}
+								while ((idx = s.find('"')) != string::npos)
+								{
+									s.replace(idx, 1, "&quot;");
+								}
 							}
 							reportline << s;
 						}
@@ -896,8 +925,13 @@ bool StatView::CreateReport(StatEngine *engine, string filename)
 						const Setting *setting_p =
 							static_cast<const Setting *>(current_token_p);
 						int idx = 0;
-						switch (setting_p->GetType())
+
+						// Different sections have different settings
+						switch (current_section)
 						{
+						case Section::Localization:
+							switch (setting_p->GetType())
+							{
 							case Setting::Sunday:
 								++ idx;
 							case Setting::Saturday:
@@ -915,9 +949,30 @@ bool StatView::CreateReport(StatEngine *engine, string filename)
 								break;
 
 							default:
-								// This cannot happen, there are no more settings types.
+								// This cannot happen, there are no more valid settings types in this section.
 								TDisplay::GetOutputObject()->InternalErrorQuit(TDisplay::program_halted, 1);
 								break;
+							}
+							break;
+
+						case Section::Settings:
+							switch (setting_p->GetType())
+							{
+							case Setting::HTML:
+								m_html = 0 == fcompare(setting_p->GetValue(), "on");
+								break;
+
+							default:
+								// This cannot happen, there are no more valid settings types in this section.
+								TDisplay::GetOutputObject()->InternalErrorQuit(TDisplay::program_halted, 1);
+								break;
+							}
+							break;
+
+						default:
+							// This cannot happen, this section does not allow settings.
+							TDisplay::GetOutputObject()->InternalErrorQuit(TDisplay::program_halted, 1);
+							break;
 						}
 					}
 					else

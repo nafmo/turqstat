@@ -1,4 +1,4 @@
-// Copyright (c) 2002-2007 Peter Karlsson
+// Copyright (c) 2002-2008 Peter Karlsson
 //
 // This program is free software; you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -21,6 +21,8 @@
 #if !defined(HAVE_IMPLICIT_NAMESPACE)
 using namespace std;
 #endif
+
+class Section;
 
 /**
  * Linked list of lexical tokens. This class describes a linked list of tokens
@@ -51,11 +53,11 @@ public:
     /** Parse a line. To parse a template line, this method is called.
       *
       * @param line A line of the template file to parse.
-	  * @param in_settings Set to true if parsing a settings section.
+	  * @param current Section being parsed (NULL if none).
       * @param error Set to true if a parsing error occurs.
       * @return A linked list of tokens describing this line.
       */
-    static Token *Parse(const string &line, bool in_settings, bool &error);
+    static Token *Parse(const string &line, const Section *current, bool &error);
 
 protected:
     /** Standard constructor. Not accessible to any class, except for its
@@ -106,7 +108,7 @@ public:
         Original, Quoters, Writers, TopNets, TopDomains, Received,
         Subjects, Programs, Week, Day,
 		// Configuration sections
-		Localization
+		Settings, Localization
     };
 
     /** Poor man's RTTI. Check if this is a section token. */
@@ -167,6 +169,9 @@ public:
 	/** List of settings known. */
 	enum settingtype
 	{
+		/* Section [Settings] */
+		HTML,
+		/* Section [Localization] */
 		Monday, Tuesday, Wednesday, Thursday, Friday, Saturday, Sunday
 	};
 
@@ -180,9 +185,9 @@ public:
 private:
     friend class Token;
     /** Constructor. Initialize the setting from the string describing it. */
-    Setting(string s, bool &error);
+    Setting(string s, const Section *current, bool &error);
     /** Helper method to the constructor. */
-    void SetType(string, bool &error);
+    void SetType(string, const Section *current, bool &error);
     /** Helper method to the constructor. */
     void SetValue(string s) { m_value = s; }
 

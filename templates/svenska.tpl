@@ -1,5 +1,5 @@
 ; Svensk standardmall för rapporter från Turquoise SuperStat
-; © 2002-2007 Peter Karlsson
+; © 2002-2008 Peter Karlsson
 ;
 ; Rader som inleds med semikolon (som denna) kommer att ignoreras. För att
 ; skriva en rad med inledande semikolon i den färdiga rapporten inleder
@@ -19,8 +19,13 @@
 ; mönster repeteras. Variablerna som beror på platsen i topplistan får sina
 ; värden av @place@-variabeln.
 ;
+; Först några konfigurationsinställningar. Denna sektion genererar ingen
+; utdata, utan dess innehåll används för att konfigurera utdatamotorn.
+[Settings]
+HTML=off
+;
 ; Först kommer stöd för översättning. Denna sektion genererar ingen utdata,
-; istället används dess innehåll för att konfigurera utdatamotorn.
+; utan dess istället används för att konfigurera utdatamotorn.
 [Localization]
 ; Namn på veckodagar
 Mon=Måndag

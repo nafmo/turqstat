@@ -1,4 +1,4 @@
-// Copyright (c) 2002-2007 Peter Karlsson
+// Copyright (c) 2002-2008 Peter Karlsson
 //
 // This program is free software; you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -17,9 +17,15 @@
 
 #include "utility.h"
 #include "lexer.h"
+#include "output.h"
 
-Token *Token::Parse(const string &line, bool in_settings, bool &error)
+Token *Token::Parse(const string &line, const Section *current, bool &error)
 {
+	bool in_settings =
+		current &&
+		(current->GetSection() == Section::Settings ||
+		 current->GetSection() == Section::Localization);
+
     // Parse a single line.
     if (';' == line[0])
     {
@@ -52,7 +58,7 @@ Token *Token::Parse(const string &line, bool in_settings, bool &error)
 	{
 		if (line != "")
 		{
-			return new Setting(line, error);
+			return new Setting(line, current, error);
 		}
 	}
 
@@ -165,6 +171,7 @@ Section::Section(string s, bool &error)
     else if (0 == fcompare(s, "Programs"))   m_section = Programs;
     else if (0 == fcompare(s, "Week"))       m_section = Week;
     else if (0 == fcompare(s, "Day"))        m_section = Day;
+	else if (0 == fcompare(s, "Settings"))   m_section = Settings;
 	else if (0 == fcompare(s, "Localization")) m_section = Localization;
     else error = true;
 }
@@ -247,7 +254,7 @@ void Variable::SetVariable(string s, bool &error)
     else error = true;
 }
 
-Setting::Setting(string s, bool &error)
+Setting::Setting(string s, const Section *current, bool &error)
 {
 	// Find divider
 	string::size_type equals = s.find('=');
@@ -257,20 +264,35 @@ Setting::Setting(string s, bool &error)
 	}
 	else
 	{
-		SetType(s.substr(0, equals), error);
+		SetType(s.substr(0, equals), current, error);
 		SetValue(s.substr(equals + 1));
 	}	
 }
 
-void Setting::SetType(string s, bool &error)
+void Setting::SetType(string s, const Section *current, bool &error)
 {
 	// Translate setting string into enumeration value
-	if (0 == fcompare(s, "Mon"))			m_type = Monday;
-	else if (0 == fcompare(s, "Tue"))		m_type = Tuesday;
-	else if (0 == fcompare(s, "Wed"))		m_type = Wednesday;
-	else if (0 == fcompare(s, "Thu"))		m_type = Thursday;
-	else if (0 == fcompare(s, "Fri"))		m_type = Friday;
-	else if (0 == fcompare(s, "Sat"))		m_type = Saturday;
-	else if (0 == fcompare(s, "Sun"))		m_type = Sunday;
-	else error = true;
+	switch (current->GetSection())
+	{
+	case Section::Settings:
+		if (0 == fcompare(s, "HTML"))			m_type = HTML;
+		else error = true;
+		break;
+
+	case Section::Localization:
+		if (0 == fcompare(s, "Mon"))		m_type = Monday;
+		else if (0 == fcompare(s, "Tue"))		m_type = Tuesday;
+		else if (0 == fcompare(s, "Wed"))		m_type = Wednesday;
+		else if (0 == fcompare(s, "Thu"))		m_type = Thursday;
+		else if (0 == fcompare(s, "Fri"))		m_type = Friday;
+		else if (0 == fcompare(s, "Sat"))		m_type = Saturday;
+		else if (0 == fcompare(s, "Sun"))		m_type = Sunday;
+		else error = true;
+		break;
+
+	default:
+		TDisplay::GetOutputObject()->
+			InternalErrorQuit(TDisplay::template_parse_error, 1);
+		break;
+	}
 }

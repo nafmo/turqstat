@@ -1,4 +1,4 @@
-// Copyright (c) 1998-2007 Peter Karlsson
+// Copyright (c) 1998-2008 Peter Karlsson
 //
 // This program is free software; you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -116,6 +116,8 @@ protected:
     string      charset;
 	string		m_dayname[7];
 
+	bool		m_html;
+	
     const Template *m_template;
 };
 

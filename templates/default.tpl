@@ -1,5 +1,5 @@
 ; Default template file for Turquoise SuperStat reports
-; © 2002-2007 Peter Karlsson
+; © 2002-2008 Peter Karlsson
 ;
 ; Any line starting with a semi-colon (like this one) will be ignored. To
 ; output a line with an initial semi-colon in the final report, start the
@@ -19,7 +19,12 @@
 ; the pattern of that line. The variables that are dependent on the position
 ; in the top-list are initialized by the @place@ variable.
 ;
-; First some localization support. This section is not replicated in the output,
+; First some configuration settings. This section is not replicated in the output,
+; rather its contents is used to configure the output engine.
+[Settings]
+HTML=off
+;
+; Now some localization support. This section is not replicated in the output,
 ; rather its contents is used to configure the output engine.
 [Localization]
 ; Weekday names

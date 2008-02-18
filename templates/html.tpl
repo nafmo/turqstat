@@ -19,6 +19,11 @@
 ; the pattern of that line. The variables that are dependent on the position
 ; in the top-list are initialized by the @place@ variable.
 ;
+; First some configuration settings. This section is not replicated in the output,
+; rather its contents is used to configure the output engine.
+[Settings]
+HTML=on
+;
 ; First some localization support. This section is not replicated in the output,
 ; rather its contents is used to configure the output engine.
 [Localization]
