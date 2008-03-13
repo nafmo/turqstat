@@ -1,3 +1,13 @@
+2008-03-13 - Stephen Hurd <shurd@sasktel.net>
+  Makefile.in
+  qtgui.cpp
+  turqstat.cpp
+    Additional changes for Synchronet message base format support.
+
+  smbread.cpp
+  smbread.h
+    Class for Synchronet message base format support.
+
 2007-08-23 - Stephen Hurd <shurd@sasktel.net>
   Makefile.in
   qtgui.cpp
