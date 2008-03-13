@@ -397,6 +397,10 @@ void InfoWindow::open()
             area = new SMBRead(path);
             break;
 
+        case SMB:
+            area = new SMBRead(path);
+            break;
+
         case MYPOINT:
             area = new MyPointRead(path, areanum);
             break;

@@ -314,6 +314,10 @@ StatRetr::StatRetr(StatEngine &engine, StatView &view,
                 area = new SMBRead(areapath[counter]);
                 break;
 
+            case smb:
+                area = new SMBRead(areapath[counter]);
+                break;
+
             case mypoint:
                 areanum = strtoul(areapath[counter], NULL, 10);
                 area = new MyPointRead(basepath, areanum);

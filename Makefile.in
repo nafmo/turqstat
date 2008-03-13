@@ -104,6 +104,9 @@ jamread.o: jamread.cpp jamread.h datatypes.h statengine.h arearead.h config.h ou
 smbread.o: smbread.cpp smbread.h datatypes.h statengine.h arearead.h config.h output.h convert.h utility.h
 	@CXX@ $(CXXFLAGS) -c $(srcdir)/smbread.cpp
 
+smbread.o: smbread.cpp smbread.h datatypes.h statengine.h arearead.h config.h output.h convert.h utility.h
+	@CXX@ $(CXXFLAGS) -c $(srcdir)/smbread.cpp
+
 mypointread.o: mypointread.cpp mypointread.h datatypes.h statengine.h arearead.h config.h output.h convert.h utility.h
 	@CXX@ $(CXXFLAGS) -c $(srcdir)/mypointread.cpp
 
