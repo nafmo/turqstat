@@ -1,3 +1,8 @@
+2008-03-18 - Peter Karlsson <peter@softwolves.pp.se>
+  Makefile.in
+  po/Makefile.in
+    Added @datarootdir@.
+
 2008-02-18 - Peter Karlsson <peter@softwolves.pp.se>
   lexer.cpp
   lexer.h

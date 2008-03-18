@@ -4,6 +4,7 @@
 # Variables
 QM=sv.qm
 prefix=@prefix@
+datarootdir=@datarootdir@
 
 # Magic targets
 all: @QT@$(QM)
