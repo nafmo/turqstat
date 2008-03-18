@@ -17,3 +17,6 @@ autom4te.cache
 build-stamp
 *.kdevelop.pcs
 *.kdevses
+doc
+turqstat-*tar.gz
+turqstat-*zip
