@@ -3,6 +3,9 @@
   po/Makefile.in
     Added @datarootdir@.
 
+  Doxyfile.in
+    Removed obsoleted variables.
+
 2008-02-18 - Peter Karlsson <peter@softwolves.pp.se>
   lexer.cpp
   lexer.h
