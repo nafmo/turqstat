@@ -6,6 +6,9 @@
   Doxyfile.in
     Removed obsoleted variables.
 
+  COPYING
+    Updated to the lastest verson of GNU GPL v2 (with current FSF address).
+
 2008-02-18 - Peter Karlsson <peter@softwolves.pp.se>
   lexer.cpp
   lexer.h
