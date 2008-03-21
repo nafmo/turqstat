@@ -36,7 +36,7 @@ TDisplay *TDisplay::GetOutputObject()
         outputobject = new TDisplay();
         if (!outputobject)
         {
-            cerr << GetMessage(cannot_allocate_tdisplay) << endl;
+			cerr << GetMessage(cannot_allocate_tdisplay).toStdString() << endl;
             exit(255);
         }
     }
@@ -96,7 +96,7 @@ void TDisplay::ErrorQuit(errormessages_e errormessage, int returncode)
     QMessageBox::critical(NULL, "Turquoise SuperStat",
                           GetMessage(errormessage),
                           QMessageBox::Ok | QMessageBox::Default, 0, 0);
-    cerr << GetMessage(program_halted) << endl;
+	cerr << GetMessage(program_halted).toStdString() << endl;
     exit(returncode);
 }
 
@@ -106,7 +106,7 @@ void TDisplay::InternalErrorQuit(errormessages_e errormessage,
     QMessageBox::critical(NULL, qApp->translate("TDisplay", "Internal error"),
                           GetMessage(errormessage),
                           QMessageBox::Ok | QMessageBox::Default, 0, 0);
-    cerr << GetMessage(program_halted) << endl;
+    cerr << GetMessage(program_halted).toStdString() << endl;
     exit(returncode);
 }
 

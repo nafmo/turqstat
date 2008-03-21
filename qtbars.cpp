@@ -61,8 +61,8 @@ protected:
 
 #include "qtbars.moc"
 
-BarWindow::BarWindow(QWidget *parent, const char *name, bar_e bartype)
-    : QDialog(parent, name)
+BarWindow::BarWindow(QWidget *parent, bar_e bartype)
+    : QDialog(parent)
 {
     static const char *days[7] =
     {
@@ -81,12 +81,12 @@ BarWindow::BarWindow(QWidget *parent, const char *name, bar_e bartype)
 	m_bars_pp = new QProgressBar *[m_numentries];
 
     // Create layout
-	QGridLayout *layout = new QGridLayout(this, m_numentries + 1, 2);
+	QGridLayout *layout = new QGridLayout(this);
 
     if (Days == type)
     {
         // Set window caption
-        setCaption(tr("Daily breakdown"));
+		setWindowTitle(tr("Daily breakdown"));
 
         // Seven bars, one per weekday
         for (int i = 0; i < 7; i ++)
@@ -94,7 +94,7 @@ BarWindow::BarWindow(QWidget *parent, const char *name, bar_e bartype)
             // Create data label and bar
             QLabel *l = new QLabel(tr(days[i]), this);
 			m_bars_pp[i] = new DataBar(this);
-			m_bars_pp[i]->setCenterIndicator(false);
+			m_bars_pp[i]->setFormat("");
 			m_bars_pp[i]->setMinimumSize(200, 5);
             layout->addWidget(l, i, 0);
 			layout->addWidget(m_bars_pp[i], i, 1);
@@ -103,7 +103,7 @@ BarWindow::BarWindow(QWidget *parent, const char *name, bar_e bartype)
     else
     {
         // Set window caption
-        setCaption(tr("Hourly breakdown"));
+        setWindowTitle(tr("Hourly breakdown"));
 
         QString s;
 
@@ -114,7 +114,7 @@ BarWindow::BarWindow(QWidget *parent, const char *name, bar_e bartype)
             s.sprintf("%02d:00-%02d:00", i, i + 1);
             QLabel *l = new QLabel(s, this);
 			m_bars_pp[i] = new DataBar(this);
-			m_bars_pp[i]->setCenterIndicator(false);
+			m_bars_pp[i]->setFormat("");
 			m_bars_pp[i]->setMinimumSize(200, 5);
             layout->addWidget(l, i, 0);
 			layout->addWidget(m_bars_pp[i], i, 1);
@@ -123,7 +123,7 @@ BarWindow::BarWindow(QWidget *parent, const char *name, bar_e bartype)
 
     // Add close button
     QPushButton *ok = new QPushButton(tr("Dismiss"), this);
-	layout->addMultiCellWidget(ok, m_numentries, m_numentries, 0, 1);
+	layout->addWidget(ok, m_numentries, 0, 1, 2);
     connect(ok, SIGNAL(clicked()), SLOT(accept()));
 }
 
@@ -159,8 +159,8 @@ void BarWindow::fillOut(StatEngine *engine)
     // Setup the bars
 	for (int i = 0; i < m_numentries; i ++)
     {
-		m_bars_pp[i]->setTotalSteps(maximum);
-		m_bars_pp[i]->setProgress(data[i]);
+		m_bars_pp[i]->setMaximum(maximum);
+		m_bars_pp[i]->setValue(data[i]);
     }
 
     delete[] data;

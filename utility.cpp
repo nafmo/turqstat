@@ -410,8 +410,8 @@ void localetimestring(const struct tm *time, size_t len, char *out)
 
     // First print date
     int usedlength =
-        GetDateFormat(LOCALE_USER_DEFAULT, DATE_SHORTDATE, &wintime, NULL,
-                      out, static_cast<int>(len));
+		GetDateFormatA(LOCALE_USER_DEFAULT, DATE_SHORTDATE, &wintime, NULL,
+		               out, static_cast<int>(len));
 
     len -= usedlength;
     out += usedlength;
@@ -423,7 +423,7 @@ void localetimestring(const struct tm *time, size_t len, char *out)
     }
 
     // Then print time
-    GetTimeFormat(LOCALE_USER_DEFAULT, 0, &wintime, NULL, out, static_cast<int>(len));
+    GetTimeFormatA(LOCALE_USER_DEFAULT, 0, &wintime, NULL, out, static_cast<int>(len));
 }
 #elif defined(HAVE_LOCALE_H)
 void localetimestring(const struct tm *time, size_t len, char *out)

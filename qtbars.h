@@ -45,10 +45,9 @@ public:
      * Standard constructor. Creates a window ready to fill in with toplist
      * data.
      * @param parent  Parent widget owning the window.
-     * @param name    Name given to this instance.
      * @param bartype Type of graph to display in the window.
      */
-    BarWindow(QWidget *parent, const char *name, bar_e bartype);
+    BarWindow(QWidget *parent, bar_e bartype);
     /** Standard destructor. */
     ~BarWindow();
 
