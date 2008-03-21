@@ -19,11 +19,11 @@
 #include <iostream>
 #include <qprogressdialog.h>
 #include <qmessagebox.h>
-#include <qtgui.h>
 #include <qapplication.h>
 
 #include "output.h"
 #include "qtprogress.h"
+#include "qtgui.h"
 
 static QString GetMessage(TDisplay::errormessages_e);
 
