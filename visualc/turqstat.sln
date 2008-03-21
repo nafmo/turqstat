@@ -3,6 +3,8 @@ Microsoft Visual Studio Solution File, Format Version 10.00
 # Visual C++ Express 2008
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "turqstat", "turqstat.vcproj", "{32218B9C-5C9B-4215-B342-AEB40A62F534}"
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "xturqstat", "xturqstat.vcproj", "{C53D2AE0-F1F7-4C1D-BDB1-9E9CE45DC764}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Win32 = Debug|Win32
@@ -13,6 +15,10 @@ Global
 		{32218B9C-5C9B-4215-B342-AEB40A62F534}.Debug|Win32.Build.0 = Debug|Win32
 		{32218B9C-5C9B-4215-B342-AEB40A62F534}.Release|Win32.ActiveCfg = Release|Win32
 		{32218B9C-5C9B-4215-B342-AEB40A62F534}.Release|Win32.Build.0 = Release|Win32
+		{C53D2AE0-F1F7-4C1D-BDB1-9E9CE45DC764}.Debug|Win32.ActiveCfg = Debug|Win32
+		{C53D2AE0-F1F7-4C1D-BDB1-9E9CE45DC764}.Debug|Win32.Build.0 = Debug|Win32
+		{C53D2AE0-F1F7-4C1D-BDB1-9E9CE45DC764}.Release|Win32.ActiveCfg = Release|Win32
+		{C53D2AE0-F1F7-4C1D-BDB1-9E9CE45DC764}.Release|Win32.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
