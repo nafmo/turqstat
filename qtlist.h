@@ -92,12 +92,6 @@ protected:
     /** Internal method used for creating a software toplist. */
     void addSoftware(StatEngine *);
 
-    /**
-     * Convert a wide character string into a QString.
-     * @param inputstring String to copy.
-     * @return A QString representation of the string.
-     */
-    static QString charConvert(wstring &);
     /** Create a percent string to display in a toplist. */
     QString percentString(int, int);
 

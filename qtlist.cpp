@@ -173,7 +173,7 @@ void TopListWindow::addQuoters(StatEngine *engine)
         if (data.bytesquoted && data.byteswritten)
         {
             QString tmp;
-            QString name = charConvert(data.name);
+			QString name = QString::fromStdWString(data.name);
             if (name != QString(data.address.c_str()))
                 tmp = name + " <" + data.address.c_str() + ">";
             else
@@ -205,7 +205,7 @@ void TopListWindow::addSenders(StatEngine *engine)
         if (!data.messageswritten) break;
 
         QString tmp;
-        QString name = charConvert(data.name);
+		QString name = QString::fromStdWString(data.name);
         if (name != QString(data.address.c_str()))
             tmp = name + " <" + data.address.c_str() + ">";
         else
@@ -245,7 +245,7 @@ void TopListWindow::addOriginalContent(StatEngine *engine)
         }
 
         QString tmp;
-        QString name = charConvert(data.name);
+		QString name = QString::fromStdWString(data.name);
         if (name != QString(data.address.c_str()))
             tmp = name + " <" + data.address.c_str() + ">";
         else
@@ -324,7 +324,7 @@ void TopListWindow::addReceivers(StatEngine *engine)
 
         QString tmp;
         if (data.name.length())
-            tmp = charConvert(data.name);
+			tmp = QString::fromStdWString(data.name);
         else
             tmp = tr("(none)");
 
@@ -356,7 +356,7 @@ void TopListWindow::addSubjects(StatEngine *engine)
     {
         QString tmp;
         if (data.subject.length())
-            tmp = charConvert(data.subject);
+			tmp = QString::fromStdWString(data.subject);
         else
             tmp = tr("(none)");
 
@@ -384,7 +384,7 @@ void TopListWindow::addSoftware(StatEngine *engine)
     {
         QString tmp;
         if (data.program.length())
-            tmp = charConvert(data.program);
+			tmp = QString::fromStdWString(data.program);
         else
             tmp = tr("(none)");
 
@@ -398,21 +398,6 @@ void TopListWindow::addSoftware(StatEngine *engine)
     }
 
     engine->DoneTopPrograms();
-}
-
-QString TopListWindow::charConvert(wstring &inputstring)
-{
-    int length = inputstring.length();
-    QChar *tmp = new QChar[length];
-    for (int i = 0; i < length; i ++)
-    {
-        tmp[i] = inputstring[i];
-    }
-
-    QString rc = QString(tmp, length);
-    delete[] tmp;
-
-    return rc;
 }
 
 QString TopListWindow::percentString(int numerator, int denumerator)
