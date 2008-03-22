@@ -279,7 +279,7 @@ ProgressText *InfoWindow::getProgressText()
         }
 
 		m_progresstext_p =
-            new ProgressText(this, "progress2",
+			new ProgressText(this,
 			                 m_hasnews ? tr("Reading news group")
 			                           : tr("Reading message base"));
 		m_progresstext_p->setWindowTitle("Turquoise SuperStat");
@@ -548,7 +548,7 @@ void InfoWindow::update()
 void InfoWindow::quotelist()
 {
     TopListWindow *quotedialog =
-        new TopListWindow(this, "quotelist", TopListWindow::Quoters);
+        new TopListWindow(this, TopListWindow::Quoters);
     if (quotedialog)
     {
 		quotedialog->fillOut(m_engine_p);
@@ -559,7 +559,7 @@ void InfoWindow::quotelist()
 void InfoWindow::senderlist()
 {
     TopListWindow *senderdialog =
-        new TopListWindow(this, "senderlist", TopListWindow::Senders);
+        new TopListWindow(this, TopListWindow::Senders);
     if (senderdialog)
     {
 		senderdialog->fillOut(m_engine_p);
@@ -570,7 +570,7 @@ void InfoWindow::senderlist()
 void InfoWindow::contentlist()
 {
     TopListWindow *contentdialog =
-        new TopListWindow(this, "contentlist", TopListWindow::OrigContent);
+        new TopListWindow(this, TopListWindow::OrigContent);
     if (contentdialog)
     {
 		contentdialog->fillOut(m_engine_p);
@@ -581,7 +581,7 @@ void InfoWindow::contentlist()
 void InfoWindow::fidonetlist()
 {
     TopListWindow *fidonetsdialog =
-        new TopListWindow(this, "netlist", TopListWindow::FidoNets);
+        new TopListWindow(this, TopListWindow::FidoNets);
     if (fidonetsdialog)
     {
 		fidonetsdialog->fillOut(m_engine_p);
@@ -592,7 +592,7 @@ void InfoWindow::fidonetlist()
 void InfoWindow::domainlist()
 {
     TopListWindow *domaindialog =
-        new TopListWindow(this, "domainlist", TopListWindow::Domains);
+        new TopListWindow(this, TopListWindow::Domains);
     if (domaindialog)
     {
 		domaindialog->fillOut(m_engine_p);
@@ -603,7 +603,7 @@ void InfoWindow::domainlist()
 void InfoWindow::receiverlist()
 {
     TopListWindow *receiverdialog =
-        new TopListWindow(this, "receiverlist", TopListWindow::Receivers);
+        new TopListWindow(this, TopListWindow::Receivers);
     if (receiverdialog)
     {
 		receiverdialog->fillOut(m_engine_p);
@@ -614,7 +614,7 @@ void InfoWindow::receiverlist()
 void InfoWindow::subjectlist()
 {
     TopListWindow *subjectdialog =
-        new TopListWindow(this, "subjectlist", TopListWindow::Subjects);
+        new TopListWindow(this, TopListWindow::Subjects);
     if (subjectdialog)
     {
 		subjectdialog->fillOut(m_engine_p);
@@ -625,7 +625,7 @@ void InfoWindow::subjectlist()
 void InfoWindow::softwarelist()
 {
     TopListWindow *softwaredialog =
-        new TopListWindow(this, "softwaredialog", TopListWindow::Software);
+        new TopListWindow(this, TopListWindow::Software);
     if (softwaredialog)
     {
 		softwaredialog->fillOut(m_engine_p);
@@ -668,7 +668,7 @@ void InfoWindow::clear()
 void InfoWindow::report()
 {
     ReportSelectWindow *reportwindow =
-		new ReportSelectWindow(this, "reportselect", m_engine_p);
+		new ReportSelectWindow(this, m_engine_p);
     reportwindow->exec();
 }
 

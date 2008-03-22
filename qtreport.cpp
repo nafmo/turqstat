@@ -24,6 +24,9 @@
 #include <qlabel.h>
 #include <qlineedit.h>
 #include <limits.h>
+#ifdef HAVE_WIN32_GETMODULEFILENAME
+# include <windows.h>
+#endif
 
 #include "qtreport.h"
 #include "statview.h"
@@ -49,9 +52,8 @@ int ReportSelectWindow::g_defaultmaxnum = 15;
 QString ReportSelectWindow::g_templpath;
 Template *ReportSelectWindow::g_template = NULL;
 
-ReportSelectWindow::ReportSelectWindow(QWidget *parent, const char *name,
-                                       StatEngine *engine_p)
-    : QDialog(parent, name, true), m_engine_p(engine_p)
+ReportSelectWindow::ReportSelectWindow(QWidget *parent, StatEngine *engine_p)
+	: QDialog(parent), m_engine_p(engine_p)
 {
     // Create layout
     QVBoxLayout *layout = new QVBoxLayout(this);
@@ -113,7 +115,10 @@ ReportSelectWindow::ReportSelectWindow(QWidget *parent, const char *name,
 #endif
 
     // Input boxes
-	m_maxnum_p = new QSpinBox(1, INT_MAX, 1, this);
+	m_maxnum_p = new QSpinBox(this);
+	m_maxnum_p->setMinimum(1);
+	m_maxnum_p->setMaximum(INT_MAX);
+	m_maxnum_p->setSingleStep(1);
 	m_maxnum_p->setValue(g_defaultmaxnum);
 	m_maxnum_p->setSuffix(tr(" entries"));
 	layout->addWidget(m_maxnum_p);
@@ -121,20 +126,20 @@ ReportSelectWindow::ReportSelectWindow(QWidget *parent, const char *name,
     QLabel *charsetlabel = new QLabel(tr("&Character set for report"), this);
     layout->addWidget(charsetlabel);
 
-	m_charset_p = new QComboBox(false, this);
+	m_charset_p = new QComboBox(this);
 	layout->addWidget(m_charset_p);
 	charsetlabel->setBuddy(m_charset_p);
 
     CharsetEnumerator charsets(CharsetEnumerator::Usenet);
-    const char *charsetname;
-    while (NULL != (charsetname = charsets.Next()))
-    {
-		m_charset_p->insertItem(charsetname);
-		if (g_docharset == charsetname)
-        {
-			m_charset_p->setCurrentItem(m_charset_p->count() - 1);
-        }
-    }
+	const char *charsetname_p;
+	while (NULL != (charsetname_p = charsets.Next()))
+	{
+		m_charset_p->addItem(charsetname_p);
+		if (g_docharset == charsetname_p)
+		{
+			m_charset_p->setCurrentIndex(m_charset_p->count() - 1);
+		}
+	}
 
 	// Template file browser
 	if (!g_template)
@@ -167,31 +172,29 @@ ReportSelectWindow::ReportSelectWindow(QWidget *parent, const char *name,
 		g_template = Template::Parse(templatefile, is_error);
 		if (!is_error)
 		{
-			g_templpath = templatefile;
+			g_templpath.fromStdString(templatefile);
 		}
 	}
 	QLabel *templatelabel = new QLabel(tr("Template file to use"), this);
 	layout->addWidget(templatelabel);
 
-	QHBoxLayout *filebrowselayout = new QHBoxLayout(layout);
+	QGridLayout *filebrowselayout_p = new QGridLayout(this);
 
-	m_templatefilename_p = new QLineEdit(this, "templatefile");
+	m_templatefilename_p = new QLineEdit(this);
 	m_templatefilename_p->setReadOnly(true);
 	m_templatefilename_p->setText(g_templpath);
-	filebrowselayout->addWidget(m_templatefilename_p);
+	filebrowselayout_p->addWidget(m_templatefilename_p, 0, 0);
 	m_filebrowsebutton_p = new QPushButton(tr("&Browse"), this);
-	filebrowselayout->addWidget(m_filebrowsebutton_p);
+	filebrowselayout_p->addWidget(m_filebrowsebutton_p, 0, 1);
 	connect(m_filebrowsebutton_p, SIGNAL(clicked()), SLOT(browseForTemplate()));
 
     // Add buttons
-    QHBoxLayout *buttonlayout = new QHBoxLayout(layout);
-
     QPushButton *save = new QPushButton(tr("&Save"), this);
-    buttonlayout->addWidget(save);
+	filebrowselayout_p->addWidget(save, 1, 0);
     connect(save, SIGNAL(clicked()), SLOT(saveToFile()));
 
     QPushButton *ok = new QPushButton(tr("Cancel"), this);
-    buttonlayout->addWidget(ok);
+	filebrowselayout_p->addWidget(ok, 1, 1);
     connect(ok, SIGNAL(clicked()), SLOT(accept()));
 }
 
@@ -208,10 +211,10 @@ void ReportSelectWindow::saveToFile()
 	}
 
     // Browse for filename
-    QString filename =
-        QFileDialog::getSaveFileName(tr("report.txt"),
-                                     tr("Report files (*.txt)"),
-                                     this, "savereport", tr("Save report"));
+	QString filename =
+		QFileDialog::getSaveFileName(this, tr("Save report"),
+		                             tr("report.txt"),
+		                             tr("Report files (*.txt)"));
     if (filename.isEmpty()) return; // Cancel
 
     // Create view object
@@ -253,11 +256,11 @@ void ReportSelectWindow::saveToFile()
     view.ShowVersions(true);
     view.ShowAllNums(false);
 	view.SetMaxEntries(g_defaultmaxnum);
-	view.SetCharset(g_docharset.latin1());
+	view.SetCharset(g_docharset.toLatin1());
 
     // Write output
 	view.SetTemplate(g_template);
-	view.CreateReport(m_engine_p, string(filename.local8Bit()));
+	view.CreateReport(m_engine_p, string(filename.toLocal8Bit()));
 
     // Close
     accept();
@@ -267,15 +270,15 @@ void ReportSelectWindow::browseForTemplate()
 {
 	// Browse for filename
 	QString filename =
-		QFileDialog::getSaveFileName(g_templpath,
-		                             tr("Template files (*.tpl)"),
-		                             this, "browsefortemplate", tr("Browse for template"));
+		QFileDialog::getOpenFileName(this, tr("Browse for template"),
+		                             g_templpath,
+		                             tr("Template files (*.tpl)"));
 	if (filename.isEmpty()) return; // Cancel
 
 	// Load template if possible
 	bool error = false;
 	Template *new_template =
-		Template::Parse(string(filename.local8Bit()), error);
+		Template::Parse(string(filename.toLocal8Bit()), error);
 	if (!new_template || error)
 	{
 		TDisplay *display = TDisplay::GetOutputObject();

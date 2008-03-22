@@ -40,7 +40,7 @@ public:
      * @param name   Name given to this instance.
      * @param title  Title to display in window.
      */
-    ProgressText(QWidget *parent, const char *name, const QString &title);
+	ProgressText(QWidget *parent, const QString &title);
 
     /**
      * Update the progress indicator.

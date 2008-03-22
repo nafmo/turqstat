@@ -52,8 +52,8 @@ void TDisplay::SetMessagesTotal(int number)
     {
         QProgressDialog *p =
             InfoWindow::getMainWindow()->getProgressDialog(maximum);
-        p->setTotalSteps(number);
-        p->setProgress(0);
+		p->setMaximum(number);
+		p->setValue(0);
     }
 }
 
@@ -63,7 +63,7 @@ void TDisplay::UpdateProgress(int messages)
     {
         QProgressDialog *p =
             InfoWindow::getMainWindow()->getProgressDialog(maximum);
-        p->setProgress(messages);
+		p->setValue(messages);
     }
     else
     {

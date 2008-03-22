@@ -43,7 +43,7 @@ public:
      * @param name     Name given to this instance.
      * @param engine_p Pointer to engine containing the statistics.
      */
-    ReportSelectWindow(QWidget *parent, const char *name, StatEngine *);
+	ReportSelectWindow(QWidget *parent, StatEngine *);
     /** Standard destructor. */
     ~ReportSelectWindow();
 

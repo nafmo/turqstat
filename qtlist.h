@@ -24,7 +24,7 @@
 using namespace std;
 #endif
 
-class QListView;
+class QTreeWidget;
 class StatEngine;
 #if !defined(HAVE_WORKING_WSTRING)
 class wstring;
@@ -62,7 +62,7 @@ public:
      * @param name   Name given to this instance.
      * @param list   Type of list to display in the window.
      */
-    TopListWindow(QWidget *parent, const char *name, toplist_e list);
+    TopListWindow(QWidget *parent, toplist_e list);
     /** Standard destructor. */
     ~TopListWindow();
 
@@ -102,7 +102,7 @@ protected:
     QString percentString(int, int);
 
     /** List view used to display the actual toplist. */
-	QListView *m_listview_p;
+	QTreeWidget *m_treeview_p;
 
     /** The kind of toplist associated with this object. */
     enum toplist_e toplist;

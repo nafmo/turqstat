@@ -20,19 +20,16 @@
 
 #include "qtprogress.h"
 
-ProgressText::ProgressText(QWidget *parent, const char *name,
-                           const QString &title)
-    : QDialog(parent, name, false)
+ProgressText::ProgressText(QWidget *parent, const QString &title)
+	: QDialog(parent)
 {
-    // Create vertical layout
-    QBoxLayout *vlayout = new QVBoxLayout(this);
-    QLabel *t = new QLabel(title, this);
-    vlayout->addWidget(t);
+	QGridLayout *layout_p = new QGridLayout(this);
+	QLabel *t_p = new QLabel(title, this);
+	layout_p->addWidget(t_p, 0, 0, 1, 2);
 
-    // Create horizontal layout
-    QBoxLayout *hlayout = new QHBoxLayout(vlayout);
+	// Create horizontal layout
 	m_progress_p = new QLabel("0", this);
-    hlayout->addWidget(m_progress_p);
-    QLabel *l = new QLabel(tr("message(s) read"), this);
-    hlayout->addWidget(l);
+	layout_p->addWidget(m_progress_p, 1, 0);
+	QLabel *l_p = new QLabel(tr("message(s) read"), this);
+	layout_p->addWidget(m_progress_p, 1, 1);
 }
