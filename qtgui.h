@@ -68,7 +68,6 @@ public:
 
 private:
     /** Main menubar. */
-	QMenuBar *m_menu_p;
 	QAction *m_fidotoplistentry_p;
 
     // Data displayers

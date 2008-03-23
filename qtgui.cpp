@@ -69,8 +69,7 @@ InfoWindow::InfoWindow()
 	: m_hasnews(false), m_hasany(false)
 {
     // Construct menu
-	m_menu_p = new QMenuBar(this);
-	QMenu *filemenu_p = new QMenu(m_menu_p);
+	QMenu *filemenu_p = new QMenu(menuBar());
 	filemenu_p->setTitle(tr("&File"));
 	filemenu_p->addAction(tr("&Open message base"), this, SLOT(open()),
 	                      Qt::CTRL + Qt::Key_O);
@@ -82,15 +81,15 @@ InfoWindow::InfoWindow()
 	filemenu_p->addAction(tr("&Save report"), this, SLOT(report()), Qt::CTRL + Qt::Key_S);
     filemenu_p->addSeparator();
 	filemenu_p->addAction(tr("&Exit"), qApp, SLOT(quit()), Qt::CTRL + Qt::Key_Q);
-	m_menu_p->addMenu(filemenu_p);
+	menuBar()->addMenu(filemenu_p);
 
-	QMenu *editmenu_p = new QMenu(m_menu_p);
+	QMenu *editmenu_p = new QMenu(menuBar());
 	editmenu_p->setTitle(tr("&Edit"));
 	editmenu_p->addAction(tr("&Set start date"), this, SLOT(startdate()),
 	                      Qt::CTRL + Qt::Key_Home);
-	m_menu_p->addMenu(editmenu_p);
+	menuBar()->addMenu(editmenu_p);
 
-	QMenu *showmenu_p = new QMenu(m_menu_p);
+	QMenu *showmenu_p = new QMenu(menuBar());
 	showmenu_p->setTitle(tr("&Show"));
 	showmenu_p->addAction(tr("&Quoter blacklist"), this, SLOT(quotelist()),
 	                      Qt::CTRL + Qt::Key_1);
@@ -114,111 +113,115 @@ InfoWindow::InfoWindow()
 	                      Qt::CTRL + Qt::Key_T);
 	showmenu_p->addAction(tr("Postings per &day"), this, SLOT(daylist()),
 	                      Qt::CTRL + Qt::Key_D);
-	m_menu_p->addMenu(showmenu_p);
+	menuBar()->addMenu(showmenu_p);
+
+	// Set up a central widget
+	QWidget *central_widget = new QWidget(this);
+	setCentralWidget(central_widget);
 
     // Add information boxes
-	QGridLayout *grid_p = new QGridLayout(this);
+	QGridLayout *grid_p = new QGridLayout(central_widget);
 	grid_p->setSpacing(5);
 	grid_p->setMargin(5);
 
-    QLabel *labelAreas = new QLabel(tr("&Areas loaded"), this);
-	m_numareas_p = new QLineEdit(this);
+    QLabel *labelAreas = new QLabel(tr("&Areas loaded"), central_widget);
+	m_numareas_p = new QLineEdit(central_widget);
 	m_numareas_p->setReadOnly(true);
 	m_numareas_p->setAlignment(Qt::AlignRight);
 	labelAreas->setBuddy(m_numareas_p);
 	grid_p->addWidget(labelAreas, 0, 0);
 	grid_p->addWidget(m_numareas_p, 0, 1);
 
-    QLabel *labelTexts = new QLabel(tr("&Texts examined"), this);
-	m_numtexts_p = new QLineEdit(this);
+    QLabel *labelTexts = new QLabel(tr("&Texts examined"), central_widget);
+	m_numtexts_p = new QLineEdit(central_widget);
 	m_numtexts_p->setReadOnly(true);
 	m_numtexts_p->setAlignment(Qt::AlignRight);
 	labelTexts->setBuddy(m_numtexts_p);
 	grid_p->addWidget(labelTexts, 1, 0);
 	grid_p->addWidget(m_numtexts_p, 1, 1);
 
-    QLabel *labelBytes = new QLabel(tr("&Bytes written"), this);
-	m_numbytes_p = new QLineEdit(this);
+    QLabel *labelBytes = new QLabel(tr("&Bytes written"), central_widget);
+	m_numbytes_p = new QLineEdit(central_widget);
 	m_numbytes_p->setReadOnly(true);
 	m_numbytes_p->setAlignment(Qt::AlignRight);
 	labelBytes->setBuddy(m_numbytes_p);
 	grid_p->addWidget(labelBytes, 2, 0);
 	grid_p->addWidget(m_numbytes_p, 2, 1);
 
-    QLabel *labelLines = new QLabel(tr("&Lines examined"), this);
-	m_numlines_p = new QLineEdit(this);
+    QLabel *labelLines = new QLabel(tr("&Lines examined"), central_widget);
+	m_numlines_p = new QLineEdit(central_widget);
 	m_numlines_p->setReadOnly(true);
 	m_numlines_p->setAlignment(Qt::AlignRight);
 	labelLines->setBuddy(m_numlines_p);
 	grid_p->addWidget(labelLines, 3, 0);
 	grid_p->addWidget(m_numlines_p, 3, 1);
 
-    QLabel *labelQBytes = new QLabel(tr("Bytes &quoted"), this);
-	m_numqbytes_p = new QLineEdit(this);
+    QLabel *labelQBytes = new QLabel(tr("Bytes &quoted"), central_widget);
+	m_numqbytes_p = new QLineEdit(central_widget);
 	m_numqbytes_p->setReadOnly(true);
 	m_numqbytes_p->setAlignment(Qt::AlignRight);
 	labelQBytes->setBuddy(m_numqbytes_p);
 	grid_p->addWidget(labelQBytes, 4, 0);
 	grid_p->addWidget(m_numqbytes_p, 4, 1);
 
-    QLabel *labelQLines = new QLabel(tr("L&ines quoted"), this);
-	m_numqlines_p = new QLineEdit(this);
+    QLabel *labelQLines = new QLabel(tr("L&ines quoted"), central_widget);
+	m_numqlines_p = new QLineEdit(central_widget);
 	m_numqlines_p->setReadOnly(true);
 	m_numqlines_p->setAlignment(Qt::AlignRight);
 	labelQLines->setBuddy(m_numqlines_p);
 	grid_p->addWidget(labelQLines, 5, 0);
 	grid_p->addWidget(m_numqlines_p, 5, 1);
 
-    QLabel *labelPeople = new QLabel(tr("&People identified"), this);
-	m_numpeople_p = new QLineEdit(this);
+    QLabel *labelPeople = new QLabel(tr("&People identified"), central_widget);
+	m_numpeople_p = new QLineEdit(central_widget);
 	m_numpeople_p->setReadOnly(true);
 	m_numpeople_p->setAlignment(Qt::AlignRight);
 	labelPeople->setBuddy(m_numpeople_p);
 	grid_p->addWidget(labelPeople, 6, 0);
 	grid_p->addWidget(m_numpeople_p, 6, 1);
 
-    QLabel *labelSubjects = new QLabel(tr("S&ubjects found"), this);
-	m_numsubjects_p = new QLineEdit(this);
+    QLabel *labelSubjects = new QLabel(tr("S&ubjects found"), central_widget);
+	m_numsubjects_p = new QLineEdit(central_widget);
 	m_numsubjects_p->setReadOnly(true);
 	m_numsubjects_p->setAlignment(Qt::AlignRight);
 	labelSubjects->setBuddy(m_numsubjects_p);
 	grid_p->addWidget(labelSubjects, 7, 0);
 	grid_p->addWidget(m_numsubjects_p, 7, 1);
 
-    QLabel *labelPrograms = new QLabel(tr("P&rograms used"), this);
-	m_numprograms_p = new QLineEdit(this);
+    QLabel *labelPrograms = new QLabel(tr("P&rograms used"), central_widget);
+	m_numprograms_p = new QLineEdit(central_widget);
 	m_numprograms_p->setReadOnly(true);
 	m_numprograms_p->setAlignment(Qt::AlignRight);
 	labelPrograms->setBuddy(m_numprograms_p);
 	grid_p->addWidget(labelPrograms, 8, 0);
 	grid_p->addWidget(m_numprograms_p, 8, 1);
 
-    QLabel *labelNets = new QLabel(tr("Fidonet &nets represented"), this);
-	m_numnets_p = new QLineEdit(this);
+    QLabel *labelNets = new QLabel(tr("Fidonet &nets represented"), central_widget);
+	m_numnets_p = new QLineEdit(central_widget);
 	m_numnets_p->setReadOnly(true);
 	m_numnets_p->setAlignment(Qt::AlignRight);
 	labelNets->setBuddy(m_numnets_p);
 	grid_p->addWidget(labelNets, 9, 0);
 	grid_p->addWidget(m_numnets_p, 9, 1);
 
-    QLabel *labelDomains = new QLabel(tr("Top &domains represented"), this);
-	m_numdomains_p = new QLineEdit(this);
+    QLabel *labelDomains = new QLabel(tr("Top &domains represented"), central_widget);
+	m_numdomains_p = new QLineEdit(central_widget);
 	m_numdomains_p->setReadOnly(true);
 	m_numdomains_p->setAlignment(Qt::AlignRight);
 	labelDomains->setBuddy(m_numdomains_p);
 	grid_p->addWidget(labelDomains, 10, 0);
 	grid_p->addWidget(m_numdomains_p, 10, 1);
 
-    QLabel *labelEarliest = new QLabel(tr("&Earliest text written"), this);
-	m_earliestwritten_p = new QLineEdit(this);
+    QLabel *labelEarliest = new QLabel(tr("&Earliest text written"), central_widget);
+	m_earliestwritten_p = new QLineEdit(central_widget);
 	m_earliestwritten_p->setReadOnly(true);
 	m_earliestwritten_p->setAlignment(Qt::AlignRight);
 	labelEarliest->setBuddy(m_earliestwritten_p);
 	grid_p->addWidget(labelEarliest, 11, 0);
 	grid_p->addWidget(m_earliestwritten_p, 11, 1);
 
-    QLabel *labelLatest = new QLabel(tr("Latest text &written"), this);
-	m_latestwritten_p = new QLineEdit(this);
+    QLabel *labelLatest = new QLabel(tr("Latest text &written"), central_widget);
+	m_latestwritten_p = new QLineEdit(central_widget);
 	m_latestwritten_p->setReadOnly(true);
 	m_latestwritten_p->setAlignment(Qt::AlignRight);
 	labelLatest->setBuddy(m_latestwritten_p);
@@ -227,9 +230,6 @@ InfoWindow::InfoWindow()
 
     // Fill data fields with zeroes
     zeroFill();
-
-//	FIXME:
-//	setCentralWidget(grid_p);
 
     connect(this, SIGNAL(newdata()), SLOT(update()));
 
