@@ -1,3 +1,36 @@
+2008-03-23 - Peter Karlsson <peter@softwolves.pp.se>
+  qtgui.cpp
+    Porting to Qt 4.
+
+  statengine.cpp
+    Fixed out-of-bounds access if no program name was found.
+
+2008-03-22 - Peter Karlsson <peter@softwolves.pp.se>
+  visualc/
+    Got xturqstat.exe to compile and link.
+
+  outputqt.cpp
+  qtgui.cpp
+  qtlist.cpp
+  qtlist.h
+  qtprogress.cpp
+  qtprogress.h
+  qtreport.cpp
+  qtreport.h
+    Porting to Qt 4.
+
+2008-03-21 - Peter Karlsson <peter@softwolves.pp.se>
+  visualc/
+    Added Windows projects for xturqstat.
+
+  outputqt.cpp
+  qtbars.cpp
+  qtbars.h
+  qtgui.cpp
+  qtgui.h
+  utility.cpp
+    Porting to Qt 4.
+
 2008-01-28 - Peter Karlsson <peter@softwolves.pp.se>
   convert.cpp
   turqstat.cpp
