@@ -741,11 +741,12 @@ void StatEngine::AddData(string in_fromname, string in_toname, string in_subject
         if (paren != string::npos && paren < space1) space1 = paren;
 
         // Special case: "Gnus v#.##/Emacs..."
-        if ('v' == program[firstspace + 1] &&
+		if (firstspace && 'v' == program[firstspace + 1] &&
             isdigit(program[firstspace + 2]))
             space1 = firstspace;
 
-        if (versionstring > firstspace && ' ' == program[versionstring + 7])
+		if (versionstring != string::npos &&
+		    versionstring > firstspace && ' ' == program[versionstring + 7])
             space1 = versionstring + 7;
         else
             versionstring = string::npos;
