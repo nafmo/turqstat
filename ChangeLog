@@ -1,3 +1,11 @@
+2008-03-24 - Peter Karlsson <peter@softwolves.pp.se>
+  Makefile.in
+  configure.in
+    Porting autotools stuff for Qt 4.
+
+  qtgui.cpp
+    Require Qt 4.2.0 instead of 4.3.0.
+
 2008-03-23 - Peter Karlsson <peter@softwolves.pp.se>
   qtgui.cpp
     Porting to Qt 4.
