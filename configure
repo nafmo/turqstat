@@ -689,7 +689,9 @@ CXX
 CXXFLAGS
 CCC
 CPP
-CXXCPP'
+CXXCPP
+QTMOC
+QTMSGTOQM'
 
 
 # Initialize some variables set by options.
@@ -1274,6 +1276,8 @@ Some influential environment variables:
   CXXFLAGS    C++ compiler flags
   CPP         C preprocessor
   CXXCPP      C++ preprocessor
+  QTMOC       Path to moc binary
+  QTMSGTOQM   Path to msg2qm binary
 
 Use these variables to override the choices made by `configure' or to help
 it to find libraries and programs with nonstandard names/locations.
@@ -6347,13 +6351,10 @@ fi
 
 rm -f core conftest.err conftest.$ac_objext conftest.$ac_ext
 
-{ echo "$as_me:$LINENO: checking size of time_t" >&5
-echo $ECHO_N "checking size of time_t... $ECHO_C" >&6; }
-if test "${ac_cv_sizeof_time_t+set}" = set; then
+{ echo "$as_me:$LINENO: checking for time_t" >&5
+echo $ECHO_N "checking for time_t... $ECHO_C" >&6; }
+if test "${ac_cv_type_time_t+set}" = set; then
   echo $ECHO_N "(cached) $ECHO_C" >&6
-else
-  if test "$cross_compiling" = yes; then
-  ac_cv_sizeof_time_t=4
 else
   cat >conftest.$ac_ext <<_ACEOF
 /* confdefs.h.  */
@@ -6361,14 +6362,347 @@ _ACEOF
 cat confdefs.h >>conftest.$ac_ext
 cat >>conftest.$ac_ext <<_ACEOF
 /* end confdefs.h.  */
-#include <time.h>
-#include <stdio.h>
-main()
+$ac_includes_default
+typedef time_t ac__type_new_;
+int
+main ()
 {
-  FILE *f = fopen("conftestval", "w");
-  if (!f) exit(1);
-  fprintf(f, "%d\n", sizeof(time_t));
-  exit(0);
+if ((ac__type_new_ *) 0)
+  return 0;
+if (sizeof (ac__type_new_))
+  return 0;
+  ;
+  return 0;
+}
+_ACEOF
+rm -f conftest.$ac_objext
+if { (ac_try="$ac_compile"
+case "(($ac_try" in
+  *\"* | *\`* | *\\*) ac_try_echo=\$ac_try;;
+  *) ac_try_echo=$ac_try;;
+esac
+eval "echo \"\$as_me:$LINENO: $ac_try_echo\"") >&5
+  (eval "$ac_compile") 2>conftest.er1
+  ac_status=$?
+  grep -v '^ *+' conftest.er1 >conftest.err
+  rm -f conftest.er1
+  cat conftest.err >&5
+  echo "$as_me:$LINENO: \$? = $ac_status" >&5
+  (exit $ac_status); } && {
+	 test -z "$ac_c_werror_flag" ||
+	 test ! -s conftest.err
+       } && test -s conftest.$ac_objext; then
+  ac_cv_type_time_t=yes
+else
+  echo "$as_me: failed program was:" >&5
+sed 's/^/| /' conftest.$ac_ext >&5
+
+	ac_cv_type_time_t=no
+fi
+
+rm -f core conftest.err conftest.$ac_objext conftest.$ac_ext
+fi
+{ echo "$as_me:$LINENO: result: $ac_cv_type_time_t" >&5
+echo "${ECHO_T}$ac_cv_type_time_t" >&6; }
+
+# The cast to long int works around a bug in the HP C Compiler
+# version HP92453-01 B.11.11.23709.GP, which incorrectly rejects
+# declarations like `int a3[[(sizeof (unsigned char)) >= 0]];'.
+# This bug is HP SR number 8606223364.
+{ echo "$as_me:$LINENO: checking size of time_t" >&5
+echo $ECHO_N "checking size of time_t... $ECHO_C" >&6; }
+if test "${ac_cv_sizeof_time_t+set}" = set; then
+  echo $ECHO_N "(cached) $ECHO_C" >&6
+else
+  if test "$cross_compiling" = yes; then
+  # Depending upon the size, compute the lo and hi bounds.
+cat >conftest.$ac_ext <<_ACEOF
+/* confdefs.h.  */
+_ACEOF
+cat confdefs.h >>conftest.$ac_ext
+cat >>conftest.$ac_ext <<_ACEOF
+/* end confdefs.h.  */
+$ac_includes_default
+   typedef time_t ac__type_sizeof_;
+int
+main ()
+{
+static int test_array [1 - 2 * !(((long int) (sizeof (ac__type_sizeof_))) >= 0)];
+test_array [0] = 0
+
+  ;
+  return 0;
+}
+_ACEOF
+rm -f conftest.$ac_objext
+if { (ac_try="$ac_compile"
+case "(($ac_try" in
+  *\"* | *\`* | *\\*) ac_try_echo=\$ac_try;;
+  *) ac_try_echo=$ac_try;;
+esac
+eval "echo \"\$as_me:$LINENO: $ac_try_echo\"") >&5
+  (eval "$ac_compile") 2>conftest.er1
+  ac_status=$?
+  grep -v '^ *+' conftest.er1 >conftest.err
+  rm -f conftest.er1
+  cat conftest.err >&5
+  echo "$as_me:$LINENO: \$? = $ac_status" >&5
+  (exit $ac_status); } && {
+	 test -z "$ac_c_werror_flag" ||
+	 test ! -s conftest.err
+       } && test -s conftest.$ac_objext; then
+  ac_lo=0 ac_mid=0
+  while :; do
+    cat >conftest.$ac_ext <<_ACEOF
+/* confdefs.h.  */
+_ACEOF
+cat confdefs.h >>conftest.$ac_ext
+cat >>conftest.$ac_ext <<_ACEOF
+/* end confdefs.h.  */
+$ac_includes_default
+   typedef time_t ac__type_sizeof_;
+int
+main ()
+{
+static int test_array [1 - 2 * !(((long int) (sizeof (ac__type_sizeof_))) <= $ac_mid)];
+test_array [0] = 0
+
+  ;
+  return 0;
+}
+_ACEOF
+rm -f conftest.$ac_objext
+if { (ac_try="$ac_compile"
+case "(($ac_try" in
+  *\"* | *\`* | *\\*) ac_try_echo=\$ac_try;;
+  *) ac_try_echo=$ac_try;;
+esac
+eval "echo \"\$as_me:$LINENO: $ac_try_echo\"") >&5
+  (eval "$ac_compile") 2>conftest.er1
+  ac_status=$?
+  grep -v '^ *+' conftest.er1 >conftest.err
+  rm -f conftest.er1
+  cat conftest.err >&5
+  echo "$as_me:$LINENO: \$? = $ac_status" >&5
+  (exit $ac_status); } && {
+	 test -z "$ac_c_werror_flag" ||
+	 test ! -s conftest.err
+       } && test -s conftest.$ac_objext; then
+  ac_hi=$ac_mid; break
+else
+  echo "$as_me: failed program was:" >&5
+sed 's/^/| /' conftest.$ac_ext >&5
+
+	ac_lo=`expr $ac_mid + 1`
+			if test $ac_lo -le $ac_mid; then
+			  ac_lo= ac_hi=
+			  break
+			fi
+			ac_mid=`expr 2 '*' $ac_mid + 1`
+fi
+
+rm -f core conftest.err conftest.$ac_objext conftest.$ac_ext
+  done
+else
+  echo "$as_me: failed program was:" >&5
+sed 's/^/| /' conftest.$ac_ext >&5
+
+	cat >conftest.$ac_ext <<_ACEOF
+/* confdefs.h.  */
+_ACEOF
+cat confdefs.h >>conftest.$ac_ext
+cat >>conftest.$ac_ext <<_ACEOF
+/* end confdefs.h.  */
+$ac_includes_default
+   typedef time_t ac__type_sizeof_;
+int
+main ()
+{
+static int test_array [1 - 2 * !(((long int) (sizeof (ac__type_sizeof_))) < 0)];
+test_array [0] = 0
+
+  ;
+  return 0;
+}
+_ACEOF
+rm -f conftest.$ac_objext
+if { (ac_try="$ac_compile"
+case "(($ac_try" in
+  *\"* | *\`* | *\\*) ac_try_echo=\$ac_try;;
+  *) ac_try_echo=$ac_try;;
+esac
+eval "echo \"\$as_me:$LINENO: $ac_try_echo\"") >&5
+  (eval "$ac_compile") 2>conftest.er1
+  ac_status=$?
+  grep -v '^ *+' conftest.er1 >conftest.err
+  rm -f conftest.er1
+  cat conftest.err >&5
+  echo "$as_me:$LINENO: \$? = $ac_status" >&5
+  (exit $ac_status); } && {
+	 test -z "$ac_c_werror_flag" ||
+	 test ! -s conftest.err
+       } && test -s conftest.$ac_objext; then
+  ac_hi=-1 ac_mid=-1
+  while :; do
+    cat >conftest.$ac_ext <<_ACEOF
+/* confdefs.h.  */
+_ACEOF
+cat confdefs.h >>conftest.$ac_ext
+cat >>conftest.$ac_ext <<_ACEOF
+/* end confdefs.h.  */
+$ac_includes_default
+   typedef time_t ac__type_sizeof_;
+int
+main ()
+{
+static int test_array [1 - 2 * !(((long int) (sizeof (ac__type_sizeof_))) >= $ac_mid)];
+test_array [0] = 0
+
+  ;
+  return 0;
+}
+_ACEOF
+rm -f conftest.$ac_objext
+if { (ac_try="$ac_compile"
+case "(($ac_try" in
+  *\"* | *\`* | *\\*) ac_try_echo=\$ac_try;;
+  *) ac_try_echo=$ac_try;;
+esac
+eval "echo \"\$as_me:$LINENO: $ac_try_echo\"") >&5
+  (eval "$ac_compile") 2>conftest.er1
+  ac_status=$?
+  grep -v '^ *+' conftest.er1 >conftest.err
+  rm -f conftest.er1
+  cat conftest.err >&5
+  echo "$as_me:$LINENO: \$? = $ac_status" >&5
+  (exit $ac_status); } && {
+	 test -z "$ac_c_werror_flag" ||
+	 test ! -s conftest.err
+       } && test -s conftest.$ac_objext; then
+  ac_lo=$ac_mid; break
+else
+  echo "$as_me: failed program was:" >&5
+sed 's/^/| /' conftest.$ac_ext >&5
+
+	ac_hi=`expr '(' $ac_mid ')' - 1`
+			if test $ac_mid -le $ac_hi; then
+			  ac_lo= ac_hi=
+			  break
+			fi
+			ac_mid=`expr 2 '*' $ac_mid`
+fi
+
+rm -f core conftest.err conftest.$ac_objext conftest.$ac_ext
+  done
+else
+  echo "$as_me: failed program was:" >&5
+sed 's/^/| /' conftest.$ac_ext >&5
+
+	ac_lo= ac_hi=
+fi
+
+rm -f core conftest.err conftest.$ac_objext conftest.$ac_ext
+fi
+
+rm -f core conftest.err conftest.$ac_objext conftest.$ac_ext
+# Binary search between lo and hi bounds.
+while test "x$ac_lo" != "x$ac_hi"; do
+  ac_mid=`expr '(' $ac_hi - $ac_lo ')' / 2 + $ac_lo`
+  cat >conftest.$ac_ext <<_ACEOF
+/* confdefs.h.  */
+_ACEOF
+cat confdefs.h >>conftest.$ac_ext
+cat >>conftest.$ac_ext <<_ACEOF
+/* end confdefs.h.  */
+$ac_includes_default
+   typedef time_t ac__type_sizeof_;
+int
+main ()
+{
+static int test_array [1 - 2 * !(((long int) (sizeof (ac__type_sizeof_))) <= $ac_mid)];
+test_array [0] = 0
+
+  ;
+  return 0;
+}
+_ACEOF
+rm -f conftest.$ac_objext
+if { (ac_try="$ac_compile"
+case "(($ac_try" in
+  *\"* | *\`* | *\\*) ac_try_echo=\$ac_try;;
+  *) ac_try_echo=$ac_try;;
+esac
+eval "echo \"\$as_me:$LINENO: $ac_try_echo\"") >&5
+  (eval "$ac_compile") 2>conftest.er1
+  ac_status=$?
+  grep -v '^ *+' conftest.er1 >conftest.err
+  rm -f conftest.er1
+  cat conftest.err >&5
+  echo "$as_me:$LINENO: \$? = $ac_status" >&5
+  (exit $ac_status); } && {
+	 test -z "$ac_c_werror_flag" ||
+	 test ! -s conftest.err
+       } && test -s conftest.$ac_objext; then
+  ac_hi=$ac_mid
+else
+  echo "$as_me: failed program was:" >&5
+sed 's/^/| /' conftest.$ac_ext >&5
+
+	ac_lo=`expr '(' $ac_mid ')' + 1`
+fi
+
+rm -f core conftest.err conftest.$ac_objext conftest.$ac_ext
+done
+case $ac_lo in
+?*) ac_cv_sizeof_time_t=$ac_lo;;
+'') if test "$ac_cv_type_time_t" = yes; then
+     { { echo "$as_me:$LINENO: error: cannot compute sizeof (time_t)
+See \`config.log' for more details." >&5
+echo "$as_me: error: cannot compute sizeof (time_t)
+See \`config.log' for more details." >&2;}
+   { (exit 77); exit 77; }; }
+   else
+     ac_cv_sizeof_time_t=0
+   fi ;;
+esac
+else
+  cat >conftest.$ac_ext <<_ACEOF
+/* confdefs.h.  */
+_ACEOF
+cat confdefs.h >>conftest.$ac_ext
+cat >>conftest.$ac_ext <<_ACEOF
+/* end confdefs.h.  */
+$ac_includes_default
+   typedef time_t ac__type_sizeof_;
+static long int longval () { return (long int) (sizeof (ac__type_sizeof_)); }
+static unsigned long int ulongval () { return (long int) (sizeof (ac__type_sizeof_)); }
+#include <stdio.h>
+#include <stdlib.h>
+int
+main ()
+{
+
+  FILE *f = fopen ("conftest.val", "w");
+  if (! f)
+    return 1;
+  if (((long int) (sizeof (ac__type_sizeof_))) < 0)
+    {
+      long int i = longval ();
+      if (i != ((long int) (sizeof (ac__type_sizeof_))))
+	return 1;
+      fprintf (f, "%ld\n", i);
+    }
+  else
+    {
+      unsigned long int i = ulongval ();
+      if (i != ((long int) (sizeof (ac__type_sizeof_))))
+	return 1;
+      fprintf (f, "%lu\n", i);
+    }
+  return ferror (f) || fclose (f) != 0;
+
+  ;
+  return 0;
 }
 _ACEOF
 rm -f conftest$ac_exeext
@@ -6391,26 +6725,36 @@ eval "echo \"\$as_me:$LINENO: $ac_try_echo\"") >&5
   ac_status=$?
   echo "$as_me:$LINENO: \$? = $ac_status" >&5
   (exit $ac_status); }; }; then
-  ac_cv_sizeof_time_t=`cat conftestval`
+  ac_cv_sizeof_time_t=`cat conftest.val`
 else
   echo "$as_me: program exited with status $ac_status" >&5
 echo "$as_me: failed program was:" >&5
 sed 's/^/| /' conftest.$ac_ext >&5
 
 ( exit $ac_status )
-ac_cv_sizeof_time_t=4
+if test "$ac_cv_type_time_t" = yes; then
+     { { echo "$as_me:$LINENO: error: cannot compute sizeof (time_t)
+See \`config.log' for more details." >&5
+echo "$as_me: error: cannot compute sizeof (time_t)
+See \`config.log' for more details." >&2;}
+   { (exit 77); exit 77; }; }
+   else
+     ac_cv_sizeof_time_t=0
+   fi
 fi
 rm -f core *.core core.conftest.* gmon.out bb.out conftest$ac_exeext conftest.$ac_objext conftest.$ac_ext
 fi
-
-
+rm -f conftest.val
 fi
 { echo "$as_me:$LINENO: result: $ac_cv_sizeof_time_t" >&5
 echo "${ECHO_T}$ac_cv_sizeof_time_t" >&6; }
 
+
+
 cat >>confdefs.h <<_ACEOF
 #define SIZEOF_TIME_T $ac_cv_sizeof_time_t
 _ACEOF
+
 
 
 
@@ -8168,25 +8512,32 @@ if test "$qt" = "yes"; then
   { echo "$as_me:$LINENO: checking for Qt include files" >&5
 echo $ECHO_N "checking for Qt include files... $ECHO_C" >&6; }
   if test "$QTDIR" != ""; then
-    if test -f $QTDIR'/include/qapplication.h'; then
-      QTINCLUDE=$QTDIR'/include'
+    if test -f $QTDIR'/include/Qt/qapplication.h'; then
+      QTINCLUDE="$QTDIR/include/Qt $QTDIR/include"
+    elif test -f $QTDIR'/include/qapplication.h'; then
+      QTINCLUDE="$QTDIR/include"
     fi
   fi
   if test "$QTINCLUDE" = ""; then
-    if test -f '/usr/lib/qt3/include/qapplication.h'; then
-      QTINCLUDE='/usr/lib/qt3/include'
-      QTDIR='/usr/lib/qt3'
-    elif test -f '/usr/include/qt3/qapplication.h'; then
-      QTINCLUDE='/usr/include/qt3'
+    if test -f '/usr/lib/qt4/include/Qt/qapplication.h'; then
+      QTINCLUDE='-I/usr/lib/qt4/include/Qt -I/usr/lib/qt4/include'
+    elif test -f '/usr/include/qt4/Qt/qapplication.h'; then
+      QTINCLUDE='-I/usr/include/qt4/Qt -I/usr/include/qt4'
     elif test -f '/usr/include/qt/qapplication.h'; then
-      QTINCLUDE='/usr/include/qt'
+      QTINCLUDE='-I/usr/include/qt'
+    elif test -f '/usr/local/include/qt4/Qt/qapplication.h'; then
+      QTINCLUDE='-I/usr/local/include/qt4/Qt -I/usr/local/include/qt4'
+    elif test -f '/usr/local/include/qt4/qapplication.h'; then
+      QTINCLUDE='-I/usr/local/include/qt4'
+    elif test -f '/usr/local/include/qt/Qt/qapplication.h'; then
+      QTINCLUDE='-I/usr/local/include/qt/Qt -I/usr/local/include/qt'
     elif test -f '/usr/local/include/qt/qapplication.h'; then
-      QTINCLUDE='/usr/local/include/qt'
-    elif test -f '/usr/local/qt3/include/qapplication.h'; then
-      QTINCLUDE='/usr/local/qt3/include'
-      QTDIR='/usr/local/qt3'
+      QTINCLUDE='-I/usr/local/include/qt'
+    elif test -f '/usr/local/qt4/include/qapplication.h'; then
+      QTINCLUDE='-I/usr/local/qt4/include'
+      QTDIR='/usr/local/qt4'
     elif test -f '/usr/local/qt/include/qapplication.h'; then
-      QTINCLUDE='/usr/local/qt/include'
+      QTINCLUDE='-I/usr/local/qt/include'
       QTDIR='/usr/local/qt'
     fi
   fi
@@ -8201,17 +8552,71 @@ echo "$as_me: error: Cannot find Qt; either define QTDIR or use --without-qt" >&
 echo "${ECHO_T}$QTINCLUDE" >&6; }
   fi
 
-  for lib in qt-mt qt; do
-    if test "$QTLIB" = ""; then
-      ac_ext=cpp
+  CPPFLAGS="$QTINCLUDE"
+  cat >conftest.$ac_ext <<_ACEOF
+/* confdefs.h.  */
+_ACEOF
+cat confdefs.h >>conftest.$ac_ext
+cat >>conftest.$ac_ext <<_ACEOF
+/* end confdefs.h.  */
+ #include <qglobal.h>
+    #if QT_VERSION < 0x040200
+     #error Need Qt version 4.2.0 or later
+    #endif
+int
+main ()
+{
+
+  ;
+  return 0;
+}
+_ACEOF
+rm -f conftest.$ac_objext
+if { (ac_try="$ac_compile"
+case "(($ac_try" in
+  *\"* | *\`* | *\\*) ac_try_echo=\$ac_try;;
+  *) ac_try_echo=$ac_try;;
+esac
+eval "echo \"\$as_me:$LINENO: $ac_try_echo\"") >&5
+  (eval "$ac_compile") 2>conftest.er1
+  ac_status=$?
+  grep -v '^ *+' conftest.er1 >conftest.err
+  rm -f conftest.er1
+  cat conftest.err >&5
+  echo "$as_me:$LINENO: \$? = $ac_status" >&5
+  (exit $ac_status); } && {
+	 test -z "$ac_c_werror_flag" ||
+	 test ! -s conftest.err
+       } && test -s conftest.$ac_objext; then
+  :
+else
+  echo "$as_me: failed program was:" >&5
+sed 's/^/| /' conftest.$ac_ext >&5
+
+	{ { echo "$as_me:$LINENO: error: Need Qt version 4.2.0 or later" >&5
+echo "$as_me: error: Need Qt version 4.2.0 or later" >&2;}
+   { (exit 1); exit 1; }; }
+fi
+
+rm -f core conftest.err conftest.$ac_objext conftest.$ac_ext
+
+  QTLIB=""
+  for lib in QtCore QtGui; do
+    if test "$lib" = QtCore; then
+      symbol=QEventLoop
+    elif test "$lib" = QtGui; then
+      symbol=QWidget
+    fi
+
+    ac_ext=cpp
 ac_cpp='$CXXCPP $CPPFLAGS'
 ac_compile='$CXX -c $CXXFLAGS $CPPFLAGS conftest.$ac_ext >&5'
 ac_link='$CXX -o conftest$ac_exeext $CXXFLAGS $CPPFLAGS $LDFLAGS conftest.$ac_ext $LIBS >&5'
 ac_compiler_gnu=$ac_cv_cxx_compiler_gnu
 
-      as_ac_Lib=`echo "ac_cv_lib_$lib''_qApp" | $as_tr_sh`
-{ echo "$as_me:$LINENO: checking for qApp in -l$lib" >&5
-echo $ECHO_N "checking for qApp in -l$lib... $ECHO_C" >&6; }
+    as_ac_Lib=`echo "ac_cv_lib_$lib''_$symbol" | $as_tr_sh`
+{ echo "$as_me:$LINENO: checking for $symbol in -l$lib" >&5
+echo $ECHO_N "checking for $symbol in -l$lib... $ECHO_C" >&6; }
 if { as_var=$as_ac_Lib; eval "test \"\${$as_var+set}\" = set"; }; then
   echo $ECHO_N "(cached) $ECHO_C" >&6
 else
@@ -8230,11 +8635,11 @@ cat >>conftest.$ac_ext <<_ACEOF
 #ifdef __cplusplus
 extern "C"
 #endif
-char qApp ();
+char $symbol ();
 int
 main ()
 {
-return qApp ();
+return $symbol ();
   ;
   return 0;
 }
@@ -8273,46 +8678,49 @@ ac_res=`eval echo '${'$as_ac_Lib'}'`
 	       { echo "$as_me:$LINENO: result: $ac_res" >&5
 echo "${ECHO_T}$ac_res" >&6; }
 if test `eval echo '${'$as_ac_Lib'}'` = yes; then
-  QTLIB="-l$lib"
+  QTLIBTHIS="-l$lib"
 fi
 
-      ac_ext=c
+    ac_ext=c
 ac_cpp='$CPP $CPPFLAGS'
 ac_compile='$CC -c $CFLAGS $CPPFLAGS conftest.$ac_ext >&5'
 ac_link='$CC -o conftest$ac_exeext $CFLAGS $CPPFLAGS $LDFLAGS conftest.$ac_ext $LIBS >&5'
 ac_compiler_gnu=$ac_cv_c_compiler_gnu
 
-      if test "$QTLIB" = ""; then
-        { echo "$as_me:$LINENO: checking for $QTLIB library path" >&5
-echo $ECHO_N "checking for $QTLIB library path... $ECHO_C" >&6; }
-        if test -f $QTDIR'/lib/lib$lib.a'; then
-          QTLIB='-L'$QTDIR'/lib -l$lib'
-        fi
-        if test "$QTLIB" = ""; then
-          if test -f '/usr/local/lib/lib$lib.a'; then
-            QTLIB='-L/usr/local/lib -l$lib'
-          elif test -f '/usr/local/qt/lib/lib$lib.a'; then
-            QTLIB='-L/usr/local/qt/lib -l$lib'
-          fi
-        fi
-        if test "$QTLIB" = ""; then
-          { echo "$as_me:$LINENO: result: no" >&5
-echo "${ECHO_T}no" >&6; }
-        else
-          { echo "$as_me:$LINENO: result: $QTLIB" >&5
-echo "${ECHO_T}$QTLIB" >&6; }
+    if test "$QTLIBTHIS" = ""; then
+      { echo "$as_me:$LINENO: checking for $lib library path" >&5
+echo $ECHO_N "checking for $lib library path... $ECHO_C" >&6; }
+      if test -f $QTDIR'/lib/lib$lib.a'; then
+        QTLIBTHIS='-L'$QTDIR'/lib -l$lib'
+      fi
+      if test "$QTLIBTHIS" = ""; then
+        if test -f '/usr/local/lib/lib$lib.a'; then
+          QTLIBTHIS='-L/usr/local/lib -l$lib'
+        elif test -f '/usr/local/qt/lib/lib$lib.a'; then
+          QTLIBTHIS='-L/usr/local/qt/lib -l$lib'
         fi
       fi
+      if test "$QTLIB" = ""; then
+        { echo "$as_me:$LINENO: result: no" >&5
+echo "${ECHO_T}no" >&6; }
+      else
+        { echo "$as_me:$LINENO: result: $QTLIBTHIS" >&5
+echo "${ECHO_T}$QTLIBTHIS" >&6; }
+      fi
     fi
-  done
-  if test "$QTLIB" = ""; then
-    { { echo "$as_me:$LINENO: error: Cannot find libqt-mt.a or libqt.a; either define QTDIR or use --without-qt" >&5
-echo "$as_me: error: Cannot find libqt-mt.a or libqt.a; either define QTDIR or use --without-qt" >&2;}
+    if test "QTLIBTHIS" = ""; then
+      { { echo "$as_me:$LINENO: error: Cannot find lib$lib; either define QTDIR or use --without-qt" >&5
+echo "$as_me: error: Cannot find lib$lib; either define QTDIR or use --without-qt" >&2;}
    { (exit 1); exit 1; }; }
-  fi
+    fi
+    QTLIB="$QTLIB $QTLIBTHIS"
+  done
 
-  # Extract the first word of "moc", so it can be a program name with args.
-set dummy moc; ac_word=$2
+
+  for ac_prog in moc-qt4 moc
+do
+  # Extract the first word of "$ac_prog", so it can be a program name with args.
+set dummy $ac_prog; ac_word=$2
 { echo "$as_me:$LINENO: checking for $ac_word" >&5
 echo $ECHO_N "checking for $ac_word... $ECHO_C" >&6; }
 if test "${ac_cv_path_QTMOC+set}" = set; then
@@ -8339,7 +8747,6 @@ done
 done
 IFS=$as_save_IFS
 
-  test -z "$ac_cv_path_QTMOC" && ac_cv_path_QTMOC="moc"
   ;;
 esac
 fi
@@ -8351,6 +8758,11 @@ else
   { echo "$as_me:$LINENO: result: no" >&5
 echo "${ECHO_T}no" >&6; }
 fi
+
+
+  test -n "$QTMOC" && break
+done
+test -n "$QTMOC" || QTMOC="moc"
 
 
 
@@ -8404,7 +8816,6 @@ else
   QTMOC='moc'
   QTLIB='-lqt'
 fi
-
 
 
 

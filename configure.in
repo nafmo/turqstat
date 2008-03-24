@@ -1,6 +1,6 @@
 dnl Process this file with autoconf to produce a configure script.
 dnl
-dnl Copyright (c) 2000-2007 Peter Karlsson
+dnl Copyright (c) 2000-2008 Peter Karlsson
 dnl
 dnl This program is free software; you can redistribute it and/or modify
 dnl it under the terms of the GNU General Public License as published by
@@ -229,20 +229,7 @@ AC_TRY_COMPILE([ #include <time.h> ], [  struct tm t; t.tm_gmtoff = 0; ],
   AC_MSG_RESULT(no))
 
 dnl This is mostly copied from the standard AC_CHECK_SIZEOF macro
-AC_CACHE_CHECK([size of time_t], ac_cv_sizeof_time_t,
-  AC_TRY_RUN([#include <time.h>
-#include <stdio.h>
-main()
-{
-  FILE *f = fopen("conftestval", "w");
-  if (!f) exit(1);
-  fprintf(f, "%d\n", sizeof(time_t));
-  exit(0);
-}], ac_cv_sizeof_time_t=`cat conftestval`,
-    ac_cv_sizeof_time_t=4,
-    ac_cv_sizeof_time_t=4))
-AC_DEFINE_UNQUOTED(SIZEOF_TIME_T, $ac_cv_sizeof_time_t,
-                   [Define to size of time_t, in bytes])
+AC_CHECK_SIZEOF(time_t)
 
 dnl Check for library functions --------------------------------------------
 AC_FUNC_STRFTIME
@@ -404,25 +391,32 @@ if test "$qt" = "yes"; then
 dnl Locate Qt headers
   AC_MSG_CHECKING(for Qt include files)
   if test "$QTDIR" != ""; then
-    if test -f $QTDIR'/include/qapplication.h'; then
-      QTINCLUDE=$QTDIR'/include'
+    if test -f $QTDIR'/include/Qt/qapplication.h'; then
+      QTINCLUDE="$QTDIR/include/Qt $QTDIR/include"
+    elif test -f $QTDIR'/include/qapplication.h'; then
+      QTINCLUDE="$QTDIR/include"
     fi
   fi
   if test "$QTINCLUDE" = ""; then
-    if test -f '/usr/lib/qt3/include/qapplication.h'; then
-      QTINCLUDE='/usr/lib/qt3/include'
-      QTDIR='/usr/lib/qt3'
-    elif test -f '/usr/include/qt3/qapplication.h'; then
-      QTINCLUDE='/usr/include/qt3'
+    if test -f '/usr/lib/qt4/include/Qt/qapplication.h'; then
+      QTINCLUDE='-I/usr/lib/qt4/include/Qt -I/usr/lib/qt4/include'
+    elif test -f '/usr/include/qt4/Qt/qapplication.h'; then
+      QTINCLUDE='-I/usr/include/qt4/Qt -I/usr/include/qt4'
     elif test -f '/usr/include/qt/qapplication.h'; then
-      QTINCLUDE='/usr/include/qt'
+      QTINCLUDE='-I/usr/include/qt'
+    elif test -f '/usr/local/include/qt4/Qt/qapplication.h'; then
+      QTINCLUDE='-I/usr/local/include/qt4/Qt -I/usr/local/include/qt4'
+    elif test -f '/usr/local/include/qt4/qapplication.h'; then
+      QTINCLUDE='-I/usr/local/include/qt4'
+    elif test -f '/usr/local/include/qt/Qt/qapplication.h'; then
+      QTINCLUDE='-I/usr/local/include/qt/Qt -I/usr/local/include/qt'
     elif test -f '/usr/local/include/qt/qapplication.h'; then
-      QTINCLUDE='/usr/local/include/qt'
-    elif test -f '/usr/local/qt3/include/qapplication.h'; then
-      QTINCLUDE='/usr/local/qt3/include'
-      QTDIR='/usr/local/qt3'
+      QTINCLUDE='-I/usr/local/include/qt'
+    elif test -f '/usr/local/qt4/include/qapplication.h'; then
+      QTINCLUDE='-I/usr/local/qt4/include'
+      QTDIR='/usr/local/qt4'
     elif test -f '/usr/local/qt/include/qapplication.h'; then
-      QTINCLUDE='/usr/local/qt/include'
+      QTINCLUDE='-I/usr/local/qt/include'
       QTDIR='/usr/local/qt'
     fi
   fi
@@ -433,41 +427,57 @@ dnl Locate Qt headers
     AC_MSG_RESULT($QTINCLUDE)
   fi
 
-dnl Locate Qt lib
-  for lib in qt-mt qt; do
-    if test "$QTLIB" = ""; then
-      AC_LANG_CPLUSPLUS
-      AC_CHECK_LIB($lib, qApp, QTLIB="-l$lib")
-      AC_LANG_C
-      if test "$QTLIB" = ""; then
-        AC_MSG_CHECKING(for $QTLIB library path)
-        if test -f $QTDIR'/lib/lib$lib.a'; then
-          QTLIB='-L'$QTDIR'/lib -l$lib'
-        fi
-        if test "$QTLIB" = ""; then
-          if test -f '/usr/local/lib/lib$lib.a'; then
-            QTLIB='-L/usr/local/lib -l$lib'
-          elif test -f '/usr/local/qt/lib/lib$lib.a'; then
-            QTLIB='-L/usr/local/qt/lib -l$lib'
-          fi
-        fi
-        if test "$QTLIB" = ""; then
-          AC_MSG_RESULT(no)
-        else
-          AC_MSG_RESULT($QTLIB)
+dnl Check Qt version
+  CPPFLAGS="$QTINCLUDE"
+  AC_TRY_COMPILE([ #include <qglobal.h>
+    #if QT_VERSION < 0x040200
+     #error Need Qt version 4.2.0 or later
+    #endif ], [],
+    [], AC_MSG_ERROR(Need Qt version 4.2.0 or later))
+
+dnl Locate Qt libraries
+  QTLIB=""
+  for lib in QtCore QtGui; do
+    if test "$lib" = QtCore; then
+      symbol=QEventLoop
+    elif test "$lib" = QtGui; then
+      symbol=QWidget
+    fi
+
+    AC_LANG_CPLUSPLUS
+    AC_CHECK_LIB($lib, $symbol, QTLIBTHIS="-l$lib")
+    AC_LANG_C
+    if test "$QTLIBTHIS" = ""; then
+      AC_MSG_CHECKING(for $lib library path)
+      if test -f $QTDIR'/lib/lib$lib.a'; then
+        QTLIBTHIS='-L'$QTDIR'/lib -l$lib'
+      fi
+      if test "$QTLIBTHIS" = ""; then
+        if test -f '/usr/local/lib/lib$lib.a'; then
+          QTLIBTHIS='-L/usr/local/lib -l$lib'
+        elif test -f '/usr/local/qt/lib/lib$lib.a'; then
+          QTLIBTHIS='-L/usr/local/qt/lib -l$lib'
         fi
       fi
+      if test "$QTLIB" = ""; then
+        AC_MSG_RESULT(no)
+      else
+        AC_MSG_RESULT($QTLIBTHIS)
+      fi
     fi
+    if test "QTLIBTHIS" = ""; then
+      AC_MSG_ERROR(Cannot find lib$lib; either define QTDIR or use --without-qt)
+    fi
+    QTLIB="$QTLIB $QTLIBTHIS"
   done
-  if test "$QTLIB" = ""; then
-    AC_MSG_ERROR(Cannot find libqt-mt.a or libqt.a; either define QTDIR or use --without-qt)
-  fi
 
 dnl Locate moc
-  AC_PATH_PROG(QTMOC, moc, moc,
+  AC_ARG_VAR(QTMOC, Path to moc binary)
+  AC_PATH_PROGS(QTMOC, moc-qt4 moc, moc,
     $PATH:/bin:/usr/bin:/usr/local/bin:/usr/local/qt/bin:$QTDIR/bin)
 
 dnl Locate msg2qm
+  AC_ARG_VAR(QTMSGTOQM, Path to msg2qm binary)
   AC_PATH_PROG(QTMSGTOQM, msg2qm, msg2qm,
     $PATH:/bin:/usr/bin:/usr/local/bin:/usr/local/qt/bin:$QTDIR/bin)
 
@@ -482,7 +492,6 @@ fi
 AC_SUBST(QT)
 AC_SUBST(NOQT)
 AC_SUBST(QTINCLUDE)
-AC_SUBST(QTMOC)
 AC_SUBST(QTLIB)
 
 dnl Create output ----------------------------------------------------------

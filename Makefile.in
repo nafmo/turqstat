@@ -2,7 +2,7 @@
 
 # Variables
 CXXFLAGS=@CXXFLAGS@ -I. -Wall -DDATA=\"@datadir@/turqstat\"
-@QT@QTFLAGS=-I@QTINCLUDE@
+@QT@QTFLAGS=@QTINCLUDE@
 LDFLAGS=@LDFLAGS@
 srcdir=@srcdir@
 VPATH=@scrdir@
