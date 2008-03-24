@@ -28,8 +28,8 @@
 #include <stdlib.h>
 
 #include <qglobal.h>
-#if QT_VERSION < 0x040300
-# error This program is written for Qt version 4.3.0 or later
+#if QT_VERSION < 0x040200
+# error This program is written for Qt version 4.2.0 or later
 #endif
 
 #include <qapplication.h>
