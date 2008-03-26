@@ -8602,21 +8602,15 @@ rm -f core conftest.err conftest.$ac_objext conftest.$ac_ext
 
   QTLIB=""
   for lib in QtCore QtGui; do
-    if test "$lib" = QtCore; then
-      symbol=QEventLoop
-    elif test "$lib" = QtGui; then
-      symbol=QWidget
-    fi
-
     ac_ext=cpp
 ac_cpp='$CXXCPP $CPPFLAGS'
 ac_compile='$CXX -c $CXXFLAGS $CPPFLAGS conftest.$ac_ext >&5'
 ac_link='$CXX -o conftest$ac_exeext $CXXFLAGS $CPPFLAGS $LDFLAGS conftest.$ac_ext $LIBS >&5'
 ac_compiler_gnu=$ac_cv_cxx_compiler_gnu
 
-    as_ac_Lib=`echo "ac_cv_lib_$lib''_$symbol" | $as_tr_sh`
-{ echo "$as_me:$LINENO: checking for $symbol in -l$lib" >&5
-echo $ECHO_N "checking for $symbol in -l$lib... $ECHO_C" >&6; }
+    as_ac_Lib=`echo "ac_cv_lib_$lib''_main" | $as_tr_sh`
+{ echo "$as_me:$LINENO: checking for main in -l$lib" >&5
+echo $ECHO_N "checking for main in -l$lib... $ECHO_C" >&6; }
 if { as_var=$as_ac_Lib; eval "test \"\${$as_var+set}\" = set"; }; then
   echo $ECHO_N "(cached) $ECHO_C" >&6
 else
@@ -8629,17 +8623,11 @@ cat confdefs.h >>conftest.$ac_ext
 cat >>conftest.$ac_ext <<_ACEOF
 /* end confdefs.h.  */
 
-/* Override any GCC internal prototype to avoid an error.
-   Use char because int might match the return type of a GCC
-   builtin and then its argument prototype would still apply.  */
-#ifdef __cplusplus
-extern "C"
-#endif
-char $symbol ();
+
 int
 main ()
 {
-return $symbol ();
+return main ();
   ;
   return 0;
 }

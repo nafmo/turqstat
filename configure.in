@@ -438,14 +438,8 @@ dnl Check Qt version
 dnl Locate Qt libraries
   QTLIB=""
   for lib in QtCore QtGui; do
-    if test "$lib" = QtCore; then
-      symbol=QEventLoop
-    elif test "$lib" = QtGui; then
-      symbol=QWidget
-    fi
-
     AC_LANG_CPLUSPLUS
-    AC_CHECK_LIB($lib, $symbol, QTLIBTHIS="-l$lib")
+    AC_CHECK_LIB($lib, main, QTLIBTHIS="-l$lib")
     AC_LANG_C
     if test "$QTLIBTHIS" = ""; then
       AC_MSG_CHECKING(for $lib library path)
