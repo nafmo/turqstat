@@ -2,6 +2,9 @@
   configure.in
     Fixes for Qt 4.
 
+  qtprogress.cpp
+    Porting to Qt 4.
+
 2008-03-24 - Peter Karlsson <peter@softwolves.pp.se>
   Makefile.in
   configure.in

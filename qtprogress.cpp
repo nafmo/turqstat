@@ -31,5 +31,5 @@ ProgressText::ProgressText(QWidget *parent, const QString &title)
 	m_progress_p = new QLabel("0", this);
 	layout_p->addWidget(m_progress_p, 1, 0);
 	QLabel *l_p = new QLabel(tr("message(s) read"), this);
-	layout_p->addWidget(m_progress_p, 1, 1);
+	layout_p->addWidget(l_p, 1, 1);
 }
