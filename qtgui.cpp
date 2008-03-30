@@ -324,7 +324,7 @@ void InfoWindow::open()
         tr("News (.overview)")
     };
 
-    QFileDialog filedialog(this, tr("Open message base"), QString::null,
+    QFileDialog filedialog(this, tr("Open message base"), QString(),
                            filter[0] + ";;" + filter[1] + ";;" +
                            filter[2] + ";;" + filter[3] + ";;" +
                            filter[4] + ";;" + filter[5] + ";;" +
