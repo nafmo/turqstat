@@ -4,6 +4,8 @@ Priority: optional
 Maintainer: Peter Karlsson <peterk@debian.org>
 Standards-Version: 3.7.3
 Build-Depends: debhelper (>= 4), libqt3-mt-dev, qt3-dev-tools-compat
+Vcs-Browser: http://git.debian.org/?p=turqstat/turqstat.git
+Vcs-Git: git://git.debian.org/git/turqstat/turqstat.git
 
 Package: turqstat
 Architecture: any

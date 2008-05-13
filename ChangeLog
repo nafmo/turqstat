@@ -1,3 +1,7 @@
+2008-05-13 - Peter Karlsson <peter@softwolves.pp.se>
+  debian/
+    Updated Debian control files to declare VCS location.
+
 2008-03-18 - Peter Karlsson <peter@softwolves.pp.se>
   Makefile.in
   po/Makefile.in
