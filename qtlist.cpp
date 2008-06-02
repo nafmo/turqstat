@@ -159,7 +159,7 @@ void TopListWindow::setupHeaders()
 		headers.append(tr("Per Message"));
 
 	// Set up the tree view, and add the header
-//	m_tableview_p->setColumnCount(column);
+	m_tableview_p->setColumnCount(headers.size());
 	m_tableview_p->setHorizontalHeaderLabels(headers);
 }
 
@@ -180,10 +180,10 @@ void TopListWindow::addQuoters(StatEngine *engine)
             else
                 tmp = data.address.c_str();
 
-			SetItem(row, 0, QString::number(row + 1));
-			SetItem(row, 1, tmp);
-			SetItem(row, 2, QString::number(data.messageswritten));
-			SetItem(row, 3, percentString(data.bytesquoted, data.byteswritten));
+			m_tableview_p->setRowCount(row + 1);
+			SetItem(row, 0, tmp);
+			SetItem(row, 1, QString::number(data.messageswritten));
+			SetItem(row, 2, percentString(data.bytesquoted, data.byteswritten));
 
             ++ row;
         }
@@ -210,12 +210,12 @@ void TopListWindow::addSenders(StatEngine *engine)
         else
             tmp = data.address.c_str();
 
-		SetItem(row, 0, QString::number(row + 1));
-		SetItem(row, 1, tmp);
-		SetItem(row, 2, QString::number(data.messageswritten));
-		SetItem(row, 3, QString::number(data.byteswritten));
-		SetItem(row, 4, QString::number(data.lineswritten));
-		SetItem(row, 5, (data.bytesquoted > 0
+		m_tableview_p->setRowCount(row + 1);
+		SetItem(row, 0, tmp);
+		SetItem(row, 1, QString::number(data.messageswritten));
+		SetItem(row, 2, QString::number(data.byteswritten));
+		SetItem(row, 3, QString::number(data.lineswritten));
+		SetItem(row, 4, (data.bytesquoted > 0
 							? percentString(data.bytesquoted,
 							                data.byteswritten)
 							: tr("N/A")));
@@ -251,11 +251,11 @@ void TopListWindow::addOriginalContent(StatEngine *engine)
         unsigned originalpermsg =
             (data.byteswritten - data.bytesquoted) / data.messageswritten;
 
-		SetItem(row, 0, QString::number(row + 1));
-		SetItem(row, 1, tmp);
-		SetItem(row, 2, QString::number(data.byteswritten - data.bytesquoted));
-		SetItem(row, 3, QString::number(data.messageswritten));
-		SetItem(row, 4, QString::number(originalpermsg));
+		m_tableview_p->setRowCount(row + 1);
+		SetItem(row, 0, tmp);
+		SetItem(row, 1, QString::number(data.byteswritten - data.bytesquoted));
+		SetItem(row, 2, QString::number(data.messageswritten));
+		SetItem(row, 3, QString::number(originalpermsg));
 
 		++ row;
     }
@@ -271,10 +271,10 @@ void TopListWindow::addFidoNets(StatEngine *engine)
     StatEngine::netstat_s data;
     while (engine->GetTopNets(restart, data))
     {
-		SetItem(row, 0, QString::number(row + 1));
-		SetItem(row, 1, QString::number(data.zone) + ":" + QString::number(data.net));
-		SetItem(row, 2, QString::number(data.messages));
-		SetItem(row, 3, QString::number(data.bytes));
+		m_tableview_p->setRowCount(row + 1);
+		SetItem(row, 0, QString::number(data.zone) + ":" + QString::number(data.net));
+		SetItem(row, 1, QString::number(data.messages));
+		SetItem(row, 2, QString::number(data.bytes));
 
 		++ row;
         restart = false;
@@ -291,10 +291,10 @@ void TopListWindow::addDomains(StatEngine *engine)
     StatEngine::domainstat_s data;
     while (engine->GetTopDomains(restart, data))
     {
-		SetItem(row, 0, QString::number(row + 1));
-		SetItem(row, 1, data.topdomain.c_str());
-		SetItem(row, 2, QString::number(data.messages));
-		SetItem(row, 3, QString::number(data.bytes));
+		m_tableview_p->setRowCount(row + 1);
+		SetItem(row, 0, data.topdomain.c_str());
+		SetItem(row, 1, QString::number(data.messages));
+		SetItem(row, 2, QString::number(data.bytes));
 
 		++ row;
         restart = false;
@@ -319,11 +319,11 @@ void TopListWindow::addReceivers(StatEngine *engine)
         else
             tmp = tr("(none)");
 
-		SetItem(row, 0, QString::number(row + 1));
-		SetItem(row, 1, tmp);
-		SetItem(row, 2, QString::number(data.messagesreceived));
-		SetItem(row, 3, QString::number(data.messageswritten));
-		SetItem(row, 4, (data.messageswritten
+		m_tableview_p->setRowCount(row + 1);
+		SetItem(row, 0, tmp);
+		SetItem(row, 1, QString::number(data.messagesreceived));
+		SetItem(row, 2, QString::number(data.messageswritten));
+		SetItem(row, 3, (data.messageswritten
 						 ? QString::number((100 * data.messagesreceived)
 						                   / data.messageswritten) + "%"
 						 : tr("N/A")));
@@ -349,10 +349,10 @@ void TopListWindow::addSubjects(StatEngine *engine)
         else
             tmp = tr("(none)");
 
-		SetItem(row, 0, QString::number(row + 1));
-		SetItem(row, 1, tmp);
-		SetItem(row, 2, QString::number(data.count));
-		SetItem(row, 3, QString::number(data.bytes));
+		m_tableview_p->setRowCount(row + 1);
+		SetItem(row, 0, tmp);
+		SetItem(row, 1, QString::number(data.count));
+		SetItem(row, 2, QString::number(data.bytes));
 
 		++ row;
         restart = false;
@@ -375,9 +375,9 @@ void TopListWindow::addSoftware(StatEngine *engine)
         else
             tmp = tr("(none)");
 
-		SetItem(row, 0, QString::number(row + 1));
-		SetItem(row, 1, tmp);
-		SetItem(row, 2, QString::number(data.count));
+		m_tableview_p->setRowCount(row + 1);
+		SetItem(row, 0, tmp);
+		SetItem(row, 1, QString::number(data.count));
 
 		++ row;
         restart = false;
