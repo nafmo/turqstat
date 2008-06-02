@@ -36,10 +36,11 @@ TopListWindow::TopListWindow(QWidget *parent, toplist_e list)
 
     // Create list view
 	m_tableview_p = new QTableWidget(this);
-	layout_p->addWidget(m_tableview_p, 0, 0, 0, 2);
+	layout_p->addWidget(m_tableview_p, 0, 0, 1, 2);
 
     // Add buttons
     QPushButton *ok = new QPushButton(tr("Dismiss"), this);
+	ok->setDefault(true);
 	layout_p->addWidget(ok, 1, 0);
     connect(ok, SIGNAL(clicked()), SLOT(accept()));
 
