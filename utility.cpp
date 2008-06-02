@@ -409,6 +409,7 @@ void localetimestring(const struct tm *time, size_t len, char *out)
     wintime.wDay        = time->tm_mday;
 
     // First print date
+	out[0] = 0;
     int usedlength =
 		GetDateFormatA(LOCALE_USER_DEFAULT, DATE_SHORTDATE, &wintime, NULL,
 		               out, static_cast<int>(len));
@@ -423,7 +424,13 @@ void localetimestring(const struct tm *time, size_t len, char *out)
     }
 
     // Then print time
-    GetTimeFormatA(LOCALE_USER_DEFAULT, 0, &wintime, NULL, out, static_cast<int>(len));
+    int usedlength2 =
+		GetTimeFormatA(LOCALE_USER_DEFAULT, 0, &wintime, NULL, out, static_cast<int>(len));
+	if (usedlength && usedlength2)
+	{
+		// If GetTimeFormat() fails, we do need a null-terminated string
+		out[-1] = 0;
+	}
 }
 #elif defined(HAVE_LOCALE_H)
 void localetimestring(const struct tm *time, size_t len, char *out)

@@ -536,12 +536,20 @@ void InfoWindow::update()
     char timebuf[64];
 	time_t earliest = m_engine_p->GetEarliestWritten();
     struct tm *p1 = localtime(&earliest);
+#if defined(HAVE_LOCALE_H) || defined(HAVE_OS2_COUNTRYINFO) || defined(HAVE_WIN32_LOCALEINFO)
+	localetimestring(p1, sizeof (timebuf), timebuf);
+#else
     strftime(timebuf, 64, "%x", p1);
+#endif
 	m_earliestwritten_p->setText(timebuf);
 
 	time_t latest = m_engine_p->GetLastWritten();
     struct tm *p2 = localtime(&latest);
+#if defined(HAVE_LOCALE_H) || defined(HAVE_OS2_COUNTRYINFO) || defined(HAVE_WIN32_LOCALEINFO)
+	localetimestring(p2, sizeof (timebuf), timebuf);
+#else
     strftime(timebuf, 64, "%x", p2);
+#endif
 	m_latestwritten_p->setText(timebuf);
 }
 
