@@ -178,7 +178,8 @@ ReportSelectWindow::ReportSelectWindow(QWidget *parent, StatEngine *engine_p)
 	QLabel *templatelabel = new QLabel(tr("Template file to use"), this);
 	layout->addWidget(templatelabel);
 
-	QGridLayout *filebrowselayout_p = new QGridLayout(this);
+	QGridLayout *filebrowselayout_p = new QGridLayout(NULL);
+	layout->addLayout(filebrowselayout_p);
 
 	m_templatefilename_p = new QLineEdit(this);
 	m_templatefilename_p->setReadOnly(true);

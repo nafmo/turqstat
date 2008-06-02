@@ -1,6 +1,7 @@
 2008-06-02 - Peter Karlsson <peter@softwolves.pp.se>
   qtlist.cpp
   qtlist.h
+  qtreport.cpp
     Porting to Qt 4.
 
 2008-04-18 - Peter Karlsson <peter@softwolves.pp.se>
