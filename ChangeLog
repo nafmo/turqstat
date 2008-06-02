@@ -5,6 +5,9 @@
   qtreport.cpp
     Porting to Qt 4.
 
+  statengine.cpp
+    Fixed out-of-bounds access for program names without spaces.
+
   utility.cpp
     Workaround for WinAPI problems.
 
