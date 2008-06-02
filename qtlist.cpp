@@ -15,7 +15,7 @@
 
 #include <config.h>
 
-#include <qtreewidget.h>
+#include <qtablewidget.h>
 #include <qpushbutton.h>
 #include <qstring.h>
 #include <qlayout.h>
@@ -35,8 +35,8 @@ TopListWindow::TopListWindow(QWidget *parent, toplist_e list)
 	QGridLayout *layout_p = new QGridLayout(this);
 
     // Create list view
-	m_treeview_p = new QTreeWidget(this);
-	layout_p->addWidget(m_treeview_p, 0, 0, 0, 2);
+	m_tableview_p = new QTableWidget(this);
+	layout_p->addWidget(m_tableview_p, 0, 0, 0, 2);
 
     // Add buttons
     QPushButton *ok = new QPushButton(tr("Dismiss"), this);
@@ -54,7 +54,7 @@ TopListWindow::~TopListWindow()
 
 void TopListWindow::fillOut(StatEngine *engine)
 {
-	if (!engine || !m_treeview_p) return;
+	if (!engine || !m_tableview_p) return;
 
     setupHeaders();
 
@@ -102,70 +102,71 @@ void TopListWindow::fillOut(StatEngine *engine)
     }
 }
 
+void TopListWindow::SetItem(int row, int column, const QString &label)
+{
+	m_tableview_p->setItem(row, column, new QTableWidgetItem(label));
+}
+
 void TopListWindow::setupHeaders()
 {
-	int column = 0;
-	QTreeWidgetItem *header_p = new QTreeWidgetItem(m_treeview_p);
-	if (!header_p)
-		return;
+	QStringList headers;
 
 	// Create headers, counting them as we go along
     if (Quoters == toplist || Senders == toplist || OrigContent == toplist ||
         Receivers == toplist)
-		header_p->setText(column ++, tr("Name"));
+		headers.append(tr("Name"));
 
     if (OrigContent == toplist)
-		header_p->setText(column ++, tr("Original content"));
+		headers.append(tr("Original content"));
 
     if (FidoNets == toplist)
-		header_p->setText(column ++, tr("Zone:Net"));
+		headers.append(tr("Zone:Net"));
 
     if (Domains == toplist)
-		header_p->setText(column ++, tr("Domain"));
+		headers.append(tr("Domain"));
 
     if (Subjects == toplist)
-		header_p->setText(column ++, tr("Subject"));
+		headers.append(tr("Subject"));
 
     if (Software == toplist)
-		header_p->setText(column ++, tr("Program"));
+		headers.append(tr("Program"));
 
     if (Quoters == toplist || Senders == toplist || OrigContent == toplist ||
         FidoNets == toplist || Domains == toplist || Subjects == toplist ||
         Software == toplist)
-		header_p->setText(column ++, tr("Messages"));
+		headers.append(tr("Messages"));
 
     if (Receivers == toplist)
     {
-		header_p->setText(column ++, tr("Received"));
-		header_p->setText(column ++, tr("Sent"));
+		headers.append(tr("Received"));
+		headers.append(tr("Sent"));
     }
 
     if (Senders == toplist || FidoNets == toplist || Domains == toplist ||
         Subjects == toplist)
-		header_p->setText(column ++, tr("Bytes"));
+		headers.append(tr("Bytes"));
 
     if (Senders == toplist)
-		header_p->setText(column ++, tr("Lines"));
+		headers.append(tr("Lines"));
 
     if (Quoters == toplist || Senders == toplist)
-		header_p->setText(column ++, tr("Quote ratio"));
+		headers.append(tr("Quote ratio"));
 
     if (Receivers == toplist)
-		header_p->setText(column ++, tr("Ratio"));
+		headers.append(tr("Ratio"));
 
     if (OrigContent == toplist)
-		header_p->setText(column ++, tr("Per Message"));
+		headers.append(tr("Per Message"));
 
 	// Set up the tree view, and add the header
-	m_treeview_p->setColumnCount(column);
-	m_treeview_p->setHeaderItem(header_p);
+//	m_tableview_p->setColumnCount(column);
+	m_tableview_p->setHorizontalHeaderLabels(headers);
 }
 
 void TopListWindow::addQuoters(StatEngine *engine)
 {
-    unsigned place = 1;
+    int row = 0;
     bool restart = true;
-	QTreeWidgetItem *previous_p = NULL;
 
     StatEngine::persstat_s data;
     while (engine->GetTopQuoters(restart, data))
@@ -173,19 +174,19 @@ void TopListWindow::addQuoters(StatEngine *engine)
         if (data.bytesquoted && data.byteswritten)
         {
             QString tmp;
-			QString name = QString::fromStdWString(data.name);
+			QString name;
+			name.fromWCharArray(data.name.c_str());
             if (name != QString(data.address.c_str()))
                 tmp = name + " <" + data.address.c_str() + ">";
             else
                 tmp = data.address.c_str();
 
-			QTreeWidgetItem *item_p = new QTreeWidgetItem(m_treeview_p, previous_p);
-			item_p->setText(0, QString::number(place ++));
-			item_p->setText(1, tmp);
-			item_p->setText(2, QString::number(data.messageswritten));
-			item_p->setText(3, percentString(data.bytesquoted, data.byteswritten));
+			SetItem(row, 0, QString::number(row + 1));
+			SetItem(row, 1, tmp);
+			SetItem(row, 2, QString::number(data.messageswritten));
+			SetItem(row, 3, percentString(data.bytesquoted, data.byteswritten));
 
-            previous_p = item_p;
+            ++ row;
         }
         restart = false;
     }
@@ -195,9 +196,8 @@ void TopListWindow::addQuoters(StatEngine *engine)
 
 void TopListWindow::addSenders(StatEngine *engine)
 {
-    unsigned place = 1;
+    int row = 0;
     bool restart = true;
-	QTreeWidgetItem *previous_p = NULL;
 
     StatEngine::persstat_s data;
     while (engine->GetTopWriters(restart, data))
@@ -211,18 +211,17 @@ void TopListWindow::addSenders(StatEngine *engine)
         else
             tmp = data.address.c_str();
 
-		QTreeWidgetItem *item_p = new QTreeWidgetItem(m_treeview_p, previous_p);
-		item_p->setText(0, QString::number(place ++));
-		item_p->setText(1, tmp);
-		item_p->setText(2, QString::number(data.messageswritten));
-		item_p->setText(3, QString::number(data.byteswritten));
-		item_p->setText(4, QString::number(data.lineswritten));
-		item_p->setText(5, (data.bytesquoted > 0
-								? percentString(data.bytesquoted,
-								                data.byteswritten)
-								: tr("N/A")));
+		SetItem(row, 0, QString::number(row + 1));
+		SetItem(row, 1, tmp);
+		SetItem(row, 2, QString::number(data.messageswritten));
+		SetItem(row, 3, QString::number(data.byteswritten));
+		SetItem(row, 4, QString::number(data.lineswritten));
+		SetItem(row, 5, (data.bytesquoted > 0
+							? percentString(data.bytesquoted,
+							                data.byteswritten)
+							: tr("N/A")));
 
-		previous_p = item_p;
+		++ row;
         restart = false;
     }
 
@@ -231,9 +230,8 @@ void TopListWindow::addSenders(StatEngine *engine)
 
 void TopListWindow::addOriginalContent(StatEngine *engine)
 {
-    unsigned place = 1;
+    int row = 0;
     bool restart = true;
-    QTreeWidgetItem *previous_p = NULL;
 
     StatEngine::persstat_s data;
     while (engine->GetTopOriginalPerMsg(restart, data))
@@ -254,14 +252,13 @@ void TopListWindow::addOriginalContent(StatEngine *engine)
         unsigned originalpermsg =
             (data.byteswritten - data.bytesquoted) / data.messageswritten;
 
-		QTreeWidgetItem *item_p = new QTreeWidgetItem(m_treeview_p, previous_p);
-		item_p->setText(0, QString::number(place ++));
-		item_p->setText(1, tmp);
-		item_p->setText(2, QString::number(data.byteswritten - data.bytesquoted));
-		item_p->setText(3, QString::number(data.messageswritten));
-		item_p->setText(4, QString::number(originalpermsg));
+		SetItem(row, 0, QString::number(row + 1));
+		SetItem(row, 1, tmp);
+		SetItem(row, 2, QString::number(data.byteswritten - data.bytesquoted));
+		SetItem(row, 3, QString::number(data.messageswritten));
+		SetItem(row, 4, QString::number(originalpermsg));
 
-		previous_p = item_p;
+		++ row;
     }
 
     engine->DoneTopPeople();
@@ -269,20 +266,18 @@ void TopListWindow::addOriginalContent(StatEngine *engine)
 
 void TopListWindow::addFidoNets(StatEngine *engine)
 {
-    unsigned place = 1;
+    int row = 0;
     bool restart = true;
-    QTreeWidgetItem *previous_p = NULL;
 
     StatEngine::netstat_s data;
     while (engine->GetTopNets(restart, data))
     {
-		QTreeWidgetItem *item_p = new QTreeWidgetItem(m_treeview_p, previous_p);
-		item_p->setText(0, QString::number(place ++));
-		item_p->setText(1, QString::number(data.zone) + ":" + QString::number(data.net));
-		item_p->setText(2, QString::number(data.messages));
-		item_p->setText(3, QString::number(data.bytes));
+		SetItem(row, 0, QString::number(row + 1));
+		SetItem(row, 1, QString::number(data.zone) + ":" + QString::number(data.net));
+		SetItem(row, 2, QString::number(data.messages));
+		SetItem(row, 3, QString::number(data.bytes));
 
-		previous_p = item_p;
+		++ row;
         restart = false;
     }
 
@@ -291,20 +286,18 @@ void TopListWindow::addFidoNets(StatEngine *engine)
 
 void TopListWindow::addDomains(StatEngine *engine)
 {
-    unsigned place = 1;
+    int row = 0;
     bool restart = true;
-    QTreeWidgetItem *previous_p = NULL;
 
     StatEngine::domainstat_s data;
     while (engine->GetTopDomains(restart, data))
     {
-		QTreeWidgetItem *item_p = new QTreeWidgetItem(m_treeview_p, previous_p);
-		item_p->setText(0, QString::number(place ++));
-		item_p->setText(1, data.topdomain.c_str());
-		item_p->setText(2, QString::number(data.messages));
-		item_p->setText(3, QString::number(data.bytes));
+		SetItem(row, 0, QString::number(row + 1));
+		SetItem(row, 1, data.topdomain.c_str());
+		SetItem(row, 2, QString::number(data.messages));
+		SetItem(row, 3, QString::number(data.bytes));
 
-		previous_p = item_p;
+		++ row;
         restart = false;
     }
 
@@ -313,9 +306,8 @@ void TopListWindow::addDomains(StatEngine *engine)
 
 void TopListWindow::addReceivers(StatEngine *engine)
 {
-    unsigned place = 1;
+    int row = 0;
     bool restart = true;
-    QTreeWidgetItem *previous_p = NULL;
 
     StatEngine::persstat_s data;
     while (engine->GetTopReceivers(restart, data))
@@ -328,17 +320,16 @@ void TopListWindow::addReceivers(StatEngine *engine)
         else
             tmp = tr("(none)");
 
-		QTreeWidgetItem *item_p = new QTreeWidgetItem(m_treeview_p, previous_p);
-		item_p->setText(0, QString::number(place ++));
-		item_p->setText(1, tmp);
-		item_p->setText(2, QString::number(data.messagesreceived));
-		item_p->setText(3, QString::number(data.messageswritten));
-		item_p->setText(4, (data.messageswritten
-								? QString::number((100 * data.messagesreceived)
-								                  / data.messageswritten) + "%"
-								: tr("N/A")));
+		SetItem(row, 0, QString::number(row + 1));
+		SetItem(row, 1, tmp);
+		SetItem(row, 2, QString::number(data.messagesreceived));
+		SetItem(row, 3, QString::number(data.messageswritten));
+		SetItem(row, 4, (data.messageswritten
+						 ? QString::number((100 * data.messagesreceived)
+						                   / data.messageswritten) + "%"
+						 : tr("N/A")));
 
-		previous_p = item_p;
+		++ row;
         restart = false;
     }
 
@@ -347,10 +338,9 @@ void TopListWindow::addReceivers(StatEngine *engine)
 
 void TopListWindow::addSubjects(StatEngine *engine)
 {
-    unsigned place = 1;
+    int row = 0;
     bool restart = true;
     StatEngine::subjstat_s data;
-    QTreeWidgetItem *previous_p = NULL;
 
     while (engine->GetTopSubjects(restart, data))
     {
@@ -360,13 +350,12 @@ void TopListWindow::addSubjects(StatEngine *engine)
         else
             tmp = tr("(none)");
 
-		QTreeWidgetItem *item_p = new QTreeWidgetItem(m_treeview_p, previous_p);
-		item_p->setText(0, QString::number(place ++));
-		item_p->setText(1, tmp);
-		item_p->setText(2, QString::number(data.count));
-		item_p->setText(3, QString::number(data.bytes));
+		SetItem(row, 0, QString::number(row + 1));
+		SetItem(row, 1, tmp);
+		SetItem(row, 2, QString::number(data.count));
+		SetItem(row, 3, QString::number(data.bytes));
 
-		previous_p = item_p;
+		++ row;
         restart = false;
     }
 
@@ -375,9 +364,8 @@ void TopListWindow::addSubjects(StatEngine *engine)
 
 void TopListWindow::addSoftware(StatEngine *engine)
 {
-    unsigned place = 1;
+    int row = 0;
     bool restart = true;
-    QTreeWidgetItem *previous_p = NULL;
 
     StatEngine::progstat_s data;
     while (engine->GetTopPrograms(restart, data))
@@ -388,12 +376,11 @@ void TopListWindow::addSoftware(StatEngine *engine)
         else
             tmp = tr("(none)");
 
-		QTreeWidgetItem *item_p = new QTreeWidgetItem(m_treeview_p, previous_p);
-		item_p->setText(0, QString::number(place ++));
-		item_p->setText(1, tmp);
-		item_p->setText(2, QString::number(data.count));
+		SetItem(row, 0, QString::number(row + 1));
+		SetItem(row, 1, tmp);
+		SetItem(row, 2, QString::number(data.count));
 
-		previous_p = item_p;
+		++ row;
         restart = false;
     }
 
@@ -409,8 +396,8 @@ QString TopListWindow::percentString(int numerator, int denumerator)
 
 void TopListWindow::saveToFile()
 {
-	int numentries = m_treeview_p->topLevelItemCount();
-	int numcolumns = m_treeview_p->columnCount();
+	int numentries = m_tableview_p->rowCount();
+	int numcolumns = m_tableview_p->columnCount();
     if (0 == numentries || 0 == numcolumns)
     {
         QMessageBox::warning(this, "Turquoise SuperStat",
@@ -473,14 +460,14 @@ void TopListWindow::saveToFile()
         // Traverse the list and find the widest element of each column
         for (int i = 0; i < numentries; i ++)
         {
-			QTreeWidgetItem *current_p = m_treeview_p->topLevelItem(i);
-			if (current_p)
+			for (int j = 0; j < numcolumns - 1; j ++)
 			{
-				for (int j = 0; j < numcolumns - 1; j ++)
+				QTableWidgetItem *current_p = m_tableview_p->itemAt(i, j);
+				if (current_p)
 				{
-					if (current_p->text(j).length() >= columnwidth_p[j])
+					if (current_p->text().length() >= columnwidth_p[j])
 					{
-						columnwidth_p[j] = current_p->text(j).length() + 1;
+						columnwidth_p[j] = current_p->text().length() + 1;
 					}
 				}
 			}
@@ -490,10 +477,13 @@ void TopListWindow::saveToFile()
     QTextStream out(&output);
 
     // Print the titles
-	QTreeWidgetItem *header_p = m_treeview_p->headerItem();
     for (int i = 0; i < numcolumns; i ++)
     {
-		QString s = header_p->text(i);
+		QTableWidgetItem *current_p = m_tableview_p->horizontalHeaderItem(i);
+		if (!current_p)
+			continue;
+
+		QString s = current_p->text();
         if (i < numcolumns - 1)
         {
             switch (filternum)
@@ -530,13 +520,13 @@ void TopListWindow::saveToFile()
     // Print the entries
     for (int i = 0; i < numentries; i ++)
     {
-		QTreeWidgetItem *current_p = m_treeview_p->topLevelItem(i);
-		if (!current_p)
-			continue;
-
         for (int j = 0; j < numcolumns; j ++)
         {
-			QString s = current_p->text(j);
+			QTableWidgetItem *current_p = m_tableview_p->itemAt(i, j);
+			if (!current_p)
+				continue;
+
+			QString s = current_p->text();
 
             if (j < numcolumns - 1)
             {

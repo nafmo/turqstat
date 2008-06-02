@@ -1,3 +1,8 @@
+2008-06-02 - Peter Karlsson <peter@softwolves.pp.se>
+  qtlist.cpp
+  qtlist.h
+    Porting to Qt 4.
+
 2008-04-18 - Peter Karlsson <peter@softwolves.pp.se>
   visualc/
     Split project files so that common files reside in a common project.

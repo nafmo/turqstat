@@ -24,7 +24,7 @@
 using namespace std;
 #endif
 
-class QTreeWidget;
+class QTableWidget;
 class StatEngine;
 #if !defined(HAVE_WORKING_WSTRING)
 class wstring;
@@ -92,11 +92,14 @@ protected:
     /** Internal method used for creating a software toplist. */
     void addSoftware(StatEngine *);
 
+	/** Internal method to add a text string to the table. */
+	void SetItem(int, int, const QString &);
+
     /** Create a percent string to display in a toplist. */
     QString percentString(int, int);
 
     /** List view used to display the actual toplist. */
-	QTreeWidget *m_treeview_p;
+	QTableWidget *m_tableview_p;
 
     /** The kind of toplist associated with this object. */
     enum toplist_e toplist;
