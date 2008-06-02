@@ -95,7 +95,14 @@ protected:
 	/** Internal method to add a text string to the table. */
 	void SetItem(int, int, const QString &);
 
-    /** Create a percent string to display in a toplist. */
+    /**
+     * Convert a wide character string into a QString.
+     * @param inputstring String to copy.
+     * @return A QString representation of the string.
+     */
+    static QString charConvert(wstring &);
+
+	/** Create a percent string to display in a toplist. */
     QString percentString(int, int);
 
     /** List view used to display the actual toplist. */
