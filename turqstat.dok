@@ -1,4 +1,4 @@
-Turquoise SuperStat 3.0 - Ett mötesstatistikprogram för Fidonet och Usenet
+Turquoise SuperStat 3.1 - Ett mötesstatistikprogram för Fidonet och Usenet
 (c) Copyright 1998-2008 Peter Karlsson.
 A Softwolves Software Release in 2008
 
@@ -333,6 +333,8 @@ HISTORIK
 
 2008-01-21 - v3.0 -
   Lade till stöd för mallar som beskriver utdataformatet.
+    -  -   - v3.1 -
+  Lade till stöd för utdata i HTML-format.
 
 
 BIFOGADE FILER

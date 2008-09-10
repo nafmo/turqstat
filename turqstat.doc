@@ -1,4 +1,4 @@
-Turquoise SuperStat 3.0 - An area statistics program for Fidonet and Usenet
+Turquoise SuperStat 3.1 - An area statistics program for Fidonet and Usenet
 (c) Copyright 1998-2008 Peter Karlsson.
 A Softwolves Software Release in 2008
 
@@ -333,6 +333,8 @@ HISTORY
 
 2008-01-21 - v3.0 -
   Added support for templates describing the output format.
+    -  -   - v3.1 -
+  Added support for output in HTML format.
 
 
 INCLUDED FILES

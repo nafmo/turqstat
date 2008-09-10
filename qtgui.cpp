@@ -2,7 +2,6 @@
 //
 // A statistic collection program for Fidonet and Usenet systems
 // Qt version.
-// Version 3.0
 //
 // Copyright (c) 2000-2008 Peter Karlsson
 //

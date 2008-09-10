@@ -1,7 +1,6 @@
 // Turquoise SuperStat
 //
 // A statistic collection program for Fidonet and Usenet systems
-// Version 3.0
 //
 // Copyright (c) 1998-2008 Peter Karlsson
 //
