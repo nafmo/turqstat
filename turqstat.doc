@@ -1,5 +1,5 @@
 Turquoise SuperStat 3.1 - An area statistics program for Fidonet and Usenet
-(c) Copyright 1998-2008 Peter Karlsson.
+(c) Copyright 1998-2008 Peter Krefting.
 A Softwolves Software Release in 2008
 
 http://www.softwolves.pp.se/sw/
@@ -467,7 +467,6 @@ also want to create Debian's archive control files, use dpkg-buildpackage.
 
 CONTACT
 
-The author, Peter Karlsson, can be contacted via Internet e-mail at
-peter@softwolves.pp.se, or possibly via netmail at 2:204/254.222. Information
-about this program is available on the world wide web at
-http://www.softwolves.pp.se/sw/
+The author, Peter Krefting, can be contacted via Internet e-mail at
+<peter@softwolves.pp.se>. Information about this program is available on the
+world wide web at http://www.softwolves.pp.se/sw/

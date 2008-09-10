@@ -1,5 +1,5 @@
 ; HTML template file for Turquoise SuperStat reports
-; © 2002-2008 Peter Karlsson
+; © 2002-2008 Peter Krefting
 ;
 ; Any line starting with a semi-colon (like this one) will be ignored. To
 ; output a line with an initial semi-colon in the final report, start the

@@ -7,7 +7,7 @@
 // intact.
 //
 // Modifications for Turquoise SuperStat copyright (c) 2000-2005 Peter
-// Karlsson.
+// Krefting.
 
 #include <config.h>
 

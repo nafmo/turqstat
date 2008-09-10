@@ -1,7 +1,7 @@
 Source: turqstat
 Section: mail
 Priority: optional
-Maintainer: Peter Karlsson <peterk@debian.org>
+Maintainer: Peter Krefting <peterk@debian.org>
 Standards-Version: 3.7.3
 Build-Depends: debhelper (>= 4), libqt3-mt-dev, qt3-dev-tools-compat
 Vcs-Browser: http://git.debian.org/?p=turqstat/turqstat.git

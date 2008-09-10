@@ -1,5 +1,5 @@
 ; Svensk standardmall för rapporter från Turquoise SuperStat
-; © 2002-2008 Peter Karlsson
+; © 2002-2008 Peter Krefting
 ;
 ; Rader som inleds med semikolon (som denna) kommer att ignoreras. För att
 ; skriva en rad med inledande semikolon i den färdiga rapporten inleder

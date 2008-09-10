@@ -1,4 +1,4 @@
-// Written in 2000-2005 by Peter Karlsson
+// Written in 2000-2005 by Peter Krefting
 //
 // This file is not copyrighted.
 

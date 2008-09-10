@@ -1,7 +1,7 @@
 <?xml version = '1.0'?>
 <kdevelop>
   <general>
-    <author>Peter Karlsson</author>
+    <author>Peter Krefting</author>
     <email>peter@softwolves.pp.se</email>
     <version>1</version>
     <projectmanagement>KDevAutoProject</projectmanagement>

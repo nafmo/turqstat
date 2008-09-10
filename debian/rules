@@ -1,6 +1,6 @@
 #!/usr/bin/make -f
 # GNU copyright 1997 to 1999 by Joey Hess.
-# Copyright 1999-2008 Peter Karlsson <peterk@debian.org>
+# Copyright 1999-2008 Peter Krefting <peterk@debian.org>
 
 # Uncomment this to turn on verbose mode.
 #export DH_VERBOSE=1

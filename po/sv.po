@@ -6,7 +6,7 @@ msgstr ""
 "Project-Id-Version: XTurqstat 3.0\n"
 "POT-Creation-Date: 2008-01-05 21.59.24 CET\n"
 "PO-Revision-Date: 2008-01-05\n"
-"Last-Translator: Peter Karlsson <peter@softwolves.pp.se>\n"
+"Last-Translator: Peter Krefting <peter@softwolves.pp.se>\n"
 "Content-Type: text/plain; charset=iso-8859-1\n"
 
 #: qtbars.cpp:78
