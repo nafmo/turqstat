@@ -334,7 +334,7 @@ void localetimestring(const struct tm *time, size_t len, char *out)
     switch (countryinfo.fsDateFmt)
     {
         case 0: // MDY
-            usedlength = snprintf(out, len, "%02%s%02d%s%04d",
+            usedlength = snprintf(out, len, "%02d%s%02d%s%04d",
                                   time->tm_mon + 1,
                                   countryinfo.szDateSeparator,
                                   time->tm_mday,
@@ -343,7 +343,7 @@ void localetimestring(const struct tm *time, size_t len, char *out)
             break;
 
         case 1: // DMY
-            usedlength = snprintf(out, len, "%02%s%02d%s%04d",
+            usedlength = snprintf(out, len, "%02d%s%02d%s%04d",
                                   time->tm_mday,
                                   countryinfo.szDateSeparator,
                                   time->tm_mon + 1,
